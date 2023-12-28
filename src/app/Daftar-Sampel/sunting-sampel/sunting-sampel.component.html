@@ -1,0 +1,404 @@
+<div class="container mb-3">
+    <mat-card>
+        <mat-card-content>
+            <h1 class="attractive-title">Sunting Sampel</h1>
+            <form #form="ngForm" (ngSubmit)="updateSample()">
+                <div class="mat-card-container row">
+
+                    <div class="col-md-6 shadow rounded p-5 mb-5">
+                        <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_bm">No Borang Kastam</label><br>
+                                <label class="label_bi">Custom No</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control readonly-input" id="CustomNo" name="CustomNo"
+                                    [(ngModel)]="sample.customNo" *ngIf="!showSmk" disabled>
+                                <input type="text" class="form-control readonly-input" [value]="sample.customNo"
+                                    disabled readonly *ngIf="showSmk">
+                                <small class="instruction">* Nombor Perakuan Barang Yang Diimport (Kastam No.1)
+                                    atau Nombor Perakuan Barang Yang Dieksport (Kastam No.3) atau Nombor
+                                    Perakuan Untuk Mengangkut Barang Dalam Malaysia (Kastam No.3)</small>
+                            </div>
+                        </div><br>
+
+                        <div>
+                            <div class="row form-group">
+                                <div class="col-sm-4">
+                                    <label class="label_bm">Tarikh Import</label><br>
+                                    <label class="label_bi">Import Date</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <ng-container *ngIf="!showSmk">
+                                        <input type="date" class="form-control readonly-input" id="ImportedDate"
+                                            name="ImportedDate" [(ngModel)]="sample.importedDate"
+                                            [ngModel]="sample.importedDate | date: 'yyyy-MM-dd' " required>
+                                    </ng-container>
+                                    <ng-container *ngIf="showSmk">
+                                        <input type="date" class="form-control readonly-input"
+                                            [value]="sample.importedDate | date: 'yyyy-MM-dd'" disabled readonly>
+                                    </ng-container>
+                                    <div *ngIf="notes && !sample.remarks">
+                                        <p class="notes">Sampel perlu sampai di makmal GTACR pada :{{ notes }}</p>
+                                    </div>
+                                </div>
+                            </div><br>
+
+
+                            <div class="col-lg-12 row" *ngIf="showRemarks">
+                                <div class="col-lg-4">
+                                    <label class="label_title">Catatan</label><br>
+                                    <label class="label_bi">Remarks</label>
+                                </div>
+                                <div class="col-lg-8 mb-3">
+                                    <textarea class="form-control" id="Remarks" name="Remarks"
+                                        [(ngModel)]="sample.remarks" rows="6" cols="50"></textarea>
+                                    <small class="instruction">*Alasan jika melebihi tempoh masa yang telah
+                                        ditetapkan</small>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <label class="label_bm">Bukti</label><br>
+                                    <label class="label_bi">Prove</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="file" class="form-control readonly-input" id="Evidence" name="Evidence"
+                                        (change)="handleFileInput($event)">
+                                    <small class="instruction"> * Sila sertakan bukti jika melebihi tempoh masa yang telah ditetapkan</small>
+                                    <div *ngIf="sample.evidence">
+                                        <a style="color: rgb(10, 96, 189); cursor: pointer;text-decoration: underline;"
+                                            (click)="viewFile(sample.evidence)">{{sample.evidence}}</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br>
+
+                        <!-- <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_bm">Kuantiti (kg)</label><br>
+                                <label class="label_bi">Quantity (kg)</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" id="Quantity" name="Quantity"
+                                    [(ngModel)]="sample.quantity">
+                                <small class="instruction">Berat basah (dalam kilogram) tanpa pembungkusan</small>
+                            </div>
+                        </div><br> -->
+
+
+                        <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_title">Kuantiti(kg)<span class="required"
+                                        style="color:red;">*</span></label><br>
+                                <label class="label_bi">Quantity</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="Quantity" name="Quantity"
+                                    [(ngModel)]="sample.quantity" appCommaNumber>
+                                <small class="instruction">Berat basah (dalam kilogram) tanpa pembungkusan</small>
+                                <div *ngIf="showErrorMessage" style="color: red;">Berat melebihi berat yang diikrar
+                                    dalam K1</div>
+                            </div>
+                        </div><br>
+
+
+                        <!-- <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_bm">Kandungan Getah Kering(%)</label><br>
+                                <label class="label_bi">Dry Rubber Content(DRC)</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control readonly-input" id="drc" name="drc"
+                                    [(ngModel)]="sample.drc" (ngModelChange)="enforceDRCLimit()">
+                                <small class="instruction">* Kandungan Getah Kering yang diikrar pada perihal barang
+                                    dalam perakuan Kastam berkaitan</small>
+                                <div *ngIf="showErrorMessage" style="color: red;">Dry weight cannot exceed the available
+                                    quantity ({{ k1Detail.quantity }})</div>
+                            </div>
+                        </div><br> -->
+
+                        <div class="row form-group">
+                            <div class="col-lg-4">
+                                <label class="label_title">KGK %<span class="required"
+                                        style="color:red;">*</span></label><br>
+                                <label class="label_bi">DRC %</label>
+                            </div>
+                            <div class="col-lg-8">
+                                <input type="number" class="form-control readonly-input" id="drc" name="drc"
+                                    [(ngModel)]="sample.drc" (ngModelChange)="enforceDRCLimit()" required>
+                                <small class="instruction">* Kandungan Getah Kering yang diikrar pada perihal barang
+                                    dalam perakuan
+                                    Kastam berkaitan</small>
+                            </div>
+                        </div><br>
+
+
+                        <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_bm"> Getah Kering (kg)</label><br>
+                                <label class="label_bi">Dry Weight (kg)</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control readonly-input" [value]="sample.dryWeight"
+                                    disabled readonly>
+                            </div>
+                        </div><br>
+
+                        <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_bm">Jenis Getah</label><br>
+                                <label class="label_bi">Rubber Type</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control readonly-input" id="RubberType" name="RubberType"
+                                    [(ngModel)]="sample.rubberType" disabled readonly>
+                            </div>
+                        </div><br>
+
+                        <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_bm">Jenis Sampel</label><br>
+                                <label class="label_bi">Sample Type</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <select class="form-select readonly-input" name="SampleTypeId" id="SampleTypeId"
+                                    [(ngModel)]="sample.sampleTypeId">
+                                    <!-- <option value="" disabled selected>--Pilih--</option> -->
+                                    <option value="" hidden>{{sample.sampleType}}</option>
+                                    <option *ngFor="let sample of sampleTypes" [value]="sample.id">
+                                        {{sample.sampleType}}</option>
+                                </select>
+                            </div>
+                        </div><br>
+
+                    </div>
+
+
+                    <div class="col-md-6 shadow rounded p-5 mb-5">
+
+                        <div class="row form-group" *ngIf="showSmk">
+                            <div class="col-sm-4">
+                                <label class="label_bm">Syarikat Pengimport</label><br>
+                                <label class="label_bi">Importer Company</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control readonly-input" [value]="sample.importerName"
+                                    disabled readonly>
+                            </div>
+                        </div><br>
+
+
+                        <div class="row form-group" *ngIf="!showSmk">
+                            <div class="col-sm-4">
+                                <label class="label_title">Syarikat Pengimport<span class="required"
+                                        style="color:red;">*</span></label><br>
+                                <label class="label_bi">Importing Company</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <select class="form-select" name="companyId" id="companyId"
+                                    [(ngModel)]="sample.companyId">
+                                    <option value="" hidden>{{sample.companyName}}</option>
+                                    <option *ngFor="let company of companies" [value]="company.companyId">
+                                        {{company.importerName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div><br>
+
+
+                        <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_bm">Tujuan Sampel Dihantar</label><br>
+                                <label class="label_bi">Sample Propose</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <select class="form-select readonly-input" name="SamplePropose" id="SamplePropose"
+                                    [(ngModel)]="sample.samplePropose">
+                                    <option value="" disabled>--Pilih--</option>
+                                    <option *ngFor="let tujuanSampelDihantar of samplePropose"
+                                        [value]="tujuanSampelDihantar">
+                                        {{tujuanSampelDihantar}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div><br>
+
+                        <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_bm">Kod HS</label><br>
+                                <label class="label_bi">HS Code</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control readonly-input" id="HsCode" name="HsCode"
+                                    [(ngModel)]="sample.hsCode" *ngIf="!showSmk">
+                                <input type="text" class="form-control readonly-input" [value]="sample.hsCode" disabled
+                                    readonly *ngIf="showSmk">
+                            </div>
+                        </div><br>
+
+                        <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_bm">Nama Pembekal</label><br>
+                                <label class="label_bi">Supplier Name</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control readonly-input" id="supplierName"
+                                    name="supplierName" [(ngModel)]="sample.supplierName" *ngIf="!showSmk">
+                                <input type="text" class="form-control readonly-input" [value]="sample.supplierName"
+                                    disabled readonly *ngIf="showSmk">
+                                <small class="instruction">*Nama syarikat/organisasi yang membekal atau menghantar
+                                    getah</small>
+                            </div>
+                        </div><br>
+
+                        <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_bm">Negara Pembekal</label><br>
+                                <label class="label_bi">Country</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <select class="form-select readonly-input" name="Country" id="Country" ngModel
+                                    [(ngModel)]="sample.country" *ngIf="!showSmk">
+                                    <option value="" hidden>{{sample.country}}</option>
+                                    <option *ngFor="let sample of countries" [value]="sample.country">{{sample.country}}
+                                    </option>
+                                </select>
+                                <input type="text" class="form-control readonly-input" [value]="sample.country" disabled
+                                    readonly *ngIf="showSmk">
+                                <small class="instruction">* Nama negara/negeri asal pembekal getah</small>
+                            </div>
+                        </div><br>
+
+                        <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_bm">Nama Pemandu</label><br>
+                                <label class="label_bi">Driver's Name</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control readonly-input" id="DriverName" name="DriverName"
+                                    [(ngModel)]="sample.driverName">
+                            </div>
+                        </div><br>
+
+                        <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_bm">I/C Pemandu/ Pasport</label><br>
+                                <label class="label_bi">Identification/Passport Driver</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control readonly-input" id="IcDriver" name="IcDriver"
+                                    [(ngModel)]="sample.icDriver">
+                            </div>
+                        </div><br>
+
+
+                        <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_bm">Nombor Pendaftaran Lori</label><br>
+                                <label class="label_bi">Lorry No</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control readonly-input" [value]="sample.lorryNo" disabled
+                                    readonly *ngIf="showSmk">
+                                <input type="text" class="form-control readonly-input" [(ngModel)]="sample.lorryNo"
+                                    [value]="sample.lorryNo" *ngIf="!showSmk">
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-sm-4">
+                                <label class="label_bm">No. Trelar/ Kontena/ Tank</label><br>
+                                <label class="label_bi">Trailer No / Contena No/ Tanker No</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control readonly-input" [value]="sample.trailerNo"
+                                    *ngIf="!showSmk">
+
+                                <input type="text" class="form-control readonly-input" [value]="sample.trailerNo"
+                                    disabled readonly *ngIf="showSmk">
+                            </div>
+                        </div>
+
+                        <!-- 
+                        <span *ngIf="sample.transport == 'Pelabuhan'">
+                            <div class="row form-group">
+                                <div class="col-sm-4">
+                                    <label class="label_bm">Nombor Pendaftaran Lori</label><br>
+                                    <label class="label_bi">Lorry No</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control readonly-input" [value]="sample.lorryNo"
+                                        readonly *ngIf="showSmk">
+                                        <input type="text" class="form-control readonly-input" [(ngModel)]="sample.lorryNo" [value]="sample.lorryNo"
+                                        *ngIf="!showSmk">
+                                </div>
+                            </div>
+                            <br>
+
+                            <div class="row form-group">
+                                <div class="col-sm-4">
+                                    <label class="label_bm">No. Trelar/ Kontena/ Tank</label><br>
+                                    <label class="label_bi">Trailer No / Contena No/ Tanker No</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control readonly-input" [value]="sample.trailerNo"  *ngIf="!showSmk">
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control readonly-input" [value]="sample.trailerNo"  *ngIf="showSmk">
+                                </div>
+                            </div>
+                        </span><br>
+
+                        <span *ngIf="sample.transport == 'Darat'">
+                            <div class="row form-group">
+                                <div class="col-sm-4"> 
+                                    <label class="label_bm">Nombor Pendaftaran Lori</label><br>
+                                    <label class="label_bi">Lorry No</label>
+                                </div>
+                                <div class="col-sm-8" *ngIf="!showSmk">
+                                    <input type="text" class="form-control readonly-input" [value]="sample.lorryNo">
+                                </div>
+                                <div class="col-sm-8" *ngIf="showSmk">
+                                    <input type="text" class="form-control readonly-input" [value]="sample.lorryNo">
+                                </div>
+                            </div>
+                        </span> -->
+
+                        <!-- <div class="row form-group">
+                            <div class="col-sm-4" *ngIf="showSmk">
+                                <label class="label_bm">Nombor Pendaftaran Lori</label><br>
+                                <label class="label_bi">Lorry No</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control readonly-input" [value]="sample.lorryNo" disabled
+                                    readonly *ngIf="showSmk">
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row form-group">
+                            <div class="col-sm-4" *ngIf="showSmk">
+                                <label class="label_bm">No. Trelar/ Kontena/ Tank</label><br>
+                                <label class="label_bi">Trailer No / Contena No/ Tanker No</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control readonly-input" [value]="sample.trailerNo"
+                                    disabled readonly *ngIf="showSmk">
+                            </div>
+                        </div><br> -->
+
+                    </div><br>
+                </div>
+
+                <div mat-dialog-actions align="end">
+                    <!-- <label for="errorMes" *ngIf="errorMes" style="color: red;">Sila isi semua
+                                            maklumat</label><br> -->
+                    <button type="submit" class="btn btn-primary mr-5">Simpan</button>
+                    <!-- <button type="button" class="btn btn-danger"
+                                            (click)="deleteSample(sample.k1HeaderId)">Delete</button> -->
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

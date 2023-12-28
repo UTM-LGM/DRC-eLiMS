@@ -1,0 +1,104 @@
+<div class="container mb-3">
+
+    <button class="btn-print button" (click)="print()" style="margin-right: 10px;"><i class="fa-solid fa-print"
+            style="color: #ffffff;"></i> Cetak</button>
+
+    <br><br>
+
+
+    <div *ngFor="let sample of samples">
+
+
+        <div id="page1-div" style="position: relative; width: 893px;">
+
+            <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
+                <mat-card-content>
+
+                    <body>
+                        <p>
+                            Ruj. Kami:- ()<br>
+                            Tarikh: {{ batch.sentOn | date: 'dd MMMM yyyy' }}
+                        </p>
+
+                        <p>
+                            Global Testing & Consultancy for Rubber (G-TACR) Sungai Petani<br>
+                            Lembaga Getah Malaysia Wilayah Negeri Kedah/Perlis/ P. Pinang<br>
+                            Lot PT 71847, Pusat Bandar Amanjaya, <br>
+                            08000 Sungai Petani, Kedah. <br>
+                            (U.P.: Pengurus Makmal G-TACR Sungai Petani)
+                        </p>
+
+                        <p>
+                            Tuan/Puan,
+                        </p>
+
+                        <h3>
+                            <b>
+                                <u>
+                                    UJIAN KANDUNGAN GETAH KERING (KGK)/DRY RUBBER CONTENT (DRC)<br>
+                                </u>
+                                Batch ID : ( {{ batch.batchId }} )
+                            </b>
+                        </h3>
+
+                        <p> Merujuk kepada perkara di atas.</p>
+
+                        <p>
+                            2. Disertakan contoh-contoh getah yang diambil semasa pengimportan getah melalui stesen ini
+                            bagi
+                            tujuan Ujian
+                            Kandungan Getah Kering (KGK)/ Dry Rubber Content (DRC). Butiran lanjut adalah seperti di
+                            lampiran A
+                            yang
+                            disertakan.
+                        </p>
+
+                        <p>
+                            Nama syarikat pengimport : <b>{{sample.importerName}}{{sample.companyName}}</b><br>
+                            Alamat syarikat pengimport : <b> {{sample.importerAddress}}</b><br>
+                            Jumlah Sampel: <b>{{ selectedCheckboxCount}}</b><br>
+                        </p>
+
+                        <p>
+                            Kaedah ujian
+                        </p>
+
+
+                        <p>
+                            Cek/ EFT Ref. No.: <b>{{batch.chequeNo}}</b> <br>
+                            Bank: <b>{{batch.bankCode}}</b><br>
+                            Jumlah Cek: <b>{{batch.chequeAmount}} </b><br>
+                        </p>
+
+
+                        <p>
+                            Sekian, terima kasih.
+                        </p>
+
+
+                        <p>
+                            <b>“MALAYSIA MADANI”</b><br>
+                            <b>“BERKHIDMAT UNTUK NEGARA”</b><br>
+                            <b>“KREATIF, INOVATIF, PROGRESIF”</b><br><br>
+                        </p>
+
+                        <span>Saya yang menjalankan amanah,</span><p><br><br><br>
+
+                            <span><b>({{user.name}})</b></span><br>
+                            <b>{{user.address}}</b><br>
+                            <!-- <span>{{staff.position}}</span><br>
+                        <span *ngIf="roleId == 2">Unit Inspektorat dan Penguatkuasaan</span><br>
+                        <span>{{staff.office}}</span><br><br> -->
+                        </p>
+
+
+
+                    </body>
+
+                </mat-card-content>
+            </mat-card>
+        </div><br>
+
+    </div>
+
+</div>

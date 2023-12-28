@@ -1,0 +1,31 @@
+<div class="background-image"></div>
+<div class="container">
+  <img class="logo" src="assets/image/logoLGM.png" alt="Logo">
+  <h1 class="title">DRC-eLiMS</h1>
+  <form>
+
+    <div *ngIf="!afterLogin" class="w-12 m-0 p-0">
+      <b>Sila pilih log masuk di bawah :</b><br><br>
+
+      <div *ngFor=" let role of roles">
+        <button type="button" class="btn btn-block btn-outline-secondary btn-login" style="border: none;"
+          (click)="displayLogin(role.roleId)">{{role.role1}}</button>
+      </div>
+    </div>
+
+    <div *ngIf="afterLogin">
+      <div class="input-container">
+        <input class="un" type="text" placeholder="Nama Pengguna" name="Username" [(ngModel)]="user.username">
+      </div>
+      <div class="input-container">
+        <input class="pass" type="password" placeholder="Kata Laluan" name="Password" [(ngModel)]="user.password">
+      </div>
+      <a class="signin" (click)="login()">Log Masuk</a>
+
+      <!-- <div *ngIf="roleForwarder"> -->
+      <p class="register" align="center" (click)="appComponent.loginPage = false; appComponent.registerPage = true">
+        Daftar Pengguna</p>
+      <!-- </div> -->
+    </div>
+  </form>
+</div>

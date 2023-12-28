@@ -1,0 +1,324 @@
+import { Component, ViewChild } from '@angular/core';
+import { Batch } from '../../models/batch';
+import { ElimsService } from '../../services/elims.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, Validators } from '@angular/forms';
+import { DrclimstrainingService } from '../../services/drclimstraining.service';
+import { GetahBongkahService } from '../../services/getah-bongkah.service';
+import { forkJoin, tap } from 'rxjs';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Sample } from 'src/app/models/sample';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { userDTO } from 'src/app/models/userDTO';
+import { Staff } from 'src/app/models/staff';
+import { UipRefRunNo } from 'src/app/models/uipRefRunNo';
+import { UipbkhRefRunNo } from 'src/app/models/uipbkhRefRunNo';
+import { HantarSampelService } from '../hantar-sampel.service';
+import { UserService } from 'src/app/User/user.service';
+
+import jsPDF from 'jspdf';
+import * as QRCode from 'qrcode-generator';
+
+
+@Component({
+  selector: 'app-tarikh-sampel-dihantar',
+  templateUrl: './tarikh-sampel-dihantar.component.html',
+  styleUrls: ['./tarikh-sampel-dihantar.component.css']
+})
+export class TarikhSampelDihantarComponent {
+
+  delivery: any = ['Fizikal', 'Perkhidmatan Kurier']
+  batch: Batch = {} as Batch;
+  sample: Sample = {} as Sample;
+  user: userDTO = {} as userDTO
+  batches: Batch[] = [];
+  showDelivery: boolean = false
+  sampleForm: any;
+  loginAs: any;
+  roleId: any;
+  roleForwarder: boolean
+  roleUip: boolean
+
+  staff: Staff = {} as Staff
+  uipRefRunNo: UipRefRunNo = {} as UipRefRunNo
+  uipbkhRefRunNo: UipbkhRefRunNo = {} as UipbkhRefRunNo
+
+
+  // sample: Sample = {} as Sample;
+  samples: Sample[] = [];
+
+  constructor(
+
+    private route: ActivatedRoute,
+    private elimsService: ElimsService,
+    private toastr: ToastrService,
+    private formBuilder: FormBuilder,
+    private drclimstrainingService: DrclimstrainingService,
+    private getahBongkahService: GetahBongkahService,
+    private router: Router,
+    private authservice: AuthService,
+    private hantarSampelService: HantarSampelService,
+    private userService: UserService,
+
+  ) { }
+
+  displayedColumns: string[] = [
+    'batchId',
+    'tarikhSampelDihantar',
+    'penghantaran',
+    'action',
+    'uipRegNo'
+  ];
+
+  dataSource!: MatTableDataSource<Batch[]>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+
+  ngOnInit() {
+
+
+    if (this.authservice.isloggedin()) {
+      this.loginAs = this.authservice.getSessionUsername()
+      this.roleId = this.authservice.getSessionRole()
+
+    }
+    else {
+      this.loginAs = '';
+    }
+
+    if (this.roleId == 1) {
+      this.userService.GetUserInfo(this.loginAs).subscribe(res => {
+        this.authservice.changeUser(res);
+        this.user = res
+        this.roleForwarder = true
+        this.roleUip = false
+
+      })
+    }
+    else if (this.roleId == 2) {
+      this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
+        this.authservice.changeUser(res);
+        this.staff = res
+        this.roleForwarder = false
+        this.roleUip = true
+      })
+    }
+
+    if (this.roleId == 1) {
+
+      this.sampleForm = this.formBuilder.group({
+        batchId: ['', Validators.required],
+        date: ['', Validators.required],
+        delivery: ['', Validators.required],
+        courierServices: [''],
+        trackingNo: [''],
+      });
+    }
+
+
+    if (this.roleId == 2) {
+
+      this.sampleForm = this.formBuilder.group({
+        date: ['', Validators.required],
+        delivery: ['', Validators.required],
+        courierServices: [''],
+        trackingNo: [''],
+        uipRegNo: [''],
+
+      });
+    }
+
+    // this.route.params.subscribe((params) => {
+    //   const batchId = params['batchId'];
+    //   if (batchId) {
+    //     this.batch.batchId = batchId;
+    //   } else { }
+    // });
+
+
+  }
+
+
+  // updateBatch() {
+  //   if (this.sampleForm.invalid) {
+  //     this.toastr.warning('Sila isi semua ruangan yang diperlukan');
+  //     return;
+  //   }
+
+
+  //   if (this.roleId == '1') {
+  //     const addTarikhSampelDihantar = this.hantarSampelService.PostTarikhSampelDihantar(this.batch);
+  //     const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
+  //     const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
+
+  //     forkJoin([
+  //       addTarikhSampelDihantar,
+  //       updateLtxTarikhSampelDihantar,
+  //       updateBRTarikhSampelDihantar
+  //     ]).subscribe(
+  //       {
+  //         next: ((res: any[]) => {
+  //           this.toastr.success('Maklumat telah dikemaskini!');
+  //         }),
+  //         error: (e) => {
+  //           this.toastr.error('Maklumat gagal dikemaskini');
+  //         }
+  //       }
+  //     );
+  //   }
+
+  //   else if (this.roleId == '2') {
+  //     this.hantarSampelService.PostUipTarikhSampelDihantar(this.batch).subscribe(
+  //       (res) => {
+  //         this.toastr.success('Maklumat telah dikemaskini!');
+  //       },
+  //       (error) => {
+  //         this.toastr.error('Maklumat gagal dikemaskini');
+  //       }
+  //     );
+
+  //   }
+  // }
+
+
+  updateBatch() {
+
+    if (this.sampleForm.invalid) {
+      this.toastr.warning('Sila isi semua ruangan yang diperlukan');
+      return;
+    }
+
+
+    if (this.roleId == 1) {
+      const addTarikhSampelDihantar = this.hantarSampelService.PostTarikhSampelDihantar(this.batch);
+      const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
+      const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
+
+      forkJoin([
+        addTarikhSampelDihantar,
+        updateLtxTarikhSampelDihantar,
+        updateBRTarikhSampelDihantar
+      ]).subscribe(
+        {
+          next: ((res: any[]) => {
+            this.toastr.success('Data berjaya disimpan', 'Berjaya', {
+              timeOut: 3000,
+            }),
+
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+
+          }),
+          error: (e) => {
+            this.toastr.error('Maklumat gagal dikemaskini');
+          }
+        }
+      );
+    }
+
+    else if (this.roleId == 2) {
+
+      const addTarikhSampelDihantar = this.hantarSampelService.PostUipTarikhSampelDihantar(this.batch);
+      const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
+      const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
+
+      forkJoin([
+        addTarikhSampelDihantar,
+        updateLtxTarikhSampelDihantar,
+        updateBRTarikhSampelDihantar
+      ]).subscribe(
+        {
+          next: ((res: any[]) => {
+            this.toastr.success('Data berjaya disimpan', 'Berjaya', {
+              timeOut: 3000,
+            }),
+
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+
+          }),
+
+          error: (e) => {
+            this.toastr.error('Maklumat gagal dikemaskini');
+          }
+        }
+      );
+    }
+
+
+  }
+
+
+
+
+
+  // updateBatch() {
+
+  //   if (this.sampleForm.invalid) {
+  //     this.toastr.warning('Sila isi semua ruangan yang diperlukan');
+  //     return;
+  //   }
+
+  //   const addTarikhSampelDihantar$ = this.hantarSampelService.PostTarikhSampelDihantar(this.batch);
+  //   const updateLtxTarikhSampelDihantar$ = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
+  //   const updateBRTarikhSampelDihantar$ = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
+
+  //   forkJoin([
+  //     addTarikhSampelDihantar$,
+  //     updateLtxTarikhSampelDihantar$,
+  //     updateBRTarikhSampelDihantar$
+  //   ]).pipe(
+  //     tap(() => {
+  //       this.toastr.success('Maklumat telah dikemaskini!');
+  //     })
+  //   ).subscribe(
+  //     (res: any[]) => {
+  //     },
+  //     (error) => {
+  //       this.toastr.error('Maklumat gagal dikemaskini');
+  //     }
+  //   );
+
+  // }
+
+
+  changeDelivery(e: any) {
+
+    if (e.target.value == "Fizikal") {
+      this.showDelivery = true
+    }
+    else {
+      this.showDelivery = false
+    }
+
+    if (e.target.value == "Perkhidmatan Kurier") {
+      this.showDelivery = true
+    }
+    else {
+      this.showDelivery = false
+    }
+
+    
+  }
+
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  viewSample(k1DetailId: number) {
+    this.router.navigate(['sample/view-sample/' + k1DetailId])
+  }
+
+}

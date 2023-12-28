@@ -1,0 +1,60 @@
+<div class="container mb-3">
+
+
+
+    <div align="left">
+        <button class="btn btn-primary mr-5">Cetak</button>
+    </div><br>
+
+
+
+    <div id="page1-div" style="position: relative; width: 893px; height: 1262px;">
+        <mat-card class="shadow p-3 mb-5 ml-0 pl-1 rounded ">
+            <mat-card-content>
+                <div #pdfContent2>
+                    <div class="container mb-3" style="page-break-before: always;">
+
+                        <body>
+                            <p>
+                                <b>Lampiran A </b><br>
+                            </p>
+                            <p><b>
+                                    NAMA SYARIKAT PENGIMPORT : <b>{{samples[0].importerName}}{{samples[0].companyName}}</b><br>
+                                    ALAMAT SYARIKAT PENGIMPORT : <b>{{samples[0].importerAddress}}{{samples[0].address}}</b>
+                                </b></p>
+                            <p><b>PINTU SEMPADAN</b></p><br>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr class="tableheader">
+                                            <th scope="col">Bil</th>
+                                            <th scope="col">Tarikh Import</th>
+                                            <th scope="col">No. Borang Kastam</th>
+                                            <th scope="col">Jenis Getah</th>
+                                            <th scope="col">Kuantiti</th>
+                                            <th scope="col">No. Lori</th>
+                                            <th scope="col">No. Kontena</th>
+                                            <!-- <th scope="col">Catatan</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let sample of samples; let i = index">
+                                            <td>{{i + 1}}</td>
+                                            <td>{{sample.importedDate | date:"dd/MM/yyyy"}} </td>
+                                            <td>{{sample.customNo}} </td>
+                                            <td>{{sample.sampleType}}</td>
+                                            <td>{{sample.quantity}} </td>
+                                            <td>{{sample.lorryNo}}</td>
+                                            <td>{{sample.trailerNo}}</td>
+                                            <!-- <td>{{sample.Catatan}} </td> -->
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </body>
+                        <p> JUMLAH BILANGAN SAMPEL : {{ selectedCheckboxCount}} </p>
+                    </div>
+                </div>
+            </mat-card-content></mat-card>
+    </div>
+</div>

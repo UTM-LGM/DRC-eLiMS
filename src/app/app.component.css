@@ -1,0 +1,58 @@
+.toolbar {
+   
+    z-index: 999 !important;
+  }
+
+  .toolbar img {
+    margin: 0 16px;
+  }
+
+  .toolbar span:hover {
+    opacity: 0.8;
+    cursor: pointer;
+  }
+  
+
+  .left_fixed {
+    position: fixed;
+    width: 18%;
+    padding-top: 70px;
+    left: 0px;
+    z-index: 100;
+    min-width: 170px;
+    background-color: 'red !important';
+  
+    /* make it scrollable */
+    height: 100vh;
+    overflow-y: scroll;
+  }
+  
+  .right_side {
+    /* background-image:url('./../assets/image/bg.png');
+    background-size: cover; */
+    margin-bottom: 0px;
+    width: 84%;
+    height: 100vh;
+    float: right;
+    /* max-width: calc(100% - 170px); */
+  }
+  
+  /* .fullright_side {
+    margin-top: 40px;
+    width: 98% !important;
+    height: 100vh;
+    float:right;
+  } */
+
+  .content {
+    position: absolute;
+    padding: 80px 10px 80px 70px;
+    width: 82%;
+  }
+
+
+
+
+/* .content{
+    height: 100%;
+} */

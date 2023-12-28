@@ -1,0 +1,193 @@
+<div class="container mb-3">
+    <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
+        <mat-card-content>
+            <h1 class="attractive-title">Profil</h1>
+            <form #form="ngForm" (ngSubmit)="updateProfile()">
+                <div *ngIf="user" class="mat-card-container">
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Nama Pengguna</label><br>
+                            <label class="label_bi">Username</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{user.username}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Syarikat Penghantar</label><br>
+                            <label class="label_bi">Agent forwarder</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{forwarder.name}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Alamat</label><br>
+                            <label class="label_bi">Address</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{forwarder.address}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Poskod</label><br>
+                            <label class="label_bi">Postcode</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{forwarder.postcode}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Faks</label><br>
+                            <label class="label_bi">Fax</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{forwarder.fax}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">No. Telefon</label><br>
+                            <label class="label_bi">Telephone No.</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{forwarder.tel}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Orang yang boleh Dihubungi </label><br>
+                            <label class="label_bi">Contact Person</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{forwarder.contactPerson}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">E-mel</label><br>
+                            <label class="label_bi">Email</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{forwarder.email}}</h3>
+                        </div>
+                    </div><br>
+                </div>
+
+                <div *ngIf="staff" class="mat-card-container">
+                    <!-- <form #form="ngForm" (ngSubmit)="updateProfile()"> -->
+
+                    <!-- <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_bm">Id Staff</label><br>
+                            <label class="label_bi">Staff Id</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{staff.staffId}}</h3>
+                        </div>
+                    </div><br> -->
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Nama Penuh</label><br>
+                            <label class="label_bi">Name</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{staff.staffName}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Nama Pengguna</label><br>
+                            <label class="label_bi">Username</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{staff.username}}</h3>
+                        </div>
+                    </div><br>
+
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Jawatan</label><br>
+                            <label class="label_bi">Position</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{staff.position}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Pejabat</label><br>
+                            <label class="label_bi">Office</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{staff.office}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Emel LGM</label><br>
+                            <label class="label_bi">LGM Email</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{staff.emailLgm}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">No. tel</label><br>
+                            <label class="label_bi">Tel. No.</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{staff.hpNo}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Unit</label><br>
+                            <label class="label_bi">Unit.</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{staff.unit}}</h3>
+                        </div>
+                    </div><br>
+
+                    <!-- <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_bm">Tandatangan</label><br>
+                            <label class="label_bi">Signature</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <a style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
+                              (click)="viewSign(staff.signature)">{{staff.signature}}</a>
+                          </div>
+                    </div><br> -->
+
+
+                </div>
+                <div>
+                    <div mat-dialog-actions align="end">
+                        <button type="submit" class="btn btn-primary mr-5">Kemaskini</button>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

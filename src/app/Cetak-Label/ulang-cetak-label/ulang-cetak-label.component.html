@@ -1,0 +1,73 @@
+<div class="sample" #pdfContent style="page-break-after: always"class="container mb-5 shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
+  <mat-card-content>
+
+    <h1 class="attractive-title">Ulang Cetak label</h1>
+    <h3 *ngIf="!lepassubmit">Sila pilih sampel untuk mencetak label</h3>
+    <h3 *ngIf="lepassubmit">Berikut adalah senarai sampel yang dipilih untuk dicetak label.</h3>
+
+
+    <div class="card-body table-responsive p-4" *ngIf="samples.length > 0">
+      <table>
+        <tr>
+          <th scope="col" *ngIf="!lepassubmit">
+            <input type="checkbox" [(ngModel)]="checkAll" (change)="checkAllChanged()">
+          </th>
+          <th scope="col">Id</th>
+          <th scope="col">No Daftar Kastam</th>
+          <th scope="col">Tarikh Import</th>
+          <th scope="col">Jenis Getah</th>
+          <th scope="col">Kuantiti(kg)</th>
+          <th scope="col">Syarikat Pengimport</th>
+        </tr>
+        <tr
+          *ngFor="let latex of latexSample, let sample of samples | paginate: { itemsPerPage: ip, currentPage: page }; let i=index ">
+          <th scope="row" *ngIf="!lepassubmit">
+            <input type="checkbox" [(ngModel)]="sample.checked" (change)="checkSingleChanged()"
+              [value]="sample.k1HeaderId">
+          </th>
+          <!-- <td>{{ i + 1 }}</td> -->
+          <td>{{ (page - 1) * ip + i + 1 }}</td>
+          <td>{{sample.customNo}}</td>
+          <td>{{sample.importedDate | date: 'dd-MM-yyyy' }}</td>
+          <td>{{sample.sampleType}}</td>
+          <td>{{sample.quantity}}</td>
+          <td>{{ sample.importerName }}{{ sample.companyName }}</td>
+        </tr>
+      </table><br>
+      <div class="text-center col-12" *ngIf="!lepassubmit">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      </div>
+    </div>
+
+    <div class="text-LEFT col-12" *ngIf="samples.length == 0 && !lepassubmit">
+      <p><i><b>Tiada Sampel</b></i></p>
+    </div><br>
+
+    <button *ngIf="!lepassubmit" type="submit" (click)="displaySelected()" class="btn btn-primary">Pilih</button><br>
+
+    <div *ngIf="lepassubmit" align="center">
+      <button id="download-pdf" (click)="generatePDFWithQRCode()" type="submit"
+        class="btn btn-primary mr-5">Cetak</button>
+    </div><br>
+
+    <div *ngIf="lepassubmit" class="card">
+      <h4 class="card-header">Pengesahan Cetakan label</h4>
+      <div class="card-body">
+        <p class="card-text"><b><i>**Sila pastikan pengesahan cetakan label dibuat selepas mencetak label</i></b>
+        </p>
+        <p class="card-text">Adakah label berjaya dicetak?</p>
+        <span>
+          <button type="submit" class="btn btn-primary btn-block" (click)="onYesClick()">Ya</button>
+          <span style="margin-right: 10px;"></span><!-- This creates space -->
+          <button type="submit" class="btn btn-danger btn-block" (click)="onNoClick()">Tidak</button>
+        </span>
+        <br><br>
+        <label style="color:red;" *ngIf="mesYaTidak=='yes'">Pengesahan Cetakan Label: 'YA' telah berjaya
+          direkodkan</label>
+        <label style="color:red;" *ngIf="mesYaTidak=='tidak'">Pengesahan Cetakan Label: 'TIDAK' telah berjaya
+          direkodkan</label>
+      </div>
+    </div>
+  </mat-card-content>
+
+</div>

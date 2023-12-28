@@ -1,0 +1,29 @@
+#id{
+    right: 100;
+}
+
+/* .logo img {
+    width: 50px; 
+    height: auto; 
+    padding-left: 10px;
+} */
+
+img {
+    width: 40px;
+    height: auto; /* Maintain aspect ratio */
+    /* padding-left: 10px;  */
+}
+
+.navbar-brand{
+    font-family: Roboto,Helvetica Neue,sans-serif;
+    color: white;
+    font-size: 14px;
+    font-weight: 450;
+    line-height: 19px;
+    padding: 0;
+    text-align: left;
+}
+
+.fas fa-user fa-fw{
+    color:white!important;
+}

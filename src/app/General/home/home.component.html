@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="card">
+        <h3><b><span class="welcome">Selamat Datang >></span></b>
+
+            <span class="welcomeForwarder"> {{forwarder.name}}</span>
+            <span class="welcomeForwarder" *ngIf="roleUip || roleGtacr"> {{staff.username}}</span>
+        </h3>
+
+
+        <p class="timestamp">{{ today | date :'dd-MMM-yy h:mm:ss a'}}</p>
+        <!-- <p>You are logged in as details below:</p>
+
+        <p class="user-details">{{user.username}}<br> -->
+
+    </div>
+</div>

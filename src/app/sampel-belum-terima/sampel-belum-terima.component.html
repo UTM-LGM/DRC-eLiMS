@@ -1,0 +1,34 @@
+<h2>Samples for Batch {{ batchId }}</h2>
+
+      <div class="table-responsive">
+
+        <table class="table table-striped">
+          <thead>
+            <tr class="tableheader">
+              <th scope="col"></th>
+              <th scope="col">Sample Id</th>
+              <th scope="col">No Kastam</th>
+              <th scope="col">Syarikat</th>
+              <th scope="col">Jenis</th>
+              <th scope="col">Tarikh Import </th>
+              <th scope="col">Kuantiti(kg)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let sample of samples; let i = index">
+
+              <td></td>
+              <td>"{{sample.k1DetailId}}"</td>
+              <td>{{sample.customNo}} </td>
+              <td>{{sample.companyName}}{{sample.importerName}} </td>
+              <td>{{sample.rubberType}}</td>
+              <td>{{sample.importedDate | date:"dd/MM/yyy"}} </td>
+              <td>{{sample.quantity}} </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+
+

@@ -1,0 +1,102 @@
+<div class="container mb-3">
+  <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
+    <mat-card-content>
+      <h1 class="attractive-title">Tarikh Sampel Dihantar</h1>
+
+      <div class="mat-card-container">
+
+        <form [formGroup]="sampleForm" (ngSubmit)="updateBatch()">
+
+          <div *ngIf="roleForwarder">
+            <div class="row form-group">
+              <div class="col-sm-2">
+                <label class="label_bm">Batch Id<span class="required" style="color:red;"> *</span></label><br>
+                <label class="label_bi">No Batch</label>
+              </div>
+              <div class="col-sm-4">
+                <input type="number" class="form-control" id="batchId" formControlName="batchId"
+                  [(ngModel)]="batch.batchId" required>
+                  <small class="instruction"> * masukkan nombor batch Id</small>
+              </div>
+            </div>
+            <br>
+          </div>
+
+          <div *ngIf="roleUip">
+            <div class="row form-group">
+              <div class="col-sm-2">
+                <label class="label_bm">Nombor Rujukan<span class="required" style="color:red;"> *</span></label>
+                <label class="label_bi">Reference No</label>
+              </div>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="uipRegNo" formControlName="uipRegNo"
+                  [(ngModel)]="batch.uipRegNo" required>
+              </div>
+            </div>
+            <br>
+          </div>
+
+          <div class="row form-group">
+            <div class="col-sm-2">
+              <label class="label_bm">Tarikh<span class="required" style="color:red;">*</span></label><br>
+              <label class="label_bi"> Date</label>
+            </div>
+            <div class="col-sm-4">
+              <input type="date" class="form-control" id="Date" formControlName="date"
+                [(ngModel)]="batch.dateSampleDelivered" required>
+            </div>
+          </div>
+          <br>
+
+          <div class="row form-group">
+            <div class="col-sm-2">
+              <label class="label_title"> Penghantaran<span class="required" style="color:red;">*</span></label><br>
+              <label class="label_bi">Delivery</label>
+            </div>
+            <div class="col-sm-4">
+              <select class="form-select" id="delivery" formControlName="delivery" (change)="changeDelivery($event)"
+                [(ngModel)]="batch.delivery" required>
+                <option value="" disabled selected>--Pilih--</option>
+                <option *ngFor="let penghantaran of delivery" [value]="penghantaran">
+                  {{penghantaran}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <br>
+
+          <div class="row form-group" *ngIf="showDelivery">
+            <div class="col-sm-2">
+              <label class="label_bm">Syarikat Penghantar</label>
+              <label class="label_bi">Courier Services</label>
+            </div>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" id="courierServices" formControlName="courierServices"
+                [(ngModel)]="batch.courierServices" required>
+            </div>
+          </div> <br>
+
+          <div class="row form-group" *ngIf="showDelivery">
+            <div class="col-sm-2">
+              <label class="label_bm">Nombor Pengesanan</label>
+              <label class="label_bi">Tracking No</label>
+            </div>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" id="trackingNo" formControlName="trackingNo"
+                [(ngModel)]="batch.trackingNo" required>
+            </div>
+          </div>
+
+          <div mat-dialog-actions align="center">
+            <button type="submit" class="btn btn-primary" style="margin-left: 5px;">Hantar</button>
+          </div>
+        </form>
+      </div>
+
+      <div>
+        <app-view-maklumat-penghantaran></app-view-maklumat-penghantaran>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>

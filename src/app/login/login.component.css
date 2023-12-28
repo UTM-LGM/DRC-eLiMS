@@ -1,0 +1,134 @@
+.btn-login {
+  width: 100%;
+}
+
+.logo {
+  max-height: 100px;
+  margin-top: 50px;
+}
+
+.title {
+  color: #09815b;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: bold;
+  font-size: 22px;
+  margin-top: 20px;
+  animation: logoAnimation 2s infinite alternate;
+}
+
+.un,
+.pass {
+  width: 80%;
+  color: rgb(27, 98, 134);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(18, 134, 202, 0.192);
+  margin-bottom: 27px;
+  font-family: 'Ubuntu', sans-serif;
+  text-align: center;
+  /* Add text-align property */
+  /* padding-left: 30px; */
+}
+
+.un:focus,
+.pass:focus {
+  border: 2px solid rgba(0, 0, 0, 0.18) !important;
+}
+
+.signin {
+  cursor: pointer;
+  border-radius: 5em;
+  color: #fff;
+  background: linear-gradient(to right, #17814c, #19aa62);
+  border: 0;
+  padding: 10px 30px;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 13px;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+  text-decoration: none;
+
+}
+
+
+@media (max-width: 600px) {
+  .main {
+    width: 90%;
+  }
+}
+
+@keyframes logoAnimation {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../assets/image/gradient.jpg');
+  background-size: cover;
+}
+
+.container {
+  width: 500px;
+  height: 500px;
+  margin: 7em auto;
+  border-radius: 2.0em;
+  box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+  text-align: center;
+  background-color: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+.input-container {
+  position: relative;
+}
+
+.input-container i {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.register {
+  text-shadow: 0px 0px 63px rgba(10, 10, 10, 0.486);
+  color: #013aa5;
+  padding-top: 15px;
+  font-weight: 600;
+}
+
+.register:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #0f8332;
+}
+
+header {
+  width: 100%;
+  height: 200px;
+  /* Adjust the height as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-image {
+  max-width: 100%;
+  max-height: 100%;
+}

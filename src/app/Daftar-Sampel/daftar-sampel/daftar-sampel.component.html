@@ -1,0 +1,318 @@
+<div class="container">
+    <mat-card class="shadow p-3 bg-white rounded">
+        <mat-card-content>
+            <h1 class="attractive-title">Daftar Sampel</h1>
+
+            <div class="mat-card-container">
+                <form [formGroup]="sampleForm" (ngSubmit)="addSample()">
+
+                    <div class="row flex d-flex content-fluid mb-3">
+                        <div class="col-lg-1">
+                            <label class="label_title">No Borang Kastam<span style="color:red;">*</span></label><br>
+                            <label class="label_bi">Custom No</label>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <!-- <input type="text" class="form-control" formControlName="kodStesenKastam"
+                                id="kodStesenKastam" name="kodStesenKastam" placeholder="Kod Stesen" maxlength="3"> -->
+                                <select class="form-select" placeholder="Kod Stesen" formControlName="kodStesen"
+                                id="kodStesen" name="kodStesen">
+                                <option class="pilih" value="default">--Pilih Kod Stesen--</option>
+                                <option *ngFor="let stesen of stationCodes" [value]="stesen.kodStesen">{{ stesen.kodStesen }}
+                                </option>
+                              </select>
+                        </div><br>
+
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" formControlName="tahun" id="tahun" name="tahun"
+                                placeholder="Tahun" maxlength="4">
+                        </div><br>
+
+                        <div class="col-lg-5">
+                            <input type="text" class="form-control" formControlName="nomborKastam" id="nomborKastam"
+                                name="nomborKastam" placeholder="No.Kastam" maxlength="9">
+
+                        </div>
+                        <label class="instruction">* Nombor Perakuan Barang Yang Diimport
+                            (Kastam No.1)
+                            atau Nombor Perakuan Barang Yang Dieksport (Kastam No.2) atau
+                            Nombor
+                            Perakuan Untuk Mengangkut Barang Dalam Malaysia (Kastam
+                            No.3)
+                        </label>
+                    </div>
+
+
+                    <div class="row flex d-flex mb-3" *ngIf="roleForwarder">
+                        <div class="col-lg-1">
+                            <label class="label_title">Tarikh Import<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Import Date</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input type="date" class="form-control" id="ImportedDate" name="ImportedDate"
+                                formControlName="importedDate" [(ngModel)]="k1Header.importedDate"
+                                (change)="onDateChange()" required><br>
+                            <div>
+                                <small class="instruction">* Tarikh import yang diikrar dalam perakuan kepada
+                                    Kastam</small>
+                            </div>
+
+                            <div *ngIf="notes">
+                                <p class="notes">Sampel perlu sampai di makmal GTACR pada :{{ notes }}</p>
+                            </div>
+                        </div>
+
+
+                        <div *ngIf="showRemarks" class="col-lg-6 row">
+                            <div class="col-lg-2">
+                                <label class="label_title">Catatan</label><br>
+                                <label class="label_bi">Remarks</label>
+                            </div>
+                            <div class="col-lg-10 mb-3">
+                                <textarea class="form-control" id="Remarks" name="Remarks" formControlName="remarks"
+                                    [(ngModel)]="k1Detail.remarks" rows="4" cols="50"></textarea>
+                            </div>
+                            <div class="col-sm-2">
+                                <label class="label_bm">Bukti</label><br>
+                                <label class="label_bi">Prove</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" id="Evidence" name="Evidence"
+                                    (change)="handleFileInput($event)">
+                                    <small class="instruction">Sila sertakan bukti jika sampel yang dihantar telah lewat</small>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row flex d-flex content-fluid mb-3">
+                        <div class="col-lg-1">
+                            <label class="label_title">Kod HS<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Hs Code</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="HsCode" name="HsCode"
+                                [(ngModel)]="k1Detail.hsCode" formControlName="hsCode" required>
+                            <div *ngIf="sampleForm.get('hsCode')?.invalid && sampleForm.get('hsCode')?.touched">
+                                <small class="text-danger">Kod HS adalah diwajibkan</small>
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <label class="label_title">Kuantiti<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Quantity</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="Quantity" name="Quantity"
+                                [(ngModel)]="formattedQuantity" appCommaNumber required formControlName="quantity"
+                                required>
+                            <small class="instruction">* Berat basah dalam (kilogram) tanpa pembungkusan</small>
+                            <div *ngIf="sampleForm.get('quantity')?.invalid && sampleForm.get('quantity')?.touched">
+                                <small class="text-danger">Kuantiti adalah diwajibkan</small>
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <label class="label_title">KGK %<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">DRC %</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="DRC" name="DRC" [(ngModel)]="formattedDRC"
+                                formControlName="formattedDRC" (ngModelChange)="enforceDRCLimit()" appCommaNumber required>
+                            <small class="instruction">* Kandungan Getah Kering yang diikrar pada perihal barang dalam
+                                perakuan Kastam berkaitan</small>
+                            <div
+                                *ngIf="sampleForm.get('formattedDRC')?.invalid && sampleForm.get('formattedDRC')?.touched">
+                                <small class="text-danger">Kandungan Getah Kering (DRC) adalah diwajibkan</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row flex d-flex content-fluid mb-3">
+                        <div class="col-lg-1">
+                            <label class="label_title">Jenis Getah<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Rubber Type</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select class="form-select" name="RubberType" id="RubberType"
+                                (change)="changeJenisGetah($event) " [(ngModel)]="k1Detail.rubberTypeId"
+                                formControlName="rubberType" required>
+                                <option value="" disabled selected>--Pilih--</option>
+                                <option *ngFor="let rubberType of rubberTypes" [value]="rubberType.id">
+                                    {{rubberType.rubberType}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-1">
+                            <label class="label_title">Jenis Sampel<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Sample Type</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select class="form-select" name="SampleType" id="SampleType"
+                                [(ngModel)]="k1Detail.sampleTypeId" formControlName="sampleType" required>
+                                <option value="" disabled selected>--Pilih--</option>
+                                <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">
+                                    {{sampleType.sampleType}}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-1">
+                            <label class="label_title">Tujuan Sampel Dihantar<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Sample Purpose</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select class="form-select" name="SamplePropose" id="SamplePropose"
+                                [(ngModel)]="k1Detail.samplePropose" formControlName="samplePropose" required>
+                                <option value="" disabled selected>--Pilih--</option>
+                                <option *ngFor="let tujuanSampelDihantar of samplePropose"
+                                    [value]="tujuanSampelDihantar">
+                                    {{tujuanSampelDihantar}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="row flex d-flex content-fluid mb-3">
+                        <div class="col-lg-1">
+                            <label class="label_title">Negara Pembekal<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Supplier Country</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select class="form-select" name="Country" id="Country" [(ngModel)]="k1Detail.country"
+                                formControlName="country" required>
+                                <option class="pilih" value="default">--Pilih--</option>
+                                <option *ngFor="let k1Detail of countries" [value]="k1Detail.country">{{
+                                    k1Detail.country
+                                    }}</option>
+                            </select>
+                            <small class="instruction">* Nama negara/negeri asal pembekal getah</small>
+                        </div>
+
+                        <div class="col-lg-1">
+                            <label class="label_title">Nama Pembekal<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Supplier Name</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="SupplierName" name="SupplierName"
+                                [(ngModel)]="k1Header.supplierName" formControlName="supplierName" required>
+                            <small class="instruction">*Nama syarikat/organisasi yang membekal atau menghantar
+                                getah</small>
+                            <div
+                                *ngIf="sampleForm.get('supplierName')?.invalid && sampleForm.get('supplierName')?.touched">
+                                <small class="text-danger">Nama pembekal adalah diwajibkan</small>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-1">
+                            <label class="label_title">Syarikat Pengimport<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Importing Company</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select class="form-select" name="companyId" id="companyId" [(ngModel)]="sample.companyId"
+                                formControlName="companyId" required>
+                                <option class="pilih" value="default">--Pilih--</option>
+                                <option *ngFor="let company of companies" [value]="company.companyId">
+                                    {{company.importerName}}{{company.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row flex d-flex content-fluid mb-3">
+                        <div class="col-lg-1">
+                            <label class="label_title">Pengangkutan<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Transportation</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select class="form-select" name="transport" id="transport" formControlName="transport"
+                                (change)="changeTransport($event) " [(ngModel)]="k1Header.transport" required>
+                                <option value="" disabled selected>--Pilih--</option>
+                                <option *ngFor="let transport of transportType" [value]="transport">{{transport}}
+                                </option>``
+                            </select>
+                        </div>
+
+
+                        <div class="col-lg-1" *ngIf="showPelabuhan || showDarat">
+                            <label class="label_title">No Pendaftaran Lorry<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Lorry Reg. No</label>
+                        </div>
+                        <div class="col-lg-3" *ngIf="showPelabuhan || showDarat">
+                            <input type="text" class="form-control" id="LorryNo" name="LorryNo"
+                                [(ngModel)]="k1Header.lorryNo" formControlName="lorryNo" required>
+                        </div>
+
+                        <div class="col-lg-1" *ngIf="showPelabuhan">
+                            <label class="label_title">No. Trelar/ Kontena/ Tangki<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Trailer/ Contena/ Tanker No</label>
+                        </div>
+                        <div class="col-lg-3" *ngIf="showPelabuhan">
+                            <input type="text" class="form-control" id="trailerNo" name="trailerNo"
+                                formControlName="trailerNo" [(ngModel)]="k1Header.trailerNo">
+                        </div>
+                    </div>
+
+                    <div class="row flex d-flex content-fluid mb-3">
+                        <div class="col-lg-1" *ngIf="roleUip">
+                            <label class="label_title">Tarikh Import<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Imported Date</label>
+                        </div>
+                        <div class="col-lg-3" *ngIf="roleUip">
+                            <input type="date" class="form-control" id="ImportedDate" name="ImportedDate"
+                                formControlName="importedDate" [(ngModel)]="k1Header.importedDate" required><br>
+                            <div>
+                                <small class="instruction">* Tarikh import yang diikrar dalam perakuan kepada
+                                    Kastam</small>
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <label class="label_title">Nama Pemandu<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Driver's Name</label>
+                        </div>
+                        <div class="col-lg-5">
+                            <input type="text" class="form-control" id="driverName" name="driverName"
+                                formControlName="driverName" [(ngModel)]="k1Header.driverName" required>
+                            <div *ngIf="sampleForm.get('driverName')?.invalid && sampleForm.get('driverName')?.touched">
+                                <small class="text-danger">Nama pemandu adalah diwajibkan</small>
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <label class="label_title">I/C Pemandu/ Pasport<span class="required"
+                                    style="color:red;">*</span></label><br>
+                            <label class="label_bi">Identification/ passport Driver</label>
+                        </div>
+                        <div class="col-lg-5">
+                            <input type="text" class="form-control" id="IcDriver" name="IcDriver"
+                                [(ngModel)]="k1Header.icDriver" required ngModel formControlName="icDriver" required>
+                            <div *ngIf="sampleForm.get('icDriver')?.invalid && sampleForm.get('icDriver')?.touched">
+                                <small class="text-danger">I/C Pemandu/Pasport adalah diwajibkan</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div mat-dialog-actions class="col-md-12  d-flex flex-row-reverse">
+                        <button type="submit" class="btn btn-primary" style="margin-left: 5px;">Daftar</button>
+                        <!-- <button class="btn btn-primary" (click)="resetForm()" style="margin-left: 5px;">Reset</button> -->
+                    </div>
+
+                </form>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

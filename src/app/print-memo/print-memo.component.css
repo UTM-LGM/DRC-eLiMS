@@ -1,0 +1,103 @@
+
+
+table {
+    width: 100%;
+    /* height: 300px; */
+    border: 1px solid #000000;
+    max-height: 20px;
+    
+  }
+  
+  th,
+  td {
+    padding: 8px;
+    border: 1px solid #000000;
+  }
+  
+  th {
+    /* background-color: #f2f2f2; */
+    font-weight: bold;
+    text-align: left;
+    max-height: 20px;
+  }
+
+  #pdf-content {
+    padding: 20px;
+  }
+  
+
+  .sample-wrapper {
+    page-break-after: always;
+  }
+  
+  .sample {
+    page-break-inside: avoid;
+    font-family: Arial, sans-serif;
+    font-size: 22px;
+    line-height: 1.5;
+    padding-left: 20d;
+  }
+
+  /* .sample {
+    page-break-inside: avoid;
+  } */
+  .font{
+    /* font-size: 27px; */
+    font-size: 18px;
+    word-spacing: 5px;
+    line-height: 1.5; /* Adjust the line height as needed */
+    
+  }
+
+  .spacing {
+    margin-bottom: 20px; /* Adjust the margin as needed */
+  }
+
+  .font-size{
+    font-size: 17px;
+  }
+
+  .h2{
+    font-size: 17px;
+    word-spacing: 5px;
+    font-weight: bold;
+  }
+
+
+  h3 {
+    word-wrap: break-word; /* Allow words to wrap to the next line if they don't fit */
+    word-spacing: 2px; /* Adjust the word spacing as needed */
+    line-height: 1.5; /* Adjust the line height as needed */
+    max-width: 100%; /* Ensure the title doesn't exceed the container width */
+}
+
+
+.header {
+  background-image: url('../../assets/image/headerLetter.jpg');
+  background-size: cover;
+  background-position: top center;
+  height: 190px;
+  text-align: center;
+}
+
+.header-image {
+  display: none;
+}
+
+#page1-div{
+  background-image: url("../../assets/image/bgmemo.png");
+  width:893px;
+  height:1262px;
+}
+
+@media print {
+  @page { margin: 0; }
+  body { margin: 1.6cm; }
+}
+
+.custom-underline {
+    font-weight: bold; /* Make the text bold */
+    border-bottom: 2px solid black; /* Adjust the thickness and color of the underline */
+    padding-bottom: 2px; /* Adjust the spacing between text and underline as needed */
+    display: inline; /* Ensures that the underline only affects the text it's applied to */
+  }

@@ -1,0 +1,43 @@
+<div class="container mb-3">
+    <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
+        <mat-card-content>
+            <h1 class="attractive-title">Cetak Lembaran Kerja</h1>
+            <p>Senarai batch</p>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped">
+                  <thead>
+                    <tr class="tableheader">
+                      <th scope="col"></th>
+                      <th scope="col">Batch Id</th>
+                      <th scope="col">Forwarding Agent</th>
+                      <th scope="col">Bank</th>
+                      <th scope="col">No Cek</th>
+                      <th scope="col">Amaun </th>
+                      <th scope="col">Tarikh Hantar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let batch of batches; let i = index">
+                      <td>
+                        <a [routerLink]="['/daftar-terima-sampel', batch.batchId]"
+                          (click)="sampleList(batch.batchId)">Select</a>
+                      </td>
+      
+      
+                      <td>{{batch.batchId}}</td>
+                      <td>{{batch.forwarderName}}{{batch.unitName}} </td>
+                      <td>{{batch.bankCode}} </td>
+                      <td>{{batch.chequeNo}}</td>
+                      <td>{{batch.chequeAmount}} </td>
+                      <td>{{batch.sentOn | date:"dd/MM/yyy"}} </td>
+                    </tr>
+      
+                  </tbody>
+                </table>
+              </div>
+              
+        </mat-card-content>
+    </mat-card>
+</div>
