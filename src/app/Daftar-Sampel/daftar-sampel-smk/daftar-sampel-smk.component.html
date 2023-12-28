@@ -21,9 +21,10 @@
                       <div class="col-sm-2">
                         <!-- <input type="text" class="form-control" formControlName="kodStesenKastam" id="kodStesenKastam"
                           name="kodStesenKastam" placeholder="Kod Stesen" maxlength="3"> -->
-
-                        <select class="form-select" placeholder="Kod Stesen" formControlName="kodStesen"
-                          id="kodStesen" name="kodStesen">
+                          
+                        <!-- drop down here -->
+                        <select class="form-select" placeholder="Kod Stesen" formControlName="kodStesen" id="kodStesen"
+                          name="kodStesen">
                           <option class="pilih" value="default">--Pilih Kod Stesen--</option>
                           <option *ngFor="let stesen of stationCodes" [value]="stesen.kodStesen">{{ stesen.kodStesen }}
                           </option>
@@ -132,7 +133,7 @@
                 <div class="col-sm-10">
                   <input type="file" class="form-control" id="Evidence" name="Evidence"
                     (change)="handleFileInput($event)">
-                    <small class="instruction">Sila sertakan bukti jika melebihi tempoh masa yang telah ditetapkan</small>
+                  <small class="instruction">Sila sertakan bukti jika melebihi tempoh masa yang telah ditetapkan</small>
                 </div>
               </div>
             </div>
