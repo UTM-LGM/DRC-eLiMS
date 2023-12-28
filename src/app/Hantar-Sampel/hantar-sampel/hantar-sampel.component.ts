@@ -24,7 +24,6 @@ import { HantarSampelService } from '../hantar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
 
 import jsPDF from 'jspdf';
-import * as QRCode from 'qrcode-generator';
 
 
 @Component({
@@ -350,13 +349,19 @@ export class HantarSampelComponent {
         }
       );
 
-      const suratIringanUrl = this.router.createUrlTree(["surat-iringan", batchData.batchId]).toString();
-      window.open(suratIringanUrl, '_blank'); // Open in a new tab
+      this.router.navigateByUrl("surat-iringan/" + batchData.batchId)
+
+      // const suratIringanUrl = this.router.createUrlTree(["/Elims/surat-iringan/", batchData.batchId]).toString();
+      // window.open(suratIringanUrl, '_blank'); // Open in a new tab
 
     }
   }
 
 
+  
+
+
+  
   lampiran(batchData: Batch) {
     for (const sample of this.samples) {
       let id = sample.k1DetailId;
@@ -367,9 +372,10 @@ export class HantarSampelComponent {
         }
       );
 
-      this.router.navigateByUrl("lampiran/" + batchData.batchId)
-      // const suratIringanUrl = this.router.createUrlTree(["lampiran", batchData.batchId]).toString();
-      // window.open(suratIringanUrl, '_blank'); // Open in a new tab
+      // this.router.navigateByUrl("lampiran/" + batchData.batchId)
+
+      const suratIringanUrl = this.router.createUrlTree(["/Elims/lampiran", batchData.batchId]).toString();
+      window.open(suratIringanUrl, '_blank'); // Open in a new tab
 
     }
   }

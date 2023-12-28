@@ -10,4 +10,5 @@ export class userDTO {
 
     name : string;
     address : string;
+    importerAddress : string;
 }

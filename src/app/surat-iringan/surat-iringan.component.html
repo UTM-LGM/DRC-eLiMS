@@ -5,11 +5,11 @@
 
     <br><br>
 
-
+<div  class="sample" #pdfContent style="position: relative; width: 893px;">
     <div *ngFor="let sample of samples">
 
 
-        <div id="page1-div" style="position: relative; width: 893px;">
+        <div id="page1-div" >
 
             <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
                 <mat-card-content>
@@ -55,7 +55,7 @@
 
                         <p>
                             Nama syarikat pengimport : <b>{{sample.importerName}}{{sample.companyName}}</b><br>
-                            Alamat syarikat pengimport : <b> {{sample.importerAddress}}</b><br>
+                            Alamat syarikat pengimport : <b> {{sample.importerAddress}}{{sample.companyAddress}} </b><br>
                             Jumlah Sampel: <b>{{ selectedCheckboxCount}}</b><br>
                         </p>
 
@@ -100,5 +100,5 @@
         </div><br>
 
     </div>
-
+</div>
 </div>

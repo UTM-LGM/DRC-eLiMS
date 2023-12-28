@@ -16,8 +16,8 @@ import { UipRefRunNo } from '../models/uipRefRunNo';
 import { UipbkhRefRunNo } from '../models/uipbkhRefRunNo';
 import { Staff } from '../models/staff';
 
-import jsPDF from 'jspdf';
 import * as QRCode from 'qrcode-generator';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-view-maklumat-penghantaran',

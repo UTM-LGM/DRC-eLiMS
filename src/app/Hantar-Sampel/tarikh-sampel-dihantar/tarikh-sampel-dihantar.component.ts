@@ -20,7 +20,6 @@ import { HantarSampelService } from '../hantar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
 
 import jsPDF from 'jspdf';
-import * as QRCode from 'qrcode-generator';
 
 
 @Component({
@@ -114,8 +113,8 @@ export class TarikhSampelDihantarComponent {
         batchId: ['', Validators.required],
         date: ['', Validators.required],
         delivery: ['', Validators.required],
-        courierServices: [''],
-        trackingNo: [''],
+        // courierServices: [''],
+        // trackingNo: [''],
       });
     }
 
@@ -125,8 +124,8 @@ export class TarikhSampelDihantarComponent {
       this.sampleForm = this.formBuilder.group({
         date: ['', Validators.required],
         delivery: ['', Validators.required],
-        courierServices: [''],
-        trackingNo: [''],
+        // courierServices: [''],
+        // trackingNo: [''],
         uipRegNo: [''],
 
       });
@@ -252,6 +251,8 @@ export class TarikhSampelDihantarComponent {
     }
 
 
+
+
   }
 
 
@@ -290,19 +291,17 @@ export class TarikhSampelDihantarComponent {
 
   changeDelivery(e: any) {
 
-    if (e.target.value == "Fizikal") {
-      this.showDelivery = true
-    }
-    else {
-      this.showDelivery = false
-    }
+    
 
     if (e.target.value == "Perkhidmatan Kurier") {
       this.showDelivery = true
     }
-    else {
-      this.showDelivery = false
+    else if (e.target.value == "Fizikal") {
+      this.showDelivery = false     
+       this.batch.courierServices = ""
+      this.batch.trackingNo = ""
     }
+
 
     
   }

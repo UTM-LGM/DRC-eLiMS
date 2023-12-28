@@ -91,7 +91,7 @@ export class PrintMemoComponent {
         console.log(this.staffId);
 
 
-        this.hantarSampelService.getElimsSampleByBatchId(this.batchId).subscribe(data => {
+        this.elimsService.GetElimsSamplesByBatchId(this.batchId).subscribe(data => {
           this.samples = data;
           console.log(data)
           this.selectedCheckboxCount = this.samples.length; // update the samples array with the response data
