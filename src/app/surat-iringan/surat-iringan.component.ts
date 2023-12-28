@@ -60,14 +60,10 @@ export class SuratIringanComponent {
         console.log(this.batchId);
 
 
-        this.hantarSampelService.getElimsSampleByBatchId(this.batchId).subscribe(data => {
+        this.elimsService.GetElimsSamplesByBatchId(this.batchId).subscribe(data => {
           this.samples = data;
-          // this.sampleCode = data.rub.sampleCode
-          // this.sampleCategory = data.rub.sampleCategory
-          
           console.log(this.samples)
           this.selectedCheckboxCount = this.samples.length; // update the samples array with the response data
-          //this.selectedRubberType = this.samples[0].rubberType
         });
 
       })
@@ -75,7 +71,6 @@ export class SuratIringanComponent {
 
       this.hantarSampelService.GetBatchByBatchId(this.batchId).subscribe(data => {
         this.batch = data
-        // this.staff = resBatchStaff.staff
         console.log(this.batch)
       })
       
@@ -86,7 +81,6 @@ export class SuratIringanComponent {
 
   this.hantarSampelService.GetBatchByBatchId(this.batchId).subscribe(data => {
     this.batch = data
-    // this.staff = resBatchStaff.staff
     console.log(this.batch)
   })
 

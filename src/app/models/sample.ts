@@ -69,7 +69,7 @@ export interface Sample {
     importerAddress: string;
     company: string;
     
-    companyNameLtx: string;
+    // companyNameLtx: string;
     checked: boolean;
     autoPaging?: boolean;
     isSMK: boolean;
@@ -90,5 +90,5 @@ export interface Sample {
     receipt: string;
     memo: string;
     creatorRoleId : number;
-
+    companyAddress: string;
 }

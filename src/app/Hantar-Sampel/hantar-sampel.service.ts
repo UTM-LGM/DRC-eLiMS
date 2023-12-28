@@ -153,9 +153,9 @@ GetBatchByBatchIdStaff(batchId: number, staffId: number): Observable<any> {
   //   return this.http.get<any>(this.baseApiUrl + '/api/k1Detail/getElimsSampleByBatchId/' + batchId);
   // }
 
-  getElimsSampleByBatchId(batchId: number): Observable<Sample> {
-    return this.http.get<Sample>(`${this.baseApiUrl}/api/k1Detail/getElimsSampleByBatchId/${batchId}`);
-  }
+  // getElimsSampleByBatchId(batchId: number): Observable<Sample> {
+  //   return this.http.get<Sample>(`${this.baseApiUrl}/api/k1Detail/getElimsSampleByBatchId/${batchId}`);
+  // }
 
 
   // GetElimsBatchById(batchId: number, staffId: number): Observable<any> {

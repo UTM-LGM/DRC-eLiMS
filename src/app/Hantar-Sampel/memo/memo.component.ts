@@ -99,7 +99,7 @@ export class MemoComponent {
         console.log(this.batchId);
 
 
-        this.hantarSampelService.getElimsSampleByBatchId(this.batchId).subscribe(data => {
+        this.elimsService.GetElimsSamplesByBatchId(this.batchId).subscribe(data => {
           this.samples = data;
           // this.sampleCode = data.rub.sampleCode
           // this.sampleCategory = data.rub.sampleCategory

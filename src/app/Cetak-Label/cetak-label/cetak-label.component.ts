@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import jsPDF from 'jspdf';
-import * as QRCode from 'qrcode-generator';
 import { Sample } from '../../models/sample';
 import { DrclimstrainingService } from '../../services/drclimstraining.service';
 import { GetahBongkahService } from '../../services/getah-bongkah.service';
@@ -12,6 +11,7 @@ import { userDTO } from '../../models/userDTO';
 import { CetakLabelService } from '../cetak-label.service';
 import { UserService } from 'src/app/User/user.service';
 import { Staff } from 'src/app/models/staff';
+import * as QRCode from 'qrcode-generator';
 
 @Component({
   selector: 'app-cetak-label',

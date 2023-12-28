@@ -207,7 +207,11 @@ export class DaftarSampelComponent implements OnInit {
     this.k1Detail.drc = this.removeCommas(this.formattedDRC.toString());
     this.k1Detail.companyId = this.sample.companyId;
     this.k1Detail.forwarderId = this.user.forwarderId;
+    this.k1Detail.importerAddress = this.companies.address;
     this.k1Detail.createdOn = new Date();
+
+    // this.k1Detail.importerAddress = this.sample.importerAddress;
+
 
     this.sample.forwarderId = this.user.forwarderId;
     this.sample.createdOn = new Date();
@@ -232,6 +236,7 @@ export class DaftarSampelComponent implements OnInit {
     this.sample.sampleTypeId = this.k1Detail.sampleTypeId;
     this.sample.creatorRoleId = this.k1Detail.creatorRoleId;
     this.k1Header.companyId = this.sample.companyId;
+
 
     console.log(this.sample);
 

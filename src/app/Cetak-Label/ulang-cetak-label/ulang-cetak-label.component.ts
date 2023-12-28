@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import 'jspdf-autotable';
 import jsPDF from 'jspdf';
-import * as QRCode from 'qrcode-generator';
 import { DrclimstrainingService } from '../../services/drclimstraining.service';
 import { Sample } from '../../models/sample';
 import { GetahBongkahService } from '../../services/getah-bongkah.service';
@@ -11,6 +10,7 @@ import { userDTO } from '../../models/userDTO';
 import { K1Detail } from '../../models/k1Detail';
 import { CetakLabelService } from '../cetak-label.service';
 import { UserService } from 'src/app/User/user.service';
+import * as QRCode from 'qrcode-generator';
 
 @Component({
   selector: 'app-ulang-cetak-label',

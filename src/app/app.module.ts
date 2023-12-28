@@ -28,13 +28,11 @@ import { CommonModule, DecimalPipe } from '@angular/common';
 import { UlangCetakLabelComponent } from './Cetak-Label/ulang-cetak-label/ulang-cetak-label.component';
 import { CetakLabelComponent } from './Cetak-Label/cetak-label/cetak-label.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { QRCodeModule } from 'angularx-qrcode';
 import { HomeComponent } from './General/home/home.component';
 import { HantarSampelComponent } from './Hantar-Sampel/hantar-sampel/hantar-sampel.component';
 import { KeputusanUjianComponent } from './keputusan-ujian/keputusan-ujian.component';
 import { LoginComponent } from './login/login.component';
 import { ToolbarComponent } from './General/toolbar/toolbar.component';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { ViewSampleComponent } from './Daftar-Sampel/view-sample/view-sample.component';
 import { TarikhSampelDihantarComponent } from './Hantar-Sampel/tarikh-sampel-dihantar/tarikh-sampel-dihantar.component';
 import { CommaNumberDirective } from './comma-number.directive';
@@ -63,6 +61,7 @@ import { CetakLembaranKerjaComponent } from './cetak-lembaran-kerja/cetak-lembar
 import { ViewMaklumatPenghantaranComponent } from './view-maklumat-penghantaran/view-maklumat-penghantaran.component';
 import { SuratIringanComponent } from './surat-iringan/surat-iringan.component';
 import { LampiranComponent } from './Hantar-Sampel/lampiran/lampiran.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -126,13 +125,12 @@ import { LampiranComponent } from './Hantar-Sampel/lampiran/lampiran.component';
     NgMaterialMultilevelMenuModule,
     CommonModule,
     MatCheckboxModule,
-    QRCodeModule,
-    NgxPaginationModule,
     MatTabsModule,
     ToastrModule.forRoot(), // Add this line
     MatDialogModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    NgxPaginationModule
 
     // DaftarTerimaSampelComponent,
     // SampelBelumTerimaComponent,

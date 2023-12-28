@@ -64,7 +64,7 @@ export class LampiranComponent {
         console.log(this.batchId);
 
 
-        this.hantarSampelService.getElimsSampleByBatchId(this.batchId).subscribe(data => {
+        this.elimsService.GetElimsSamplesByBatchId(this.batchId).subscribe(data => {
           this.samples = data;
           // this.sampleCode = data.rub.sampleCode
           // this.sampleCategory = data.rub.sampleCategory
@@ -77,11 +77,11 @@ export class LampiranComponent {
       })
 
 
-      this.hantarSampelService.GetBatchByBatchId(this.batchId).subscribe(data => {
-        this.batch = data
-        // this.staff = resBatchStaff.staff
-        console.log(this.batch)
-      })
+      // this.hantarSampelService.GetBatchByBatchId(this.batchId).subscribe(data => {
+      //   this.batch = data
+      //   // this.staff = resBatchStaff.staff
+      //   console.log(this.batch)
+      // })
 
 
 
@@ -93,12 +93,19 @@ export class LampiranComponent {
   })
 
   
-
   this.elimsService.GetCompanies(this.user.forwarderId).subscribe(data => {
-    this.companies = data
-  })
+    this.companies = data;
+  });
+
+  // this.elimsService.GetAllCompanies().subscribe(data => {
+  //   this.companies = data
+  //   console.log(this.companies)
+  // })
 
   }
+
+
+
 
   @ViewChild('pdfContent', { static: true }) pdfContent: ElementRef | undefined;
 
