@@ -1,104 +1,137 @@
 <div class="container mb-3">
 
-    <button class="btn-print button" (click)="print()" style="margin-right: 10px;"><i class="fa-solid fa-print"
-            style="color: #ffffff;"></i> Cetak</button>
+    <div align="end">
+        <button class="btn-print button" (click)="generatePdf()" style="margin-right: 10px;"> <i
+                class="fa-solid fa-print" style="color: #ffffff;"></i> Cetak</button>
+    </div><br>
 
-    <br><br>
-
-<div  class="sample" #pdfContent style="position: relative; width: 893px;">
-    <div *ngFor="let sample of samples">
+    <div id="page1-div" id="pdfContent" style="position: relative; width: auto ; height: auto;">
 
 
-        <div id="page1-div" >
+        <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
 
-            <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
+            <ng-container *ngFor="let companyGroup of groupedSamples; let isFirst = first"
+                style="page-break-before: always;">
                 <mat-card-content>
 
-                    <body>
-                        <p>
-                            Ruj. Kami:- ()<br>
-                            Tarikh: {{ batch.sentOn | date: 'dd MMMM yyyy' }}
-                        </p>
-
-                        <p>
-                            Global Testing & Consultancy for Rubber (G-TACR) Sungai Petani<br>
-                            Lembaga Getah Malaysia Wilayah Negeri Kedah/Perlis/ P. Pinang<br>
-                            Lot PT 71847, Pusat Bandar Amanjaya, <br>
-                            08000 Sungai Petani, Kedah. <br>
-                            (U.P.: Pengurus Makmal G-TACR Sungai Petani)
-                        </p>
-
-                        <p>
-                            Tuan/Puan,
-                        </p>
-
-                        <h3>
-                            <b>
-                                <u>
-                                    UJIAN KANDUNGAN GETAH KERING (KGK)/DRY RUBBER CONTENT (DRC)<br>
-                                </u>
-                                Batch ID : ( {{ batch.batchId }} )
-                            </b>
-                        </h3>
-
-                        <p> Merujuk kepada perkara di atas.</p>
-
-                        <p>
-                            2. Disertakan contoh-contoh getah yang diambil semasa pengimportan getah melalui stesen ini
-                            bagi
-                            tujuan Ujian
-                            Kandungan Getah Kering (KGK)/ Dry Rubber Content (DRC). Butiran lanjut adalah seperti di
-                            lampiran A
-                            yang
-                            disertakan.
-                        </p>
-
-                        <p>
-                            Nama syarikat pengimport : <b>{{sample.importerName}}{{sample.companyName}}</b><br>
-                            Alamat syarikat pengimport : <b> {{sample.importerAddress}}{{sample.companyAddress}} </b><br>
-                            Jumlah Sampel: <b>{{ selectedCheckboxCount}}</b><br>
-                        </p>
-
-                        <p>
-                            Kaedah ujian
-                        </p>
-
-
-                        <p>
-                            Cek/ EFT Ref. No.: <b>{{batch.chequeNo}}</b> <br>
-                            Bank: <b>{{batch.bankCode}}</b><br>
-                            Jumlah Cek: <b>{{batch.chequeAmount}} </b><br>
-                        </p>
-
-
-                        <p>
-                            Sekian, terima kasih.
-                        </p>
-
-
-                        <p>
-                            <b>“MALAYSIA MADANI”</b><br>
-                            <b>“BERKHIDMAT UNTUK NEGARA”</b><br>
-                            <b>“KREATIF, INOVATIF, PROGRESIF”</b><br><br>
-                        </p>
-
-                        <span>Saya yang menjalankan amanah,</span><p><br><br><br>
-
-                            <span><b>({{user.name}})</b></span><br>
-                            <b>{{user.address}}</b><br>
-                            <!-- <span>{{staff.position}}</span><br>
-                        <span *ngIf="roleId == 2">Unit Inspektorat dan Penguatkuasaan</span><br>
-                        <span>{{staff.office}}</span><br><br> -->
-                        </p>
+                    <div class="company-group" [class.first-group]="isFirst">
 
 
 
-                    </body>
+                        <body>                   
+
+                            <p class="urgent-text" *ngIf="isFastTrack==true">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                URGENT
+                            </p>
+
+
+                            <p>
+
+                                Ruj. Kami:<br>
+                                Tarikh: {{ samples[0].sentOn | date: 'dd MMMM yyyy' }}
+                            </p>
+
+                            <p>
+                                Global Testing & Consultancy for Rubber (G-TACR) Sungai Petani<br>
+                                Lembaga Getah Malaysia Wilayah Negeri Kedah/Perlis/ P. Pinang<br>
+                                Lot PT 71847, Pusat Bandar Amanjaya, <br>
+                                08000 Sungai Petani, Kedah. <br>
+                                (U.P.: Pengurus Teknikal G-TACR Sungai Petani)
+                            </p>
+
+                            <p>
+                                Tuan/Puan,
+
+                            </p>
+
+
+                            <p>
+                                <b>
+                                    <!-- <u>
+                                        UJIAN KANDUNGAN GETAH KERING (KGK)/<i>DRY RUBBER CONTENT (DRC)</i><br>
+                                    </u> -->
+
+                                    <u>
+                                        UJIAN KANDUNGAN GETAH KERING (KGK)/<i class="underlined-text">DRY RUBBER CONTENT
+                                            (DRC)</i><br>
+                                    </u>
+
+                                    Batch ID : ( {{samples[0].batchId}} )
+                                </b>
+                            </p>
+
+                            <p> Merujuk kepada perkara di atas.</p>
+
+                            <p>
+                                2. Disertakan contoh-contoh getah yang diambil semasa pengimportan getah melalui
+                                stesen
+                                ini
+                                bagi
+                                tujuan Ujian
+                                Kandungan Getah Kering (KGK)/ <i>Dry Rubber Content (DRC)</i>. Butiran lanjut adalah
+                                seperti di
+                                <b>Lampiran A</b>
+                                yang
+                                disertakan.
+                            </p>
+
+                            <p>
+                                Nama syarikat pengimport : <b>{{ companyGroup.key }}</b><br>
+                                Alamat syarikat pengimport : <b>{{ companyGroup.items[0].importerAddress ||
+                                    companyGroup.items[0].companyAddress }}</b><br>
+                                Jumlah Sampel: <b>{{ companyGroup.items.length }}</b><br>
+                            </p>
+
+
+                            <p style="margin-bottom: 5px;">Kaedah ujian : <b>{{samples[0].testMethod}}</b></p>
+                            <p *ngIf="samples[0].chequeNo" style="margin-bottom: 5px;"> Cek/ EFT Ref. No.:
+                                <b>{{samples[0].chequeNo}}</b>
+                            </p>
+                            <p *ngIf="samples[0].bankCode" style="margin-bottom: 5px;"> Bank:
+                                <b>{{samples[0].bankCode}}</b>
+                            </p>
+                            <p *ngIf="samples[0].chequeAmount" style="margin-bottom: 5px;">Jumlah:
+                                <b>{{samples[0].chequeAmount}} </b>
+
+
+                            <p *ngIf="samples[0].transactionNo" style="margin-bottom: 5px;">No.Transaksi:
+                                <b>{{samples[0].transactionNo}}</b>
+                            </p>
+                            <p *ngIf="samples[0].date" style="margin-bottom: 5px;">Tarikh: <b>{{samples[0].date |
+                                    date: 'dd-MM-yyyy' }}</b></p>
+                            <p *ngIf="samples[0].receipt" style="margin-bottom: 5px;">Resit:
+                                <b>{{samples[0].receipt}} </b>
+                            </p>
+
+                            <br>
+                            <p>
+                                Sekian, terima kasih.
+                            </p>
+
+
+                            <p><br><br>
+
+                                
+                                <!-- <span *ngif="roleForwarder"><b>({{user.name}})</b></span><br> -->
+                                <span ><b>({{samples[0].forwarderName}})</b></span><br>
+
+                            </p>
+
+                        </body><br>
+                        <!-- <b><hr class="preview-hr" *ngIf="isPreview"></b><br> -->
+
+                        <!-- </div> -->
+                    </div>
 
                 </mat-card-content>
-            </mat-card>
-        </div><br>
-
+            </ng-container>
+        </mat-card>
     </div>
-</div>
 </div>

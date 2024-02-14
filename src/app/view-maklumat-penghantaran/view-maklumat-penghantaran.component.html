@@ -1,100 +1,81 @@
-
 <div class="content-header  d-flex">
+</div><br>
+
+<mat-card-content>
+
+  <div class="table-responsive">
+
+    <table class="table table-striped">
+      <thead>
+        <tr class="tableheader">
+          <th scope="col">
+            <input type="checkbox" [(ngModel)]="checkAll" (change)="checkAllChanged()">
+          </th>
+
+          <th scope="col">Batch id</th>
+          <th *ngIf="roleUip" scope="col">No Rujukan</th>
+          <th scope="col">Tarikh</th>
+          <th scope="col">Penghantaran</th>
+          <th scope="col">Syarikat Penghantar</th>
+          <th scope="col">Nombor Pengesanan</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let batch of batches; let i = index">
+          <td scope="row">
+            <input type="checkbox" [(ngModel)]="batch.checked" (change)="checkSingleChanged()" [value]="batch.batchId">
+          </td>
+          <td>
+            <a href="javascript:void(0)" (click)="sampleList(batch.batchId)">{{batch.batchId}}</a>
+          </td>
+          <td *ngIf="roleUip">{{batch.uipRegNo}}</td>
+          <td>{{batch.dateSampleDelivered | date:"dd/MM/yyyy"}} </td>
+          <td>{{batch.delivery}} </td>
+          <td>{{batch.courierServices}}</td>
+          <td>{{batch.trackingNo}} </td>
+
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div align="center" *ngIf="isAtLeastOneCheckboxChecked()">
+    <button (click)="generatePDFWithQRCode()" type="submit" class="btn btn-primary mr-5">Cetak</button>
   </div><br>
-  
-  <mat-card-content>
-  
+
+
+  <div *ngIf="samples.length > 0">
+
     <div class="table-responsive">
-  
+
       <table class="table table-striped">
         <thead>
           <tr class="tableheader">
-            <th scope="col">
-              <input type="checkbox" [(ngModel)]="checkAll" (change)="checkAllChanged()">
-            </th>
-            <!-- <th scope="col">Bil</th> -->
-            <!-- <th scope="col"></th> -->
-            <th scope="col">Batch id</th>
-            <th *ngIf="roleUip" scope="col">No Rujukan</th>
-            <!-- <th scope="col">No Borang Kastam</th> -->
-            <th scope="col">Tarikh</th>
-            <th scope="col">Penghantaran</th>
-            <th scope="col">Syarikat Penghantar</th>
-            <th scope="col">Nombor Pengesanan</th>
+            <th scope="col"></th>
+            <th scope="col">Sampel Id</th>
+            <th scope="col">No Borang Kastam</th>
+            <th scope="col">Syarikat Pengimport</th>
+            <th scope="col">Jenis Sampel</th>
+            <th scope="col">Tarikh Import </th>
+            <th scope="col">Kuantiti(kg)</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let batch of batches; let i = index">
-            <th scope="row">
-              <input type="checkbox" [(ngModel)]="batch.checked" (change)="checkSingleChanged()"
-                [value]="batch.batchId">
-            </th>
-            <td>
-              <a href="javascript:void(0)"(click)="sampleList(batch.batchId)">{{batch.batchId}}</a>
-            </td>
-            <!-- <td>{{i+1}}</td> -->
-            <!-- <td>{{batch.batchId}}</td> -->
-            <td *ngIf="roleUip">{{batch.uipRegNo}}</td>
-            <!-- <td>{{batch.customNo}}</td> -->
-            <td>{{batch.dateSampleDelivered | date:"dd/MM/yyyy"}} </td>
-            <td>{{batch.delivery}} </td>
-            <td>{{batch.courierServices}}</td>
-            <td>{{batch.trackingNo}} </td>
-            
+          <tr *ngFor="let sample of samples; let i = index">
+            <td></td>
+            <td>{{sample.k1DetailId}}</td>
+            <td>{{sample.customNo}} </td>
+            <td>{{sample.importerName}} </td>
+            <td>{{sample.typeCode}}</td>
+            <td>{{sample.importedDate | date:"dd/MM/yyy"}} </td>
+            <td>{{sample.quantity}} </td>
           </tr>
-  
+
         </tbody>
       </table>
     </div>
-  
+  </div>
 
-
-    <div align="center"  *ngIf="isAtLeastOneCheckboxChecked()">
-      <button id="download-pdf" (click)="generatePDFWithQRCode()" type="submit"
-        class="btn btn-primary mr-5">Cetak</button>
-    </div><br>
-
-
-
-    <div *ngIf="samples.length > 0">
-
-
-      <!-- <p style="color: red;">{{ unregisteredSampleCount }} sampel belum didaftar terima</p> -->
-
-
-      <div class="table-responsive">
-
-        <table class="table table-striped">
-          <thead>
-            <tr class="tableheader">
-              <th scope="col"></th>
-              <th scope="col">Sample Id</th>
-              <th scope="col">No Kastam</th>
-              <th scope="col">Syarikat</th>
-              <th scope="col">Jenis</th>
-              <th scope="col">Tarikh Import </th>
-              <th scope="col">Kuantiti(kg)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let sample of samples; let i = index">
-
-
-              <td></td>
-              <td>{{sample.k1DetailId}}</td>
-              <td>{{sample.customNo}} </td>
-              <td>{{sample.companyName}}{{sample.importerName}} </td>
-              <td>{{sample.sampleType}}</td>
-              <td>{{sample.importedDate | date:"dd/MM/yyy"}} </td>
-              <td>{{sample.quantity}} </td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-
-
-
-  </mat-card-content>
+</mat-card-content>

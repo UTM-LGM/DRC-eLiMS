@@ -22,7 +22,7 @@
             </ng-container>
 
             <ng-container matColumnDef="customNo">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> No Daftar Kastam </th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> No Borang Kastam </th>
               <td mat-cell *matCellDef="let row"> {{row.customNo}}</td>
             </ng-container>
 
@@ -39,7 +39,8 @@
             <ng-container matColumnDef="importerName">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Syarikat Pengimport</th>
               <td mat-cell *matCellDef="let row">
-                {{row.importerName}}{{row.companyName}}</td>
+                <!-- {{row.importerName}}{{row.companyName}}</td> -->
+                {{row.importerName}}</td>
             </ng-container>
 
             <ng-container matColumnDef="samplePropose">

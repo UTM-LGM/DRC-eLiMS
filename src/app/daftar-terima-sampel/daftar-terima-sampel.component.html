@@ -22,7 +22,7 @@
             <tbody>
               <tr *ngFor="let batch of batches; let i = index">
                 <td>
-                  <a href="javascript:void(0)"(click)="sampleList(batch.batchId)">Select</a>
+                  <a href="javascript:void(0)" (click)="sampleList(batch.batchId)">Select</a>
                 </td>
 
                 <td>{{batch.batchId}}</td>
@@ -77,7 +77,54 @@
           <!-- <app-sampel-belum-terima></app-sampel-belum-terima> -->
 
           <p>Daftar Terima Sampel</p>
+
+
+
+          <!-- <form (ngSubmit)="addSample()">
+            <div class="col-lg-1">
+              <label class="label_title">Custom no<span class="required" style="color:red;">*</span></label><br>
+              <label class="label_bi">Custom no</label>
+            </div>
+            <div class="col-lg-5">
+              Add this input field for customNo
+              <input type="text" class="form-control" [(ngModel)]="k1Detail.customNo" name="customNo"  required>
+            </div>
+
+            <div mat-dialog-actions align="end">
+              <button type="submit" class="btn btn-primary" style="margin-left: 5px;">Daftar</button>
+            </div>
+          </form> -->
+
+
+          <form  [formGroup]="customNosForm" (ngSubmit)="addSample()" class="container mt-4">
+            <!-- Existing code for the first custom number field -->
+            <div class="row">       
+              <div formArrayName="customNos">
+              <div *ngFor="let customNo of customNos.controls; let i = index" class="row mt-2">
+                <div class="col-lg-7 offset-lg-3">
+                  <input type="text" class="form-control" [(ngModel)]="additionalCustomNosData[i]" [formControl]="customNo" required>
+                </div>
+              </div>
+            </div>
+              <div class="col-lg-2 text-right">
+                <button type="button" class="btn btn-secondary mt-2" (click)="addCustomNoField()">Add</button>
+              </div>
+            </div>
+
+
+            <div class="row mt-3">
+              <div class="col-lg-7 offset-lg-3" mat-dialog-actions align="end">
+                <button type="submit" class="btn btn-primary">Daftar</button>
+              </div>
+            </div>
+          </form>
+
+
+
+
         </div>
+
+
 
 
       </div>

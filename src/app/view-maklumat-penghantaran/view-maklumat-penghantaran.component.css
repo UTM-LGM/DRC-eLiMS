@@ -1,16 +1,18 @@
-.tableheader {
-    background-color: #3e4141;
-    color: rgb(234, 223, 223);
-  }
-  
-  thead .tableheader tr th {
-    color: white;
-  }
-  
-  th {
-    color: white;
-    font-weight: 300;
-  }
+.tableheader{
+  background-color: #3e4141;
+  color: white;
+    
+}
+thead .tableheader tr th {
+  color: white;
+
+}
+th{
+  color: white;
+  font-weight: 300;
+  background-color: #3e4141;
+}
+
   
   .mat-icon {
   

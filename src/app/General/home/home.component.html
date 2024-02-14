@@ -3,7 +3,8 @@
         <h3><b><span class="welcome">Selamat Datang >></span></b>
 
             <span class="welcomeForwarder"> {{forwarder.name}}</span>
-            <span class="welcomeForwarder" *ngIf="roleUip || roleGtacr"> {{staff.username}}</span>
+            <span class="welcomeForwarder" *ngIf="roleUip || roleGtacr"> {{staff.staffName}}</span>
+            <span class="welcomeForwarder" *ngIf="roleImporter"> {{company.name}}</span>
         </h3>
 
 

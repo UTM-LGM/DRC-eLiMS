@@ -5,17 +5,17 @@
 
       <div class="mat-card-container">
 
-        <form [formGroup]="sampleForm" (ngSubmit)="updateBatch()">
+        <form (ngSubmit)="updateBatch()">
 
           <div *ngIf="roleForwarder">
             <div class="row form-group">
               <div class="col-sm-2">
-                <label class="label_bm">Batch Id<span class="required" style="color:red;"> *</span></label><br>
-                <label class="label_bi">No Batch</label>
+                <label class="label_bm"> Batch Id<span class="required" style="color:red;"> *</span></label><br>
+                <label class="label_bi">Batch Id</label>
               </div>
               <div class="col-sm-4">
-                <input type="number" class="form-control" id="batchId" formControlName="batchId"
-                  [(ngModel)]="batch.batchId" required>
+                <input type="number" class="form-control" id="batchId" name="batchId"
+                  [(ngModel)]="batch.batchId">
                   <small class="instruction"> * masukkan nombor batch Id</small>
               </div>
             </div>
@@ -29,7 +29,7 @@
                 <label class="label_bi">Reference No</label>
               </div>
               <div class="col-sm-4">
-                <input type="text" class="form-control" id="uipRegNo" formControlName="uipRegNo"
+                <input type="text" class="form-control" id="uipRegNo" name="uipRegNo"
                   [(ngModel)]="batch.uipRegNo" required>
               </div>
             </div>
@@ -42,7 +42,7 @@
               <label class="label_bi"> Date</label>
             </div>
             <div class="col-sm-4">
-              <input type="date" class="form-control" id="Date" formControlName="date"
+              <input type="date" class="form-control" id="Date" name="dateSampleDelivered"
                 [(ngModel)]="batch.dateSampleDelivered" required>
             </div>
           </div>
@@ -54,7 +54,7 @@
               <label class="label_bi">Delivery</label>
             </div>
             <div class="col-sm-4">
-              <select class="form-select" id="delivery" formControlName="delivery" (change)="changeDelivery($event)"
+              <select class="form-select" id="delivery" (change)="changeDelivery($event)" name="delivery"
                 [(ngModel)]="batch.delivery" required>
                 <option value="" disabled selected>--Pilih--</option>
                 <option *ngFor="let penghantaran of delivery" [value]="penghantaran">
@@ -71,7 +71,7 @@
               <label class="label_bi">Courier Services</label>
             </div>
             <div class="col-sm-4">
-              <input type="text" class="form-control" id="courierServices" formControlName="courierServices"
+              <input type="text" class="form-control" id="courierServices" name="courierServices"
                 [(ngModel)]="batch.courierServices" required>
             </div>
           </div> <br>
@@ -82,7 +82,7 @@
               <label class="label_bi">Tracking No</label>
             </div>
             <div class="col-sm-4">
-              <input type="text" class="form-control" id="trackingNo" formControlName="trackingNo"
+              <input type="text" class="form-control" id="trackingNo" name="trackingNo"
                 [(ngModel)]="batch.trackingNo" required>
             </div>
           </div>

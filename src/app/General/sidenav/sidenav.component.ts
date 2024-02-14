@@ -11,6 +11,7 @@ export class SidenavComponent implements OnInit{
   roleForwarder:boolean
   roleUip:boolean
   roleGtacr:boolean
+  roleImporter:boolean
   config = {
     // paddingAtStart: true,
     // interfaceWithRoute: true,
@@ -41,6 +42,8 @@ export class SidenavComponent implements OnInit{
     }else if (this.roleId == '3'){
       this.roleForwarder = false
       this.roleGtacr = true
+    }else if(this.roleId == '13'){
+      this.roleImporter = true
     }
   }
 

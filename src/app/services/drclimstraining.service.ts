@@ -24,6 +24,7 @@ export class DrclimstrainingService {
   PostLtxBatches(batchId2: number, batch: Batch, username: string): Observable<Batch> {
     batch.batchIdNew = batchId2
     batch.sentBy = username
+    console.log(batch)
     return this.http.post<Batch>(this.baseApiUrl + '/api/LtxBatches/PostLtxBatches/', batch);
   }
 

@@ -10,6 +10,7 @@ import { Batch } from '../models/batch';
 import { UipbkhMemoRunNo } from '../models/uipbkhMemoRunNo';
 import { Sample } from '../models/sample';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,7 +23,7 @@ export class HantarSampelService {
   }
 
   baseApiUrl: string = environment.baseApiUrlElims;
-  baseApiUrlElimsLocal: string = environment.baseApiUrlElimsLocal;
+  // baseApiUrlElimsLocal: string = environment.baseApiUrlElimsLocal;
 
   // baseApiUrl: string = environment.baseApiUrlElimsOffline;
 
@@ -62,6 +63,7 @@ export class HantarSampelService {
   // Batches
 
   PostElimsBatches(batch: Batch, username: string): Observable<Batch> {
+    // var body = JSON.stringify(batch)
     batch.sentBy = username
     return this.http.post<Batch>(this.baseApiUrl + '/api/Batches/PostElimsBatches', batch);
   }
@@ -70,24 +72,32 @@ export class HantarSampelService {
   //   return this.http.get<Batch>(this.baseApiUrl + '/api/Batches/GetElimsBatchById/' + batchId);
   // }
 
-//   GetBatchByBatchIdStaff(batchId: number, staffId: number): Observable<Batch> {
-//     const url = `${this.baseApiUrl}/api/Batches/GetBatchByBatchIdStaff/${batchId}/${staffId}`;
-//     return this.http.get<any>(url);
-// }
+  //   GetBatchByBatchIdStaff(batchId: number, staffId: number): Observable<Batch> {
+  //     const url = `${this.baseApiUrl}/api/Batches/GetBatchByBatchIdStaff/${batchId}/${staffId}`;
+  //     return this.http.get<any>(url);
+  // }
 
-GetBatchByBatchId(batchId: number): Observable<any> {
-  return this.http.get<any>(`${this.baseApiUrl}/api/Batches/GetBatchByBatchId/${batchId}`);
-}
+  GetBatchByBatchId(batchId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseApiUrl}/api/Batches/GetBatchByBatchId/${batchId}`);
+  }
 
-GetBatchByBatchIdStaff(batchId: number, staffId: number): Observable<any> {
-  return this.http.get<any>(
-    `${this.baseApiUrl}/api/Batches/GetBatchByBatchIdStaff/${batchId}/${staffId}`
-  )  };
+  GetBatchByBatchIdStaff(batchId: number, staffId: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseApiUrl}/api/Batches/GetBatchByBatchIdStaff/${batchId}/${staffId}`
+    )
+  };
+
+  GetSuratIringanByUsername(batchId: number, username: string): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseApiUrl}/api/Batches/GetSuratIringanByUsername/${batchId}/${username}`
+    )
+  };
 
 
-// GetElimsBatchByUserId(batchId: number, username: number): Observable<any> {
-//   return this.http.get<any>(`${this.baseApiUrl}/api/Batches/GetElimsBatchById/${batchId}/${staffId}`);
-// }
+
+  // GetElimsBatchByUserId(batchId: number, username: number): Observable<any> {
+  //   return this.http.get<any>(`${this.baseApiUrl}/api/Batches/GetElimsBatchById/${batchId}/${staffId}`);
+  // }
 
 
 
@@ -190,14 +200,14 @@ GetBatchByBatchIdStaff(batchId: number, staffId: number): Observable<any> {
   notificationMemo(staffId: number, batchId: number, emailRecipient: string[]) {
     const body = { emailRecipient };
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-  
-    return this.http.post(this.baseApiUrl + '/api/Email/notificationMemo/' + staffId+'/'+batchId,  emailRecipient, httpOptions);
-  }
-  
 
-  
+    return this.http.post(this.baseApiUrl + '/api/Email/notificationMemo/' + staffId + '/' + batchId, emailRecipient, httpOptions);
+  }
+
+
+
   getEmailStaff(staffId: number) {
-    return this.http.get(this.baseApiUrl + '/api/Staffs/GetEmailStaff/'+ staffId);
+    return this.http.get(this.baseApiUrl + '/api/Staffs/GetEmailStaff/' + staffId);
   }
 
 
@@ -220,5 +230,46 @@ GetBatchByBatchIdStaff(batchId: number, staffId: number): Observable<any> {
   //   const url = `${this.baseApiUrl}/api/sample/${staffId}`;
   //   return this.http.get(url);
   // }
+
+
+  // suratIringan(batchId: any, pdfBlob: Blob) {
+  //   const formData = new FormData();
+  //   formData.append('pdfFile', pdfBlob, 'suratIringan.pdf');
+
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/pdf'
+  //   });
+
+  //   return this.http.post(`${this.baseApiUrl}/api/Batches/uploadSuratIringan/${batchId}`, formData, { headers });
+
+  // }
+
+
+  suratIringan(batchId: any, pdfBlob: Blob) {
+
+    const formData = new FormData();
+    formData.append('pdfFile', pdfBlob, 'suratIringan.pdf');
+    console.log('FormData:', formData);
+    
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/pdf'
+    });
+  
+    return this.http.post(`${this.baseApiUrl}/api/Batches/uploadSuratIringan1/${batchId}`, formData, { headers });
+
+   
+
+  }
+  
+
+
+
+  // PostFileK1Detail(batchId: any, file: any) {
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+  //   console.log(batchId)
+  //   return this.http.post(this.baseApiUrl + '/api/Batches/SaveFile/' + batchId, formData);
+  // }
+
 
 }

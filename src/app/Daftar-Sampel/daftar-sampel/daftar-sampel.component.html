@@ -75,7 +75,7 @@
                             </div>
                             <div class="col-sm-2">
                                 <label class="label_bm">Bukti</label><br>
-                                <label class="label_bi">Prove</label>
+                                <label class="label_bi">Evidence</label>
                             </div>
                             <div class="col-sm-10">
                                 <input type="file" class="form-control" id="Evidence" name="Evidence"
@@ -90,7 +90,7 @@
                         <div class="col-lg-1">
                             <label class="label_title">Kod HS<span class="required"
                                     style="color:red;">*</span></label><br>
-                            <label class="label_bi">Hs Code</label>
+                            <label class="label_bi">HS Code</label>
                         </div>
                         <div class="col-lg-3">
                             <input type="text" class="form-control" id="HsCode" name="HsCode"
@@ -100,9 +100,9 @@
                             </div>
                         </div>
                         <div class="col-lg-1">
-                            <label class="label_title">Kuantiti<span class="required"
+                            <label class="label_title">Kuantiti(kg)<span class="required"
                                     style="color:red;">*</span></label><br>
-                            <label class="label_bi">Quantity</label>
+                            <label class="label_bi">Quantity(kg)</label>
                         </div>
                         <div class="col-lg-3">
                             <input type="text" class="form-control" id="Quantity" name="Quantity"
@@ -153,19 +153,29 @@
                                     style="color:red;">*</span></label><br>
                             <label class="label_bi">Sample Type</label>
                         </div>
-                        <div class="col-lg-3">
+                        <!-- <div class="col-lg-3">
                             <select class="form-select" name="SampleType" id="SampleType"
                                 [(ngModel)]="k1Detail.sampleTypeId" formControlName="sampleType" required>
-                                <option value="" disabled selected>--Pilih--</option>
+                                <option value="">--Pilih--</option>
                                 <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">
                                     {{sampleType.sampleType}}</option>
                             </select>
+                        </div> -->
+
+                        <div class="col-lg-3">
+                            <select class="form-select" name="TypeCode" id="TypeCode"
+                                [(ngModel)]="k1Detail.typeCodeId" formControlName="typeCode" required>
+                                <option value="">--Pilih--</option>
+                                <option *ngFor="let typeCode of typeCodes" [value]="typeCode.id">
+                                    {{typeCode.sampleType}}</option>
+                            </select>
                         </div>
+
 
                         <div class="col-lg-1">
                             <label class="label_title">Tujuan Sampel Dihantar<span class="required"
                                     style="color:red;">*</span></label><br>
-                            <label class="label_bi">Sample Purpose</label>
+                            <label class="label_bi">Sent Sample Purpose</label>
                         </div>
                         <div class="col-lg-3">
                             <select class="form-select" name="SamplePropose" id="SamplePropose"
@@ -193,7 +203,7 @@
                                     k1Detail.country
                                     }}</option>
                             </select>
-                            <small class="instruction">* Nama negara/negeri asal pembekal getah</small>
+                            <small class="instruction">* Nama negara asal pembekal getah</small>
                         </div>
 
                         <div class="col-lg-1">
@@ -214,9 +224,8 @@
                         </div>
 
                         <div class="col-lg-1">
-                            <label class="label_title">Syarikat Pengimport<span class="required"
-                                    style="color:red;">*</span></label><br>
-                            <label class="label_bi">Importing Company</label>
+                            <label class="label_title">Syarikat Pengimport</label><br>
+                            <label class="label_bi">Importer Company</label>
                         </div>
                         <div class="col-lg-3">
                             <select class="form-select" name="companyId" id="companyId" [(ngModel)]="sample.companyId"
@@ -256,8 +265,7 @@
                         </div>
 
                         <div class="col-lg-1" *ngIf="showPelabuhan">
-                            <label class="label_title">No. Trelar/ Kontena/ Tangki<span class="required"
-                                    style="color:red;">*</span></label><br>
+                            <label class="label_title">No. Trelar/ Kontena/ Tangki</label><br>
                             <label class="label_bi">Trailer/ Contena/ Tanker No</label>
                         </div>
                         <div class="col-lg-3" *ngIf="showPelabuhan">
@@ -293,15 +301,15 @@
                             </div>
                         </div>
                         <div class="col-lg-1">
-                            <label class="label_title">I/C Pemandu/ Pasport<span class="required"
+                            <label class="label_title">I/C / Pasport Pemandu<span class="required"
                                     style="color:red;">*</span></label><br>
-                            <label class="label_bi">Identification/ passport Driver</label>
+                            <label class="label_bi">Driver's Identification/ Passport </label>
                         </div>
                         <div class="col-lg-5">
                             <input type="text" class="form-control" id="IcDriver" name="IcDriver"
                                 [(ngModel)]="k1Header.icDriver" required ngModel formControlName="icDriver" required>
                             <div *ngIf="sampleForm.get('icDriver')?.invalid && sampleForm.get('icDriver')?.touched">
-                                <small class="text-danger">I/C Pemandu/Pasport adalah diwajibkan</small>
+                                <small class="text-danger">I/C /Pasport Pemandu adalah diwajibkan</small>
                             </div>
                         </div>
                     </div>

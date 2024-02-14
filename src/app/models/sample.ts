@@ -12,20 +12,21 @@ export interface Sample {
     rubberType: string;
     sampleTypeId: number;
     sampleType: string;
+    typeCodeId: number;
+    typeCode: string;
     labRefNo: string;
     customNo: string;
     importedDate: Date;
     quantity: number;
-    typeCodeId: number;
     companyId: number;
     companyName: string;
     importNo: number;
-    statusCodeId: number | null;
+    statusCodeId: number;
     createdOn: Date;
     createdBy: string;
     sentOn: Date;
     sentBy: string;
-    receivedOn: string;
+    receivedOn: Date;
     receivedBy: string;
     inLabOn: string;
     inLabBy: string;
@@ -91,4 +92,11 @@ export interface Sample {
     memo: string;
     creatorRoleId : number;
     companyAddress: string;
+    forwarderName: string;
+    forwarderAddress : string;
+
+    unitName: string;
+    agentName : string;
+   
+
 }

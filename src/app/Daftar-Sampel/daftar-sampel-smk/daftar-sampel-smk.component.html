@@ -2,6 +2,21 @@
   <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
     <mat-card-content>
 
+      <!-- <div class="col-lg-1">
+        <label class="label_title">Syarikat Pengimport<span class="required"
+          style="color:red;">*</span></label><br>
+      <label class="label_bi">Importer Company</label>
+      </div>
+      <div class="col-lg-5">
+        <select class="form-select" name="companyId" id="companyId" [(ngModel)]="sample.companyId"
+        formControlName="companyId" required>
+        <option class="pilih" value="default">--Pilih--</option>
+        <option *ngFor="let company of importerCompanies" [value]="company.companyId">
+          {{company.name}}
+        </option>
+      </select>
+      </div> -->
+
       <h1 class="attractive-title">Daftar Sampel SMK</h1>
       <div class="mat-card-container">
 
@@ -21,7 +36,7 @@
                       <div class="col-sm-2">
                         <!-- <input type="text" class="form-control" formControlName="kodStesenKastam" id="kodStesenKastam"
                           name="kodStesenKastam" placeholder="Kod Stesen" maxlength="3"> -->
-                            
+
                         <!-- drop down here -->
                         <select class="form-select" placeholder="Kod Stesen" formControlName="kodStesen" id="kodStesen"
                           name="kodStesen">
@@ -128,7 +143,7 @@
                 </div>
                 <div class="col-sm-2">
                   <label class="label_bm">Bukti</label><br>
-                  <label class="label_bi">Prove</label>
+                  <label class="label_bi">Evidence</label>
                 </div>
                 <div class="col-sm-10">
                   <input type="file" class="form-control" id="Evidence" name="Evidence"
@@ -143,12 +158,85 @@
               <div class="col-lg-1">
                 <label class="label_title">Syarikat Pengimport<span class="required"
                     style="color:red;">*</span></label><br>
-                <label class="label_bi">Importing Company</label>
+                <label class="label_bi">Importer Company</label>
               </div>
               <div class="col-lg-5">
                 <input type="text" class="form-control readonly-input" [value]=" k1Header.importerName" disabled
                   readonly>
               </div>
+
+
+              <!-- <div class="col-lg-1" *ngIf="roleImporter">
+                <label class="label_title">Syarikat Penghantar<span class="required"
+                    style="color:red;">*</span></label><br>
+                <label class="label_bi">Forwarding Agent</label>
+              </div>
+              <div class="col-lg-5">
+                <input type="text" class="form-control readonly-input" [value]=" k1Header.agentName" disabled
+                  readonly>
+              </div> -->
+
+
+              <!-- <div class="col-lg-1">
+                <label class="label_title">Syarikat Pengimport<span class="required"
+                    style="color:red;">*</span></label><br>
+                <label class="label_bi">Importer Company</label>
+              </div>
+              <div class="col-lg-5">
+                <select class="form-select" name="companyId" id="companyId" [(ngModel)]="sample.companyId"
+                  formControlName="companyId" required>
+                  <option class="pilih" value="default">--Pilih--</option>
+                  <option *ngFor="let company of companies" [value]="company.companyId">
+                    {{company.importerName}}{{company.name}}
+                  </option>
+                </select>
+              </div> -->
+
+              <div class="col-lg-1" *ngIf="roleForwarder">
+                <label class="label_title">Syarikat Pengimport</label><br>
+                <label class="label_bi">Importer Company</label>
+              </div>
+              <div class="col-lg-5" *ngIf="roleForwarder">
+                <select class="form-select" name="companyId" id="companyId" [(ngModel)]="sample.companyId" required>
+                  <option class="pilih" value="default">--Pilih--</option>
+                  <option *ngFor="let company of importerCompanies" [value]="company.companyId">
+                    {{company.name}}
+                  </option>
+                </select>
+              </div>
+
+
+
+              <div class="col-lg-1" *ngIf="roleUip">
+                <label class="label_title">Syarikat Pengimport</label><br>
+                <label class="label_bi">Importer Company</label>
+              </div>
+              <div class="col-lg-5"*ngIf="roleUip">
+                <select class="form-select" name="companyId" id="companyId" [(ngModel)]="sample.companyId" required>
+                  <option class="pilih" value="default">--Pilih--</option>
+                  <option *ngFor="let company of companies" [value]="company.companyId">
+                    {{company.importerName}}{{company.name}}
+                  </option>
+                </select>
+              </div>
+
+
+              
+
+              <!-- <div class="col-lg-1" *ngIf="roleImporter">
+                <label class="label_title">Syarikat Penghantar</label><br>
+                <label class="label_bi">Forwarding Agent</label>
+              </div>
+              <div class="col-lg-5"*ngIf="roleImporter">
+                <select class="form-select" name="forwarderid" id="forwarderid" [(ngModel)]="sample.companyId" required>
+                  <option class="pilih" value="default">--Pilih--</option>
+                  <option *ngFor="let forwarder of forwarders" [value]="forwarder.companyId">
+                    {{forwarder.agentName}}{{forwarder.name}}
+                  </option>
+                </select>
+              </div> -->
+
+              <!-- <div class="row flex d-flex content-fluid mb-3"> -->
               <div class="col-lg-1">
                 <label class="label_title">Nama Pembekal<span class="required" style="color:red;">*</span></label><br>
                 <label class="label_bi">Supplier Name</label>
@@ -157,6 +245,10 @@
                 <input type="text" class="form-control readonly-input" [value]="k1Header.supplierName" disabled
                   readonly>
               </div>
+              <!-- </div> -->
+
+
+
             </div>
 
 
@@ -170,9 +262,8 @@
                 <input type="text" class="form-control readonly-input" [value]=" k1Header.lorryNo " disabled readonly>
               </div>
               <div class="col-lg-1">
-                <label class="label_title">No .Trelar/ Kontena / Tank <span class="required"
-                    style="color:red;">*</span></label><br>
-                <label class="label_bi">Trailer No/ Contena No/ Tanker No</label>
+                <label class="label_title">No .Trelar/ Kontena / Tank </label><br>
+                <label class="label_bi">Trailer / Contena / Tanker No</label>
               </div>
               <div class="col-lg-3">
                 <input type="text" class="form-control readonly-input" [value]=" k1Header.trailerNo" disabled readonly>
@@ -183,7 +274,7 @@
               </div>
               <div class="col-lg-3">
                 <input type="text" class="form-control readonly-input" [value]=" k1Detail.country " disabled readonly>
-                <small class="instruction">* Nama negara/negeri asal pembekal getah </small>
+                <small class="instruction">* Nama negara asal pembekal getah </small>
               </div>
             </div>
 
@@ -191,10 +282,11 @@
             <div class="row flex d-flex content-fluid mb-3">
               <div class="col-lg-1">
                 <label class="label_title">Kuantiti(kg)<span class="required" style="color:red;">*</span></label><br>
-                <label class="label_bi">Quantity</label>
+                <label class="label_bi">Quantity(kg)</label>
               </div>
               <div class="col-lg-3">
-                <input type="number" class="form-control readonly-input" [value]=" k1Detail.quantity" disabled readonly>
+                <input type="number" class="form-control readonly-input" [value]=" k1Header.grossWeight" disabled
+                  readonly>
                 <small class="instruction">Berat basah (dalam kilogram) dengan pembungkusan</small>
               </div>
 
@@ -221,7 +313,7 @@
 
               <div class="col-lg-1">
                 <label class="label_title">Kuantiti(kg)<span class="required" style="color:red;">*</span></label><br>
-                <label class="label_bi">Quantity</label>
+                <label class="label_bi">Quantity(kg)</label>
               </div>
               <div class="col-lg-3">
                 <input type="text" class="form-control" id="Quantity" name="Quantity" [(ngModel)]="formattedQuantity"
@@ -235,8 +327,8 @@
                 <label class="label_bi">DRC %</label>
               </div>
               <div class="col-lg-3">
-                <input type="number" class="form-control readonly-input" id="DRC" name="DRC" [(ngModel)]="formattedDRC"
-                  (ngModelChange)="enforceDRCLimit()" required>
+                <input type="number" class="form-control readonly-input" id="DRC" name="formattedDRC"
+                  [(ngModel)]="formattedDRC" (ngModelChange)="enforceDRCLimit()" required>
                 <small class="instruction">* Kandungan Getah Kering yang diikrar pada perihal barang dalam perakuan
                   Kastam berkaitan</small>
               </div>
@@ -268,18 +360,31 @@
                 <label class="label_title">Jenis Sampel<span class="required" style="color:red;">*</span></label><br>
                 <label class="label_bi">Sample Type</label>
               </div>
-              <div class="col-lg-3">
+              <!-- <div class="col-lg-3">
                 <select class="form-select readonly-input" name="SampleTypeId" id="SampleTypeId"
                   [(ngModel)]="k1Detail.sampleTypeId" required>
-                  <option value="" disabled selected>--Pilih--</option>
+                  <option value="">--Pilih--</option>
                   <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">
                     {{sampleType.sampleType}}</option>
                 </select>
+              </div> -->
+
+
+              <div class="col-lg-3">
+                <select class="form-select readonly-input" name="TypeCodeId" id="TypeCodeId"
+                  [(ngModel)]="k1Detail.typeCodeId" required>
+                  <option value="">--Pilih--</option>
+                  <option *ngFor="let typeCode of typeCodes" [value]="typeCode.id">
+                    {{typeCode.sampleType}}</option>
+                </select>
               </div>
+
+
+
               <div class="col-lg-1">
                 <label class="label_title">Tujuan Sampel Dihantar<span class="required"
                     style="color:red;">*</span></label><br>
-                <label class="label_bi">Sample Purpose</label>
+                <label class="label_bi">Sent Sample Purpose</label>
               </div>
               <div class="col-lg-3">
                 <select class="form-select readonly-input" name="SamplePropose" id="SamplePropose"
@@ -293,27 +398,49 @@
 
             <div class="row flex d-flex content-fluid mb-3">
 
-              <div class="col-lg-1">
+              <!-- <div class="col-lg-1">
                 <label class="label_title">Nama Pemandu<span class="required" style="color:red;">*</span></label><br>
                 <label class="label_bi">Driver's Name</label>
               </div>
               <div class="col-lg-5">
                 <input type="text" class="form-control readonly-input" id="DriverName" name="DriverName"
                   [(ngModel)]="k1Header.driverName" required>
-              </div>
+              </div> -->
+
               <div class="col-lg-1">
-                <label class="label_title">I/C Pemandu/ Pasport<span class="required"
+                <label class="label_title">Nama Pemandu<span class="required" style="color:red;">*</span></label><br>
+                <label class="label_bi">Driver's Name</label>
+              </div>
+              <div class="col-lg-5">
+                <textarea class="form-control readonly-input" id="DriverName" name="DriverName"
+                  [(ngModel)]="k1Header.driverName" required></textarea>
+              </div>
+
+
+              <!-- <div class="col-lg-1">
+                <label class="label_title">I/C/ Pasport Pemandu<span class="required"
                     style="color:red;">*</span></label><br>
-                <label class="label_bi">Identification/ passport Driver</label>
+                <label class="label_bi">Driver's Identification/ Passport </label>
               </div>
               <div class="col-lg-5">
                 <input type="text" class="form-control readonly-input" id="IcDriver" name="IcDriver"
                   [(ngModel)]="k1Header.icDriver" required>
               </div>
+            </div> -->
+
+              <div class="col-lg-1">
+                <label class="label_title">I/C/ Pasport Pemandu<span class="required"
+                    style="color:red;">*</span></label><br>
+                <label class="label_bi">Driver's Identification/ Passport</label>
+              </div>
+              <div class="col-lg-5">
+                <textarea class="form-control readonly-input" id="IcDriver" name="IcDriver"
+                  [(ngModel)]="k1Header.icDriver" required></textarea>
+              </div>
             </div>
 
             <div mat-dialog-actions align="end">
-              <button type="submit" (click)="checkRequired()" class="btn btn-primary"
+              <button type="submit" [disabled]="daftarClicked" (click)="checkRequired()" class="btn btn-primary"
                 style="margin-left: 5px;">Daftar</button>
               <!-- <button class="btn btn-primary" (click)="resetForm()" style="margin-left: 5px;">Reset</button> -->
             </div>

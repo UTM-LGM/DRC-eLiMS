@@ -59,7 +59,7 @@
 
                                 <div class="col-sm-4">
                                     <label class="label_bm">Bukti</label><br>
-                                    <label class="label_bi">Prove</label>
+                                    <label class="label_bi">Evidence</label>
                                 </div>
                                 <div class="col-sm-8">
                                     <input type="file" class="form-control readonly-input" id="Evidence" name="Evidence"
@@ -89,9 +89,8 @@
 
                         <div class="row form-group">
                             <div class="col-sm-4">
-                                <label class="label_title">Kuantiti(kg)<span class="required"
-                                        style="color:red;">*</span></label><br>
-                                <label class="label_bi">Quantity</label>
+                                <label class="label_title">Kuantiti(kg)</label><br>
+                                <label class="label_bi">Quantity(kg)</label>
                             </div>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="Quantity" name="Quantity"
@@ -120,9 +119,8 @@
 
                         <div class="row form-group">
                             <div class="col-lg-4">
-                                <label class="label_title">KGK %<span class="required"
-                                        style="color:red;">*</span></label><br>
-                                <label class="label_bi">DRC %</label>
+                                <label class="label_title">Kandungan Getah Kering (%) </label><br>
+                                <label class="label_bi">Dry Rubber Content (%) </label>
                             </div>
                             <div class="col-lg-8">
                                 <input type="number" class="form-control readonly-input" id="drc" name="drc"
@@ -162,13 +160,18 @@
                                 <label class="label_bi">Sample Type</label>
                             </div>
                             <div class="col-sm-8">
-                                <select class="form-select readonly-input" name="SampleTypeId" id="SampleTypeId"
+                                <!-- <select class="form-select readonly-input" name="SampleTypeId" id="SampleTypeId"
                                     [(ngModel)]="sample.sampleTypeId">
-                                    <!-- <option value="" disabled selected>--Pilih--</option> -->
                                     <option value="" hidden>{{sample.sampleType}}</option>
                                     <option *ngFor="let sample of sampleTypes" [value]="sample.id">
                                         {{sample.sampleType}}</option>
-                                </select>
+                                </select> -->
+                                <select class="form-select readonly-input" name="TypeCodeId" id="TypeCodeId"
+                                [(ngModel)]="sample.typeCodeId">
+                                <option value="" hidden>{{sample.typeCode}}</option>
+                                <option *ngFor="let sample of typeCodes" [value]="sample.id">
+                                    {{sample.sampleType}}</option>
+                            </select>
                             </div>
                         </div><br>
 
@@ -193,7 +196,7 @@
                             <div class="col-sm-4">
                                 <label class="label_title">Syarikat Pengimport<span class="required"
                                         style="color:red;">*</span></label><br>
-                                <label class="label_bi">Importing Company</label>
+                                <label class="label_bi">Importer Company</label>
                             </div>
                             <div class="col-sm-8">
                                 <select class="form-select" name="companyId" id="companyId"
@@ -210,7 +213,7 @@
                         <div class="row form-group">
                             <div class="col-sm-4">
                                 <label class="label_bm">Tujuan Sampel Dihantar</label><br>
-                                <label class="label_bi">Sample Propose</label>
+                                <label class="label_bi">Sent Sample Purpose</label>
                             </div>
                             <div class="col-sm-8">
                                 <select class="form-select readonly-input" name="SamplePropose" id="SamplePropose"
@@ -255,7 +258,7 @@
                         <div class="row form-group">
                             <div class="col-sm-4">
                                 <label class="label_bm">Negara Pembekal</label><br>
-                                <label class="label_bi">Country</label>
+                                <label class="label_bi">Supplier Country</label>
                             </div>
                             <div class="col-sm-8">
                                 <select class="form-select readonly-input" name="Country" id="Country" ngModel
@@ -283,8 +286,8 @@
 
                         <div class="row form-group">
                             <div class="col-sm-4">
-                                <label class="label_bm">I/C Pemandu/ Pasport</label><br>
-                                <label class="label_bi">Identification/Passport Driver</label>
+                                <label class="label_bm">I/C / Pasport Pemandu</label><br>
+                                <label class="label_bi">Driver's Identification/Passport </label>
                             </div>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control readonly-input" id="IcDriver" name="IcDriver"
@@ -296,7 +299,7 @@
                         <div class="row form-group">
                             <div class="col-sm-4">
                                 <label class="label_bm">Nombor Pendaftaran Lori</label><br>
-                                <label class="label_bi">Lorry No</label>
+                                <label class="label_bi">Lorry Reg. No</label>
                             </div>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control readonly-input" [value]="sample.lorryNo" disabled
@@ -309,7 +312,7 @@
                         <div class="row form-group">
                             <div class="col-sm-4">
                                 <label class="label_bm">No. Trelar/ Kontena/ Tank</label><br>
-                                <label class="label_bi">Trailer No / Contena No/ Tanker No</label>
+                                <label class="label_bi">Trailer/ Contena/ Tanker No</label>
                             </div>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control readonly-input" [value]="sample.trailerNo"

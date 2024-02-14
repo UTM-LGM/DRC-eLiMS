@@ -14,6 +14,7 @@ export interface K1Detail {
     sampleTypeId: number;
     rubberType: string;
     sampleType: string;
+    typeCode:string;
     labRefNo: string;
     customNo: string;
     quantity: number;
@@ -25,7 +26,7 @@ export interface K1Detail {
     createdBy: string;
     sentOn: Date;
     sentBy: string;
-    receivedOn: string;
+    receivedOn: Date;
     receivedBy: string;
     inLabOn: string;
     inLabBy: string;
@@ -74,6 +75,10 @@ export interface K1Detail {
     registrationSeqNo: string;
     sampleRunNo: string;
     creatorRoleId: number;
+    grossWeight: number;
+    agentName  :string
+
+
     
 
 }

@@ -28,13 +28,13 @@
 
                     <div class="font">
 
-                        <p>Kepada : Pengurus G-TAR Sg.Petani</p>
+                        <p>Kepada : Pengurus G-TACR Sg.Petani</p>
 
                         <p>Daripada : Penolong Pegawai Penguatkuasa</p>
 
-                        <p>Rujukan: {{batch.uipRegNo}}</p>
+                        <p>Rujukan: {{samples[0].uipRegNo}}</p>
 
-                        <p class="spacing">Tarikh: {{ batch.sentOn | date: 'dd MMMM yyyy' }}</p>
+                        <p class="spacing">Tarikh: {{ samples[0].sentOn | date: 'dd MMMM yyyy' }}</p>
 
 
                         <div class="spacing" *ngIf="samples[0].rubberTypeId == 1">
@@ -100,8 +100,15 @@
                         <span><b>“BERKHIDMAT UNTUK NEGARA”</b></span><br>
                         <span><b>“KREATIF, INOVATIF, PROGRESIF”</b></span><br><br>
 
-                        <p>Saya yang menjalankan amanah,</p><br>
+                        <p>Saya yang menjalankan amanah,</p><br><br><br>
 
+                        <!-- <span><div class="col-sm-8">
+                            <img src="https://api02.lgm.gov.my/ApiElims/wwwroot/signature/sign_ezmy.jpg" alt="sign_ezmy" style="width: 100px; height: auto;">
+                        </div></span> -->
+                        <!-- <div class="signature">
+                        <img [src]="signaturePath" alt="Signature" style="width: 100px; height: auto;">
+                        </div> -->
+                        
                         <span><b>({{staff.staffName}})</b></span><br>
                         <span>{{staff.position}}</span><br>
                         <span *ngIf="roleId == 2">Unit Inspektorat dan Penguatkuasaan</span><br>

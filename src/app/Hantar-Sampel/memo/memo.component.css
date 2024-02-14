@@ -80,6 +80,15 @@
   text-align: center;
 }
 
+
+.signature {
+  background-image: url('https://api02.lgm.gov.my/ApiElims/wwwroot/signature/sign_ezmy.jpg'); 
+  background-size: cover;
+  background-position: top center;
+  height: 10px;
+  text-align: center;
+}
+
 .header-image {
   display: none;
 }

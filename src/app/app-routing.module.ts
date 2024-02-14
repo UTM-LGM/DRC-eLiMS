@@ -25,6 +25,7 @@ import { SampelBelumTerimaComponent } from './sampel-belum-terima/sampel-belum-t
 import { ViewMaklumatPenghantaranComponent } from './view-maklumat-penghantaran/view-maklumat-penghantaran.component';
 import { SuratIringanComponent } from './surat-iringan/surat-iringan.component';
 import { LampiranComponent } from './Hantar-Sampel/lampiran/lampiran.component';
+import { CetakWorksheetComponent } from './cetak-worksheet/cetak-worksheet.component';
 
 
 
@@ -81,28 +82,28 @@ const routes: Routes = [
 
   {
     path:'keputusan-ujian',
-    component: KeputusanUjianComponent
+    component: KeputusanUjianComponent, canActivate:[AuthGuardService]
   },
 
   {
     path:'sample/view-sample/:k1DetailId',
-    component: ViewSampleComponent
+    component: ViewSampleComponent, canActivate:[AuthGuardService]
   },
 
   {
     path:'sample/view-keputusan-ujian/:k1DetailId',
-    component: ViewKeputusanUjianComponent
+    component: ViewKeputusanUjianComponent, canActivate:[AuthGuardService]
   },
 
 
   {
     path:'tarikh-sampel-dihantar',
-    component: TarikhSampelDihantarComponent
+    component: TarikhSampelDihantarComponent, canActivate:[AuthGuardService]
   },
 
   {
     path:'daftar-sampel-smk',
-    component: DaftarSampelSMKComponent
+    component: DaftarSampelSMKComponent, canActivate:[AuthGuardService]
   },
 
   {
@@ -184,6 +185,18 @@ const routes: Routes = [
 
   {
     path: 'surat-iringan/:batchId',
+    component: SuratIringanComponent
+  },
+
+
+  {
+    path: 'cetak-worksheet/:k1DetailId',
+    component: CetakWorksheetComponent
+  },
+
+  
+  {
+    path: 'surat-iringan/:batchId/:username',
     component: SuratIringanComponent
   },
 

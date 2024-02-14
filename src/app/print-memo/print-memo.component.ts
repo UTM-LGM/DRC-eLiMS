@@ -79,8 +79,6 @@ export class PrintMemoComponent {
       var params = this.route.snapshot.params;
       console.log(params);
     });
-  
-    
     
     
       this.route.params.subscribe(param => {
@@ -115,6 +113,7 @@ export class PrintMemoComponent {
       console.log(this.rubberTypes)
     })
   }
+
 
   generatePDF() {
     const pdf = new jsPDF('p', 'mm', 'a4');

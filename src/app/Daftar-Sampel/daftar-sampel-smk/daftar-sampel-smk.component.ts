@@ -20,7 +20,7 @@ import { Staff } from 'src/app/models/staff';
 import { SpinnerComponent } from 'src/app/dialogbox/spinner/spinner.component';
 import { StationCode } from 'src/app/models/stationCode';
 import { MatSort } from '@angular/material/sort';
-
+import { loginImporter } from 'src/app/models/loginImporters';
 
 @Component({
   selector: 'app-daftar-sampel-smk',
@@ -28,15 +28,14 @@ import { MatSort } from '@angular/material/sort';
   styleUrls: ['./daftar-sampel-smk.component.css']
 })
 export class DaftarSampelSMKComponent implements OnInit {
-
   user: userDTO = {} as userDTO
   k1Detail: K1Detail = {} as K1Detail
+  importerCompanies: any
   sample: Sample = {} as Sample
-
   rubberTypes: RubberType[]
   samplePropose: any = ['Pengecualian Ses (CE)', 'Lain-lain']
   showSampleTypes: boolean = false
-
+  showTypeCodes: boolean = false
   customNo: string;
   itemDescriptionData: any;
   k1Header: any
@@ -44,16 +43,18 @@ export class DaftarSampelSMKComponent implements OnInit {
   blockRubberTypes: any
   sampleForm: FormGroup;
   sampleForm1: FormGroup;
-  formattedQuantity: string;
-  formattedDRC: number;
-
+  formattedQuantity: any;
+  formattedDRC: any;
   companies: any
   countries: any
   latexCountries: any
   blockRubberCountries: any
   loginAs: any;
-  k1DetailKastam: any
+  agentCode: any
+  importerCode: any
+  smkImporterCode: any
 
+  k1DetailKastam: any
   showRemarks: boolean;
   selectedDate: string;
   notes: string;
@@ -64,23 +65,25 @@ export class DaftarSampelSMKComponent implements OnInit {
   selectedItemDescriptions: string[] = [];
   click: any;
   sampleTypes: any
+  typeCodes: any
   isDataLoading: boolean = false;
   isDataFound: boolean = false;
   unmatchedK1: any[] = [];
   roleId: any;
   roleForwarder: boolean
   roleUip: boolean
+  roleImporter: boolean
   staff: Staff = {} as Staff
+  importer: loginImporter = {} as loginImporter
   tiadaDetailKastam: boolean = false
-
   dryWeight: number;
   showErrorMessage: boolean = false;
   originalQuantity: number;
-
   stationCodes: any
   stationCode: StationCode = {} as StationCode
-  @ViewChild(MatSort) sort!: MatSort;
+  daftarClicked = false
 
+  @ViewChild(MatSort) sort!: MatSort;
   constructor(
     private dataKastamService: DataKastamService,
     private getahBongkahService: GetahBongkahService,
@@ -93,11 +96,10 @@ export class DaftarSampelSMKComponent implements OnInit {
     private dialog: MatDialog,
     private daftarSampelService: DaftarSampelService,
     private userService: UserService,
-
   ) { }
 
-  ngOnInit() {
 
+  ngOnInit() {
     if (this.authservice.isloggedin()) {
       this.loginAs = this.authservice.getSessionUsername()
       this.roleId = this.authservice.getSessionRole()
@@ -106,23 +108,111 @@ export class DaftarSampelSMKComponent implements OnInit {
       this.loginAs = '';
     }
 
+
+
+
     if (this.roleId == 1) {
       this.userService.GetUserInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.user = res
         this.roleForwarder = true
         this.roleUip = false
+        console.log(res)
+        this.agentCode = res.code
+        console.log(this.agentCode)
+
+        this.daftarSampelService.GetCompanyForwarderbyId(this.user.forwarderId).subscribe(
+          resForwarder => {
+            this.importerCompanies = resForwarder
+            this.importerCompanies.sort((a: { name: any; }, b: { name: any; }) => {
+              const companiesA = a.name;
+              const companiesB = b.name;
+
+              // Compare the kodStesen values
+              if (companiesA < companiesB) {
+                return -1;
+              } else if (companiesA > companiesB) {
+                return 1;
+              } else {
+                return 0; // Kodstesen values are equal
+              }
+            });
+          }
+        );
+
+
+        this.elimsService.GetCompaniesbySMKImportersCode(this.agentCode).subscribe(data => {
+          // this.companies = data
+          // console.log(this.companies)
+          this.companies = data.filter(data => data.importerName != null);
+          // console.log(this.companies)
+
+          this.companies.sort((a: { importerName: any; }, b: { importerName: any; }) => {
+            const companiesA = a.importerName;
+            const companiesB = b.importerName;
+
+            // Compare the kodStesen values
+            if (companiesA < companiesB) {
+              return -1;
+            } else if (companiesA > companiesB) {
+              return 1;
+            } else {
+              return 0; // Kodstesen values are equal
+            }
+          });
+        })
+
       })
     }
-    
+
+    if (this.roleId == 13) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        this.authservice.changeUser(res);
+        this.importer = res
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleImporter = true
+        console.log(res)
+        this.importerCode = res.smkImporterCode
+        console.log(this.importerCode)
+
+      })
+    }
+
+
     else if (this.roleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.staff = res
+        console.log(res)
         this.roleForwarder = false
         this.roleUip = true
+
+        this.elimsService.GetAllCompanies().subscribe(data => {
+          this.companies = data
+
+          this.companies.sort((a, b) => {
+            // Assuming companyName is a string property
+            const companyNameA = a.name.toLowerCase();
+            const companyNameB = b.name.toLowerCase();
+    
+            if (companyNameA < companyNameB) {
+              return -1;
+            }
+            if (companyNameA > companyNameB) {
+              return 1;
+            }
+            return 0;
+          });
+          
+          console.log(this.companies)
+        })
+
+
       })
     }
+
+
 
     // this.userService.GetUserInfo(this.loginAs).subscribe(res => {
     //   this.authservice.changeUser(res);
@@ -136,21 +226,16 @@ export class DaftarSampelSMKComponent implements OnInit {
       nomborKastam: ['', Validators.required]
     });
 
-
     this.elimsService.GetRefRubberTypes().subscribe(data => {
       this.rubberTypes = data
-      console.log(this.rubberTypes)
     })
 
-
     this.daftarSampelService.GetStationCodes().subscribe(data => {
-
       this.stationCodes = data.filter(data => data.kodStesen != null);
       // Sort the stationCodes by kodstesen
       this.stationCodes.sort((a: { kodStesen: any; }, b: { kodStesen: any; }) => {
         const kodStesenA = a.kodStesen;
         const kodStesenB = b.kodStesen;
-
         // Compare the kodStesen values
         if (kodStesenA < kodStesenB) {
           return -1;
@@ -161,39 +246,110 @@ export class DaftarSampelSMKComponent implements OnInit {
         }
       });
     });
-
   }
 
   private removeCommas(value: string): number {
-    return +value.replace(/,/g, ''); // Remove commas and convert to number
+    const numericValue = +value.replace(/,/g, '');
+    return isNaN(numericValue) ? 0 : numericValue;
   }
 
+  // private removeCommas(value: string): number {
+  //   return +value.replace(/,/g, ''); // Remove commas and convert to number
+  // }
   // private formatNumberWithCommas(value: number): string {
   //   return value.toLocaleString(); // Format the number with commas
   // }
 
   changeJenisGetah(e: any) {
 
-
     if (e.target.value == 1) {
       this.elimsService.GetRefSampleTypeByRubberType(1).subscribe(data => {
-        this.sampleTypes = data
+        this.typeCodes = data
       })
-
     }
     else if (e.target.value == 2) {
       this.elimsService.GetRefSampleTypeByRubberType(2).subscribe(data => {
-        this.sampleTypes = data
+        this.typeCodes = data
       })
-
     }
-    this.showSampleTypes = true
-
+    this.showTypeCodes = true
   }
 
 
+  //   searchCustomRegistrationNo(): void {
+  //     this.tiadaDetailKastam = false
+  //     this.click = 1;
+  //     if (this.sampleForm.valid) {
+  //       const waitDialog = this.dialog.open(SpinnerComponent, { disableClose: true, width: '400px' });
+  //       const kodStesen = this.sampleForm.get('kodStesen')?.value ?? '';
+  //       const tahun = this.sampleForm.get('tahun')?.value ?? '';
+  //       const nomborKastam = this.sampleForm.get('nomborKastam')?.value ?? '';
+  //       const customNo = kodStesen + tahun + nomborKastam;
+
+  //       // Perform the search using customRegistrationNo
+  //       this.dataKastamService.getK1DetailAgentCode(customNo, this.agentCode).subscribe(x => {
+  //         // console.log(x);
+  //         waitDialog.close()
+  //         this.k1DetailKastam = x;
+  //         this.daftarSampelService.GetK1DetailByCustomNo(customNo).subscribe(resDetail => {
+  //           // console.log(resDetail);
+  //           // Extract item descriptions from resDetail
+  //           if (!x || x.length == 0) {
+  //             this.k1DetailKastam = null
+  //             if (this.roleId == 1) {
+  //               // Show dialog message
+  //               // const dialogRef = this.dialog.open(DialogDaftarSampelComponent, {
+  //               //   width: '400px',
+  //               //   data: {
+  //               //     title: 'Invalid customNo',
+  //               //     message: 'The customNo you entered is invalid.'
+  //               //   }
+  //               // });
+  //               // // Handle button click event
+  //               // dialogRef.afterClosed().subscribe((result: string) => {
+  //               //   if (result == 'manualDaftar') {
+  //               //     this.router.navigate(['/daftar-sampel']);
+  //               //   }
+  //               // });
+  //               this.toastr.error('Nombor Kastam tidak Dijumpai', 'Error');
+  //             }
+  //             if (this.roleId == 2) {
+  //               this.toastr.error('Nombor Kastam tidak Dijumpai', 'Error');
+  //             }
+  //           }
+  //           else if (this.roleId == 1) {
+  // // anda tidak berdaftar dengan nombor kastam ini kalau nombor kastam ada tapi dia masukkan nombor kastam org lain
+  //             const selectedDescriptions = resDetail.map((detail: K1Detail) => detail.itemDescription);
+  //             // console.log(selectedDescriptions);
+  //             // Filter out selected item descriptions from k1DetailKastam
+  //             this.k1DetailKastam = this.k1DetailKastam.filter((detail: K1Detail) =>
+  //               !selectedDescriptions.includes(detail.itemDescription)
+  //             );
+  //             if (!this.k1DetailKastam || this.k1DetailKastam.length == 0) {
+  //               this.tiadaDetailKastam = true
+  //             }
+  //           }
+  //         },
+  //           error => {
+  //             // Handle error
+  //             console.error('Error occurred:', error);
+  //             // Display error dialog
+  //             const dialogRef = this.dialog.open(DialogDaftarSampelComponent, {
+  //               width: '400px',
+  //               data: {
+  //                 title: 'Error',
+  //                 message: 'An error occurred while retrieving data.'
+  //               }
+  //             });
+  //           });
+  //       }
+  //       );
+  //     }
+  //   }
+
+
   searchCustomRegistrationNo(): void {
-    this.tiadaDetailKastam = false
+    this.tiadaDetailKastam = false;
 
     this.click = 1;
     if (this.sampleForm.valid) {
@@ -206,80 +362,120 @@ export class DaftarSampelSMKComponent implements OnInit {
       const customNo = kodStesen + tahun + nomborKastam;
 
 
-      // Perform the search using customRegistrationNo
-      this.dataKastamService.getK1Detail(customNo).subscribe(x => {
-        // console.log(x);
-        waitDialog.close()
-        this.k1DetailKastam = x;
+      if (this.roleId == "1") {
+        console.log(this.roleId)
+        this.dataKastamService.getK1DetailAgentCode(customNo, this.agentCode).subscribe(x => {
+          this.k1DetailKastam = x;
+          console.log(this.k1DetailKastam)
 
-        this.daftarSampelService.GetK1DetailByCustomNo(customNo).subscribe(resDetail => {
-          // console.log(resDetail);
-
-          // Extract item descriptions from resDetail
-          if (!x || x.length == 0) {
-            this.k1DetailKastam = null
-            if (this.roleId == 1) {
-              // Show dialog message
-              const dialogRef = this.dialog.open(DialogDaftarSampelComponent, {
-                width: '400px',
-                data: {
-                  title: 'Invalid customNo',
-                  message: 'The customNo you entered is invalid.'
-                }
-              });
-
-              // Handle button click event
-              dialogRef.afterClosed().subscribe((result: string) => {
-                if (result == 'manualDaftar') {
-                  this.router.navigate(['/daftar-sampel']);
-                }
-              });
-            }
-
-            if (this.roleId == 2) {
+          this.daftarSampelService.GetK1DetailByCustomNo(customNo).subscribe(resDetail => {
+            waitDialog.close()
+            if (!x || x.length == 0) {
+              this.k1DetailKastam = null;
               this.toastr.error('Nombor Kastam tidak Dijumpai', 'Error');
-            }
-
-          }
-          else if (this.roleId == 1) {
-
-
-            const selectedDescriptions = resDetail.map((detail: K1Detail) => detail.itemDescription);
-            // console.log(selectedDescriptions);
-
-            // Filter out selected item descriptions from k1DetailKastam
-            this.k1DetailKastam = this.k1DetailKastam.filter((detail: K1Detail) =>
-              !selectedDescriptions.includes(detail.itemDescription)
-            );
-            if (!this.k1DetailKastam || this.k1DetailKastam.length == 0) {
-              this.tiadaDetailKastam = true
-
-            }
-          }
-
-        },
-          error => {
-            // Handle error
-            console.error('Error occurred:', error);
-            // Display error dialog
-            const dialogRef = this.dialog.open(DialogDaftarSampelComponent, {
-              width: '400px',
-              data: {
-                title: 'Error',
-                message: 'An error occurred while retrieving data.'
+            } else if (this.roleId == 1) {
+              const selectedDescriptions = resDetail.map((detail: K1Detail) => detail.itemDescription);
+              this.k1DetailKastam = this.k1DetailKastam.filter((detail: K1Detail) =>
+                !selectedDescriptions.includes(detail.itemDescription)
+              );
+              if (!this.k1DetailKastam || this.k1DetailKastam.length == 0) {
+                this.tiadaDetailKastam = true;
               }
+            }
+
+            console.log(resDetail)
+          },
+            err => {
+              waitDialog.close()
+              console.error('Error occurred:', err);
             });
+        },
+          err => {
+            waitDialog.close()
+            this.toastr.warning('Anda tidak berdaftar dengan nombor kastam ini')
+            console.error('Error occurred:', err);
+          });
+      } 
+      
+      
+
+      else if (this.roleId == '13') {
+ console.log("test")
+        console.log(this.roleId)
+        this.dataKastamService.getK1DetailByImporterCode(customNo, this.importerCode).subscribe(x => {
+          this.k1DetailKastam = x;
+         
+          console.log(this.k1DetailKastam)
+
+          this.daftarSampelService.GetK1DetailByCustomNo(customNo).subscribe(resDetail => {
+            waitDialog.close()
+            if (!x || x.length == 0) {
+              this.k1DetailKastam = null;
+              this.toastr.error('Nombor Kastam tidak Dijumpai', 'Error');
+            } else if (this.roleId == 13) {
+              const selectedDescriptions = resDetail.map((detail: K1Detail) => detail.itemDescription);
+              this.k1DetailKastam = this.k1DetailKastam.filter((detail: K1Detail) =>
+                !selectedDescriptions.includes(detail.itemDescription)
+              );
+              if (!this.k1DetailKastam || this.k1DetailKastam.length == 0) {
+                this.tiadaDetailKastam = true;
+              }
+            }
+
+            console.log(resDetail)
+          },
+            err => {
+              waitDialog.close()
+              console.error('Error occurred:', err);
+            });
+        },
+          err => {
+            waitDialog.close()
+            this.toastr.warning('Anda tidak berdaftar dengan nombor kastam ini')
+            console.error('Error occurred:', err);
+          });
+
+      }
+
+      
+            
+      else if (this.roleId == "2") {
+        console.log(this.roleId)
+        this.dataKastamService.getK1Detail(customNo).subscribe(x => {
+          this.k1DetailKastam = x;
+
+          this.daftarSampelService.GetK1DetailByCustomNo(customNo).subscribe(resDetail => {
+            waitDialog.close()
+            if (!x || x.length == 0) {
+              this.k1DetailKastam = null;
+              if (this.roleId == 2) {
+                this.toastr.error('Nombor Kastam tidak Dijumpai', 'Error');
+              }
+            }
+            console.log(resDetail)
+          },
+            err => {
+              waitDialog.close()
+              console.error('Error occurred:', err);
+
+            });
+        },
+          err => {
+            waitDialog.close()
+            this.toastr.error('Nombor Kastam tidak Dijumpai', 'Error');
+            console.error('Error occurred:', err);
+
           });
       }
-      );
+
+
+
     }
   }
 
 
-
   showDetails(row: number) {
     // console.log(row);
-
     this.dataKastamService.getK1Detail1(row).subscribe(x => {
       console.log(x);
       this.k1Detail = x;
@@ -289,8 +485,31 @@ export class DaftarSampelSMKComponent implements OnInit {
         console.log(y);
         this.k1Header = y;
         this.onDateChange();
+
+        if (this.roleId == 1) {
+          this.importerCompanies = this.importerCompanies.filter(importerCompaniesdata => {
+            console.log(this.importerCompanies)
+            const trimmedImporterCode = y.importerCode.trim();
+            return importerCompaniesdata.smkimporterCode == trimmedImporterCode;
+          });
+        }
+
+        else if (this.roleId == 2){
+          this.importerCompanies = this.importerCompanies.filter(importerCompaniesdata => {
+            console.log(this.importerCompanies)
+            const trimmedImporterCode = y.importerCode.trim();
+            return importerCompaniesdata.smkimporterCode == trimmedImporterCode;
+          });
+        }
+
+
       });
     });
+  }
+
+
+  changeImporterCompanies(e: any) {
+    console.log(e.target.value)
   }
 
   handleFileInput(event: any) {
@@ -299,7 +518,10 @@ export class DaftarSampelSMKComponent implements OnInit {
     console.log(this.k1Detail.evidence);
   }
 
+
   addSample() {
+
+    this.daftarClicked = true;
 
     // Check if the error message is displayed
     if (this.showErrorMessage) {
@@ -307,25 +529,14 @@ export class DaftarSampelSMKComponent implements OnInit {
       console.log('Cannot add data. Dry weight exceeds limit.');
       return; // Exit the method without adding data
     }
-
     // const quantity = this.removeCommas(this.formattedQuantity);
     // const calculatedDryWeight = (quantity * this.formattedDRC) / 100;
-
     const statusCodeId = 1;
     const kodStesen = this.sampleForm.get('kodStesen')?.value ?? '';
     const tahun = this.sampleForm.get('tahun')?.value ?? '';
     const nomborKastam = this.sampleForm.get('nomborKastam')?.value ?? '';
     const customNo = kodStesen + tahun + nomborKastam;
-
     this.k1Detail.createdBy = this.loginAs;
-
-    // if (this.roleId == 1) {
-    //   this.k1Detail.creatorRoleId == 1;
-    // }
-
-    // else if (this.roleId == 2) {
-    //   this.k1Detail.creatorRoleId = 2;
-    // }
 
     this.k1Detail.creatorRoleId = this.roleId
     this.k1Detail.customNo = customNo;
@@ -339,11 +550,9 @@ export class DaftarSampelSMKComponent implements OnInit {
     this.k1Detail.companyId = this.sample.companyId;
     this.k1Detail.createdOn = new Date();
     this.k1Detail.isSMK = true;
-
     this.k1Header.customNo = customNo;
     this.k1Header.isSMK = true;
     this.k1Header.companyId = this.sample.companyId;
-
     this.sample.forwarderId = this.user.forwarderId;
     this.sample.createdBy = this.loginAs;
     this.sample.customNo = customNo;
@@ -356,6 +565,7 @@ export class DaftarSampelSMKComponent implements OnInit {
     this.sample.importedDate = this.k1Header.importedDate;
     this.sample.rubberTypeId = this.k1Detail.rubberTypeId;
     this.sample.sampleTypeId = this.k1Detail.sampleTypeId;
+    this.sample.typeCodeId = this.k1Detail.typeCodeId;
     this.sample.samplePropose = this.k1Detail.samplePropose;
     this.sample.driverName = this.k1Header.driverName;
     this.sample.icDriver = this.k1Header.icDriver;
@@ -367,24 +577,22 @@ export class DaftarSampelSMKComponent implements OnInit {
     this.sample.createdOn = new Date();
     this.sample.creatorRoleId = this.k1Detail.creatorRoleId;
 
+    this.sample.importerName = this.k1Detail.importerName;
+    this.sample.importerAddress = this.k1Detail.importerAddress;
+    this.sample.itemDescription = this.k1Detail.itemDescription;
 
     console.log(this.sample)
     console.log(this.k1Detail)
-
     if (this.k1Detail.rubberTypeId == 1) {
       this.daftarSampelService.GetK1DetailByCustomNo(customNo).pipe(
         map(resDetail => resDetail.filter((detail: K1Detail) => detail.itemDescription !== this.k1Detail.itemDescription))
       ).subscribe(filteredResDetail => {
         console.log(filteredResDetail);
-
         this.daftarSampelService.PostK1HeaderSample(this.k1Header, statusCodeId).subscribe(res => {
           this.k1Detail.k1HeaderId = res.k1HeaderId;
-
           this.daftarSampelService.PostK1DetailSample(this.k1Detail, statusCodeId).subscribe(resDetail => {
             this.sample.sampleIdNew = resDetail.k1DetailId;
-
             this.drclimstrainingService.PostLtxSamples(this.sample, statusCodeId).subscribe(() => { });
-
             this.daftarSampelService.PostFileK1Detail(resDetail.k1DetailId, this.file).subscribe(() => {
               console.log('File uploaded successfully');
             },
@@ -412,13 +620,11 @@ export class DaftarSampelSMKComponent implements OnInit {
             });
           });
       });
-
     } else if (this.k1Detail.rubberTypeId == 2) {
       this.daftarSampelService.GetK1DetailByCustomNo(customNo).pipe(
         map(resDetail => resDetail.filter((detail: K1Detail) => detail.itemDescription !== this.k1Detail.itemDescription))
       ).subscribe(filteredResDetail => {
         console.log(filteredResDetail);
-
         this.daftarSampelService.PostK1HeaderSample(this.k1Header, statusCodeId).subscribe(res => {
           this.k1Detail.k1HeaderId = res.k1HeaderId;
           this.daftarSampelService.PostK1DetailSample(this.k1Detail, statusCodeId).subscribe(resDetail => {
@@ -453,16 +659,11 @@ export class DaftarSampelSMKComponent implements OnInit {
       });
     }
 
-
   }
 
-
   checkRequired() {
-
     if (
       (this.formattedDRC == null || this.formattedDRC == 0) ||
-      // (this.k1Detail.rubberTypeId == null || this.k1Detail.rubberTypeId == 0) ||
-      // (this.k1Detail.sampleTypeId == null || this.k1Detail.sampleTypeId == 0) ||
       (this.k1Detail.samplePropose == null || this.k1Detail.samplePropose == '') ||
       (this.k1Header.driverName == null || this.k1Header.driverName == '') ||
       (this.formattedQuantity == null || this.formattedQuantity == '') ||
@@ -477,7 +678,6 @@ export class DaftarSampelSMKComponent implements OnInit {
   onDateChange() {
     const dateValue = new Date(this.k1Header.importedDate);
     let sum;
-
     if (this.roleId == 1) {
       this.authservice.GetCustomOffice(this.user.customOfficeId).subscribe(x => {
         console.log(x);
@@ -490,18 +690,14 @@ export class DaftarSampelSMKComponent implements OnInit {
         // this.calculateAndDisplayDateInfo(dateValue, sum);
         const sumDate = new Date(dateValue.getFullYear(), dateValue.getMonth(), sum);
         this.selectedDateSum = sumDate;
-
         const day = ('0' + sumDate.getDate()).slice(-2); // Add leading zero if needed
         const month = ('0' + (sumDate.getMonth() + 1)).slice(-2); // Add leading zero if needed
         const year = sumDate.getFullYear();
-
         this.notes = `${day}.${month}.${year}`;
         console.log(this.notes)
-
         const today = new Date();
         const daysUntilDeadline = Math.ceil((sumDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
         const daysLate = Math.ceil((today.getTime() - sumDate.getTime()) / (1000 * 60 * 60 * 24));
-
         if (sumDate < today) {
           if (this.customOffice.isNorthen) {
             if (daysLate > 0) {
@@ -515,7 +711,6 @@ export class DaftarSampelSMKComponent implements OnInit {
           this.showRemarks = true; // Display the remarks field
         } else if (daysUntilDeadline <= 3) {
           if (this.customOffice.isNorthen) {
-
             this.notes += ` (Perhatian: Anda mempunyai  ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;
           } else {
             this.notes += ` (Perhatian: Anda mempunyai ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;
@@ -526,27 +721,23 @@ export class DaftarSampelSMKComponent implements OnInit {
         }
         console.log(this.selectedDateSum.toDateString());
       });
-
-    } else if (this.roleId == 2) {
-      if (this.staff.username === 'uip') {
+    } 
+    
+    else if (this.roleId == 2) {
+      if (this.staff.unit === 'UIP') {
         sum = dateValue.getDate() + 14;
-      } else if (this.staff.username === 'uipbkh') {
+      } else if (this.staff.unit === 'UIPBKH') {
         sum = dateValue.getDate() + 7;
       }
-
       // this.calculateAndDisplayDateInfo(dateValue, sum);
       const sumDate = new Date(dateValue.getFullYear(), dateValue.getMonth(), sum);
       this.selectedDateSum = sumDate;
-
       const day = ('0' + sumDate.getDate()).slice(-2); // Add leading zero if needed
       const month = ('0' + (sumDate.getMonth() + 1)).slice(-2); // Add leading zero if needed
       const year = sumDate.getFullYear();
-
       this.notes = `${day}.${month}.${year}`;
-
       const today = new Date();
       const daysUntilDeadline = Math.ceil((sumDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-
       if (sumDate < today) {
         const daysLate = Math.ceil((today.getTime() - sumDate.getTime()) / (1000 * 60 * 60 * 24));
         if (daysLate > 7) {
@@ -554,111 +745,27 @@ export class DaftarSampelSMKComponent implements OnInit {
         }
         this.showRemarks = true; // Display the remarks field
       } else if (daysUntilDeadline <= 3) {
-
         this.notes += ` (Perhatian: Anda mempunyai ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;
-
 
         this.showRemarks = false; // Hide the remarks field
       } else {
         this.showRemarks = false; // Hide the remarks field
       }
-
       console.log(this.selectedDateSum.toDateString());
     }
-
   }
 
   enforceDRCLimit() {
 
-    if (this.formattedDRC > 100) {
-      this.formattedDRC = 0;
+    if (this.formattedDRC && this.formattedQuantity) {
+      if (this.formattedDRC > 100) {
+        this.formattedDRC = 0;
+      }
+      const formattedQuantity = this.removeCommas(this.formattedQuantity);
+      this.dryWeight = (formattedQuantity * this.formattedDRC) / 100;
+      // Check if the dry weight exceeds the database quantity
+      this.showErrorMessage = this.dryWeight > this.k1Header.grossWeight;
     }
-
-    const formattedQuantity = this.removeCommas(this.formattedQuantity);
-    this.dryWeight = (formattedQuantity * this.formattedDRC) / 100;
-
-    // Check if the dry weight exceeds the database quantity
-    this.showErrorMessage = this.dryWeight > this.k1Detail.quantity;
   }
 
 }
-
-
-// calculateAndDisplayDateInfo(dateValue: Date, sum: number | undefined) {
-//   const sumDate = new Date(dateValue.getFullYear(), dateValue.getMonth(), sum);
-//   this.selectedDateSum = sumDate;
-
-//   const day = ('0' + sumDate.getDate()).slice(-2); // Add leading zero if needed
-//   const month = ('0' + (sumDate.getMonth() + 1)).slice(-2); // Add leading zero if needed
-//   const year = sumDate.getFullYear();
-
-//   this.notes = `${day}.${month}.${year}`;
-
-//   const today = new Date();
-//   const daysUntilDeadline = Math.ceil((sumDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-
-//   if (sumDate < today) {
-//     const daysLate = Math.ceil((today.getTime() - sumDate.getTime()) / (1000 * 60 * 60 * 24));
-//     if (daysLate > 7) {
-//       this.notes += ` (Anda telah lewat ${daysLate} hari untuk sampel getah sampai ke makmal G-TACR Sg Petani)`;
-//     }
-//     this.showRemarks = true; // Display the remarks field
-//   } else if (daysUntilDeadline <= 3) {
-
-//     this.notes += ` (Perhatian: Anda mempunyai ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;
-
-
-//     this.showRemarks = false; // Hide the remarks field
-//   } else {
-//     this.showRemarks = false; // Hide the remarks field
-//   }
-
-//   console.log(this.selectedDateSum.toDateString());
-// }
-
-
-
-
-// onDateChangeStaff() {
-//   const dateValue = new Date(this.k1Header.importedDate);
-//   let sum;
-
-//   // Assume this.user.username contains the logged-in username
-//   if (this.staff.username === 'uip') {
-//     sum = dateValue.getDate() + 14;
-//   } else if (this.staff.username === 'uipbkh') {
-//     sum = dateValue.getDate() + 7;
-//   } else {
-//     // Default case: Add 14 days if the username doesn't match 'uip' or 'uipbkh'
-//     sum = dateValue.getDate() + 14;
-//   }
-
-//   const sumDate = new Date(dateValue.getFullYear(), dateValue.getMonth(), sum);
-//   this.selectedDateSum = sumDate;
-
-//   const day = ('0' + sumDate.getDate()).slice(-2); // Add leading zero if needed
-//   const month = ('0' + (sumDate.getMonth() + 1)).slice(-2); // Add leading zero if needed
-//   const year = sumDate.getFullYear();
-
-//   this.notes = `${day}.${month}.${year}`;
-
-//   const today = new Date();
-//   const daysUntilDeadline = Math.ceil((sumDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-
-//   if (sumDate < today) {
-//     this.notes += ` (Anda telah lewat, melebihi ${sum - dateValue.getDate()} hari)`;
-//     this.showRemarks = true; // Display the remarks field
-//   } else if (daysUntilDeadline <= 3) {
-//     this.notes += ` (Perhatian: Anda mempunyai ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;
-//     this.showRemarks = false; // Hide the remarks field
-//   } else {
-//     this.showRemarks = false; // Hide the remarks field
-//   }
-
-//   console.log(this.selectedDateSum.toDateString());
-// }}
-
-
-
-
-

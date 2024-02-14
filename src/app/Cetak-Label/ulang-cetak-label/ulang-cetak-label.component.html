@@ -29,9 +29,11 @@
           <td>{{ (page - 1) * ip + i + 1 }}</td>
           <td>{{sample.customNo}}</td>
           <td>{{sample.importedDate | date: 'dd-MM-yyyy' }}</td>
-          <td>{{sample.sampleType}}</td>
+          <!-- <td>{{sample.sampleType}}</td> -->
+          <td>{{sample.typeCode}}</td>
           <td>{{sample.quantity}}</td>
-          <td>{{ sample.importerName }}{{ sample.companyName }}</td>
+          <td>{{ sample.importerName }}</td>
+          <!-- <td>{{ sample.importerName }}{{ sample.companyName }}</td> -->
         </tr>
       </table><br>
       <div class="text-center col-12" *ngIf="!lepassubmit">

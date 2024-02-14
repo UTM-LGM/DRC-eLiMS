@@ -13,6 +13,8 @@ import { SampleType } from '../models/sampleType';
 import { RubberType } from '../models/rubberType';
 import { UipbkhRefRunNo } from '../models/uipbkhRefRunNo';
 import { K1Detail } from '../models/k1Detail';
+import { TestMethod } from '../models/testMethod';
+import { TypeCode } from '../models/typeCode';
 
 @Injectable({
   providedIn: 'root'
@@ -40,19 +42,30 @@ export class ElimsService {
   }
 
 
-  GetRefSampleTypeByRubberType(rubberTypeId: number): Observable<SampleType> {
-    return this.http.get<SampleType>(this.baseApiUrl + '/api/RefSampleTypes/GetRefSampleTypeByRubberType/' + rubberTypeId);
-  }
+  // GetRefSampleTypeByRubberType(rubberTypeId: number): Observable<SampleType> {
+  //   return this.http.get<SampleType>(this.baseApiUrl + '/api/RefSampleTypes/GetRefSampleTypeByRubberType/' + rubberTypeId);
+  // }
 
+  GetRefSampleTypeByRubberType(rubberTypeId: number): Observable<TypeCode> {
+    return this.http.get<TypeCode>(this.baseApiUrl + '/api/TypeCodes/GetRefSampleTypeByRubberType/' + rubberTypeId);
+  }
 
   GetCompanies(forwarderId: number) {
     return this.http.get<Company>(this.baseApiUrl + '/api/Companies/GetCompanies/' + forwarderId);
+  }
+ 
+  GetCompaniesbySMKImportersCode(smkImportersCode: string) {
+    return this.http.get<Company>(this.baseApiUrl + '/api/Companies/GetCompaniesbySMKImportersCode/' + smkImportersCode);
   }
 
   GetElimsBankCodes() {
     return this.http.get<BankCode>(this.baseApiUrl + '/api/BankCodes/GetElimsBankCodes');
   }
 
+  GetKeteranganByKodStesen(kodStesen:string){
+    return this.http.get(this.baseApiUrl + '/api/StationCodes/GetKeteranganByKodStesen/'+kodStesen);
+    
+  }
 
   GetElimsSamplesByUsername(username: String, statusCodeId: number): Observable<Sample[]> {
     // console.log(statusCodeId)
@@ -74,9 +87,9 @@ getElimsSample(sampleId: number): Observable<any> {
 
 
 
-
-
-
+GetRefTestMethodByRubberType(rubberTypeId: number): Observable<TestMethod> {
+  return this.http.get<TestMethod>(this.baseApiUrl + '/api/RefTestMethods/GetRefTestMethodByRubberType/' + rubberTypeId);
+}
 
 
 
@@ -144,4 +157,20 @@ getElimsSample(sampleId: number): Observable<any> {
 
   }
 
+
+
+
+  
+  PutDaftarTerimaSampel(sampleId: number, k1Detail: K1Detail) {
+    return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutDaftarTerimaSampel/' + sampleId, k1Detail);
+  }
+
+
+  GetElimsBatchesWithSamplesStatusCode6() {
+    return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetBatchesWithSamplesStatusCode6/withSamplesStatusCode6');
+  }
+
+
+
+  
 }

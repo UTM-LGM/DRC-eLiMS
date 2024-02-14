@@ -1,43 +1,128 @@
 <div class="container mb-3">
-    <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
-        <mat-card-content>
-            <h1 class="attractive-title">Cetak Lembaran Kerja</h1>
-            <p>Senarai batch</p>
+  <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
+    <mat-card-content>
+      <h1 class="attractive-title">Cetak Lembaran Kerja</h1>
+      <h3 *ngIf="!lepassubmit">Senarai Batch</h3>
+      <h3 *ngIf="lepassubmit">Berikut adalah senarai sampel yang dipilih untuk cetak worksheet.</h3>
 
-            <div class="table-responsive">
+      <div class="table-responsive">
 
-                <table class="table table-striped">
-                  <thead>
-                    <tr class="tableheader">
-                      <th scope="col"></th>
-                      <th scope="col">Batch Id</th>
-                      <th scope="col">Forwarding Agent</th>
-                      <th scope="col">Bank</th>
-                      <th scope="col">No Cek</th>
-                      <th scope="col">Amaun </th>
-                      <th scope="col">Tarikh Hantar</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let batch of batches; let i = index">
-                      <td>
-                        <a [routerLink]="['/daftar-terima-sampel', batch.batchId]"
-                          (click)="sampleList(batch.batchId)">Select</a>
-                      </td>
-      
-      
-                      <td>{{batch.batchId}}</td>
-                      <td>{{batch.forwarderName}}{{batch.unitName}} </td>
-                      <td>{{batch.bankCode}} </td>
-                      <td>{{batch.chequeNo}}</td>
-                      <td>{{batch.chequeAmount}} </td>
-                      <td>{{batch.sentOn | date:"dd/MM/yyy"}} </td>
-                    </tr>
-      
-                  </tbody>
-                </table>
-              </div>
-              
-        </mat-card-content>
-    </mat-card>
+        <table class="table table-striped" *ngIf="!lepassubmit">
+          <thead>
+            <tr class="tableheader">
+              <th scope="col"></th>
+              <th scope="col">Batch Id</th>
+              <th scope="col">Forwarding Agent</th>
+              <th scope="col">Bank</th>
+              <th scope="col">No Cek</th>
+              <th scope="col">Amaun </th>
+              <th scope="col">Tarikh Hantar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let batch of batches; let i = index">
+
+              <td>
+                <a href="javascript:void(0)" (click)="sampleList(batch.batchId)">Select</a>
+              </td>
+
+              <td>{{batch.batchId}}</td>
+              <td>{{batch.forwarderName}}{{batch.unitName}} </td>
+              <td>{{batch.bankCode}} </td>
+              <td>{{batch.chequeNo}}</td>
+              <td>{{batch.chequeAmount}} </td>
+              <td>{{batch.sentOn | date:"dd/MM/yyy"}} </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+
+
+
+
+      <div *ngIf="samples.length > 0">
+
+
+        <!-- <p style="color: red;">{{ unregisteredSampleCount }} sampel belum didaftar terima</p> -->
+
+
+        <div class="table-responsive">
+
+          <table class="table table-striped">
+            <thead>
+              <tr class="tableheader">
+                <th scope="col"></th>
+                <th scope="col" *ngIf="!lepassubmit">
+                  <input type="checkbox" [(ngModel)]="checkAll" (change)="checkAllChanged()">
+                </th>
+                <th scope="col">Sample Id</th>
+                <th scope="col">No Kastam</th>
+                <th scope="col">Syarikat</th>
+                <th scope="col">Jenis</th>
+                <th scope="col">Tarikh Import </th>
+                <th scope="col">Kuantiti(kg)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let sample of samples; let i = index">
+
+                <th scope="row" *ngIf="!lepassubmit">
+                  <input type="checkbox" [(ngModel)]="sample.checked" (change)="checkSingleChanged()"
+                    [value]="sample.k1HeaderId">
+                </th>
+
+                <td></td>
+                <td>{{sample.k1DetailId}}</td>
+                <td>{{sample.customNo}} </td>
+                <td>{{sample.companyName}}{{sample.importerName}} </td>
+                <td>{{sample.sampleType}}</td>
+                <td>{{sample.importedDate | date:"dd/MM/yyy"}} </td>
+                <td>{{sample.quantity}} </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <button *ngIf="!lepassubmit" type="submit" (click)="displaySelected()" class="btn btn-primary">Pilih</button>
+
+
+
+      <div *ngIf="lepassubmit" align="center">
+        <button id="download-pdf" (click)="generatePDF()" type="submit"
+          class="btn btn-primary mr-5">Cetak</button>
+      </div><br>
+
+
+
+
+      <div *ngIf="lepassubmit" class="card">
+        <h4 class="card-header">Pengesahan Cetakan label</h4>
+        <div class="card-body">
+          <p class="card-text"><b><i>**Sila pastikan pengesahan cetakan label dibuat selepas mencetak Worksheet.</i></b>
+          </p>
+          <p class="card-text">Adakah worksheet telah berjaya dicetak?</p>
+
+          <span>
+            <button type="submit" class="btn btn-primary btn-block" (click)="onYesClick()">Ya</button>
+            <span style="margin-right: 10px;"></span><!-- This creates space -->
+            <button type="submit" class="btn btn-danger btn-block" (click)="onNoClick()">Tidak</button>
+          </span>
+
+          <br><br>
+          <label style="color:red;" *ngIf="mesYaTidak=='yes'">Pengesahan Cetakan Label: 'YA' telah berjaya
+            direkodkan</label>
+          <label style="color:red;" *ngIf="mesYaTidak=='tidak'">Pengesahan Cetakan Label: 'TIDAK' telah berjaya
+            direkodkan</label>
+        </div>
+      </div>
+
+
+
+    </mat-card-content>
+  </mat-card>
 </div>

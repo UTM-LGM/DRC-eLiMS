@@ -107,29 +107,33 @@ export class TarikhSampelDihantarComponent {
       })
     }
 
-    if (this.roleId == 1) {
-
-      this.sampleForm = this.formBuilder.group({
-        batchId: ['', Validators.required],
-        date: ['', Validators.required],
-        delivery: ['', Validators.required],
-        // courierServices: [''],
-        // trackingNo: [''],
-      });
-    }
 
 
-    if (this.roleId == 2) {
 
-      this.sampleForm = this.formBuilder.group({
-        date: ['', Validators.required],
-        delivery: ['', Validators.required],
-        // courierServices: [''],
-        // trackingNo: [''],
-        uipRegNo: [''],
 
-      });
-    }
+    // if (this.roleId == 1) {
+
+    //   this.sampleForm = this.formBuilder.group({
+    //     batchId: ['', Validators.required],
+    //     date: ['', Validators.required],
+    //     delivery: ['', Validators.required],
+    //     courierServices: [''],
+    //     trackingNo: [''],
+    //   });
+    // }
+
+
+    // if (this.roleId == 2) {
+
+    //   this.sampleForm = this.formBuilder.group({
+    //     date: ['', Validators.required],
+    //     delivery: ['', Validators.required],
+    //     courierServices: [''],
+    //     trackingNo: [''],
+    //     uipRegNo: [''],
+
+    //   });
+    // }
 
     // this.route.params.subscribe((params) => {
     //   const batchId = params['batchId'];
@@ -137,6 +141,7 @@ export class TarikhSampelDihantarComponent {
     //     this.batch.batchId = batchId;
     //   } else { }
     // });
+
 
 
   }
@@ -186,138 +191,111 @@ export class TarikhSampelDihantarComponent {
 
   updateBatch() {
 
-    if (this.sampleForm.invalid) {
-      this.toastr.warning('Sila isi semua ruangan yang diperlukan');
-      return;
-    }
 
+    if (this.checkRequired()) {
 
-    if (this.roleId == 1) {
-      const addTarikhSampelDihantar = this.hantarSampelService.PostTarikhSampelDihantar(this.batch);
-      const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
-      const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
+      if (this.roleId == 1) {
+        const addTarikhSampelDihantar = this.hantarSampelService.PostTarikhSampelDihantar(this.batch);
+        const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
+        const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
 
-      forkJoin([
-        addTarikhSampelDihantar,
-        updateLtxTarikhSampelDihantar,
-        updateBRTarikhSampelDihantar
-      ]).subscribe(
-        {
-          next: ((res: any[]) => {
-            this.toastr.success('Data berjaya disimpan', 'Berjaya', {
-              timeOut: 3000,
+        forkJoin([
+          addTarikhSampelDihantar,
+          updateLtxTarikhSampelDihantar,
+          updateBRTarikhSampelDihantar
+        ]).subscribe(
+          {
+            next: ((res: any[]) => {
+              this.toastr.success('Data berjaya disimpan', 'Berjaya', {
+                timeOut: 3000,
+              }),
+
+                setTimeout(() => {
+                  window.location.reload();
+                }, 1000);
+
+            }),
+            error: (e) => {
+              this.toastr.error('Maklumat gagal dikemaskini');
+            }
+          }
+        );
+      }
+
+      else if (this.roleId == 2) {
+
+        const addTarikhSampelDihantar = this.hantarSampelService.PostUipTarikhSampelDihantar(this.batch);
+        const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
+        const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
+
+        forkJoin([
+          addTarikhSampelDihantar,
+          updateLtxTarikhSampelDihantar,
+          updateBRTarikhSampelDihantar
+        ]).subscribe(
+          {
+            next: ((res: any[]) => {
+              this.toastr.success('Data berjaya disimpan', 'Berjaya', {
+                timeOut: 3000,
+              }),
+
+                setTimeout(() => {
+                  window.location.reload();
+                }, 1000);
+
             }),
 
-              setTimeout(() => {
-                window.location.reload();
-              }, 1000);
-
-          }),
-          error: (e) => {
-            this.toastr.error('Maklumat gagal dikemaskini');
+            error: (e) => {
+              this.toastr.error('Maklumat gagal dikemaskini');
+            }
           }
-        }
-      );
+        );
+      }
     }
-
-    else if (this.roleId == 2) {
-
-      const addTarikhSampelDihantar = this.hantarSampelService.PostUipTarikhSampelDihantar(this.batch);
-      const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
-      const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
-
-      forkJoin([
-        addTarikhSampelDihantar,
-        updateLtxTarikhSampelDihantar,
-        updateBRTarikhSampelDihantar
-      ]).subscribe(
-        {
-          next: ((res: any[]) => {
-            this.toastr.success('Data berjaya disimpan', 'Berjaya', {
-              timeOut: 3000,
-            }),
-
-              setTimeout(() => {
-                window.location.reload();
-              }, 1000);
-
-          }),
-
-          error: (e) => {
-            this.toastr.error('Maklumat gagal dikemaskini');
-          }
-        }
-      );
-    }
-
-
-
 
   }
 
 
+  checkRequired() {
 
+      if (
 
-
-  // updateBatch() {
-
-  //   if (this.sampleForm.invalid) {
-  //     this.toastr.warning('Sila isi semua ruangan yang diperlukan');
-  //     return;
-  //   }
-
-  //   const addTarikhSampelDihantar$ = this.hantarSampelService.PostTarikhSampelDihantar(this.batch);
-  //   const updateLtxTarikhSampelDihantar$ = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
-  //   const updateBRTarikhSampelDihantar$ = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
-
-  //   forkJoin([
-  //     addTarikhSampelDihantar$,
-  //     updateLtxTarikhSampelDihantar$,
-  //     updateBRTarikhSampelDihantar$
-  //   ]).pipe(
-  //     tap(() => {
-  //       this.toastr.success('Maklumat telah dikemaskini!');
-  //     })
-  //   ).subscribe(
-  //     (res: any[]) => {
-  //     },
-  //     (error) => {
-  //       this.toastr.error('Maklumat gagal dikemaskini');
-  //     }
-  //   );
-
-  // }
-
-
-  changeDelivery(e: any) {
-
-    
-
-    if (e.target.value == "Perkhidmatan Kurier") {
-      this.showDelivery = true
-    }
-    else if (e.target.value == "Fizikal") {
-      this.showDelivery = false     
-       this.batch.courierServices = ""
-      this.batch.trackingNo = ""
+        // (this.batch.uipRegNo == null || this.batch.uipRegNo == '') ||
+        (this.batch.dateSampleDelivered == null || this.batch.dateSampleDelivered == '') ||
+        (this.batch.delivery == null || this.batch.delivery == '') 
+        // (this.batch.courierServices == null || this.batch.courierServices == '') ||
+        // (this.batch.trackingNo == null || this.batch.trackingNo == '')
+      ) {
+        this.toastr.warning("Sila isi semua maklumat")
+        return false;
+      }
+      return true;
     }
 
 
-    
-  }
+    changeDelivery(e: any) {
+
+      if (e.target.value == "Perkhidmatan Kurier") {
+        this.showDelivery = true
+      }
+      else if (e.target.value == "Fizikal") {
+        this.showDelivery = false
+        this.batch.courierServices = ""
+        this.batch.trackingNo = ""
+      }
+    }
 
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    applyFilter(event: Event) {
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    }
+
+    viewSample(k1DetailId: number) {
+      this.router.navigate(['sample/view-sample/' + k1DetailId])
     }
   }
-
-  viewSample(k1DetailId: number) {
-    this.router.navigate(['sample/view-sample/' + k1DetailId])
-  }
-
-}

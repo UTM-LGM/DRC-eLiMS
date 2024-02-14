@@ -138,8 +138,13 @@ export class ViewKeputusanUjianComponent implements OnInit {
     window.open("memo/" + this.sample.batchId);
   }
 
+  // viewSuratIringan(): void {
+  //   window.open("surat-iringan/" + this.sample.batchId);
+  // }
+
+
   viewSuratIringan(): void {
-    window.open("surat-iringan/" + this.sample.batchId);
+    window.open("surat-iringan/" + this.sample.batchId );
   }
 
   viewLampiran(): void {

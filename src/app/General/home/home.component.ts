@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { ElimsService } from '../../services/elims.service';
 import { UserService } from 'src/app/User/user.service';
 import { Staff } from 'src/app/models/staff';
+import { Company } from 'src/app/models/company';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,7 @@ export class HomeComponent implements OnInit {
   user: userDTO = {} as userDTO;
   staff: Staff = {} as Staff
   forwarder: Forwarder = {} as Forwarder
+  company: Company = {} as Company
   pipe = new DatePipe('en-US');
   today = new Date();
   changedDate = '';
@@ -26,6 +28,7 @@ export class HomeComponent implements OnInit {
   roleForwarder: boolean
   roleUip: boolean
   roleGtacr: boolean
+  roleImporter : boolean
 
 
   constructor(
@@ -58,7 +61,19 @@ export class HomeComponent implements OnInit {
         this.forwarder = res
       })
     }
-    else if (this.roleId == 2 || 3) {
+
+
+      else if(this.roleId == 13){
+      this.username = this.authService.getSessionUsername()
+      this.authService.getImporter(this.username).subscribe(res => {
+        this.authService.changeUser(res);
+        this.authService.changeIsLoggedIn(true);
+        this.forwarder = res
+        this.roleImporter = true
+      })    
+    }
+    
+    else if (this.roleId == 2 || this.roleId == 3) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authService.changeUser(res);
         this.staff = res
@@ -66,6 +81,8 @@ export class HomeComponent implements OnInit {
         this.roleUip = true
       })
     }
+
+  
 
   }
 

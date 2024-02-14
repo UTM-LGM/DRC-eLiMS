@@ -10,6 +10,7 @@
   th {
     color: white;
     font-weight: 300;
+    background-color: #3e4141;
   }
   
   .mat-icon {
@@ -37,3 +38,12 @@
     background-color: #73726f;
     color: #ffffff;
   }
+
+  .company-group {
+    page-break-before: always;
+  }
+  
+  .company-group.first-group {
+    page-break-before: auto;
+  }
+  

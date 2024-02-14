@@ -19,6 +19,7 @@ export class AppComponent {
   registerPage: boolean = false
   staffrole:any
   isPrintMemoRoute: boolean = false;
+  isLampiran: boolean = false;
 
   batches: Batch[] = [];
   batchId: number;

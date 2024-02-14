@@ -15,6 +15,8 @@ import { UipMemoRunNo } from '../../models/uipMemoRunNo';
 import { HantarSampelService } from '../hantar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
 import { K1Detail } from 'src/app/models/k1Detail';
+import * as html2pdf from 'html2pdf.js';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-memo',
@@ -45,7 +47,7 @@ export class MemoComponent {
   uipRefRunNoes: any
   uipbkhRefRunNoes: any
   sampleCategory: string
-  
+
 
   selectedCheckboxCount: number = 0;
   selectedRubberType: string = "";
@@ -56,11 +58,15 @@ export class MemoComponent {
   uipSampleRunNo: UipSampleRunNo = {} as UipSampleRunNo
   uipMemoRunNoes: any
   uipSampleRunNoes: any
-  emailRecipient: any[]=[];
+  emailRecipient: any[] = [];
   file: any | null
   k1Detail: K1Detail = {} as K1Detail
-  emailRecord : any[] = []
-  sampleCode:string
+  emailRecord: any[] = []
+  sampleCode: string
+  isPreview: boolean = true;
+  signatureImageBase64: SafeResourceUrl;
+  signaturePath: string;
+
 
   @ViewChild('pdfContent') pdfContent!: ElementRef;
   @ViewChild('pdfContent2') pdfContent2!: ElementRef;
@@ -73,6 +79,7 @@ export class MemoComponent {
     private authService: AuthService,
     private hantarSampelService: HantarSampelService,
     private userService: UserService,
+    private sanitizer: DomSanitizer,
   ) {
 
   }
@@ -93,6 +100,9 @@ export class MemoComponent {
       this.authService.changeUser(res);
       this.staff = res
 
+      // this.signaturePath = res.signature
+      this.signaturePath = "https://api02.lgm.gov.my/ApiElims/wwwroot/signature/sign_ezmy.jpg"
+
       this.route.params.subscribe(param => {
         this.batchId = param['batchId'];
 
@@ -103,7 +113,7 @@ export class MemoComponent {
           this.samples = data;
           // this.sampleCode = data.rub.sampleCode
           // this.sampleCategory = data.rub.sampleCategory
-          
+
           console.log(this.samples)
           this.selectedCheckboxCount = this.samples.length; // update the samples array with the response data
           //this.selectedRubberType = this.samples[0].rubberType
@@ -118,15 +128,15 @@ export class MemoComponent {
         console.log(this.batch)
       })
 
-      this.hantarSampelService.getEmailStaff(this.staff.staffId).subscribe( emelRes => {
+      this.hantarSampelService.getEmailStaff(this.staff.staffId).subscribe(emelRes => {
         if (Array.isArray(emelRes) && emelRes.length > 0) {
           emelRes.forEach(item => {
             if (item.emailLgm) {
               this.emailRecipient.push(item.emailLgm);
             }
           });
-        }
-      })
+        }
+      })
     });
 
 
@@ -225,6 +235,8 @@ export class MemoComponent {
 
   // }
 
+
+
   generatePDF() {
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth() - 40;
@@ -283,29 +295,72 @@ export class MemoComponent {
     });
 
     this.emailRecipient = ["nurizzatul@lgm.gov.my"]
-  
+
 
     console.log(this.emailRecipient)
-  
-this.hantarSampelService.notificationMemo(this.staff.staffId, this.batchId, this.emailRecipient).subscribe(
-  email => {
-    console.log("Email for request status 009 has been sent to recipient");
-  },
-  emailErr => {
-    console.log("Email for request status 009 failed to send to the recipient");
-  }
-);
+
+    this.hantarSampelService.notificationMemo(this.staff.staffId, this.batchId, this.emailRecipient).subscribe(
+      email => {
+        console.log("Email for request status 009 has been sent to recipient");
+      },
+      emailErr => {
+        console.log("Email for request status 009 failed to send to the recipient");
+      }
+    );
 
 
   }
 
 
+
+  generatePdf1(): void {
+    this.isPreview = false;
+    const element = document.getElementById('pdfContent');
+
+    // Check if the element is null before proceeding
+    if (!element) {
+      console.error("Element with ID 'pdfContent' not found.");
+      return;
+    }
+
+    // Set font size inline in the HTML content
+    const content = element.innerHTML;
+    const styledContent = `<div style="font-size: 12px;">${content}</div>`;
+
+    var opt = {
+      margin: [1.5, 0.5, 0.5, 0.5],
+      filename: 'suratIringan.pdf',
+      html2canvas: { scale: 2 },
+      jsPDF: {
+        unit: 'in',
+        format: 'A4',
+        orientation: 'portrait',
+        font: 'times',
+      },
+    };
+
+    // Replace the original content with the modified content
+    element.innerHTML = styledContent;
+
+    // Generate PDF
+    html2pdf().from(element).set(opt).outputPdf().then((pdfBlob) => {
+      // Restore the original content
+      element.innerHTML = content;
+
+      // Save the blob or trigger a download as needed
+      const downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(pdfBlob);
+      downloadLink.download = 'suratIringan.pdf';
+      downloadLink.click();
+    }); html2pdf(element, opt);
+
+
+  }
 
   calculateSelectedCheckboxCount() {
     // Assuming that your samples have a unique "Bil" value
     this.selectedCheckboxCount = this.samples.length;
   }
-
 
 
   // images

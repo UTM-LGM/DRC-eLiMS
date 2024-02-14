@@ -24,11 +24,10 @@ export class ProfileComponent implements OnInit {
   forwarder: Forwarder = {} as Forwarder
   file: any | null
 
-  baseApiUrlElimsSign = environment.baseApiUrlElimsSign;
+  // baseApiUrlElimsSign = environment.baseApiUrlElimsSign;
   
   constructor(
     private authService: AuthService,
-    private elimsService: ElimsService,
     private router: Router,
     private userService: UserService,
 
@@ -79,7 +78,7 @@ export class ProfileComponent implements OnInit {
   }
 
     viewSign(path: string): void {
-      window.open(environment.baseApiUrlElimsSign  + this.staff.staffId + "_" +path, "_blank");
+      window.open(environment.baseApiUrlElimsSign +path, "_blank");
     }
 
     

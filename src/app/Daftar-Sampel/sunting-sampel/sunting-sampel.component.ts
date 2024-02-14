@@ -34,6 +34,7 @@ export class SuntingSampelComponent implements OnInit {
   blockRubberTypes: any
 
   showSampleTypes: boolean = false
+  showTypeCodes:boolean = false
   showDarat: boolean = false
   showPelabuhan: boolean = false
 
@@ -50,6 +51,7 @@ export class SuntingSampelComponent implements OnInit {
   customOffice: any;
   file: any | null
   sampleTypes: any
+  typeCodes: any
   rubberTypes: any
 
   roleId: any
@@ -156,18 +158,32 @@ export class SuntingSampelComponent implements OnInit {
               this.showSmk = false
             }
 
+            // if (this.sample.rubberTypeId == 1) {
+            //   this.elimsService.GetRefSampleTypeByRubberType(1).subscribe(data => {
+            //     this.sampleTypes = data
+            //   })
+
+            // }
+
+            // else if (this.sample.rubberTypeId == 2) {
+            //   this.elimsService.GetRefSampleTypeByRubberType(2).subscribe(data => {
+            //     this.sampleTypes = data
+            //   })
+            // }
+
             if (this.sample.rubberTypeId == 1) {
               this.elimsService.GetRefSampleTypeByRubberType(1).subscribe(data => {
-                this.sampleTypes = data
+                this.typeCodes = data
               })
 
             }
 
             else if (this.sample.rubberTypeId == 2) {
               this.elimsService.GetRefSampleTypeByRubberType(2).subscribe(data => {
-                this.sampleTypes = data
+                this.typeCodes = data
               })
             }
+
 
             this.elimsService.GetRefRubberTypes().subscribe(data => {
               this.rubberTypes = data
@@ -189,19 +205,33 @@ export class SuntingSampelComponent implements OnInit {
   changeJenisGetah(e: any) {
 
 
+    // if (e.target.value == 1) {
+    //   this.elimsService.GetRefSampleTypeByRubberType(1).subscribe(data => {
+    //     this.sampleTypes = data
+    //   })
+
+    // }
+    // else if (e.target.value == 2) {
+    //   this.elimsService.GetRefSampleTypeByRubberType(2).subscribe(data => {
+    //     this.sampleTypes = data
+    //   })
+
+    // }
+    // this.showSampleTypes = true
+
     if (e.target.value == 1) {
       this.elimsService.GetRefSampleTypeByRubberType(1).subscribe(data => {
-        this.sampleTypes = data
+        this.typeCodes = data
       })
 
     }
     else if (e.target.value == 2) {
       this.elimsService.GetRefSampleTypeByRubberType(2).subscribe(data => {
-        this.sampleTypes = data
+        this.typeCodes = data
       })
 
     }
-    this.showSampleTypes = true
+    this.showTypeCodes = true
 
   }
 
@@ -254,6 +284,7 @@ export class SuntingSampelComponent implements OnInit {
 
       this.k1Detail.rubberTypeId = this.sample.rubberTypeId
       this.k1Detail.sampleTypeId = this.sample.sampleTypeId
+      this.k1Detail.typeCodeId = this.sample.typeCodeId
       this.k1Detail.samplePropose = this.sample.samplePropose
       this.k1Detail.quantity = this.sample.quantity
       // this.k1Detail.quantity = this.removeCommas(this.formattedQuantity);

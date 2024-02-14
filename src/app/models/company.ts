@@ -14,4 +14,5 @@ export interface Company {
     username: string;
     password: string;
     importerName:string;
+    smkimportersCode: string;
 }

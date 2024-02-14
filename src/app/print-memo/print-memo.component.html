@@ -1,4 +1,4 @@
-<div class="container mb-3 " style="page-break-after: always"></div>
+<!-- <div class="container mb-3 " style="page-break-after: always"></div> -->
 <div align="left"><br>
     <button (click)="generatePDF()" class="btn btn-primary mr-5">Cetak</button>
 </div><br>
@@ -20,7 +20,7 @@
                         <img src="../../assets/image/headerLetter.jpg" alt="header" class="header-image">
                     </div>
                     <div class="font">
-                        <p>Kepada : Pengurus G-TAR Sg.Petani</p>
+                        <p>Kepada : Pengurus G-TACR Sg.Petani</p>
                         <p>Daripada : Penolong Pegawai Penguatkuasa</p>
                         <p>Rujukan: {{batch.uipRegNo}}</p>
                         <p class="spacing">Tarikh: {{ batch.sentOn | date: 'dd MMMM yyyy' }}</p>
@@ -79,6 +79,12 @@
                         <span><b>“BERKHIDMAT UNTUK NEGARA”</b></span><br>
                         <span><b>“KREATIF, INOVATIF, PROGRESIF”</b></span><br><br>
                         <p>Saya yang menjalankan amanah,</p><br>
+
+                        <!-- <span><div class="col-sm-8">
+                            <img src="https://api02.lgm.gov.my/ApiElims/wwwroot/signature/sign_ezmy.jpg" alt="sign_ezmy" style="width: 100px; height: auto;">
+                        </div></span> -->
+
+                       
                         <span><b>({{staff.staffName}})</b></span><br>
                         <span>{{staff.position}}</span><br>
                         <span>Unit Inspektorat dan Penguatkuasaan</span><br>

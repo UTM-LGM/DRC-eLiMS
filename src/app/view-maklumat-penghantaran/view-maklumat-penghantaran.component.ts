@@ -1,13 +1,9 @@
 import { Component } from '@angular/core';
 import { Batch } from '../models/batch';
 import { HantarSampelService } from '../Hantar-Sampel/hantar-sampel.service';
-import { sample } from 'rxjs';
 import { UserService } from '../User/user.service';
 import { AuthService } from '../services/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GetahBongkahService } from '../services/getah-bongkah.service';
-import { FormBuilder } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { ElimsService } from '../services/elims.service';
 import { DrclimstrainingService } from '../services/drclimstraining.service';
 import { Sample } from '../models/sample';
@@ -171,14 +167,15 @@ export class ViewMaklumatPenghantaranComponent {
 
 
   checkSingleChanged() {
-    const selectedBatches = [];
-    for (const batch of this.batches) {
+    const selectedBatches: any[] = [];
+    for (const batch of this.batches as any[]) {
       if (batch.checked) {
         selectedBatches.push(batch);
       }
     }
     console.log(selectedBatches);
   }
+  
 
 
   generatePDFWithQRCode() {
@@ -342,6 +339,141 @@ export class ViewMaklumatPenghantaranComponent {
 
 
 
+
+
+  // generatePDFWithQRCode() {
+
+  //   const selectedBatches = this.batches.filter((batch: { checked: any; }) => batch.checked);
+  //   if (selectedBatches.length === 0) {
+  //     alert('Please select at least one sample.');
+  //     return;
+  //   }
+
+  //   const doc = new jsPDF();
+  //   const pageHeight = doc.internal.pageSize.height;
+  //   const boxHeight = 35;
+  //   const boxWidth = 60;
+  //   const qrCodeSize = 25;
+  //   const fontSize = 10;
+  //   const boxSpacing = 0;
+  //   let y = 13;
+  //   let x = 15;
+
+  //   // Set font to Courier Monospace
+  //   doc.setFont('courier', 'normal');
+
+  //   for (let i = 0; i < selectedBatches.length; i += 3) {
+  //     const batch1 = selectedBatches[i];
+  //     const batch2 = selectedBatches[i + 1];
+
+  //     // Check if boxes fit on the current page
+  //     if (y + boxHeight > pageHeight - 20) {
+  //       doc.addPage();
+  //       y = 20;
+  //     }
+
+  //     // Draw boxes
+  //     doc.setDrawColor(0);
+  //     doc.setFillColor(255, 255, 255);
+  //     doc.rect(x, y, boxWidth, boxHeight, 'FD');
+
+  //     if (batch2) {
+  //       doc.rect(x + boxWidth, y, boxWidth, boxHeight, 'FD');
+  //     }
+
+
+  //     // Create QR codes 1
+  //     const qrCode1 = QRCode(0, 'L');
+
+  //     if (this.roleId == 1) {
+  //       qrCode1.addData(batch1.batchId.toString());
+  //     }
+
+  //     else if (this.roleId == 2) {
+  //       qrCode1.addData(batch1.batchId.toString() + "- UIP");
+  //     }
+
+  //     qrCode1.make();
+  //     const qrCodeImgData1 = qrCode1.createDataURL(qrCodeSize);
+
+
+  //     // Create QR codes 2
+  //     let qrCodeImgData2;
+  //     if (batch2) {
+  //       const qrCode2 = QRCode(0, 'L');
+
+  //       if (this.roleId == 1) {
+  //         qrCode2.addData(batch2.batchId.toString());
+  //       } else if (this.roleId == '2') {
+  //         qrCode2.addData(batch2.batchId.toString() + "- UIP");
+  //       }
+
+  //       qrCode2.make();
+  //       qrCodeImgData2 = qrCode2.createDataURL(qrCodeSize);
+  //     }
+
+
+  //     // Add QR code images to PDF
+  //     doc.addImage(qrCodeImgData1, 'PNG', x + 17, y + 3, qrCodeSize, qrCodeSize);
+  //     if (qrCodeImgData2) {
+  //       doc.addImage(qrCodeImgData2, 'PNG', x + boxWidth + 17, y + 3, qrCodeSize, qrCodeSize);
+  //     }
+
+  //     // Add text to PDF
+  //     doc.setFontSize(fontSize);
+
+
+  //     if (this.roleId == 1) {
+  //       if (batch1.batchId) {
+  //         doc.text("Batch Id : " + `${batch1.batchId}`, x + 16, y + 30);
+  //       }
+  //     }
+
+  //     else if (this.roleId == 2) {
+  //       if (batch1.batchId) {
+  //         doc.text("Batch Id : " + `${batch1.batchId} - UIP`, x + 16, y + 30);
+  //       }
+  //     }
+
+
+  //     if (batch2) {
+
+  //       if (this.roleId == 1) {
+  //         if (batch2.batchId) {
+  //           doc.text("Batch Id : " + `${batch2.batchId}`, x + boxWidth + 16, y + 30);
+  //         }
+  //       } else if (this.roleId == 2) {
+  //         if (batch2.batchId) {
+  //           doc.text("Batch Id : " + `${batch2.batchId} - UIP`, x + boxWidth + 16, y + 30);
+  //         }
+  //       }
+  //     }
+
+
+  //     // if (batch3) {
+
+  //     //   if (this.roleId == 1) {
+  //     //     if (batch3.batchId) {
+  //     //       doc.text("Batch Id : " + `${batch3.batchId}`, x + 2 * boxWidth + 16, y + 30);
+  //     //     }
+  //     //   }
+
+  //     //   else if (this.roleId == 2) {
+  //     //     if (batch3.batchId) {
+  //     //       doc.text("Batch Id : " + `${batch3.batchId} - UIP`, x + 2 * boxWidth + 16, y + 30);
+  //     //     }
+  //     //   }
+  //     // }
+
+  //     y += boxHeight + 0; // Change the box spacing here
+  //   }
+
+  //   const pdfBlob = doc.output('blob');
+  //   const pdfUrl = URL.createObjectURL(pdfBlob);
+  //   window.open(pdfUrl, '_blank');
+  // }
+
+  
   isAtLeastOneCheckboxChecked(): boolean {
     return this.batches.some((batch: { checked: any; }) => batch.checked);
   }

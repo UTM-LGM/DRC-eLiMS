@@ -1,4 +1,6 @@
 export interface Batch {
+    samples: any;
+
     staffId(staffId: any): unknown;
     runNo: string;
 
@@ -37,5 +39,8 @@ export interface Batch {
 
     forwarderName: string;
     unitName:string;
-
+    suratIringan:string;
+    testMethodId: number;
+    testMethod: string;
+    isFastTrack: boolean;
 }

@@ -5,6 +5,8 @@ import { K1Header } from '../models/k1Header';
 import { Observable } from 'rxjs';
 import { K1Detail } from '../models/k1Detail';
 import { StationCode } from '../models/stationCode';
+import { CompanyForwarder } from '../models/companyForwarder';
+import { Company } from '../models/company';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,7 @@ import { StationCode } from '../models/stationCode';
 export class DaftarSampelService {
 
   baseApiUrl: string = environment.baseApiUrlElims;
+  // baseApiUrl: string = environment.baseApiUrlElimsLocal;
 
   constructor(private http: HttpClient) { }
 
@@ -68,5 +71,27 @@ export class DaftarSampelService {
   GetStationCodes() {
     return this.http.get<StationCode>(this.baseApiUrl + '/api/StationCodes/GetStationCodes');
   }
+
+  // getDataByCustomNoAndAgentCode(customNo: string, agentCode: string): Observable<K1Header> {
+  //   console.log(customNo)
+  //   console.log(agentCode)
+  //   return this.http.get<K1Header>(this.baseApiUrl + '/api/K1Header/getDataByCustomNoAndAgentCode/' + customNo + agentCode);
+  // }
+
+
+  getDataByCustomNoAndAgentCode(customNo: string, agentCode: string): Observable<K1Detail[]> {
+    const apiUrl = `${this.baseApiUrl}/api/K1Header/${customNo}/${agentCode}`;
+    return this.http.get<any>(apiUrl);
+  }
+
+
+  GetCompanyForwarderbyId(forwarderId: number): Observable<Company> {
+    console.log(forwarderId)
+    return this.http.get<Company>(this.baseApiUrl + '/api/CompanyForwarders/GetCompanyForwarderbyId/' + forwarderId);
+  }
+
+
+  
+
 
 }

@@ -6,7 +6,6 @@ import { AppComponent } from '../app.component';
 import { ToastrService } from 'ngx-toastr';
 import { Staff } from '../models/staff';
 
-// type NewType = loginDTO;
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -43,7 +42,6 @@ export class LoginComponent implements OnInit {
     })
 
   }
-
 
   // login() {
 
@@ -201,14 +199,20 @@ export class LoginComponent implements OnInit {
           this.userDetail = res;
           this.setSessionStorage();
 
-          if (this.selectedRole == 1) {
+          if (this.selectedRole == 1 ) {
             this.authService.getUserDto(this.userDetail.username, this.selectedRole);
             // this.setSessionStorage();
             
           } 
           
+          else if ( this.selectedRole == 13){
+
+            this.authService.getUserDto(this.userDetail.username, this.selectedRole);
+
+          }
           
-          else {
+          
+          else if ( this.selectedRole == 2){
             this.authService.GetStaffRolebyStaffId(this.userDetail.staffId).subscribe(
               staffRoleData => {
                 this.userObjects = staffRoleData;
@@ -216,20 +220,18 @@ export class LoginComponent implements OnInit {
                 const userRole3 = this.userObjects.filter((user) => user.staffRole == 3);
 
                 if (userRole2.length != 0 && this.selectedRole == 2) {
-                  console.log("user 2 not null");
                   this.authService.getUserDto(this.userDetail.username, this.selectedRole);
                   // this.setSessionStorage();
                 } else if (userRole3.length != 0 && this.selectedRole == 3) {
-                  console.log("user 3 not null");
                   this.authService.getUserDto(this.userDetail.username, this.selectedRole);
                   // this.setSessionStorage();
                 } else {
-                  console.log("user 3 null");
                   this.toastr.error('Nama pengguna dan kata laluan salah');
                 }
               },
             );
           }
+
         },
         error => {
           console.error(error);
@@ -250,22 +252,16 @@ export class LoginComponent implements OnInit {
         sessionStorage.setItem('username', this.userDetail.username);
         sessionStorage.setItem('role', this.selectedRole.toString());
 
-
-
-
       // window.location.reload();
       // setTimeout(() => {
         //   this.router.navigateByUrl('/home');
         // }, 100); 
-        
-        
-        
+              
         this.router.navigateByUrl('home').then(() => {
           // Reload the page once navigation is complete
           window.location.reload();
         })
-        
-       
+      
         this.toastr.success('Log masuk berjaya!');
    
       },
@@ -280,7 +276,7 @@ export class LoginComponent implements OnInit {
   displayLogin(roleId: number) {
     this.afterLogin = true
     this.selectedRole = roleId
+    console.log(this.selectedRole)
   }
-  checkRole() {
-  }
+
 }

@@ -31,9 +31,11 @@
               <td>{{ (page - 1) * ip + i + 1 }}</td>
               <td>{{ sample.customNo }}</td>
               <td>{{ sample.importedDate | date: 'dd-MM-yyyy' }}</td>
-              <td>{{ sample.sampleType }}</td>
+              <!-- <td>{{ sample.sampleType }}</td> -->
+              <td>{{ sample.typeCode }}</td>
               <td>{{ sample.quantity }}</td>
-              <td>{{ sample.importerName }}{{ sample.companyName }}</td>
+              <td>{{ sample.importerName }}</td>
+              <!-- <td>{{ sample.importerName }}{{ sample.companyName }}</td> -->
             </tr>
           </table><br>
 
@@ -56,7 +58,7 @@
         <div *ngIf="lepassubmit" class="card">
           <h4 class="card-header">Pengesahan Cetakan label</h4>
           <div class="card-body">
-            <p class="card-text"><b><i>**Sila pastikan pengesahan cetakan surat dibuat selepas mencetak label.</i></b>
+            <p class="card-text"><b><i>**Sila pastikan pengesahan cetakan label dibuat selepas mencetak label.</i></b>
             </p>
             <p class="card-text">Adakah label berjaya dicetak?</p>
 

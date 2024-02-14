@@ -62,6 +62,9 @@ import { ViewMaklumatPenghantaranComponent } from './view-maklumat-penghantaran/
 import { SuratIringanComponent } from './surat-iringan/surat-iringan.component';
 import { LampiranComponent } from './Hantar-Sampel/lampiran/lampiran.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { GroupByPipe } from './pipes/group-by.pipe';
+import { CetakWorksheetComponent } from './cetak-worksheet/cetak-worksheet.component';
+
 
 
 @NgModule({
@@ -100,6 +103,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ViewMaklumatPenghantaranComponent,
     SuratIringanComponent,
     LampiranComponent,
+    GroupByPipe,
+    CetakWorksheetComponent
 
   ],
   imports: [
@@ -130,8 +135,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatDialogModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
-    NgxPaginationModule
-
+    NgxPaginationModule,
+ 
     // DaftarTerimaSampelComponent,
     // SampelBelumTerimaComponent,
   ],

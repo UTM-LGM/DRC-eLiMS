@@ -99,19 +99,21 @@ export class UlangCetakLabelComponent implements OnInit {
   }
 
   checkSingleChanged() {
-    const selectedSamples = [];
+    const selectedSamples: Sample[] = [];
     for (const sample of this.samples) {
-      if (sample.checked) {
-        selectedSamples.push(sample);
+      if ((sample as Sample).checked) {
+        selectedSamples.push(sample as Sample);
       }
     }
     console.log(selectedSamples);
   }
 
+
   displaySelected() {
     this.lepassubmit = true
     this.samples = this.samples.filter(sample => sample.checked);
   }
+
 
   generatePDFWithQRCode() {
     const selectedSamples = this.samples.filter(sample => sample.checked);
@@ -121,23 +123,21 @@ export class UlangCetakLabelComponent implements OnInit {
     }
     const doc = new jsPDF();
     const pageHeight = doc.internal.pageSize.height;
-    const boxHeight = 35;
-    const boxWidth = 68;
+    const boxHeight = 37;
+    const boxWidth = 78;
     const qrCodeSize = 20;
-    const fontSize = 7;
-    const boxSpacing = 0;
-    let y = 12;
-    let x = 3;
+    const fontSize = 7.5;
+    let y = 15;
+    let x = 20;
 
     // Set font to Courier Monospace
     doc.setFont('courier', 'normal');
 
-    for (let i = 0; i < selectedSamples.length; i += 3) {
+    for (let i = 0; i < selectedSamples.length; i += 2) {
       const sample1 = selectedSamples[i];
       const sample2 = selectedSamples[i + 1];
-      const sample3 = selectedSamples[i + 2];
 
-      // Check if boxes fit in the current page
+      // Check if boxes fit on the current page
       if (y + boxHeight > pageHeight - 20) {
         doc.addPage();
         y = 20;
@@ -150,61 +150,60 @@ export class UlangCetakLabelComponent implements OnInit {
       if (sample2) {
         doc.rect(x + boxWidth, y, boxWidth, boxHeight, 'FD');
       }
-      if (sample3) {
-        doc.rect(x + 2 * boxWidth, y, boxWidth, boxHeight, 'FD');
-      }
 
       // Create QR codes
       const qrCode1 = QRCode(0, 'L');
-      qrCode1.addData(sample1.customNo);
+
+      if (this.roleId == 1) {
+        qrCode1.addData(sample1.customNo);
+      }
+      else if (this.roleId == 2) {
+        qrCode1.addData(sample1.customNo + "- UIP");
+      }
+
       qrCode1.make();
       const qrCodeImgData1 = qrCode1.createDataURL(qrCodeSize);
 
       let qrCodeImgData2;
       if (sample2) {
         const qrCode2 = QRCode(0, 'L');
-        qrCode2.addData(sample2.customNo);
+
+        if (this.roleId == 1) {
+          qrCode2.addData(sample2.customNo);
+        } else if (this.roleId == '2') {
+          qrCode2.addData(sample2.customNo + "- UIP");
+        }
+
         qrCode2.make();
         qrCodeImgData2 = qrCode2.createDataURL(qrCodeSize);
       }
 
-      let qrCodeImgData3;
-      if (sample3) {
-        const qrCode3 = QRCode(0, 'L');
-        qrCode3.addData(sample3.customNo);
-        qrCode3.make();
-        qrCodeImgData3 = qrCode3.createDataURL(qrCodeSize);
-      }
-
       // Add QR code images to PDF
-      doc.addImage(qrCodeImgData1, 'PNG', x + 1, y + 5, qrCodeSize, qrCodeSize);
+      doc.addImage(qrCodeImgData1, 'PNG', x + 1, y + 7, qrCodeSize, qrCodeSize);
       if (qrCodeImgData2) {
-        doc.addImage(qrCodeImgData2, 'PNG', x + boxWidth + 1, y + 5, qrCodeSize, qrCodeSize);
-      }
-
-      if (qrCodeImgData3) {
-        doc.addImage(qrCodeImgData3, 'PNG', x + 2 * (boxWidth + boxSpacing) + 1, y + 5, qrCodeSize, qrCodeSize);
+        doc.addImage(qrCodeImgData2, 'PNG', x + boxWidth + 1, y + 7, qrCodeSize, qrCodeSize);
       }
 
       // Add text to PDF
       doc.setFontSize(fontSize);
 
+
       if (this.roleId == 1) {
         if (sample1.customNo) {
-          doc.text(`${sample1.customNo}`, x + 21, y + 5);
+          doc.text("*" + `${sample1.customNo} ` + "*", x + 21, y + 5);
         }
       } else if (this.roleId == 2) {
         if (sample1.customNo) {
           doc.text(`${sample1.customNo} - UIP`, x + 21, y + 5);
         }
       }
+
       if (sample1.samplePropose) {
         doc.text(`${sample1.samplePropose}`, x + 21, y + 10);
       }
 
-      if (sample1.sampleType) {
-        const lines = doc.splitTextToSize(sample1.sampleType, 50);
-        doc.text(lines, x + 21, y + 15);
+      if (sample1.typeCode) {
+        doc.text(`${sample1.typeCode}`, x + 21, y + 14);
       }
 
       if (sample1.importedDate) {
@@ -214,32 +213,48 @@ export class UlangCetakLabelComponent implements OnInit {
           month: '2-digit',
           year: 'numeric',
         });
-        doc.text(`${formattedDate1}`, x + 21, y + 23);
-      }
-      if (sample1.companyName || sample1.importerName) {
-        const lines = doc.splitTextToSize(sample1.companyName || sample1.importerName, 46);
-        doc.text(lines, x + 21, y + 28);
+        doc.text(`${formattedDate1}`, x + 21, y + 18);
       }
 
+      if (sample1.companyName || sample1.importerName) {
+        const lines = doc.splitTextToSize(sample1.companyName || sample1.importerName, 52);
+        doc.text(lines, x + 21, y + 22);
+      }
+
+
+      if (this.roleId == 1) {
+        if (sample1.forwarderName) {
+          const lines = doc.splitTextToSize('FA : ' + sample1.forwarderName, 53);
+          doc.text(lines, x + 21, y + 29);
+        }
+      } else if (this.roleId == 2) {
+        const lines = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
+        doc.text(lines, x + 21, y + 29);
+      }
+
+
+      // if (sample1.forwarderAddress) {
+      //   const lines = doc.splitTextToSize(sample1.forwarderAddress, 53);
+      //   doc.text(lines, x + 21, y + 33);
+      // }
 
       if (sample2) {
+
         if (this.roleId == 1) {
           if (sample2.customNo) {
-            doc.text(`${sample2.customNo}`, x + boxWidth + 21, y + 5);
+            doc.text("*" + `${sample2.customNo}` + "*", x + boxWidth + 21, y + 5);
           }
         } else if (this.roleId == 2) {
           if (sample2.customNo) {
             doc.text(`${sample2.customNo} - UIP`, x + boxWidth + 21, y + 5);
           }
         }
-
         if (sample2.samplePropose) {
           doc.text(`${sample2.samplePropose}`, x + boxWidth + 21, y + 10);
         }
 
-        if (sample2.sampleType) {
-          const lines2 = doc.splitTextToSize(sample2.sampleType, 50);
-          doc.text(lines2, x + boxWidth + 21, y + 15);
+        if (sample2.typeCode) {
+          doc.text(`${sample2.typeCode}`, x + boxWidth + 21, y + 14);
         }
 
         if (sample2.importedDate) {
@@ -249,54 +264,30 @@ export class UlangCetakLabelComponent implements OnInit {
             month: '2-digit',
             year: 'numeric',
           });
-          doc.text(`${formattedDate2}`, x + boxWidth + 21, y + 23);
+          doc.text(`${formattedDate2}`, x + boxWidth + 21, y + 18);
         }
 
         if (sample2.companyName || sample2.importerName) {
-          const lines1 = doc.splitTextToSize(sample2.companyName || sample2.importerName, 46);
-          doc.text(lines1, x + boxWidth + 21, y + 28);
+          const lines1 = doc.splitTextToSize(sample2.companyName || sample2.importerName, 52);
+          doc.text(lines1, x + boxWidth + 21, y + 22);
         }
-
-      }
-
-      if (sample3) {
 
         if (this.roleId == 1) {
-          if (sample3.customNo) {
-            doc.text(`${sample3.customNo}`, x + 2 * boxWidth + 21, y + 5);
-          }
-        } else if (this.roleId == 2) {
-          if (sample3.customNo) {
-            doc.text(`${sample3.customNo} - UIP`, x + 2 * boxWidth + 21, y + 5);
+          if (sample2.forwarderName) {
+            const lines1 = doc.splitTextToSize('FA : ' + sample2.forwarderName, 53);
+            doc.text(lines1, x + boxWidth + 21, y + 29);
           }
         }
-
-        if (sample3.samplePropose) {
-          doc.text(`${sample3.samplePropose}`, x + 2 * boxWidth + 21, y + 10);
+        if (this.roleId == 2) {
+            const lines1 = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
+            doc.text(lines1, x + boxWidth + 21, y + 29);
         }
-
-        if (sample3.sampleType) {
-          const lines3 = doc.splitTextToSize(sample3.sampleType, 50);
-          doc.text(lines3, x + 2 * boxWidth + 21, y + 15);
-        }
-
-        if (sample3.importedDate) {
-          const importedDate3 = new Date(sample3.importedDate);
-          const formattedDate3 = importedDate3.toLocaleDateString('en-GB', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-          });
-          doc.text(`${formattedDate3}`, x + 2 * boxWidth + 21, y + 23);
-        }
-
-        if (sample3.companyName || sample3.importerName) {
-          const lines3 = doc.splitTextToSize(sample3.companyName || sample3.importerName, 46);
-          doc.text(lines3, x + 2 * boxWidth + 21, y + 28);
-        }
+        // if (sample2.forwarderAddress) {
+        //   const lines1 = doc.splitTextToSize(sample2.forwarderAddress, 52);
+        //   doc.text(lines1, x + boxWidth + 21, y + 33);
+        // }     
 
       }
-
       y += boxHeight + 0; // Change the box spacing here
     }
 
@@ -305,35 +296,220 @@ export class UlangCetakLabelComponent implements OnInit {
     window.open(pdfUrl, '_blank');
   }
 
+
+
+  // generatePDFWithQRCode() {
+
+  //   const selectedSamples = this.samples.filter(sample => sample.checked);
+  //   if (selectedSamples.length === 0) {
+  //     alert('Please select at least one sample.');
+  //     return;
+  //   }
+  //   const doc = new jsPDF();
+  //   const pageHeight = doc.internal.pageSize.height;
+  //   const boxHeight = 38;
+  //   const boxWidth = 78;
+  //   const qrCodeSize = 20;
+  //   const fontSize = 7;
+  //   let y = 16;
+  //   let x = 20;
+
+  //   // Set font to Courier Monospace
+  //   doc.setFont('courier', 'normal');
+
+  //   for (let i = 0; i < selectedSamples.length; i += 2) {
+  //     const sample1 = selectedSamples[i];
+  //     const sample2 = selectedSamples[i + 1];
+
+  //     // // Check if boxes fit on the current page
+  //     // if (y + boxHeight > pageHeight - 20) {
+  //     //   doc.addPage();
+  //     //   y = 20;
+  //     // }
+
+  //     // Draw boxes
+  //     doc.setDrawColor(0);
+  //     doc.setFillColor(255, 255, 255);
+  //     doc.rect(x, y, boxWidth, boxHeight, 'FD');
+  //     if (sample2) {
+  //       doc.rect(x + boxWidth, y, boxWidth, boxHeight, 'FD');
+  //     }
+
+  //     // Create QR codes
+  //     const qrCode1 = QRCode(0, 'L');
+
+  //     if (this.roleId == 1) {
+  //       qrCode1.addData(sample1.customNo);
+  //     }
+  //     else if (this.roleId == 2) {
+  //       qrCode1.addData(sample1.customNo + "- UIP");
+  //     }
+
+  //     qrCode1.make();
+  //     const qrCodeImgData1 = qrCode1.createDataURL(qrCodeSize);
+
+  //     let qrCodeImgData2;
+  //     if (sample2) {
+  //       const qrCode2 = QRCode(0, 'L');
+
+  //       if (this.roleId == 1) {
+  //         qrCode2.addData(sample2.customNo);
+  //       } else if (this.roleId == '2') {
+  //         qrCode2.addData(sample2.customNo + "- UIP");
+  //       }
+
+  //       qrCode2.make();
+  //       qrCodeImgData2 = qrCode2.createDataURL(qrCodeSize);
+  //     }
+
+  //     // Add QR code images to PDF
+  //     doc.addImage(qrCodeImgData1, 'PNG', x + 1, y + 7, qrCodeSize, qrCodeSize);
+  //     if (qrCodeImgData2) {
+  //       doc.addImage(qrCodeImgData2, 'PNG', x + boxWidth + 1, y + 7, qrCodeSize, qrCodeSize);
+  //     }
+
+  //     // Add text to PDF
+  //     doc.setFontSize(fontSize);
+
+
+  //     if (this.roleId == 1) {
+  //       if (sample1.customNo) {
+  //         doc.text("*" + `${sample1.customNo} `+"*", x + 21, y + 4);
+  //       }
+  //     } else if (this.roleId == 2) {
+  //       if (sample1.customNo) {
+  //         doc.text(`${sample1.customNo} - UIP`, x + 21, y + 4);
+  //       }
+  //     }
+
+  //     if (sample1.samplePropose) {
+  //       doc.text(`${sample1.samplePropose}`, x + 21, y + 8);
+  //     }
+
+  //     if (sample1.sampleType) {
+  //       doc.text(`${sample1.sampleType}`, x + 21, y + 12);
+  //     }
+
+  //     if (sample1.importedDate) {
+  //       const importedDate1 = new Date(sample1.importedDate);
+  //       const formattedDate1 = importedDate1.toLocaleDateString('en-GB', {
+  //         day: '2-digit',
+  //         month: '2-digit',
+  //         year: 'numeric',
+  //       });
+  //       doc.text(`${formattedDate1}`, x + 21, y + 16);
+  //     }
+
+  //     if (sample1.companyName || sample1.importerName) {
+  //       const lines = doc.splitTextToSize(sample1.companyName || sample1.importerName, 52);
+  //       doc.text(lines, x + 21, y + 20);
+  //     }
+
+
+
+  //     if (sample1.forwarderName) {
+  //       const lines = doc.splitTextToSize(sample1.forwarderName, 53);
+  //       doc.text(lines, x + 21, y + 26);
+  //     }
+
+  //     if (sample1.forwarderAddress) {
+  //       const lines = doc.splitTextToSize(sample1.forwarderAddress, 53);
+  //       doc.text(lines, x + 21, y + 33);
+  //     }
+
+
+
+
+
+
+  //     if (sample2) {
+
+  //       if (this.roleId == 1) {
+  //         if (sample2.customNo) {
+  //           doc.text("*" + `${sample2.customNo}` +"*" , x + boxWidth + 21, y + 4);
+  //         }
+  //       } else if (this.roleId == 2) {
+  //         if (sample2.customNo) {
+  //           doc.text(`${sample2.customNo} - UIP`, x + boxWidth + 21, y + 4);
+  //         }
+  //       }
+  //       if (sample2.samplePropose) {
+  //         doc.text(`${sample2.samplePropose}`, x + boxWidth + 21, y + 8);
+  //       }
+
+  //       if (sample2.sampleType) {
+  //         doc.text(`${sample2.sampleType}`, x + boxWidth + 21, y + 12);
+  //       }
+
+  //       if (sample2.importedDate) {
+  //         const importedDate2 = new Date(sample2.importedDate);
+  //         const formattedDate2 = importedDate2.toLocaleDateString('en-GB', {
+  //           day: '2-digit',
+  //           month: '2-digit',
+  //           year: 'numeric',
+  //         });
+  //         doc.text(`${formattedDate2}`, x + boxWidth + 21, y + 16);
+  //       }
+
+  //       if (sample2.companyName || sample2.importerName) {
+  //         const lines1 = doc.splitTextToSize(sample2.companyName || sample2.importerName, 52);
+  //         doc.text(lines1, x + boxWidth + 21, y + 20);
+  //       }
+
+
+
+  //       if (sample2.forwarderName) {
+  //         const lines1 = doc.splitTextToSize(sample2.forwarderName, 52);
+  //         doc.text(lines1, x + boxWidth + 21, y + 26);
+  //       }
+
+  //       if (sample2.forwarderAddress) {
+  //         const lines1 = doc.splitTextToSize(sample2.forwarderAddress, 52);
+  //         doc.text(lines1, x + boxWidth + 21, y + 33);
+  //       }
+
+
+
+  //     }
+  //     y += boxHeight + 0; // Change the box spacing here
+  //   }
+
+  //   const pdfBlob = doc.output('blob');
+  //   const pdfUrl = URL.createObjectURL(pdfBlob);
+  //   window.open(pdfUrl, '_blank');
+  // }
+
+
+
+
   onYesClick() {
     this.k1Detail.labelPrintedOn = new Date();
-    this.k1Detail.labelPrintedBy = this.user.username;
+    this.k1Detail.labelPrintedBy = this.loginAs;
     this.k1Detail.labelPrinted = true;
 
     this.cetakSample.labelPrintedOn = new Date();
-    this.cetakSample.labelPrintedBy = this.user.username;
+    this.cetakSample.labelPrintedBy = this.loginAs;
     this.cetakSample.labelPrinted = true;
 
     for (const sample of this.samples) {
-      let id = sample.k1HeaderId;
+      let id = sample.k1DetailId;
+      const rubberTypeId = sample.rubberTypeId
       if (this.checkAll || sample.checked) {
 
         this.cetakLabelService.Putk1DetailLabelTelahDicetak(id, this.k1Detail).subscribe(
           res => { this.mesYaTidak = "yes" }
         );
 
-        this.cetakLabelService.Putk1HeaderLabelTelahDicetak(id).subscribe(
-          res => { this.mesYaTidak = "yes" }
-        );
+        if (rubberTypeId == 2) {
+          this.getahBongkahService.PutBRLabelTelahDicetak(id, this.cetakSample).subscribe(
+            res => { this.mesYaTidak = "yes" }
+          );
 
-        this.drclimstrainingService.PutLtxLabelTelahDicetak(id, this.cetakSample).subscribe(
-          res => { this.mesYaTidak = "yes" }
-        );
-
-        this.getahBongkahService.PutBRLabelTelahDicetak(id, this.cetakSample).subscribe(
-          res => { this.mesYaTidak = "yes" }
-        );
-
+        } else if (rubberTypeId == 1) {
+          this.drclimstrainingService.PutLtxLabelTelahDicetak(id, this.cetakSample).subscribe(
+            res => { this.mesYaTidak = "yes" }
+          );
+        }
       }
     }
   }

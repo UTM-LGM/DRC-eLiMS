@@ -39,6 +39,7 @@ export class KeputusanUjianComponent implements OnInit {
   rubberTypeId: any;
   rubberType: any;
   customNo: string;
+  samplePropose: string;
   labRefNo: string;
   samples: any;
   batchId: number;
@@ -66,6 +67,7 @@ export class KeputusanUjianComponent implements OnInit {
   showSampleId: boolean = false
   showBatchId: boolean = false
   showDriverName: boolean = false
+  showSamplePropose: boolean = false
   showIdentificationDriver: boolean = false
   showHsCode: boolean = false
   showStatus: boolean = false
@@ -77,6 +79,7 @@ export class KeputusanUjianComponent implements OnInit {
   showForwarderName: boolean = false
 
   roleId: any;
+
   roleForwarder: boolean
   roleUip: boolean
   staff: Staff
@@ -126,6 +129,7 @@ export class KeputusanUjianComponent implements OnInit {
         this.k1HeaderId = this.searchParams.k1HeaderId,
           this.labRefNo = this.searchParams.labRefNo,
           this.customNo = this.searchParams.customNo,
+          this.samplePropose = this.searchParams.samplePropose,
           this.batchId = this.searchParams.batchId,
           this.rubberTypeId = this.searchParams.rubberTypeId,
           this.driverName = this.searchParams.driverName,
@@ -151,6 +155,7 @@ export class KeputusanUjianComponent implements OnInit {
 
     this.elimsService.GetForwarders().subscribe(data => {
       this.forwarders = data.filter(data => data.name != null);
+
     });
 
     this.elimsService.GetRefRubberTypes().subscribe(data => {
@@ -164,9 +169,26 @@ export class KeputusanUjianComponent implements OnInit {
         this.roleForwarder = true;
         this.roleUip = false;
         this.elimsService.GetCompanies(this.user.forwarderId).subscribe(data => {
-          this.companies = data;
-        });
+          this.companies = data.filter(data => data.importerName != null);
+          console.log(this.companies)
+
+          this.companies.sort((a: { importerName: any; }, b: { importerName: any; }) => {
+            const companiesA = a.importerName;
+            const companiesB = b.importerName;
+
+            // Compare the kodStesen values
+            if (companiesA < companiesB) {
+              return -1;
+            } else if (companiesA > companiesB) {
+              return 1;
+            } else {
+              return 0; // Kodstesen values are equal
+            }
+          });
+        })
       })
+
+
       this.searchSample();
 
     } else if (this.roleId == 2) {
@@ -191,6 +213,7 @@ export class KeputusanUjianComponent implements OnInit {
       'Sampel Id',
       'Batch Id',
       'Nama Pemandu',
+      'Tujuan Sampel Dihantar',
       'Mykad/ Pasport Pemandu',
       'HS Code',
       'Status Sampel',
@@ -211,6 +234,7 @@ export class KeputusanUjianComponent implements OnInit {
       k1HeaderId: this.k1HeaderId,
       labRefNo: this.labRefNo,
       customNo: this.customNo,
+      samplePropose: this.samplePropose,
       batchId: this.batchId,
       rubberTypeId: this.rubberTypeId,
       driverName: this.driverName,
@@ -298,7 +322,7 @@ export class KeputusanUjianComponent implements OnInit {
   validForm() {
     return this.sample.rubberTypeId !== null && this.sample.rubberTypeId !== 0;
   }
-  
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -331,6 +355,7 @@ export class KeputusanUjianComponent implements OnInit {
     e.target.value == "Sampel Id" ? this.showSampleId = true : this.showSampleId = false;
     e.target.value == "Batch Id" ? this.showBatchId = true : this.showBatchId = false;
     e.target.value == "Nama Pemandu" ? this.showDriverName = true : this.showDriverName = false;
+    e.target.value == "Tujuan Sampel Dihantar" ? this.showSamplePropose = true : this.showSamplePropose = false;
     e.target.value == "Mykad/ Pasport Pemandu" ? this.showIdentificationDriver = true : this.showIdentificationDriver = false;
     e.target.value == "HS Code" ? this.showHsCode = true : this.showHsCode = false;
     e.target.value == "Status Sampel" ? this.showStatus = true : this.showStatus = false;
@@ -349,6 +374,7 @@ export class KeputusanUjianComponent implements OnInit {
     e == "Sampel Id" ? this.showSampleId = true : this.showSampleId = false;
     e == "Batch Id" ? this.showBatchId = true : this.showBatchId = false;
     e == "Nama Pemandu" ? this.showDriverName = true : this.showDriverName = false;
+    e == "Tujuan Sampel Dihantar" ? this.showSamplePropose = true : this.showSamplePropose = false;
     e == "Mykad/ Pasport Pemandu" ? this.showIdentificationDriver = true : this.showIdentificationDriver = false;
     e == "HS Code" ? this.showHsCode = true : this.showHsCode = false;
     e == "Status Sampel" ? this.showStatus = true : this.showStatus = false;

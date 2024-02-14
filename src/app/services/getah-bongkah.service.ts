@@ -21,6 +21,7 @@ export class GetahBongkahService {
 
   PostBRSamples(sample: Sample, statusCodeId: number): Observable<Sample> {
     sample.statusCodeId = statusCodeId;
+    sample.typeCodeId = 3;
     return this.http.post<Sample>(this.baseApiUrl + '/api/BRSamples/PostBRSamples', sample);
   }
 
@@ -29,6 +30,15 @@ export class GetahBongkahService {
     batch.sentBy = username
     return this.http.post<Batch>(this.baseApiUrl + '/api/BRBatches/PostBRBatches/', batch);
   }
+
+
+  PostElimsBatches(batch: Batch, username: string): Observable<Batch> {
+    // var body = JSON.stringify(batch)
+    batch.sentBy = username
+    return this.http.post<Batch>(this.baseApiUrl + '/api/Batches/PostElimsBatches', batch);
+  }
+
+
 
   PutBRSample(sampleId: number, updateSampleRequest: Sample): Observable<Sample> {
     console.log(sampleId)

@@ -16,7 +16,8 @@ export interface K1Header {
   isSMK:boolean;
   companyId:number;
   transport: string;
-  
+  importerCode:string;
+  age
   //sampleId: number;
   //importerName:string;
 }

@@ -48,6 +48,7 @@ export class CetakLabelComponent implements OnInit {
   roleId: any;
   roleForwarder: boolean
   roleUip: boolean
+  roleImporter: boolean
   username: string;
 
   constructor(
@@ -89,7 +90,18 @@ export class CetakLabelComponent implements OnInit {
         this.roleUip = true
         this.getStaffElimsSamples(this.staff)
       })
+    }    else if (this.roleId == 13) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        console.log(res)
+        this.authService.changeUser(res);
+        this.staff = res
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleImporter = true
+        this.getStaffElimsSamples(this.staff)
+      })
     }
+
 
   }
 
@@ -127,7 +139,7 @@ export class CetakLabelComponent implements OnInit {
 
 
   checkSingleChanged() {
-    const selectedSamples = [];
+    const selectedSamples: Sample[] = [];
     for (const sample of this.samples) {
       if (sample.checked) {
         selectedSamples.push(sample);
@@ -144,7 +156,6 @@ export class CetakLabelComponent implements OnInit {
 
 
   generatePDFWithQRCode() {
-
     const selectedSamples = this.samples.filter(sample => sample.checked);
     if (selectedSamples.length === 0) {
       alert('Please select at least one sample.');
@@ -152,12 +163,12 @@ export class CetakLabelComponent implements OnInit {
     }
     const doc = new jsPDF();
     const pageHeight = doc.internal.pageSize.height;
-    const boxHeight = 35;
+    const boxHeight = 37;
     const boxWidth = 78;
     const qrCodeSize = 20;
-    const fontSize = 7;
-    let y = 12;
-    let x = 27;
+    const fontSize = 7.5;
+    let y = 15;
+    let x = 20;
 
     // Set font to Courier Monospace
     doc.setFont('courier', 'normal');
@@ -165,9 +176,6 @@ export class CetakLabelComponent implements OnInit {
     for (let i = 0; i < selectedSamples.length; i += 2) {
       const sample1 = selectedSamples[i];
       const sample2 = selectedSamples[i + 1];
-
-      // const latex1 = selectedLatex[i];
-      // const latex2 = selectedLatex[i + 1];
 
       // Check if boxes fit on the current page
       if (y + boxHeight > pageHeight - 20) {
@@ -186,7 +194,7 @@ export class CetakLabelComponent implements OnInit {
       // Create QR codes
       const qrCode1 = QRCode(0, 'L');
 
-      if (this.roleId == 1) {
+      if (this.roleId == 1 || this.roleId == 13) {
         qrCode1.addData(sample1.customNo);
       }
       else if (this.roleId == 2) {
@@ -200,7 +208,7 @@ export class CetakLabelComponent implements OnInit {
       if (sample2) {
         const qrCode2 = QRCode(0, 'L');
 
-        if (this.roleId == 1) {
+        if (this.roleId == 1 || this.roleId == 13) {
           qrCode2.addData(sample2.customNo);
         } else if (this.roleId == '2') {
           qrCode2.addData(sample2.customNo + "- UIP");
@@ -211,18 +219,18 @@ export class CetakLabelComponent implements OnInit {
       }
 
       // Add QR code images to PDF
-      doc.addImage(qrCodeImgData1, 'PNG', x + 1, y + 5, qrCodeSize, qrCodeSize);
+      doc.addImage(qrCodeImgData1, 'PNG', x + 1, y + 7, qrCodeSize, qrCodeSize);
       if (qrCodeImgData2) {
-        doc.addImage(qrCodeImgData2, 'PNG', x + boxWidth + 1, y + 5, qrCodeSize, qrCodeSize);
+        doc.addImage(qrCodeImgData2, 'PNG', x + boxWidth + 1, y + 7, qrCodeSize, qrCodeSize);
       }
 
       // Add text to PDF
       doc.setFontSize(fontSize);
 
 
-      if (this.roleId == 1) {
+      if (this.roleId == 1 || this.roleId == 13) {
         if (sample1.customNo) {
-          doc.text(`${sample1.customNo}`, x + 21, y + 5);
+          doc.text("*" + `${sample1.customNo} ` + "*", x + 21, y + 5);
         }
       } else if (this.roleId == 2) {
         if (sample1.customNo) {
@@ -231,10 +239,11 @@ export class CetakLabelComponent implements OnInit {
       }
 
       if (sample1.samplePropose) {
-        doc.text(`${sample1.samplePropose}`, x + 21, y + 11);
+        doc.text(`${sample1.samplePropose}`, x + 21, y + 10);
       }
-      if (sample1.sampleType) {
-        doc.text(`${sample1.sampleType}`, x + 21, y + 17);
+
+      if (sample1.typeCode) {
+        doc.text(`${sample1.typeCode}`, x + 21, y + 14);
       }
 
       if (sample1.importedDate) {
@@ -244,20 +253,41 @@ export class CetakLabelComponent implements OnInit {
           month: '2-digit',
           year: 'numeric',
         });
-        doc.text(`${formattedDate1}`, x + 21, y + 23);
+        doc.text(`${formattedDate1}`, x + 21, y + 18);
       }
 
       if (sample1.companyName || sample1.importerName) {
         const lines = doc.splitTextToSize(sample1.companyName || sample1.importerName, 52);
-        doc.text(lines, x + 21, y + 28);
+        doc.text(lines, x + 21, y + 22);
       }
 
 
+      if (this.roleId == 1) {
+        if (sample1.forwarderName) {
+          const lines = doc.splitTextToSize('FA : ' + sample1.forwarderName, 53);
+          doc.text(lines, x + 21, y + 29);
+        }
+      } else if (this.roleId == 2) {
+        const lines = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
+        doc.text(lines, x + 21, y + 29);
+      }
+      else if (this.roleId == 13) {
+        if (sample1.companyName) {
+        const lines = doc.splitTextToSize('SP : ' + sample1.companyName, 53);
+          doc.text(lines, x + 21, y + 29);
+      }
+    }
+
+      // if (sample1.forwarderAddress) {
+      //   const lines = doc.splitTextToSize(sample1.forwarderAddress, 53);
+      //   doc.text(lines, x + 21, y + 33);
+      // }
+
       if (sample2) {
 
-        if (this.roleId == 1) {
+        if (this.roleId == 1 || this.roleId == 13) {
           if (sample2.customNo) {
-            doc.text(`${sample2.customNo}`, x + boxWidth + 21, y + 5);
+            doc.text("*" + `${sample2.customNo}` + "*", x + boxWidth + 21, y + 5);
           }
         } else if (this.roleId == 2) {
           if (sample2.customNo) {
@@ -265,11 +295,11 @@ export class CetakLabelComponent implements OnInit {
           }
         }
         if (sample2.samplePropose) {
-          doc.text(`${sample2.samplePropose}`, x + boxWidth + 21, y + 11);
+          doc.text(`${sample2.samplePropose}`, x + boxWidth + 21, y + 10);
         }
 
-        if (sample2.sampleType) {
-          doc.text(`${sample2.sampleType}`, x + boxWidth + 21, y + 17);
+        if (sample2.typeCode) {
+          doc.text(`${sample2.typeCode}`, x + boxWidth + 21, y + 14);
         }
 
         if (sample2.importedDate) {
@@ -279,13 +309,28 @@ export class CetakLabelComponent implements OnInit {
             month: '2-digit',
             year: 'numeric',
           });
-          doc.text(`${formattedDate2}`, x + boxWidth + 21, y + 23);
+          doc.text(`${formattedDate2}`, x + boxWidth + 21, y + 18);
         }
 
         if (sample2.companyName || sample2.importerName) {
           const lines1 = doc.splitTextToSize(sample2.companyName || sample2.importerName, 52);
-          doc.text(lines1, x + boxWidth + 21, y + 28);
+          doc.text(lines1, x + boxWidth + 21, y + 22);
         }
+
+        if (this.roleId == 1 || this.roleId == 13) {
+          if (sample2.forwarderName) {
+            const lines1 = doc.splitTextToSize('FA : ' + sample2.forwarderName, 53);
+            doc.text(lines1, x + boxWidth + 21, y + 29);
+          }
+        }
+        if (this.roleId == 2) {
+            const lines1 = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
+            doc.text(lines1, x + boxWidth + 21, y + 29);
+        }
+        // if (sample2.forwarderAddress) {
+        //   const lines1 = doc.splitTextToSize(sample2.forwarderAddress, 52);
+        //   doc.text(lines1, x + boxWidth + 21, y + 33);
+        // }     
 
       }
       y += boxHeight + 0; // Change the box spacing here
@@ -295,6 +340,8 @@ export class CetakLabelComponent implements OnInit {
     const pdfUrl = URL.createObjectURL(pdfBlob);
     window.open(pdfUrl, '_blank');
   }
+
+
 
 
   onYesClick() {

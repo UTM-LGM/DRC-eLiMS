@@ -21,4 +21,7 @@ export class CetakLabelService {
     return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/Putk1HeaderLabelTelahDicetak/' + sampleId, httpOptions);
   }
 
+
+
+
 }
