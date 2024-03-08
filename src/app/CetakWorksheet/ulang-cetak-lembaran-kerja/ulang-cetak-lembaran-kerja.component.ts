@@ -1,19 +1,22 @@
 import { Component } from '@angular/core';
-import { Batch } from '../models/batch';
-import { Sample } from '../models/sample';
-import { ElimsService } from '../services/elims.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth/auth.service';
-import { UserService } from '../User/user.service';
-import { Staff } from '../models/staff';
-import { K1Detail } from '../models/k1Detail';
+import { UserService } from 'src/app/User/user.service';
+import { Batch} from 'src/app/models/batch';
+import { K1Detail } from 'src/app/models/k1Detail';
+import { Staff } from 'src/app/models/staff';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { ElimsService } from 'src/app/services/elims.service';
+import { CetakWorksheetService } from '../cetak-worksheet.service';
+import { Sample } from 'src/app/models/sample';
+import { userDTO } from 'src/app/models/userDTO';
 
 @Component({
-  selector: 'app-cetak-lembaran-kerja',
-  templateUrl: './cetak-lembaran-kerja.component.html',
-  styleUrls: ['./cetak-lembaran-kerja.component.css']
+  selector: 'app-ulang-cetak-lembaran-kerja',
+  templateUrl: './ulang-cetak-lembaran-kerja.component.html',
+  styleUrls: ['./ulang-cetak-lembaran-kerja.component.css']
 })
-export class CetakLembaranKerjaComponent {
+export class UlangCetakLembaranKerjaComponent {
+
 
   batches: Batch[] = [];
   samples: Sample[] = [];
@@ -27,14 +30,16 @@ export class CetakLembaranKerjaComponent {
   username: string
   checkAll: boolean = false
   lepassubmit: boolean = false
-  
+  user: userDTO = {} as userDTO
   mesYaTidak: any
+  statusCodeId : number = 0 ;
 
   constructor(
     private elimsService: ElimsService,
     private router: Router,
     private authService: AuthService,
     private userService: UserService,
+    private cetakWorksheet: CetakWorksheetService,
   ) { }
   
   ngOnInit() {
@@ -47,7 +52,7 @@ export class CetakLembaranKerjaComponent {
       this.loginAs = '';
     }
 
-    if (this.roleId == 3) {
+    if (this.roleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         console.log(res)
         this.authService.changeUser(res);
@@ -56,20 +61,23 @@ export class CetakLembaranKerjaComponent {
         // console.log(this.username)
         // this.getElimsSamplesByUsername6(this.username)
         this.roleGtacr = true
-        // this.statusCode = 6
+ 
+     
       })
     }
 
-    // this.elimsService.GetElimsAllBatch().subscribe(data => {
-    //   this.batches = data
-    // });
-    
-        this.elimsService.GetElimsBatchesWithSamplesStatusCode6().subscribe(data => {
-      this.batches = data
-    });
+    this.statusCodeId = 7 ;
+    this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
+      this.batches = data;
+      console.log(data)
+    })
+
 
   }
 
+
+
+  
 
 
   // getElimsSamplesByUsername6(username: string) {
@@ -135,37 +143,23 @@ export class CetakLembaranKerjaComponent {
 
 
   onYesClick() {
-    this.k1Detail.labelPrintedOn = new Date();
-    this.k1Detail.labelPrintedBy = this.loginAs;
-    this.k1Detail.labelPrinted = true;
-
-    // this.cetakSample.labelPrintedOn = new Date();
-    // this.cetakSample.labelPrintedBy = this.loginAs;
-    // this.cetakSample.labelPrinted = true;
+    this.k1Detail.labelTestedOn = new Date();
+    this.k1Detail.labelTestedBy = this.loginAs;
 
     for (const sample of this.samples) {
       let id = sample.k1DetailId;
-      const rubberTypeId = sample.rubberTypeId
+      // const rubberTypeId = sample.rubberTypeId
       if (this.checkAll || sample.checked) {
 
-        // this.cetakLabelService.Putk1DetailLabelTelahDicetak(id, this.k1Detail).subscribe(
-        //   res => { this.mesYaTidak = "yes" }
-        // );
+        this.cetakWorksheet.PutCetakLembaranKerja(id, this.k1Detail).subscribe(
+          res => { this.mesYaTidak = "yes" }
+        );
 
-        // if (rubberTypeId == 2) {
-        //   this.getahBongkahService.PutBRLabelTelahDicetak(id, this.cetakSample).subscribe(
-        //     res => { this.mesYaTidak = "yes" }
-        //   );
-
-        // } else if (rubberTypeId == 1) {
-        //   this.drclimstrainingService.PutLtxLabelTelahDicetak(id, this.cetakSample).subscribe(
-        //     res => { this.mesYaTidak = "yes" }
-        //   );
-        // }
       }
     }
   }
 
+  
   onNoClick() {
     this.mesYaTidak = "tidak"
   }

@@ -205,24 +205,21 @@ export class LoginComponent implements OnInit {
             
           } 
           
-          else if ( this.selectedRole == 13){
-
+          else if ( this.selectedRole == 3){
             this.authService.getUserDto(this.userDetail.username, this.selectedRole);
-
-          }
-          
+          }       
           
           else if ( this.selectedRole == 2){
             this.authService.GetStaffRolebyStaffId(this.userDetail.staffId).subscribe(
               staffRoleData => {
                 this.userObjects = staffRoleData;
                 const userRole2 = this.userObjects.filter((user) => user.staffRole == 2);
-                const userRole3 = this.userObjects.filter((user) => user.staffRole == 3);
+                const userRole4 = this.userObjects.filter((user) => user.staffRole == 4);
 
                 if (userRole2.length != 0 && this.selectedRole == 2) {
                   this.authService.getUserDto(this.userDetail.username, this.selectedRole);
                   // this.setSessionStorage();
-                } else if (userRole3.length != 0 && this.selectedRole == 3) {
+                } else if (userRole4.length != 0 && this.selectedRole == 4) {
                   this.authService.getUserDto(this.userDetail.username, this.selectedRole);
                   // this.setSessionStorage();
                 } else {

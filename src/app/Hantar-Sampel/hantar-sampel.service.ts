@@ -9,6 +9,8 @@ import { UipMemoRunNo } from '../models/uipMemoRunNo';
 import { Batch } from '../models/batch';
 import { UipbkhMemoRunNo } from '../models/uipbkhMemoRunNo';
 import { Sample } from '../models/sample';
+import { LabRefNo } from '../models/labRefNo';
+import { Staff } from '../models/staff';
 
 
 @Injectable({
@@ -35,6 +37,19 @@ export class HantarSampelService {
   PutUipSampleRunNo(year: string): Observable<UipSampleRunNo> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.put<UipSampleRunNo>(this.baseApiUrl + '/api/UipSampleRunNoes/PutUipSampleRunNo/' + year, httpOptions);
+  }
+
+
+
+  
+  PutLabRefNo(monthyear: string, sample: Sample) {
+    return this.http.put<LabRefNo>(this.baseApiUrl + '/api/LabRefNoRunningNoes/PutLabRefNo/' + monthyear, sample);
+  }
+
+
+  PutMemoPrinted (batchid: number){
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.put(this.baseApiUrl + '/api/Batches/PutMemoPrinted/'+ batchid , httpOptions);
   }
 
   // UipbkhSampleRunNoes
@@ -206,6 +221,7 @@ export class HantarSampelService {
 
 
 
+
   getEmailStaff(staffId: number) {
     return this.http.get(this.baseApiUrl + '/api/Staffs/GetEmailStaff/' + staffId);
   }
@@ -214,6 +230,15 @@ export class HantarSampelService {
   GetElimsBatchBySendBy(sentBy: string) {
     return this.http.get(this.baseApiUrl + '/api/Batches/GetElimsBatchBySendBy/' + sentBy);
   }
+
+  GetElimsBatchBySendByNull1(sentBy: string) {
+    return this.http.get(this.baseApiUrl + '/api/Batches/GetElimsBatchBySendByNull1/' + sentBy);
+  }
+
+  GetElimsBatchBySendByNotNull(sentBy: string) {
+    return this.http.get(this.baseApiUrl + '/api/Batches/GetElimsBatchBySendByNotNull/' + sentBy);
+  }
+
 
 
   // getStaffIdByStaffName(staffName: string): Observable<number> {

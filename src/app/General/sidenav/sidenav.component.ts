@@ -39,10 +39,10 @@ export class SidenavComponent implements OnInit{
     }else if (this.roleId == '2'){
       this.roleForwarder = false
       this.roleUip = true
-    }else if (this.roleId == '3'){
+    }else if (this.roleId == '4'){
       this.roleForwarder = false
       this.roleGtacr = true
-    }else if(this.roleId == '13'){
+    }else if(this.roleId == '3'){
       this.roleImporter = true
     }
   }

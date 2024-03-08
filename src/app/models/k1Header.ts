@@ -17,7 +17,7 @@ export interface K1Header {
   companyId:number;
   transport: string;
   importerCode:string;
-  age
+  genCustomNo:string;
   //sampleId: number;
   //importerName:string;
 }

@@ -1,239 +1,256 @@
 <div class="container mb-3 " style="page-break-after: always">
-<div align="left">
-    <button (click)="generatePDF()" class="btn btn-primary mr-5">Cetak</button>
-</div><br>
 
 
-<!-- <div id="page1-div" style="page-break-after: auto; position:relative;width:893px;height:1262px;background-image: url('../../../assets/image/bgmemo.png');"> -->
-<div id="page1-div"
-    style="position: relative; width: 893px; height: 1262px; background-image: url('../../../assets/image/bgmemo.png');">
-    <!-- Page 1 content -->
-    <mat-card class="shadow p-3 mb-5 ml-0 pl-1 rounded ">
-        <mat-card-content>
+    <div align="left">
+        <button (click)="print()" class="btn btn-primary mr-5">Cetak</button>
+    </div><br>
+    <!-- [disabled]="isCetakDisabled() -->
 
 
-            <!-- <div class="header">
-                    <img src="../../assets/image/headerLetter.jpg" alt="header" class="header-image">
-                </div> -->
+    <div div #pdfContent>
+        <!-- <div id="page1-div" style="page-break-after: auto; position:relative;width:893px;height:1262px;background-image: url('../../../assets/image/bgmemo.png');"> -->
+        <div style="position: relative; width: 750px; height: auto; ">
+            <!-- Page 1 content -->
+            <!-- <mat-card class="print-hide"> -->
+            <table class="table1" width="100%">
 
-            <div class="sample" #pdfContent>
+                <mat-card-content>
+                    
+                    <div class="sample"  #pdfContent>
 
-                <!-- <body style="background-image: url('assets/image/bgmemo.png');"> -->
-              
-                <body>
+                        <body class="table px-4 py-2 pt-4">
 
-                    <div class="header">
-                        <img src="assets/image/headerLetter.jpg" alt="header" class="header-image">
-                    </div>
+                            <div class="headerSurat d-flex justify-content-center align-items-center mb-3">
+                                <img src="assets/image/headerLetter.jpg" alt="" width="700" class="mr-300">
+                            </div>
+                            
 
-                    <div class="font">
+                            <div class="font">
 
-                        <p>Kepada : Pengurus G-TACR Sg.Petani</p>
+                                <p>Kepada : Pengurus G-TAC<span class="small-r">R</span> Sg.Petani</p>
 
-                        <p>Daripada : Penolong Pegawai Penguatkuasa</p>
+                                <p>Daripada : {{samples[0].position}}</p>
 
-                        <p>Rujukan: {{samples[0].uipRegNo}}</p>
+                                <p>Rujukan: {{samples[0].uipRegNo}}</p>
 
-                        <p class="spacing">Tarikh: {{ samples[0].sentOn | date: 'dd MMMM yyyy' }}</p>
-
-
-                        <div class="spacing" *ngIf="samples[0].rubberTypeId == 1">
-                            <h3 class="font">
-                                <b><u>PERMOHONAN UNTUK MENJALANKAN UJIAN KANDUNGAN GETAH KERING KE ATAS SAMPEL
-                                        LATEKS</u></b>
-                            </h3>
-                        </div>
-
-                        <div class="spacing" *ngIf="samples[0].rubberTypeId == 2">
-                            <h3 class="font">
-                                <b><u>PERMOHONAN UNTUK MENJALANKAN UJIAN KANDUNGAN GETAH KERING KE ATAS SAMPEL
-                                        GETAH BONGKAH</u></b>
-                            </h3>
-                        </div>
-
-                        <p>Adalah dengan hormatnya perkara di atas adalah dirujuk. </p>
-                        <p>2. Pihak kami memohon kerjasama pihak tuan untuk menjalankan ujian kandungan Getah Kering
-                            ke atas sampel mengikut kaedah ujian
-                            <span><b>UPB/{{samples[0].sampleCategory}}/001</b></span>
-                            seperti berikut :-
-                        </p>
-
-                        <div class="card-body table-responsive">
-                            <table>
-                                <tr>
-                                    <th>Bil</th>
-
-                                    <th *ngIf="samples[0].rubberTypeId == 1">Label Sampel Lateks</th>
+                                <p class="spacing">Tarikh: {{ samples[0].sentOn | date: 'dd MMMM yyyy' : 'ms' }}</p>
 
 
-                                    <th *ngIf="samples[0].rubberTypeId == 2">Label Sampel Getah Bongkah</th>
+                                <div class="spacing" *ngIf="samples[0].rubberTypeId == 1">
+                                    <h3 class="font">
+                                        <b><u>PERMOHONAN UNTUK MENJALANKAN UJIAN KANDUNGAN GETAH KERING KE ATAS SAMPEL
+                                                LATEKS</u> - Batch ID: ({{samples[0].batchId}})</b>
+                                    </h3>
+                                </div>
 
-                                <tr *ngFor="let k1Detail of samples;  let i = index">
+                                <div class="spacing" *ngIf="samples[0].rubberTypeId == 2">
+                                    <h3 class="font">
+                                        <b><u>PERMOHONAN UNTUK MENJALANKAN UJIAN KANDUNGAN GETAH KERING KE ATAS SAMPEL
+                                                GETAH BONGKAH</u> - Batch ID: ({{samples[0].batchId}})</b>
+                                    </h3>
+                                </div>
 
-                                    <td>{{ i + 1 }}</td>
-                                    <td>
-                                        <span>
-                                            {{k1Detail.sampleCode}}/{{k1Detail.sampleRunNo}}
-                                        </span>
-                                    </td>
-                                </tr>
+                                <p>Adalah dengan hormatnya perkara di atas adalah dirujuk. </p>
+                                <p>2. Pihak kami memohon kerjasama pihak tuan untuk menjalankan ujian kandungan Getah
+                                    Kering
+                                    ke atas sampel mengikut kaedah ujian
+                                    <span><b>UPB/{{samples[0].sampleCategory}}/001</b></span>
+                                    seperti berikut :-
+                                </p>
 
-                            </table><br>
-                        </div>
+                                <div class="card-body table-responsive">
+                                    <table>
+                                        <tr>
+                                            <th>Bil</th>
+                                            
 
-                        <!-- <div>
-                            <p>
-                                3. Keputusan ujian sampel {{samples[0].rubberType}} tersebut boleh di e-mailkan terus kepada
-                                saya iaitu
-                                huzairi@lgm.gov.my dan disalinkan kepada Ketua UIP / Pegawai Tadbir UIP / Pembantu
-                                tadbir
-                                UIP (azafi@lgm.gov.my / tarmizi@lgm.gov.my / maisarah@lgm.gov.my).
-                            </p>
+                                            <th *ngIf="samples[0].rubberTypeId == 1">Label Sampel Lateks</th>
 
-                        </div> -->
 
-                        <p>3. Bersama-sama ini dilampirkan dokumen sokongan berkaitan. Sebarang pertanyaan lanjut
-                            boleh menghubungi saya di talian {{staff.hpNo}}.</p>
-                        <p>Sekian, terima kasih.</p>
+                                            <th *ngIf="samples[0].rubberTypeId == 2">Label Sampel Getah Bongkah</th>
+                                        
+                                        <th  style="width: 50%;">No Borang Kastam</th>
+                                        
+                                        </tr>
+                                        <tr *ngFor="let k1Detail of samples;  let i = index">
 
-                        <span><b>“MALAYSIA MADANI”</b></span><br>
-                        <span><b>“BERKHIDMAT UNTUK NEGARA”</b></span><br>
-                        <span><b>“KREATIF, INOVATIF, PROGRESIF”</b></span><br><br>
+                                            <td>{{ i + 1 }}</td>
+                                            <td>
+                                                <span>
+                                                    {{k1Detail.sampleCode}}/{{k1Detail.sampleRunNo}}
+                                                </span>
+                                            </td>
 
-                        <p>Saya yang menjalankan amanah,</p><br><br><br>
+                                            <td>
+                                                <span>
+                                                    {{k1Detail.customNo}}
+                                                </span>
+                                            </td>
 
-                        <!-- <span><div class="col-sm-8">
+                                        </tr>
+
+                                    </table><br>
+                                </div>
+
+                                <p>3. Bersama-sama ini dilampirkan dokumen sokongan berkaitan. Sebarang pertanyaan
+                                    lanjut
+                                    boleh menghubungi saya di talian {{samples[0].hpNo}}.</p>
+                                <p>Sekian, terima kasih.</p><br>
+
+
+                                <p><b>"MALAYSIA MADANI"</b><br>
+                                <b>“BERKHIDMAT UNTUK NEGARA”</b><br>
+                                <b>“BERKHIDMAT UNTUK NEGARA”</b><br>
+                                <b>“KREATIF, INOVATIF, PROGRESIF”</b></p><br>
+
+                                <p>Saya yang menjalankan amanah,</p><br><br><br>
+
+                                <!-- <span><div class="col-sm-8">
                             <img src="https://api02.lgm.gov.my/ApiElims/wwwroot/signature/sign_ezmy.jpg" alt="sign_ezmy" style="width: 100px; height: auto;">
                         </div></span> -->
-                        <!-- <div class="signature">
+                                <!-- <div class="signature">
                         <img [src]="signaturePath" alt="Signature" style="width: 100px; height: auto;">
                         </div> -->
-                        
-                        <span><b>({{staff.staffName}})</b></span><br>
-                        <span>{{staff.position}}</span><br>
-                        <span *ngIf="roleId == 2">Unit Inspektorat dan Penguatkuasaan</span><br>
-                        <span>{{staff.office}}</span><br><br>
 
-                        <p class="font-size">s.k: Ketua Unit Inspektorat dan Penguatkuasaan</p>
+                                <span><b>({{samples[0].staffName}})</b></span><br>
+                                <span>{{samples[0].position}}</span><br>
+                                <span>Unit Inspektorat dan Penguatkuasaan</span><br>
+                                <span>{{samples[0].office}}</span><br><br>
+                                <p class="font-size">s.k: Ketua Unit Inspektorat dan Penguatkuasaan</p>
+
+                            </div>
+                        </body>
                     </div>
-                </body>
-            </div>
-        </mat-card-content>
-    </mat-card>
-</div><br>
+                </mat-card-content>
+                <!-- </mat-card> -->
+            </table>
+        </div><br>
 
 
-<div id="page1-div" style="position: relative; width: 893px; height: 1262px;">
+        <div id="page1-div" style="position: relative; width: 750px; height: auto;">
+            <table class="table1" width="100%">
+                <!-- <mat-card class="mb-5"> -->
+                <mat-card-content>
 
-    <mat-card class="shadow p-3 mb-5 ml-0 pl-1 rounded ">
-        <mat-card-content>
+                    <div #pdfContent>
 
-            <div #pdfContent2>
+                        <div class="container px-4 py-2" style="page-break-before: always;">
+                            <div class="font">
+                                <div class="noSurat d-flex justify-content-end">
+                                    <H5>BORANG UKA 7</H5>
+                                </div>
+                                <div class="headerSurat d-flex justify-content-center align-items-center mb-3">
+                                    <img src="assets/image/logoLGM.png" alt="" width="80" class="mr-5">
+                                    <span class=" p-3 m-3"><b>LEMBAGA GETAH MALAYSIA</b></span>
+                                </div>
 
-                <div class="container mb-3" style="page-break-before: always;">
-                    <div class="font">
-                        <div class="noSurat d-flex justify-content-end">
-                            <H5>BORANG UKA 7</H5>
-                        </div>
-                        <div class="headerSurat d-flex justify-content-center align-items-center mb-3">
-                            <img src="assets/image/logoLGM.png" alt="" width="80" class="mr-5">
-                            <span class=" p-3 m-3"><b>LEMBAGA GETAH MALAYSIA</b></span>
-                        </div>
+                                <div>
+                                    <h2 class="h2">BORANG PESANAN DALAMAN (INTER UNITS)</h2>
+                                    <h2 class="h2">MAKLUMAT UNIT PEMOHON</h2>
 
-                        <div>
-                            <h2 class="h2">BORANG PESANAN DALAMAN (INTER UNITS)</h2>
-                            <h2 class="h2">MAKLUMAT UNIT PEMOHON</h2>
+                                    <table>
+                                        <tr>
+                                            <th colspan="2">Nama Pegawai yang diberi kuasa : {{samples[0].staffName}}
+                                            </th>
+                                            <td> Tandatangan</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Jawatan</th>
+                                            <td>{{samples[0].position}}</td>
+                                            <td rowspan="3"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Bahagian</th>
+                                            <td>{{samples[0].unitName}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>No.telefon & Samb </th>
+                                            <td>{{samples[0].hpNo}}</td>
+                                        </tr>
 
-                            <table>
-                                <tr>
-                                    <th colspan="2">Nama Pegawai yang diberi kuasa : {{staff.staffName}}</th>
-                                    <td> Tandatangan</td>
-                                </tr>
-                                <tr>
-                                    <th>Jawatan</th>
-                                    <td>{{staff.position}}</td>
-                                    <td rowspan="3"></td>
-                                </tr>
-                                <tr>
-                                    <th>Bahagian</th>
-                                    <td>{{staff.unitName}}</td>
-                                </tr>
-                                <tr>
-                                    <th>No.telefon & Samb </th>
-                                    <td>{{staff.hpNo}}</td>
-                                </tr>
+                                    </table><br>
+                                </div>
 
-                            </table><br>
-                        </div>
+                                <h2 class="h2">MAKLUMAT BARANGAN / PERKHIDMATAN DIPERLUKAN</h2>
 
-                        <h2 class="h2">MAKLUMAT BARANGAN / PERKHIDMATAN DIPERLUKAN</h2>
+                                <div class="noSurat d-flex justify-content-end">
+                                    <span><b>Amaun RM</b></span>
+                                </div>
 
-                        <div class="noSurat d-flex justify-content-end">
-                            <span><b>Amaun RM</b></span>
-                        </div>
+                                <table class="beautiful-table">
+                                    <tr>
+                                        <td class="description-cell">
+                                            Menjalankan ujian Kandungan Getah Kering ke atas <b>{{
+                                                selectedCheckboxCount}}</b>
+                                            sampel {{samples[0].rubberType}}
+                                            <br><br>
 
-                        <table class="beautiful-table">
-                            <tr>
-                                <td class="description-cell">
-                                    Menjalankan ujian Kandungan Getah Kering ke atas <b>{{ selectedCheckboxCount}}</b>
-                                    sampel {{samples[0].rubberType}}
-                                    <br><br>
-
-                                    <div *ngFor="let k1Detail of samples">
-                                        <span>
-                                            {{k1Detail.sampleCode }}/{{ k1Detail.sampleRunNo }}
-                                        </span>
-                                    </div>
+                                            <div *ngFor="let k1Detail of samples">
+                                                <span>
+                                                    {{k1Detail.sampleCode }}/{{ k1Detail.sampleRunNo }}
+                                                </span>
+                                            </div>
 
 
-                                    <div *ngFor="let refLableSample of refLableSamples;  let i = index">
-                                        <span>
-                                            {{refLableSample.sampleCode}}/{{staff.unit}}/{{refLableSample.runNo}}/{{refLableSample.year}}
-                                        </span>
-                                    </div>
+                                            <div *ngFor="let refLableSample of refLableSamples;  let i = index">
+                                                <span>
+                                                    {{refLableSample.sampleCode}}/{{staff.unit}}/{{refLableSample.runNo}}/{{refLableSample.year}}
+                                                </span>
+                                            </div>
 
-                                <td class="price-cell">
-                                    <div class="amount-container">
-                                        <span class="currency-symbol">RM {{samples[0].chequeAmount}}</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="vote-number-cell">Nombor Vot = <b> SP29116</b></td>
-                            </tr>
-                        </table><br>
+                                        <td class="price-cell">
+                                            <div class="amount-container">
+                                                <span class="currency-symbol">RM {{samples[0].chequeAmount}}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="vote-number-cell">Nombor Vot = <b> SP29116</b></td>
+                                    </tr>
+                                </table><br>
 
-                        <h2 class="h2">UNTUK DIISI OLEH BAHAGIAN / UNIT / STESEN / WILAYAH YANG MEMBERI P’TAN</h2>
+                                <h2 class="h2">UNTUK DIISI OLEH BAHAGIAN / UNIT / STESEN / WILAYAH YANG MEMBERI P’TAN
+                                </h2>
 
-                        <table>
+                                <table>
 
-                            <tr>
-                                <td>Nombor Arahan Pengeluaran Bil yang dikeluarkan</td>
-                                <td></td>
-                            </tr>
+                                    <tr>
+                                        <td>Nombor Arahan Pengeluaran Bil yang dikeluarkan</td>
+                                        <td></td>
+                                    </tr>
 
-                            <tr>
-                                <td>Tarikh: </td>
-                                <td>Amaun: RM </td>
-                            </tr>
+                                    <tr>
+                                        <td>Tarikh: </td>
+                                        <td>Amaun: RM </td>
+                                    </tr>
 
-                        </table><br>
+                                </table><br>
 
-                        <p><b>Arahan kepada Bahagian / Unit / Stesen / Wilayah</b></p>
+                                <p><b>Arahan kepada Bahagian / Unit / Stesen / Wilayah</b></p>
 
-                        <span>i) Pastikan borang diisi dengan lengkap dan tepat</span><br>
-                        <span>ii) Borang yang tidak lengkap akan melewatkan proses pembayaran bil </span><br>
-                        <span>iii) Borang pesanan dalaman ini hendaklah dikepilkan bersama setiap Arahan Pengeluaran Bil
-                            (Borang UKA 5) yang dihantar ke UKA.</span><br>
-                        <span>iv) Pihak Bahagian / Unit / Stesen / Wilayah tidak harus melayani permintaan barangan atau
-                            perkhidmatan jika borang ini tidak diisi dengan lengkap dan tepat.</span><br>
+                                <span>i) Pastikan borang diisi dengan lengkap dan tepat</span><br>
+                                <span>ii) Borang yang tidak lengkap akan melewatkan proses pembayaran bil </span><br>
+                                <span>iii) Borang pesanan dalaman ini hendaklah dikepilkan bersama setiap Arahan
+                                    Pengeluaran Bil
+                                    (Borang UKA 5) yang dihantar ke UKA.</span><br>
+                                <span>iv) Pihak Bahagian / Unit / Stesen / Wilayah tidak harus melayani permintaan
+                                    barangan atau
+                                    perkhidmatan jika borang ini tidak diisi dengan lengkap dan tepat.</span><br>
 
-                        <div>
+                                <div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-        </mat-card-content>
-    </mat-card>
-</div>
+                </mat-card-content>
+                <!-- </mat-card> -->
+            </table>
+        </div>
+    </div> </div>
+
+<!-- Using custom CSS classes -->
+<div class="my-margin"></div>
+<div class="my-padding"></div>
+
+

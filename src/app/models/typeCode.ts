@@ -4,4 +4,5 @@ export interface TypeCode {
     sampleType : string;
     sampleCode: string;
     sampleCategory: string;
+    oldSystemId : number;
 }

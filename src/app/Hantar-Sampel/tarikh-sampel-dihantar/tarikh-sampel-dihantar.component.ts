@@ -3,10 +3,10 @@ import { Batch } from '../../models/batch';
 import { ElimsService } from '../../services/elims.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder} from '@angular/forms';
 import { DrclimstrainingService } from '../../services/drclimstraining.service';
 import { GetahBongkahService } from '../../services/getah-bongkah.service';
-import { forkJoin, tap } from 'rxjs';
+import { forkJoin} from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -18,8 +18,7 @@ import { UipRefRunNo } from 'src/app/models/uipRefRunNo';
 import { UipbkhRefRunNo } from 'src/app/models/uipbkhRefRunNo';
 import { HantarSampelService } from '../hantar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
-
-import jsPDF from 'jspdf';
+import { loginImporter } from 'src/app/models/loginImporters';
 
 
 @Component({
@@ -40,11 +39,12 @@ export class TarikhSampelDihantarComponent {
   roleId: any;
   roleForwarder: boolean
   roleUip: boolean
+  roleImporter: boolean
 
   staff: Staff = {} as Staff
   uipRefRunNo: UipRefRunNo = {} as UipRefRunNo
   uipbkhRefRunNo: UipbkhRefRunNo = {} as UipbkhRefRunNo
-
+  importer: loginImporter = {} as loginImporter
 
   // sample: Sample = {} as Sample;
   samples: Sample[] = [];
@@ -95,9 +95,9 @@ export class TarikhSampelDihantarComponent {
         this.user = res
         this.roleForwarder = true
         this.roleUip = false
-
       })
     }
+
     else if (this.roleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
@@ -107,43 +107,15 @@ export class TarikhSampelDihantarComponent {
       })
     }
 
-
-
-
-
-    // if (this.roleId == 1) {
-
-    //   this.sampleForm = this.formBuilder.group({
-    //     batchId: ['', Validators.required],
-    //     date: ['', Validators.required],
-    //     delivery: ['', Validators.required],
-    //     courierServices: [''],
-    //     trackingNo: [''],
-    //   });
-    // }
-
-
-    // if (this.roleId == 2) {
-
-    //   this.sampleForm = this.formBuilder.group({
-    //     date: ['', Validators.required],
-    //     delivery: ['', Validators.required],
-    //     courierServices: [''],
-    //     trackingNo: [''],
-    //     uipRegNo: [''],
-
-    //   });
-    // }
-
-    // this.route.params.subscribe((params) => {
-    //   const batchId = params['batchId'];
-    //   if (batchId) {
-    //     this.batch.batchId = batchId;
-    //   } else { }
-    // });
-
-
-
+    else if (this.roleId == 3) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        this.authservice.changeUser(res);
+        this.importer = res
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleImporter = true
+      })
+    }
   }
 
 
@@ -194,7 +166,7 @@ export class TarikhSampelDihantarComponent {
 
     if (this.checkRequired()) {
 
-      if (this.roleId == 1) {
+      if (this.roleId == 1 || this.roleId == 3) {
         const addTarikhSampelDihantar = this.hantarSampelService.PostTarikhSampelDihantar(this.batch);
         const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
         const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
@@ -207,12 +179,12 @@ export class TarikhSampelDihantarComponent {
           {
             next: ((res: any[]) => {
               this.toastr.success('Data berjaya disimpan', 'Berjaya', {
-                timeOut: 3000,
+                timeOut: 7000,
               }),
 
                 setTimeout(() => {
                   window.location.reload();
-                }, 1000);
+                });
 
             }),
             error: (e) => {
@@ -236,12 +208,12 @@ export class TarikhSampelDihantarComponent {
           {
             next: ((res: any[]) => {
               this.toastr.success('Data berjaya disimpan', 'Berjaya', {
-                timeOut: 3000,
+                timeOut: 7000,
               }),
-
+              
                 setTimeout(() => {
                   window.location.reload();
-                }, 1000);
+                });
 
             }),
 

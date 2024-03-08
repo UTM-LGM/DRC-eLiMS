@@ -12,7 +12,8 @@
             <tr class="tableheader">
               <th scope="col"></th>
               <th scope="col">Batch Id</th>
-              <th scope="col">Forwarding Agent</th>
+              <th scope="col">Agent Penghantar</th>
+              <th scope="col">Bil. Sampel</th>
               <th scope="col">Bank</th>
               <th scope="col">No Cek</th>
               <th scope="col">Amaun </th>
@@ -27,7 +28,8 @@
               </td>
 
               <td>{{batch.batchId}}</td>
-              <td>{{batch.forwarderName}}{{batch.unitName}} </td>
+              <td>{{batch.forwarderName}}</td>
+              <td>{{batch.forwarderName}}</td>
               <td>{{batch.bankCode}} </td>
               <td>{{batch.chequeNo}}</td>
               <td>{{batch.chequeAmount}} </td>
@@ -40,13 +42,9 @@
 
 
 
-
-
       <div *ngIf="samples.length > 0">
 
-
         <!-- <p style="color: red;">{{ unregisteredSampleCount }} sampel belum didaftar terima</p> -->
-
 
         <div class="table-responsive">
 
@@ -58,10 +56,13 @@
                   <input type="checkbox" [(ngModel)]="checkAll" (change)="checkAllChanged()">
                 </th>
                 <th scope="col">Sample Id</th>
+                <th scope="col">Batch Id</th>
+                <th scope="col">Ruj. Makmal</th>
                 <th scope="col">No Kastam</th>
                 <th scope="col">Syarikat</th>
                 <th scope="col">Jenis</th>
                 <th scope="col">Tarikh Import </th>
+                <th scope="col">Tarikh Terima </th>
                 <th scope="col">Kuantiti(kg)</th>
               </tr>
             </thead>
@@ -75,10 +76,13 @@
 
                 <td></td>
                 <td>{{sample.k1DetailId}}</td>
+                <td>{{sample.batchId}}</td>
+                <td>{{sample.labRefNo}}</td>
                 <td>{{sample.customNo}} </td>
-                <td>{{sample.companyName}}{{sample.importerName}} </td>
-                <td>{{sample.sampleType}}</td>
+                <td>{{sample.importerName}} </td>
+                <td>{{sample.typeCode}}</td>
                 <td>{{sample.importedDate | date:"dd/MM/yyy"}} </td>
+                <td>{{sample.receivedOn | date:"dd/MM/yyy"}} </td>
                 <td>{{sample.quantity}} </td>
               </tr>
 
@@ -93,8 +97,7 @@
 
 
       <div *ngIf="lepassubmit" align="center">
-        <button id="download-pdf" (click)="generatePDF()" type="submit"
-          class="btn btn-primary mr-5">Cetak</button>
+        <button id="download-pdf" (click)="generatePDF()" type="submit" class="btn btn-primary mr-5">Cetak</button>
       </div><br>
 
 

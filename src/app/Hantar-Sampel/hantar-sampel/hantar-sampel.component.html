@@ -55,14 +55,7 @@
             </div>
           </div><br>
 
-
-
-  
-
-
-
-          <div *ngIf="roleForwarder">
-
+          <div *ngIf="roleForwarder || roleImporter">
 
             <div>
               <div class="row form-group">
@@ -93,13 +86,13 @@
               </div>
             </div>
             
-            <!-- <div class="row form-group">
+            <div class="row form-group">
               <div class="col-md-2">
                 <label class="label_title">Syarikat Pengimport</label><br>
                 <label class="label_bi">Importer Company</label>
               </div>
               <div class="col-md-4">
-                <select (change)="filterSamplesByCompany($event)" class="form-select" name="companyId" id="companyId"
+                <select (change)="filterSamplesByCompany($event)" class="form-select" name="importerName" id="importerName"
                   [(ngModel)]="selectedCompanyName">
                   <option class="pilih" value="default">--Pilih--</option>
                   <option *ngFor="let company of companies">
@@ -107,7 +100,7 @@
                   </option>
                 </select>
               </div>
-            </div><br> -->
+            </div><br>
 
 
             <!-- <div class="row form-group">
@@ -166,7 +159,8 @@
                   <th scope="col">Tarikh Import</th>
                   <th scope="col">Jenis Getah</th>
                   <th scope="col">Kuantiti(kg)</th>
-                  <th scope="col">Syarikat Pengimport</th>
+                  <th *ngIf="roleForwarder || roleUip"scope="col">Syarikat Pengimport</th>
+                  <th scope="col" *ngIf="roleImporter">Syarikat Penghantar</th>
                 </tr>
               </thead>
 
@@ -182,7 +176,8 @@
                   <!-- <td>{{sample.sampleType}}</td> -->
                   <td>{{sample.typeCode}}</td>
                   <td>{{sample.quantity}}</td>
-                  <td>{{sample.importerName }}</td>
+                  <td *ngIf="roleForwarder || roleUip">{{ sample.importerName }}</td>
+                  <td *ngIf="roleImporter">{{ sample.agentName }}</td>
                   <!-- <td>{{sample.importerName }}{{ sample.companyName }}</td> -->
                 </tr>
               </tbody>
@@ -209,7 +204,7 @@
       </div><br>
 
       <!-- Maklumat Penghantaran Batch Based on CEK or EFT -->
-      <div class="d-flex justify-content-center" *ngIf="roleForwarder">
+      <div class="d-flex justify-content-center" *ngIf="roleForwarder || roleImporter">
 
         <div *ngIf="!hantarSampel" class="card col-lg-8 shadow-sm">
           <h4 class="card-header">Maklumat Penghantaran Batch</h4>
@@ -259,7 +254,7 @@
                 <div *ngIf="selectedSamples.length > 0" class="row form-group">
                   <div class="col-md-4 ">
                     <label class="label_title">Jumlah (RM)</label><br>
-                    <label class="label_bi">Termasuk sst 6%</label>
+                    <label class="label_bi">Termasuk sst 8%</label>
                   </div>
                   <div class="col-md-8 ">
                     <span><input type="text" class="form-control" id="chequeAmount" name="chequeAmount"
@@ -383,7 +378,8 @@
             <th scope="col">Tarikh Import</th>
             <th scope="col">Jenis Getah</th>
             <th scope="col">Kuantiti(kg)</th>
-            <th scope="col">Syarikat Pengimport</th>
+            <th *ngIf="roleForwarder || roleUip"scope="col">Syarikat Pengimport</th>
+            <th scope="col" *ngIf="roleImporter">Syarikat Penghantar</th>
 
           </tr>
           <tr *ngFor="let sample of samples; let i = index">
@@ -393,7 +389,8 @@
             <!-- <td>{{sample.sampleType}}</td> -->
             <td>{{sample.typeCode}}</td>
             <td>{{sample.quantity}}</td>
-            <td>{{sample.importerName }}</td>
+            <td *ngIf="roleForwarder || roleUip">{{ sample.importerName }}</td>
+            <td *ngIf="roleImporter">{{ sample.agentName }}</td>
             <!-- <td>{{ sample.importerName }}{{ sample.companyName }}</td> -->
           </tr>
         </table>
@@ -466,7 +463,7 @@
 
         <h4 class="card-header">Cetakan Surat</h4>
 
-        <div class="card-body" *ngIf="roleForwarder">
+        <div class="card-body" *ngIf="roleForwarder || roleImporter">
           <button type="submit" class="btn btn-primary btn-block" [disabled]="!sahPenghantaranClicked"
             (click)="suratIringan(batchData)" color="red" style="margin-left: 5px;">Surat
             Iringan</button>

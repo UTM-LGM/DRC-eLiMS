@@ -15,6 +15,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Staff } from 'src/app/models/staff';
 import { DaftarSampelService } from '../daftar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
+import { loginImporter } from 'src/app/models/loginImporters';
 
 @Component({
   selector: 'app-sunting-sampel',
@@ -57,8 +58,10 @@ export class SuntingSampelComponent implements OnInit {
   roleId: any
   loginAs: any;
   staff: Staff = {} as Staff
+  importer: loginImporter = {} as loginImporter
   roleForwarder: boolean
   roleUip: boolean
+  roleImporter: boolean
   errorMes: boolean;
   // errorMes: boolean
 
@@ -67,7 +70,7 @@ export class SuntingSampelComponent implements OnInit {
   originalQuantity: number;
   formattedQuantity: string;
   formattedDRC: number;
-
+  creatorRoleId: any;
 
   constructor
     (private route: ActivatedRoute,
@@ -112,6 +115,7 @@ export class SuntingSampelComponent implements OnInit {
     else if (this.roleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authService.changeUser(res);
+        console.log(res)
         this.staff = res
         this.roleForwarder = false
         this.roleUip = true
@@ -122,6 +126,21 @@ export class SuntingSampelComponent implements OnInit {
       })
     }
 
+
+    else if (this.roleId == 3) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        this.authService.changeUser(res);
+        console.log(res)
+        this.importer = res
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleImporter = true
+
+        // this.elimsService.GetAllCompanies().subscribe(data => {
+        //   this.companies = data;
+        // })
+      })
+    }
 
     this.sampleForm = this.formBuilder.group({
       kodStesenKastam: ['', Validators.required],
@@ -150,6 +169,7 @@ export class SuntingSampelComponent implements OnInit {
         if (this.elimsService) {
           this.elimsService.getElimsSample(parseInt(k1DetailId)).subscribe(response => {
             this.sample = response;
+            this.creatorRoleId = this.sample.creatorRoleId
             // this.onDateChange(this.sample.importedDate)
             this.onDateChange(this.sample.importedDate)
             if (this.sample.isSMK) {
@@ -157,19 +177,6 @@ export class SuntingSampelComponent implements OnInit {
             } else {
               this.showSmk = false
             }
-
-            // if (this.sample.rubberTypeId == 1) {
-            //   this.elimsService.GetRefSampleTypeByRubberType(1).subscribe(data => {
-            //     this.sampleTypes = data
-            //   })
-
-            // }
-
-            // else if (this.sample.rubberTypeId == 2) {
-            //   this.elimsService.GetRefSampleTypeByRubberType(2).subscribe(data => {
-            //     this.sampleTypes = data
-            //   })
-            // }
 
             if (this.sample.rubberTypeId == 1) {
               this.elimsService.GetRefSampleTypeByRubberType(1).subscribe(data => {
@@ -203,21 +210,6 @@ export class SuntingSampelComponent implements OnInit {
   }
 
   changeJenisGetah(e: any) {
-
-
-    // if (e.target.value == 1) {
-    //   this.elimsService.GetRefSampleTypeByRubberType(1).subscribe(data => {
-    //     this.sampleTypes = data
-    //   })
-
-    // }
-    // else if (e.target.value == 2) {
-    //   this.elimsService.GetRefSampleTypeByRubberType(2).subscribe(data => {
-    //     this.sampleTypes = data
-    //   })
-
-    // }
-    // this.showSampleTypes = true
 
     if (e.target.value == 1) {
       this.elimsService.GetRefSampleTypeByRubberType(1).subscribe(data => {
@@ -291,6 +283,7 @@ export class SuntingSampelComponent implements OnInit {
 
       this.k1Detail.drc = this.sample.drc
       // this.k1Detail.drc = this.formattedDRC;
+      this.k1Detail.dateSampleReceived = new Date(this.sample.dateSampleReceived);
 
       this.k1Detail.country = this.sample.country
       this.sample.country = this.k1Detail.country
@@ -313,7 +306,7 @@ export class SuntingSampelComponent implements OnInit {
 
       // console.log("senarai sample ", this.sample)
       // console.log("senarai k1header ", this.k1Header)
-      // console.log("senarai k1detail ", this.k1Detail)
+      console.log("senarai k1detail ", this.k1Detail)
 
       if (this.k1Detail.rubberTypeId == 1) {
         this.daftarSampelService.PutK1HeaderSample(this.k1Header).subscribe(
@@ -402,9 +395,9 @@ export class SuntingSampelComponent implements OnInit {
       });
 
     } else if (this.roleId == 2) {
-      if (this.staff.username === 'uip') {
+      if (this.staff.unit == 'UIP') {
         sum = dateValue.getDate() + 14;
-      } else if (this.staff.username === 'uipbkh') {
+      } else if (this.staff.unit == 'UIPBKH') {
         sum = dateValue.getDate() + 7;
       }
 

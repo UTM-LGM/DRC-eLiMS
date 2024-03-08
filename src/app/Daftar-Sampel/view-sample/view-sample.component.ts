@@ -12,6 +12,7 @@ import { userDTO } from '../../models/userDTO';
 import { DaftarSampelService } from '../daftar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
 import { Staff } from 'src/app/models/staff';
+import { loginImporter } from 'src/app/models/loginImporters';
 
 @Component({
   selector: 'app-view-sample',
@@ -51,9 +52,11 @@ export class ViewSampleComponent implements OnInit {
   roleId: any;
   roleForwarder: boolean
   roleUip: boolean
+  roleImporter: boolean
   staff: Staff = {} as Staff
+  importer: loginImporter = {} as loginImporter
   batchId2: number
-
+  creatorRoleId: any;
 
   baseApiUrl = environment.baseApiUrl;
   baseApiUrlElimsEvidence = environment.baseApiUrlElimsEvidence;
@@ -116,6 +119,18 @@ export class ViewSampleComponent implements OnInit {
       })
     }
 
+    else if (this.roleId == 3) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        this.authservice.changeUser(res);
+        this.importer = res
+        console.log(res)
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleImporter = true
+      })
+    }
+
+
     this.route.paramMap.subscribe({
       next: (params) => {
         const k1DetailId = params.get('k1DetailId');
@@ -125,6 +140,7 @@ export class ViewSampleComponent implements OnInit {
             .subscribe(response => {
               this.sample = response;
               console.log(response);
+              this.creatorRoleId = this.sample.creatorRoleId
               this.onDate(this.sample.importedDate)
               if (this.sample.isSMK) {
                 this.showSmk = true

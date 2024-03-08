@@ -1,5 +1,18 @@
-<div class="content-header  d-flex">
+<!-- <div class="content-header  d-flex">
 </div><br>
+
+<mat-tab-group>
+  <mat-tab label="Senarai penghantaran">
+
+    <app-sajarah-penghantaran></app-sajarah-penghantaran>
+
+  </mat-tab>
+  <mat-tab label="Senarai sampel telah dihantar">
+
+    <app-maklumat-penghantaran></app-maklumat-penghantaran>
+
+  </mat-tab>
+</mat-tab-group> -->
 
 <mat-card-content>
 
@@ -45,7 +58,6 @@
     <button (click)="generatePDFWithQRCode()" type="submit" class="btn btn-primary mr-5">Cetak</button>
   </div><br>
 
-
   <div *ngIf="samples.length > 0">
 
     <div class="table-responsive">
@@ -56,7 +68,8 @@
             <th scope="col"></th>
             <th scope="col">Sampel Id</th>
             <th scope="col">No Borang Kastam</th>
-            <th scope="col">Syarikat Pengimport</th>
+            <th scope="col" *ngIf="!roleImporter">Syarikat Pengimport</th>
+            <th scope="col" *ngIf="roleImporter">Syarikat Penghantar</th>
             <th scope="col">Jenis Sampel</th>
             <th scope="col">Tarikh Import </th>
             <th scope="col">Kuantiti(kg)</th>
@@ -67,7 +80,8 @@
             <td></td>
             <td>{{sample.k1DetailId}}</td>
             <td>{{sample.customNo}} </td>
-            <td>{{sample.importerName}} </td>
+            <td *ngIf="!roleImporter">{{sample.importerName}} </td>
+            <td *ngIf="roleImporter">{{sample.agentName}} </td>
             <td>{{sample.typeCode}}</td>
             <td>{{sample.importedDate | date:"dd/MM/yyy"}} </td>
             <td>{{sample.quantity}} </td>

@@ -10,6 +10,7 @@ import { AuthService } from '../services/auth/auth.service';
 import { UserService } from '../User/user.service';
 import { DaftarSampelService } from '../Daftar-Sampel/daftar-sampel.service';
 import { Batch } from '../models/batch';
+import { loginImporter } from '../models/loginImporters';
 
 @Component({
   selector: 'app-view-keputusan-ujian',
@@ -31,6 +32,7 @@ export class ViewKeputusanUjianComponent implements OnInit {
   k1Detail: K1Detail = {} as K1Detail;
   k1Header: K1Header = {} as K1Header;
   user: userDTO = {} as userDTO
+  importer: loginImporter = {} as loginImporter
   batch: Batch = {} as Batch;
   batchData: Batch = {} as Batch;
 
@@ -58,6 +60,7 @@ export class ViewKeputusanUjianComponent implements OnInit {
   roleId: any;
   creatorRoleId: any;
   roleForwarder: boolean = false
+  roleImporter: boolean = false
   roleUip: boolean = false
   staff: Staff = {} as Staff
   batchId2: number
@@ -96,6 +99,16 @@ export class ViewKeputusanUjianComponent implements OnInit {
         this.staff = res
         this.roleForwarder = false
         this.roleUip = true
+      })
+    }
+
+    else if (this.roleId == 3) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        this.authservice.changeUser(res);
+        this.importer = res
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleImporter = false
       })
     }
 
@@ -138,14 +151,14 @@ export class ViewKeputusanUjianComponent implements OnInit {
     window.open("memo/" + this.sample.batchId);
   }
 
-  // viewSuratIringan(): void {
-  //   window.open("surat-iringan/" + this.sample.batchId);
-  // }
-
-
   viewSuratIringan(): void {
-    window.open("surat-iringan/" + this.sample.batchId );
+    window.open("surat-iringan/" + this.sample.batchId);
   }
+
+
+  // viewSuratIringan(): void {
+  //   window.open("surat-iringan/" + this.sample.batchId );
+  // }
 
   viewLampiran(): void {
     window.open("lampiran/" + this.sample.batchId);

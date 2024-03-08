@@ -5,7 +5,6 @@ import { UserService } from '../User/user.service';
 import { AuthService } from '../services/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ElimsService } from '../services/elims.service';
-import { DrclimstrainingService } from '../services/drclimstraining.service';
 import { Sample } from '../models/sample';
 import { userDTO } from '../models/userDTO';
 import { UipRefRunNo } from '../models/uipRefRunNo';
@@ -14,6 +13,7 @@ import { Staff } from '../models/staff';
 
 import * as QRCode from 'qrcode-generator';
 import jsPDF from 'jspdf';
+import { loginImporter } from '../models/loginImporters';
 
 @Component({
   selector: 'app-view-maklumat-penghantaran',
@@ -32,8 +32,10 @@ export class ViewMaklumatPenghantaranComponent {
   roleId: any;
   roleForwarder: boolean
   roleUip: boolean
+  roleImporter: boolean
 
   staff: Staff = {} as Staff
+  importer: loginImporter = {} as loginImporter
   uipRefRunNo: UipRefRunNo = {} as UipRefRunNo
   uipbkhRefRunNo: UipbkhRefRunNo = {} as UipbkhRefRunNo
   batchId: number
@@ -52,7 +54,7 @@ export class ViewMaklumatPenghantaranComponent {
       private hantarSampelService: HantarSampelService,
       private userService: UserService,
       private elimsService: ElimsService,
-      ) { }
+    ) { }
 
   ngOnInit() {
 
@@ -95,14 +97,29 @@ export class ViewMaklumatPenghantaranComponent {
           console.log(res)
           this.batches = res;
         }))
+
       })
     }
 
+    else if (this.roleId == 3) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        this.authservice.changeUser(res);
+        this.importer = res
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleImporter = true
+        console.log(this.importer)
+        this.username = this.importer.username
+
+        this.hantarSampelService.GetElimsBatchBySendBy(this.username).subscribe((res => {
+          console.log(res)
+          this.batches = res;
+        }))
+
+      })
+    }
 
   }
-
-
-
 
 
   generateQRCode(batchId: string) {
@@ -175,7 +192,7 @@ export class ViewMaklumatPenghantaranComponent {
     }
     console.log(selectedBatches);
   }
-  
+
 
 
   generatePDFWithQRCode() {
@@ -227,7 +244,7 @@ export class ViewMaklumatPenghantaranComponent {
       // Create QR codes 1
       const qrCode1 = QRCode(0, 'L');
 
-      if (this.roleId == 1) {
+      if (this.roleId == 1 || this.roleId == 3) {
         qrCode1.addData(batch1.batchId.toString());
       }
 
@@ -244,7 +261,7 @@ export class ViewMaklumatPenghantaranComponent {
       if (batch2) {
         const qrCode2 = QRCode(0, 'L');
 
-        if (this.roleId == 1) {
+        if (this.roleId == 1 || this.roleId == 3) {
           qrCode2.addData(batch2.batchId.toString());
         } else if (this.roleId == '2') {
           qrCode2.addData(batch2.batchId.toString() + "- UIP");
@@ -272,8 +289,6 @@ export class ViewMaklumatPenghantaranComponent {
       }
 
 
-
-
       // Add QR code images to PDF
       doc.addImage(qrCodeImgData1, 'PNG', x + 17, y + 3, qrCodeSize, qrCodeSize);
       if (qrCodeImgData2) {
@@ -287,7 +302,7 @@ export class ViewMaklumatPenghantaranComponent {
       doc.setFontSize(fontSize);
 
 
-      if (this.roleId == 1) {
+      if (this.roleId == 1 || this.roleId == 3) {
         if (batch1.batchId) {
           doc.text("Batch Id : " + `${batch1.batchId}`, x + 16, y + 30);
         }
@@ -302,7 +317,7 @@ export class ViewMaklumatPenghantaranComponent {
 
       if (batch2) {
 
-        if (this.roleId == 1) {
+        if (this.roleId == 1 || this.roleId == 3) {
           if (batch2.batchId) {
             doc.text("Batch Id : " + `${batch2.batchId}`, x + boxWidth + 16, y + 30);
           }
@@ -316,7 +331,7 @@ export class ViewMaklumatPenghantaranComponent {
 
       if (batch3) {
 
-        if (this.roleId == 1) {
+        if (this.roleId == 1 || this.roleId == 3) {
           if (batch3.batchId) {
             doc.text("Batch Id : " + `${batch3.batchId}`, x + 2 * boxWidth + 16, y + 30);
           }
@@ -338,155 +353,18 @@ export class ViewMaklumatPenghantaranComponent {
   }
 
 
-
-
-
-  // generatePDFWithQRCode() {
-
-  //   const selectedBatches = this.batches.filter((batch: { checked: any; }) => batch.checked);
-  //   if (selectedBatches.length === 0) {
-  //     alert('Please select at least one sample.');
-  //     return;
-  //   }
-
-  //   const doc = new jsPDF();
-  //   const pageHeight = doc.internal.pageSize.height;
-  //   const boxHeight = 35;
-  //   const boxWidth = 60;
-  //   const qrCodeSize = 25;
-  //   const fontSize = 10;
-  //   const boxSpacing = 0;
-  //   let y = 13;
-  //   let x = 15;
-
-  //   // Set font to Courier Monospace
-  //   doc.setFont('courier', 'normal');
-
-  //   for (let i = 0; i < selectedBatches.length; i += 3) {
-  //     const batch1 = selectedBatches[i];
-  //     const batch2 = selectedBatches[i + 1];
-
-  //     // Check if boxes fit on the current page
-  //     if (y + boxHeight > pageHeight - 20) {
-  //       doc.addPage();
-  //       y = 20;
-  //     }
-
-  //     // Draw boxes
-  //     doc.setDrawColor(0);
-  //     doc.setFillColor(255, 255, 255);
-  //     doc.rect(x, y, boxWidth, boxHeight, 'FD');
-
-  //     if (batch2) {
-  //       doc.rect(x + boxWidth, y, boxWidth, boxHeight, 'FD');
-  //     }
-
-
-  //     // Create QR codes 1
-  //     const qrCode1 = QRCode(0, 'L');
-
-  //     if (this.roleId == 1) {
-  //       qrCode1.addData(batch1.batchId.toString());
-  //     }
-
-  //     else if (this.roleId == 2) {
-  //       qrCode1.addData(batch1.batchId.toString() + "- UIP");
-  //     }
-
-  //     qrCode1.make();
-  //     const qrCodeImgData1 = qrCode1.createDataURL(qrCodeSize);
-
-
-  //     // Create QR codes 2
-  //     let qrCodeImgData2;
-  //     if (batch2) {
-  //       const qrCode2 = QRCode(0, 'L');
-
-  //       if (this.roleId == 1) {
-  //         qrCode2.addData(batch2.batchId.toString());
-  //       } else if (this.roleId == '2') {
-  //         qrCode2.addData(batch2.batchId.toString() + "- UIP");
-  //       }
-
-  //       qrCode2.make();
-  //       qrCodeImgData2 = qrCode2.createDataURL(qrCodeSize);
-  //     }
-
-
-  //     // Add QR code images to PDF
-  //     doc.addImage(qrCodeImgData1, 'PNG', x + 17, y + 3, qrCodeSize, qrCodeSize);
-  //     if (qrCodeImgData2) {
-  //       doc.addImage(qrCodeImgData2, 'PNG', x + boxWidth + 17, y + 3, qrCodeSize, qrCodeSize);
-  //     }
-
-  //     // Add text to PDF
-  //     doc.setFontSize(fontSize);
-
-
-  //     if (this.roleId == 1) {
-  //       if (batch1.batchId) {
-  //         doc.text("Batch Id : " + `${batch1.batchId}`, x + 16, y + 30);
-  //       }
-  //     }
-
-  //     else if (this.roleId == 2) {
-  //       if (batch1.batchId) {
-  //         doc.text("Batch Id : " + `${batch1.batchId} - UIP`, x + 16, y + 30);
-  //       }
-  //     }
-
-
-  //     if (batch2) {
-
-  //       if (this.roleId == 1) {
-  //         if (batch2.batchId) {
-  //           doc.text("Batch Id : " + `${batch2.batchId}`, x + boxWidth + 16, y + 30);
-  //         }
-  //       } else if (this.roleId == 2) {
-  //         if (batch2.batchId) {
-  //           doc.text("Batch Id : " + `${batch2.batchId} - UIP`, x + boxWidth + 16, y + 30);
-  //         }
-  //       }
-  //     }
-
-
-  //     // if (batch3) {
-
-  //     //   if (this.roleId == 1) {
-  //     //     if (batch3.batchId) {
-  //     //       doc.text("Batch Id : " + `${batch3.batchId}`, x + 2 * boxWidth + 16, y + 30);
-  //     //     }
-  //     //   }
-
-  //     //   else if (this.roleId == 2) {
-  //     //     if (batch3.batchId) {
-  //     //       doc.text("Batch Id : " + `${batch3.batchId} - UIP`, x + 2 * boxWidth + 16, y + 30);
-  //     //     }
-  //     //   }
-  //     // }
-
-  //     y += boxHeight + 0; // Change the box spacing here
-  //   }
-
-  //   const pdfBlob = doc.output('blob');
-  //   const pdfUrl = URL.createObjectURL(pdfBlob);
-  //   window.open(pdfUrl, '_blank');
-  // }
-
-  
   isAtLeastOneCheckboxChecked(): boolean {
     return this.batches.some((batch: { checked: any; }) => batch.checked);
   }
-  
+
 
   sampleList(batchId: number) {
     this.selectedBatchId = batchId;
     this.elimsService.GetElimsSamplesByBatchId(batchId).subscribe(res => {
       console.log(res)
       this.samples = res;
-      // this.calculateUnregisteredSampleCount();
-      
-    }); 
+
+    });
   }
 
 }

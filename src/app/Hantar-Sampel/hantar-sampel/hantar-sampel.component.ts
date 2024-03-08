@@ -23,6 +23,7 @@ import { UipbkhSampleRunNo } from 'src/app/models/uipbkhSampleRunNo';
 import { HantarSampelService } from '../hantar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
 import * as html2pdf from 'html2pdf.js';
+import { loginImporter } from 'src/app/models/loginImporters';
 
 
 @Component({
@@ -50,7 +51,8 @@ export class HantarSampelComponent {
   batches: Batch[] = [];
   samples: Sample[] = [];
   runNo: number
-  selectedSamples: any[] = [];
+  // selectedSamples: any[] = [];
+  selectedSamples: Sample[] = [];
 
   checkAll: boolean = false
   hantarSampel: boolean = false
@@ -72,6 +74,7 @@ export class HantarSampelComponent {
   roleId: any;
   roleForwarder: boolean
   roleUip: boolean
+  roleImporter: boolean
   generatedUipRegNo: string;
 
   selectedRubberType: string = ""; // Initialize with a default value
@@ -103,7 +106,9 @@ export class HantarSampelComponent {
   isSuratIringan: boolean = false;
   groupedSamples: any[];
   resetcalculateSelectedCheckboxCount  : any[] = []
+  importer: loginImporter = {} as loginImporter
 
+  
   baseApiUrl: string = environment.baseApiUrlElims;
 
   constructor(
@@ -152,9 +157,27 @@ export class HantarSampelComponent {
         this.getElimsSamplesByUsername2(this.username)
         this.roleForwarder = false
         this.roleUip = true
-        this.statusCode = 5
+        this.statusCode = 3
       })
     }
+
+    
+    if (this.roleId == 3) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        console.log(res)
+        this.authService.changeUser(res);
+        this.importer = res
+        this.username = this.importer.username
+        this.getElimsSamplesByUsername2(this.username)
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleImporter = true
+        this.statusCode = 3
+
+      })
+    }
+
+
 
     this.elimsService.GetElimsBankCodes().subscribe(data => {
       this.bankCodes = data
@@ -219,13 +242,13 @@ export class HantarSampelComponent {
   }
 
   checkSingleChanged() {
-    const selectedSamples: Sample[] = [];
+    
     for (const sample of this.samples) {
       if (sample.checked) {
-        selectedSamples.push(sample);
+        this.selectedSamples.push(sample);
       }
     }
-    console.log(selectedSamples);
+    console.log(this.selectedSamples);
     // this.onTestMethodChange();
     this.calculateAmount();
 
@@ -314,6 +337,9 @@ export class HantarSampelComponent {
           console.log("maklumat batchId2: ", this.batchId2);
           console.log("maklumat sample: ", this.sample);
 
+
+          const requests = [];
+          
           if (this.selectedRubberType == "Lateks") {
             this.drclimstrainingService.PostLtxBatches(this.batchId2, this.batch, this.username).subscribe(resLtxBatch => {
               console.log(resLtxBatch.batchId)
@@ -348,49 +374,6 @@ export class HantarSampelComponent {
                 this.mesYaTidak = "yes";
               }
             );
-
-            // else if (this.selectedRubberType == "Getah Bongkah") {
-            //   // Step 1: Create the batch
-            //   this.getahBongkahService.PostBRBatches(this.batchId2, this.batch, this.username).subscribe(resBRBatch => {
-            //     console.log(resBRBatch.batchId);
-            //     this.sample.batchId = resBRBatch.batchId;
-
-
-            //     // Step 2: Update all samples with the same batchId
-            //     // for (const sample of this.samples) {
-            //     //   let id = sample.k1DetailId;
-            //     //   sample.batchId = resBRBatch.batchId;  // Assign the batchId to each sample
-            //     // }
-
-            //     // Step 3: Update all samples with the batchId in a single request
-            //     this.getahBongkahService.PutBRSampleBatchId(id, this.sample).subscribe(() => {
-            //       // Your additional logic here if needed
-            //     });
-            //   });
-            // }
-
-
-            // else if (this.selectedRubberType == "Getah Bongkah") {
-            //   // Step 1: Create the batch
-            //   this.getahBongkahService.PostBRBatches(this.batchId2, this.batch, this.username).subscribe(resBRBatch => { 
-            //     console.log(resBRBatch.batchId);
-            //     const batchId = resBRBatch.batchId;
-
-            //     // Step 2: Update all samples with the same batchId
-            //     for (const sample of this.samples) {
-            //       let id = sample.k1DetailId;
-            //       sample.batchId = batchId;  // Assign the batchId to each sample
-            //     }
-
-            //     // Step 3: Update all samples with the batchId in a single request
-            //     this.getahBongkahService.PutBRSampleBatchIds(batchId, this.samples).subscribe(() => {
-            //       // Your additional logic here if needed
-            //     });
-            //   });
-            // }
-
-
-
 
 
             if (this.file != null) {
@@ -619,18 +602,18 @@ export class HantarSampelComponent {
 
 
 
-      if (this.roleId == 1) {
+      if (this.roleId == 1 || this.roleId==3) {
 
         if (this.batch.testMethodId == 8) {
-          this.batch.chequeAmount += 106;
+          this.batch.chequeAmount += 108;
 
           // If Fast Track is selected, double the amount and include SST
-          this.batch.chequeAmount += this.batch.isFastTrack ? 106 : 0;
+          this.batch.chequeAmount += this.batch.isFastTrack ? 108 : 0;
         } else if (this.batch.testMethodId == 7) {
-          this.batch.chequeAmount += 159;
+          this.batch.chequeAmount += 162;
 
           // If Fast Track is selected, double the amount and include SST
-          this.batch.chequeAmount += this.batch.isFastTrack ? 159 : 0;
+          this.batch.chequeAmount += this.batch.isFastTrack ? 162 : 0;
         }
 
         else {
@@ -641,7 +624,7 @@ export class HantarSampelComponent {
           }
 
           // Apply 6% SST
-          const sstRate = 0.06;
+          const sstRate = 0.08;
           const sstAmount = baseAmount * sstRate;
 
           // If Fast Track is selected, double the amount and include SST
@@ -658,7 +641,7 @@ export class HantarSampelComponent {
         }
 
         // Apply 6% SST
-        const sstRate = 0.06;
+        const sstRate = 0.08;
         const sstAmount = baseAmount * sstRate;
 
         // If Fast Track is selected, double the amount and include SST
@@ -670,9 +653,6 @@ export class HantarSampelComponent {
   }
 
 
-
-
-
   setDefaultTestMethod() {
     const defaultTestMethods = {
       'Lateks': 1,
@@ -681,10 +661,6 @@ export class HantarSampelComponent {
 
     this.batch.testMethodId = defaultTestMethods[this.selectedRubberType];
   }
-
-
-
-
 
   // calculateAmount() {
   //   this.batch.chequeAmount = 0;
@@ -800,7 +776,7 @@ export class HantarSampelComponent {
     this.companies = new Set<string>();
 
     this.filteredSamples.forEach(element => {
-      const key = (element.companyName || '');
+      const key = (element.importerName || '');
       if (key.trim() !== '') {
         this.companies.add(key);
       }
@@ -830,11 +806,15 @@ export class HantarSampelComponent {
 
     this.batch.chequeAmount = 0;
     // Clear the selected checkboxes array when a new company name is chosen
-    this.checkboxSelected = false;
+    // this.checkboxSelected = false;
+    for (let sample of this.samples) {
+      sample.checked = false;
+      this.selectedSamples = []
+    }
 
     this.filteredSamples = this.filteredSamplesTemp.filter(sample => {
       return (
-        (sample.companyName && sample.companyName.includes(event.target.value))
+        (sample.importerName && sample.importerName.includes(event.target.value))
       );
     });
 
@@ -845,32 +825,11 @@ export class HantarSampelComponent {
 }
 
 
-
-
-
   toggleLampiranVisibility(): void {
     this.lampiranVisible = !this.lampiranVisible;
   }
 
 
-  // changeJenisGetah(e: any) {
-
-  //   if (e.target.value == 1) {
-  //     this.elimsService.GetRefTestMethodByRubberType(1).subscribe(data => {
-  //       this.testMethods = data
-  //       console.log(data)
-  //     })
-
-  //   }
-  //   else if (e.target.value == 2) {
-  //     this.elimsService.GetRefTestMethodByRubberType(2).subscribe(data => {
-  //       this.testMethods = data
-  //     })
-
-  //   }
-  //   this.showTestMethods = true
-
-  // }
 
   showSuratIringan() {
     this.isSuratIringan = true;

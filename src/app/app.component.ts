@@ -34,7 +34,13 @@ export class AppComponent {
      this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      this.isPrintMemoRoute = event.url.includes('print-memo');
+
+      
+      // this.isPrintMemoRoute = event.url.includes('print-memo');
+      console.log(event)
+      if (event.url.includes('print-memo')){
+        this.isPrintMemoRoute = true
+      }
      
     });
     

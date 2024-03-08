@@ -19,12 +19,19 @@
             <ng-container *ngFor="let companyGroup of groupedSamples;  let isFirst = first">
               <div class="company-group" [class.first-group]="isFirst">
                 
-              <p>
+              <p *ngIf="!roleImporter">
                 <b>NAMA SYARIKAT PENGIMPORT</b> : {{ companyGroup.key }}<br>
                 <b>ALAMAT SYARIKAT PENGIMPORT</b> : {{ companyGroup.items[0].importerAddress }}<br>
                 <!-- {{ companyGroup.items[0].companyAddress }} -->
                 <!-- <b>JUMLAH BILANGAN SAMPEL</b>: {{ companyGroup.count }}<br> -->
             </p>
+
+            <p *ngIf="roleImporter">
+              <b>NAMA SYARIKAT PENGHANTAR</b> : {{ samples[0].agentName}}<br>
+              <b>ALAMAT SYARIKAT PENGHANTAR</b> : {{ samples[0].companyAddress}}<br>
+              <!-- {{ companyGroup.items[0].companyAddress }} -->
+              <!-- <b>JUMLAH BILANGAN SAMPEL</b>: {{ companyGroup.count }}<br> -->
+          </p>
   
               <p><b>PINTU SEMPADAN</b>: {{kodStesen}} -  {{namaStesen}}<br></p>
               <div class="table-responsive">

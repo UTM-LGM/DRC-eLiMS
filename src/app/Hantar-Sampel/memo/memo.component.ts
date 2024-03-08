@@ -48,7 +48,6 @@ export class MemoComponent {
   uipbkhRefRunNoes: any
   sampleCategory: string
 
-
   selectedCheckboxCount: number = 0;
   selectedRubberType: string = "";
   batch: Batch = {} as Batch;
@@ -66,12 +65,11 @@ export class MemoComponent {
   isPreview: boolean = true;
   signatureImageBase64: SafeResourceUrl;
   signaturePath: string;
-
+  memoPrinted: number; // Assuming this array holds your data
+  isPrintButtonClicked = false; // Add this variable
 
   @ViewChild('pdfContent') pdfContent!: ElementRef;
   @ViewChild('pdfContent2') pdfContent2!: ElementRef;
-
-  // @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
   constructor(
     private elimsService: ElimsService,
@@ -79,7 +77,6 @@ export class MemoComponent {
     private authService: AuthService,
     private hantarSampelService: HantarSampelService,
     private userService: UserService,
-    private sanitizer: DomSanitizer,
   ) {
 
   }
@@ -101,19 +98,22 @@ export class MemoComponent {
       this.staff = res
 
       // this.signaturePath = res.signature
-      this.signaturePath = "https://api02.lgm.gov.my/ApiElims/wwwroot/signature/sign_ezmy.jpg"
+      // this.signaturePath = "https://api02.lgm.gov.my/ApiElims/wwwroot/signature/sign_ezmy.jpg"
 
       this.route.params.subscribe(param => {
         this.batchId = param['batchId'];
 
         console.log(this.batchId);
 
+        // this.hantarSampelService.GetBatchByBatchId(this.batchId).subscribe(data => {
+        //   this.batches = data
+        //   // this.staff = resBatchStaff.staff
+        //   console.log(this.batches)
+        // })
+
 
         this.elimsService.GetElimsSamplesByBatchId(this.batchId).subscribe(data => {
           this.samples = data;
-          // this.sampleCode = data.rub.sampleCode
-          // this.sampleCategory = data.rub.sampleCategory
-
           console.log(this.samples)
           this.selectedCheckboxCount = this.samples.length; // update the samples array with the response data
           //this.selectedRubberType = this.samples[0].rubberType
@@ -121,13 +121,7 @@ export class MemoComponent {
 
       })
 
-
-      this.hantarSampelService.GetBatchByBatchId(this.batchId).subscribe(data => {
-        this.batch = data
-        // this.staff = resBatchStaff.staff
-        console.log(this.batch)
-      })
-
+      ///////////////CODE FOR GET EMAIL STAFF////////////////
       this.hantarSampelService.getEmailStaff(this.staff.staffId).subscribe(emelRes => {
         if (Array.isArray(emelRes) && emelRes.length > 0) {
           emelRes.forEach(item => {
@@ -137,6 +131,7 @@ export class MemoComponent {
           });
         }
       })
+
     });
 
 
@@ -144,9 +139,6 @@ export class MemoComponent {
       this.rubberTypes = data
       console.log(this.rubberTypes)
     })
-
-
-
   }
 
 
@@ -235,9 +227,11 @@ export class MemoComponent {
 
   // }
 
-
-
   generatePDF() {
+
+    this.hantarSampelService.PutMemoPrinted(this.batchId).subscribe(() => { })
+
+
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth() - 40;
     let yOffset = 20; // Initial vertical offset
@@ -294,26 +288,68 @@ export class MemoComponent {
       }
     });
 
-    this.emailRecipient = ["nurizzatul@lgm.gov.my"]
+    // this.emailRecipient = ["nurizzatul@lgm.gov.my"]
 
 
-    console.log(this.emailRecipient)
+    console.log(this.batches[0].memoPrinted)
 
-    this.hantarSampelService.notificationMemo(this.staff.staffId, this.batchId, this.emailRecipient).subscribe(
-      email => {
-        console.log("Email for request status 009 has been sent to recipient");
-      },
-      emailErr => {
-        console.log("Email for request status 009 failed to send to the recipient");
-      }
-    );
+    if (this.batches[0].memoPrinted != true) {
+      this.hantarSampelService.notificationMemo(this.staff.staffId, this.batchId, this.emailRecipient).subscribe(
+        email => {
+          console.log("Email for request status 009 has been sent to recipient");
+          this.ngOnInit();
+        },
+        emailErr => {
+          console.log("Email for request status 009 failed to send to the recipient");
+        }
+      );
 
+    }else {
+      console.log("memo printed is true");
+    }
 
+    console.log(this.emailRecipient);
   }
 
+  print() {
 
 
-  generatePdf1(): void {
+    this.hantarSampelService.PutMemoPrinted(this.batchId).subscribe(() => { })
+
+      const printContents = this.pdfContent?.nativeElement.innerHTML;
+      const originalContents = document.body.innerHTML;
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+  
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000); 
+
+    console.log(this.batches[0].memoPrinted)
+
+    if (this.batches[0].memoPrinted != true) {
+      this.hantarSampelService.notificationMemo(this.staff.staffId, this.batchId, this.emailRecipient).subscribe(
+        email => {
+          console.log("Email for request status 009 has been sent to recipient");
+          this.ngOnInit();
+        },
+        emailErr => {
+          console.log("Email for request status 009 failed to send to the recipient");
+        }
+      );
+
+    }else {
+      console.log("memo printed is true");
+    }
+
+    console.log(this.emailRecipient)
+    // }
+  }
+  
+
+
+  generatePdfMemo(): void {
     this.isPreview = false;
     const element = document.getElementById('pdfContent');
 
@@ -325,11 +361,11 @@ export class MemoComponent {
 
     // Set font size inline in the HTML content
     const content = element.innerHTML;
-    const styledContent = `<div style="font-size: 12px;">${content}</div>`;
+    const styledContent = `<div style="font-size:2px;">${content}</div>`;
 
     var opt = {
-      margin: [1.5, 0.5, 0.5, 0.5],
-      filename: 'suratIringan.pdf',
+      margin: [0.5, 0.5, 0.5, 0.5],
+      filename: 'memo.pdf',
       html2canvas: { scale: 2 },
       jsPDF: {
         unit: 'in',
@@ -350,7 +386,7 @@ export class MemoComponent {
       // Save the blob or trigger a download as needed
       const downloadLink = document.createElement('a');
       downloadLink.href = URL.createObjectURL(pdfBlob);
-      downloadLink.download = 'suratIringan.pdf';
+      downloadLink.download = 'memo.pdf';
       downloadLink.click();
     }); html2pdf(element, opt);
 
@@ -358,12 +394,10 @@ export class MemoComponent {
   }
 
   calculateSelectedCheckboxCount() {
-    // Assuming that your samples have a unique "Bil" value
     this.selectedCheckboxCount = this.samples.length;
   }
 
 
-  // images
   handleFileInput(event: any) {
     this.file = event.target.files[0];
     this.batch.receipt = event.target.files[0].name;
@@ -371,3 +405,5 @@ export class MemoComponent {
   }
 
 }
+
+

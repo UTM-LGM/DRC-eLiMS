@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
     }
 
 
-      else if(this.roleId == 13){
+      else if(this.roleId == 3){
       this.username = this.authService.getSessionUsername()
       this.authService.getImporter(this.username).subscribe(res => {
         this.authService.changeUser(res);
@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit {
       })    
     }
     
-    else if (this.roleId == 2 || this.roleId == 3) {
+    else if (this.roleId == 2 || this.roleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authService.changeUser(res);
         this.staff = res

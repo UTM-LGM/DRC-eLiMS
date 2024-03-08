@@ -14,4 +14,5 @@ export interface Forwarder {
     refNo:string;
     username:string;
     password:string;
+    licenseNo:string;
 }

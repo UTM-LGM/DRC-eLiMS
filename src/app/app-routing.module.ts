@@ -20,12 +20,13 @@ import { MemoComponent } from './Hantar-Sampel/memo/memo.component';
 import { ViewKeputusanUjianComponent } from './view-keputusan-ujian/view-keputusan-ujian.component';
 import { PrintMemoComponent } from './print-memo/print-memo.component';
 import { DaftarTerimaSampelComponent } from './daftar-terima-sampel/daftar-terima-sampel.component';
-import { CetakLembaranKerjaComponent } from './cetak-lembaran-kerja/cetak-lembaran-kerja.component';
+import { CetakLembaranKerjaComponent } from './CetakWorksheet/cetak-lembaran-kerja/cetak-lembaran-kerja.component';
 import { SampelBelumTerimaComponent } from './sampel-belum-terima/sampel-belum-terima.component';
 import { ViewMaklumatPenghantaranComponent } from './view-maklumat-penghantaran/view-maklumat-penghantaran.component';
 import { SuratIringanComponent } from './surat-iringan/surat-iringan.component';
 import { LampiranComponent } from './Hantar-Sampel/lampiran/lampiran.component';
 import { CetakWorksheetComponent } from './cetak-worksheet/cetak-worksheet.component';
+import { UlangCetakLembaranKerjaComponent } from './CetakWorksheet/ulang-cetak-lembaran-kerja/ulang-cetak-lembaran-kerja.component';
 
 
 
@@ -137,12 +138,17 @@ const routes: Routes = [
   },
 
   // {
-  //   path: 'memo',
+  //   path: 'memo/:batchId/:staffId',
   //   component: MemoComponent
   // },
 
+  // {
+  //   path: 'print-memo/:batchId/:staffId',
+  //   component: PrintMemoComponent
+  // },
+
   {
-    path: 'print-memo/:batchId/:staffId',
+    path: 'print-memo/:batchId',
     component: PrintMemoComponent
   },
 
@@ -195,6 +201,11 @@ const routes: Routes = [
   },
 
   
+  {
+    path: 'ulang-cetak-lembaran-kerja',
+    component: UlangCetakLembaranKerjaComponent
+  },
+
   {
     path: 'surat-iringan/:batchId/:username',
     component: SuratIringanComponent

@@ -14,6 +14,9 @@ import { userDTO } from 'src/app/models/userDTO';
   providedIn: 'root'
 })
 export class AuthService {
+  getImporterInfo() {
+    throw new Error('Method not implemented.');
+  }
   setRedirectUrl(url: any) {
     throw new Error('Method not implemented.');
   }
@@ -49,7 +52,7 @@ export class AuthService {
       return this.httpclient.post(url, requestBody);
     }
     
-    else if (selectedRole == 13){
+    else if (selectedRole == 3){
 
       const url = `${this.baseApiUrl}/api/LoginImporters/Post/Login`;
       const requestBody = { username: username, password: password };
@@ -84,7 +87,7 @@ export class AuthService {
     }
 
 
-        else if (selectedRole == 13){
+        else if (selectedRole == 3){
 
       this.httpclient.get<userDTO>(this.baseApiUrl + '/api/LoginImporters/GetLoginImporterByUsername/' + username).subscribe(x => {
         console.log(x);

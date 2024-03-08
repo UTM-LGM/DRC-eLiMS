@@ -25,15 +25,15 @@ export class SampelBelumTerimaComponent {
   
   ngOnInit() {
     // Call the GetElimsAllBatch function
-    this.elimsService.GetElimsAllBatch().subscribe(data => {
-      this.batches = data;
+    // this.elimsService.GetElimsAllBatch().subscribe(data => {
+    //   this.batches = data;
   
-      // Check if there are batches available
-      if (this.samples && this.samples.length > 0) {
-        // Call sampleList with the first batchId as an example
-        this.sampleList(this.batches[0].batchId);
-      }
-    });
+    //   // Check if there are batches available
+    //   if (this.samples && this.samples.length > 0) {
+    //     // Call sampleList with the first batchId as an example
+    //     this.sampleList(this.batches[0].batchId);
+    //   }
+    // });
   }
   
   sampleList(batchId: number) {

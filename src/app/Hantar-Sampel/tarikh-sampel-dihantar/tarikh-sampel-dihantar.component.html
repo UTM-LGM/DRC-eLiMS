@@ -7,7 +7,7 @@
 
         <form (ngSubmit)="updateBatch()">
 
-          <div *ngIf="roleForwarder">
+          <div *ngIf="roleForwarder || roleImporter">
             <div class="row form-group">
               <div class="col-sm-2">
                 <label class="label_bm"> Batch Id<span class="required" style="color:red;"> *</span></label><br>

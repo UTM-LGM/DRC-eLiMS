@@ -1,4 +1,9 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeMs from '@angular/common/locales/ms';
+
+
+
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -57,13 +62,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PrintMemoComponent } from './print-memo/print-memo.component';
 import { DaftarTerimaSampelComponent } from './daftar-terima-sampel/daftar-terima-sampel.component';
 import { SampelBelumTerimaComponent } from './sampel-belum-terima/sampel-belum-terima.component';
-import { CetakLembaranKerjaComponent } from './cetak-lembaran-kerja/cetak-lembaran-kerja.component';
+import { CetakLembaranKerjaComponent } from './CetakWorksheet/cetak-lembaran-kerja/cetak-lembaran-kerja.component';
 import { ViewMaklumatPenghantaranComponent } from './view-maklumat-penghantaran/view-maklumat-penghantaran.component';
 import { SuratIringanComponent } from './surat-iringan/surat-iringan.component';
 import { LampiranComponent } from './Hantar-Sampel/lampiran/lampiran.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { GroupByPipe } from './pipes/group-by.pipe';
 import { CetakWorksheetComponent } from './cetak-worksheet/cetak-worksheet.component';
+import { SajarahPenghantaranComponent } from './sajarah-penghantaran/sajarah-penghantaran.component';
+import { MaklumatPenghantaranComponent } from './maklumat-penghantaran/maklumat-penghantaran.component';
+import { UlangCetakLembaranKerjaComponent } from './CetakWorksheet/ulang-cetak-lembaran-kerja/ulang-cetak-lembaran-kerja.component';
 
 
 
@@ -104,7 +112,10 @@ import { CetakWorksheetComponent } from './cetak-worksheet/cetak-worksheet.compo
     SuratIringanComponent,
     LampiranComponent,
     GroupByPipe,
-    CetakWorksheetComponent
+    CetakWorksheetComponent,
+    SajarahPenghantaranComponent,
+    MaklumatPenghantaranComponent,
+    UlangCetakLembaranKerjaComponent
 
   ],
   imports: [
@@ -140,7 +151,13 @@ import { CetakWorksheetComponent } from './cetak-worksheet/cetak-worksheet.compo
     // DaftarTerimaSampelComponent,
     // SampelBelumTerimaComponent,
   ],
-  providers: [MultilevelMenuService, DecimalPipe],
+  providers: [MultilevelMenuService, DecimalPipe, { provide: LOCALE_ID, useValue: 'ms' }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor() {
+    registerLocaleData(localeMs);
+  }
+
+ }

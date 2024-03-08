@@ -14,6 +14,7 @@ import { DaftarSampelService } from '../daftar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DataDeleteComponent } from 'src/app/dialogbox/data-delete/data-delete.component';
+import { loginImporter } from 'src/app/models/loginImporters';
 
 @Component({
   selector: 'app-elims-senarai-sampel',
@@ -49,7 +50,10 @@ export class ElimsSenaraiSampelComponent implements OnInit {
   roleId: any
   companyName: any
   userFiltered: boolean = false;
-
+  importer: loginImporter = {} as loginImporter
+  roleForwarder: boolean;
+  roleUip: boolean;
+  roleImporter: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -77,6 +81,21 @@ export class ElimsSenaraiSampelComponent implements OnInit {
       this.userService.GetUserInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.user = res
+        this.roleForwarder = true
+        this.roleUip = false
+        this.roleImporter = false
+        this.getElimsSamplesByUsername()
+        
+      })
+    }
+    else if (this.roleId == 3) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        console.log(res)
+        this.authservice.changeUser(res);
+        this.user = res
+        this.roleImporter = true
+        this.roleForwarder = false
+        this.roleUip = false
         this.getElimsSamplesByUsername()
       })
     }
@@ -85,6 +104,9 @@ export class ElimsSenaraiSampelComponent implements OnInit {
         console.log(res)
         this.authservice.changeUser(res);
         this.user = res
+        this.roleForwarder = false
+        this.roleUip = true
+        this.roleImporter = false
         this.getElimsSamplesByUsername()
       })
     }
@@ -112,33 +134,43 @@ export class ElimsSenaraiSampelComponent implements OnInit {
   }
 
   deleteSample(k1DetailId: number, rubberType: string): void {
-    console.log(k1DetailId, "   ", rubberType)
+    console.log(k1DetailId, "   ", rubberType);
     const dialogRef = this.dialog.open(DataDeleteComponent);
-
+  
     dialogRef.afterClosed().subscribe(result => {
-      if (result == true) {
+      if (result === true) {
         this.daftarSampelService.DeleteElimsSample(k1DetailId).subscribe({
           next: () => { },
+          error: (error) => {
+            console.error('Error deleting sample from Elim table:', error);
+          }
         });
-        if (rubberType == "Getah Bongkah") {
+  
+        if (rubberType === "Getah Bongkah") {
           this.getahBongkahService.DeleteBRSample(k1DetailId).subscribe({
             next: () => {
               alert('Sampel telah dipadam!');
-              this.ngOnInit()
+              this.ngOnInit();
             },
+            error: (error) => {
+              console.error('Error deleting sample from Getah Bongkah table:', error);
+            }
           });
-        } else if (rubberType == "Lateks") {
+        } else if (rubberType === "Lateks") {
           this.drclimstrainingService.DeleteLtxSample(k1DetailId).subscribe({
             next: () => {
               alert('Sampel telah dipadam!');
-              this.ngOnInit()
+              this.ngOnInit();
             },
+            error: (error) => {
+              console.error('Error deleting sample from Lateks table:', error);
+            }
           });
         }
-
       }
     });
   }
+  
 
   printSample(k1HeaderId: number) {
     this.router.navigate(['sample/print/' + k1HeaderId])

@@ -4,7 +4,9 @@
 
             <span class="welcomeForwarder"> {{forwarder.name}}</span>
             <span class="welcomeForwarder" *ngIf="roleUip || roleGtacr"> {{staff.staffName}}</span>
+         
             <span class="welcomeForwarder" *ngIf="roleImporter"> {{company.name}}</span>
+            <span class="welcomeForwarder" *ngIf="roleGtacr"> {{company.name}}</span>
         </h3>
 
 

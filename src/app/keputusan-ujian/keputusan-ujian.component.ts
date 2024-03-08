@@ -12,6 +12,8 @@ import { Staff } from '../models/staff';
 import { Forwarder } from '../models/forwarder';
 import { KeputusanUjianService } from './keputusan-ujian.service';
 import { UserService } from '../User/user.service';
+import { loginImporter } from '../models/loginImporters';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-keputusan-ujian',
@@ -30,7 +32,7 @@ export class KeputusanUjianComponent implements OnInit {
   user: userDTO = {} as userDTO
   sample: Sample = {} as Sample
   loginAs: any;
-  statusCodeId: number
+  statusCodeId: any
   errorMes: boolean
   errorNotFound: boolean
   searchBy: string[]
@@ -40,6 +42,7 @@ export class KeputusanUjianComponent implements OnInit {
   rubberType: any;
   customNo: string;
   samplePropose: string;
+  importedDate: string;
   labRefNo: string;
   samples: any;
   batchId: number;
@@ -49,19 +52,22 @@ export class KeputusanUjianComponent implements OnInit {
   driverName: string;
   icDriver: string;
   hsCode: string;
-  statusCode: number;
-  drc: number;
-  quantity: number;
+  statusCode: any;
+  drc: any;
+  quantity: any;
   bankCode: string;
   bankCodes: any
-  companyId: number;
-  forwarderId: number;
+  companyId: any;
+  // companyId: number | null = null; // Allow companyId to be either a number or null
+
+  forwarderId: any;
   sampleTypes: any
   rubberTypes: any
+  typeCodeId : any
 
   // Date filter properties
-  fromDate: Date;
-  toDate: Date;
+  fromDate: Date | undefined;
+  toDate: Date | undefined;
   showCustomNo: boolean = false
   showLabRegNo: boolean = false
   showSampleId: boolean = false
@@ -71,6 +77,7 @@ export class KeputusanUjianComponent implements OnInit {
   showIdentificationDriver: boolean = false
   showHsCode: boolean = false
   showStatus: boolean = false
+  showSampleType: boolean = false
   showDRC: boolean = false
   showQuantity: boolean = false
   showNamaBank: boolean = false
@@ -82,13 +89,19 @@ export class KeputusanUjianComponent implements OnInit {
 
   roleForwarder: boolean
   roleUip: boolean
+  roleImporter: boolean
   staff: Staff
+  importer: loginImporter = {} as loginImporter
   searchParams: any
   queryParams: any
+  typeCodes: any
+  // selectedMonth: number | null = null;
+  importedDates: Date[] = []; // Assuming imported dates are stored in this array
+  uniqueMonths: number[] = [];
+  displayedData: any[] = [];
 
   constructor(
     private elimsService: ElimsService,
-    private route: ActivatedRoute,
     private authService: AuthService,
     private router: Router,
     private keputusanUjianService: KeputusanUjianService,
@@ -102,6 +115,7 @@ export class KeputusanUjianComponent implements OnInit {
     'importedDate',
     'quantity',
     'importerName',
+    'samplePropose',
     'status',
     'action'
   ];
@@ -111,6 +125,7 @@ export class KeputusanUjianComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit(): void {
+
 
     if (this.authService.isloggedin()) {
       this.loginAs = this.authService.getSessionUsername()
@@ -136,6 +151,7 @@ export class KeputusanUjianComponent implements OnInit {
           this.icDriver = this.searchParams.icDriver,
           this.hsCode = this.searchParams.hsCode,
           this.statusCodeId = this.searchParams.statusCodeId,
+          this.typeCodeId = this.searchParams.typeCodeId,
           this.quantity = this.searchParams.quantity,
           this.drc = this.searchParams.drc,
           this.bankCode = this.searchParams.bankCode,
@@ -147,7 +163,6 @@ export class KeputusanUjianComponent implements OnInit {
           this.changeSearchedBy(this.searchedby);
       }
     }
-
 
     this.elimsService.GetElimsBankCodes().subscribe(data => {
       this.bankCodes = data
@@ -200,11 +215,39 @@ export class KeputusanUjianComponent implements OnInit {
         this.roleUip = true;
         this.elimsService.GetAllCompanies().subscribe(data => {
           this.companies = data;
-          // console.log(this.companies);
+
+          this.companies.sort((a: { name: any; }, b: { name: any; }) => {
+            const nameA = a.name;
+            const nameB = b.name;
+
+            // Compare the kodStesen values
+            if (nameA < nameB) {
+              return -1;
+            } else if (nameA >nameB) {
+              return 1;
+            } else {
+              return 0; // Kodstesen values are equal
+            }
+          });
+
         });
       })
       this.searchSample();
     }
+
+
+    else if (this.roleId == 3) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        console.log(res);
+        this.authService.changeUser(res);
+        this.importer = res;
+        this.roleForwarder = false;
+        this.roleUip = false;
+        this.roleImporter = true;
+      })
+      this.searchSample();
+    }
+
 
     this.searchBy = [
       'Tarikh Import',
@@ -213,19 +256,28 @@ export class KeputusanUjianComponent implements OnInit {
       'Sampel Id',
       'Batch Id',
       'Nama Pemandu',
-      'Tujuan Sampel Dihantar',
       'Mykad/ Pasport Pemandu',
       'HS Code',
       'Status Sampel',
       'Kandungan Getah Kering (KGK)',
       'Kuantiti',
-      //'Nama Bank',
-      'Syarikat Pengimport',
     ];
 
-    if (this.roleId == 2) {
+    if (this.roleId == 1) {
+      this.searchBy.push('Syarikat Pengimport');
+    }
+
+   else if (this.roleId == 2) {
+      this.searchBy.push('Syarikat Pengimport');
+      this.searchBy.push('Syarikat Penghantar');
+      this.searchBy.push('Jenis Sampel');
+      this.searchBy.push('Tujuan Sampel Dihantar');
+    }
+
+    else if (this.roleId == 3) {
       this.searchBy.push('Syarikat Penghantar');
     }
+
   }
 
   searchSample() {
@@ -241,6 +293,7 @@ export class KeputusanUjianComponent implements OnInit {
       icDriver: this.icDriver,
       hsCode: this.hsCode,
       statusCodeId: this.statusCodeId,
+      typeCodeId: this.typeCodeId,
       quantity: this.quantity,
       drc: this.drc,
       bankCode: this.bankCode,
@@ -257,6 +310,31 @@ export class KeputusanUjianComponent implements OnInit {
 
       if (this.roleId == 1) {
         this.keputusanUjianService.GetElimsSearchSample(this.user.username, this.queryParams)
+          .subscribe(
+            {
+              next: ((data: K1Detail[] | K1Detail) => {
+                this.samples = Array.isArray(data) ? data : [data];
+                this.errorNotFound = false;
+                this.dataSource = new MatTableDataSource<K1Detail[]>(this.samples);
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
+              }),
+              error: (error) => {
+                console.error('Error occurred while fetching samples:', error);
+                this.errorNotFound = true;
+                this.samples = []; // Clear samples in case of an error
+                // Clear the table data and paginator
+                this.dataSource = new MatTableDataSource<K1Detail[]>([]);
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
+              }
+            }
+          );
+      }
+
+      
+      if (this.roleId == 3) {
+        this.keputusanUjianService.GetElimsSearchSample(this.importer.username, this.queryParams)
           .subscribe(
             {
               next: ((data: K1Detail[] | K1Detail) => {
@@ -299,7 +377,6 @@ export class KeputusanUjianComponent implements OnInit {
                 this.dataSource = new MatTableDataSource<K1Detail[]>([]);
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.sort = this.sort;
-
               }
             }
           );
@@ -310,14 +387,6 @@ export class KeputusanUjianComponent implements OnInit {
     }
   }
 
-
-  // validForm() {
-  //   if (this.sample.rubberTypeId == null || this.sample.rubberTypeId == 0) {
-  //     return false
-  //   } else {
-  //     return true
-  //   }
-  // }
 
   validForm() {
     return this.sample.rubberTypeId !== null && this.sample.rubberTypeId !== 0;
@@ -345,10 +414,18 @@ export class KeputusanUjianComponent implements OnInit {
     this.icDriver = ""
     this.hsCode = ""
     this.bankCode = ""
-    // this.statusCode=0
-    // this.drc=0
-    // this.quantity=0
+    this.samplePropose = ""
+    this.typeCodeId = ""
+    this.companyId = ""
+    this.forwarderId = ""
+    this.statusCodeId = ""
+    this.quantity = ""
+    this.drc = ""
+    this.fromDate = undefined
+    this.toDate = undefined
+  
 
+ 
     e.target.value == "No Kastam" ? this.showCustomNo = true : this.showCustomNo = false;
     e.target.value == "No Ruj Makmal" ? this.showLabRegNo = true : this.showLabRegNo = false;
     e.target.value == "Tarikh Import" ? this.showImportedDate = true : this.showImportedDate = false;
@@ -359,11 +436,13 @@ export class KeputusanUjianComponent implements OnInit {
     e.target.value == "Mykad/ Pasport Pemandu" ? this.showIdentificationDriver = true : this.showIdentificationDriver = false;
     e.target.value == "HS Code" ? this.showHsCode = true : this.showHsCode = false;
     e.target.value == "Status Sampel" ? this.showStatus = true : this.showStatus = false;
+    e.target.value == "Jenis Sampel" ? this.showSampleType = true : this.showSampleType = false;
     e.target.value == "Kandungan Getah Kering (KGK)" ? this.showDRC = true : this.showDRC = false;
     e.target.value == "Kuantiti" ? this.showQuantity = true : this.showQuantity = false;
     e.target.value == "Nama Bank" ? this.showNamaBank = true : this.showNamaBank = false;
     e.target.value == "Syarikat Pengimport" ? this.showCompanyName = true : this.showCompanyName = false;
     e.target.value == "Syarikat Penghantar" ? this.showForwarderName = true : this.showForwarderName = false;
+    // this.samples = [];
   }
 
   changeSearchedBy(e: any) {
@@ -378,12 +457,125 @@ export class KeputusanUjianComponent implements OnInit {
     e == "Mykad/ Pasport Pemandu" ? this.showIdentificationDriver = true : this.showIdentificationDriver = false;
     e == "HS Code" ? this.showHsCode = true : this.showHsCode = false;
     e == "Status Sampel" ? this.showStatus = true : this.showStatus = false;
+    e == "Jenis Sampel" ? this.showSampleType = true : this.showSampleType = false;
     e == "Kandungan Getah Kering (KGK)" ? this.showDRC = true : this.showDRC = false;
     e == "Kuantiti" ? this.showQuantity = true : this.showQuantity = false;
     e == "Nama Bank" ? this.showNamaBank = true : this.showNamaBank = false;
     e == "Syarikat Pengimport" ? this.showCompanyName = true : this.showCompanyName = false;
     e == "Syarikat Penghantar" ? this.showForwarderName = true : this.showForwarderName = false;
+
+    this.samples = [];
+
   }
+
+
+  changeJenisGetah(e: any) {
+
+    if (e.target.value == 1) {
+      this.elimsService.GetRefSampleTypeByRubberType(1).subscribe(data => {
+        this.typeCodes = data
+      })
+    }
+    else if (e.target.value == 2) {
+      this.elimsService.GetRefSampleTypeByRubberType(2).subscribe(data => {
+        this.typeCodes = data
+      })
+    }
+    // this.showSampleType= true
+  }
+
+
+
+
+  @ViewChild('table') table: any; 
+
+  // exportToExcel(): void {
+  //   const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.table.nativeElement); // Convert table to worksheet
+  //   const wb: XLSX.WorkBook = XLSX.utils.book_new(); // Create workbook
+  //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); // Add worksheet to workbook
+
+  //   // Generate Excel file and trigger download
+  //   XLSX.writeFile(wb, 'senarai_sampel.xlsx');
+  // }
+
+
+
+  exportToExcel(): void {
+    // Define custom column names
+    const columnMappings = {
+        'customNo': 'No Borang Kastam',
+        'importedDate': 'Tarikh Import',
+        'samplePropose': 'Tujuan Sample Dihantar',
+        'quantity': 'Kuantiti',
+        'importerName': 'Syarikat Pengimport',
+        'status': 'Status'
+    };
+
+    // Define which columns to export
+    const columnsToExport = Object.keys(columnMappings);
+
+    // Get all data from the data source
+    const allData = this.dataSource.data;
+
+    // Filter data to keep only the desired columns and apply custom column names
+    const filteredData = allData.map(row => {
+        const filteredRow = {};
+        columnsToExport.forEach(column => {
+            const customColumnName = columnMappings[column];
+            filteredRow[customColumnName] = row[column];
+        });
+        return filteredRow;
+    });
+
+    // Create a worksheet from filtered data
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+
+    const wb: XLSX.WorkBook = XLSX.utils.book_new(); // Create workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); // Add worksheet to workbook
+
+    // Generate Excel file and trigger download
+    XLSX.writeFile(wb, 'senarai_sampel.xlsx');
+}
+
+
+
+
+//   exportToExcel(): void {
+
+//     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.table.nativeElement); // Convert table to worksheet
+
+//     // Find the index of the column with the header "Action"
+//     let actionColumnIndex: number | undefined;
+//     for (const cellAddress in ws) {
+//         if (!ws.hasOwnProperty(cellAddress)) continue;
+//         const cell = ws[cellAddress];
+//         if (cell?.t === 's' && cell.v === 'Action') {
+//             const { c } = XLSX.utils.decode_cell(cellAddress);
+//             actionColumnIndex = c;
+//             break;
+//         }
+//     }
+
+//     // Remove the "Action" column if found
+//     if (actionColumnIndex !== undefined) {
+//         for (const cellAddress in ws) {
+//             if (!ws.hasOwnProperty(cellAddress)) continue;
+//             const { c } = XLSX.utils.decode_cell(cellAddress);
+//             if (c === actionColumnIndex) {
+//                 delete ws[cellAddress];
+//             }
+//         }
+//     }
+
+//     const wb: XLSX.WorkBook = XLSX.utils.book_new(); // Create workbook
+//     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); // Add worksheet to workbook
+
+//     // Generate Excel file and trigger download
+//     XLSX.writeFile(wb, 'senarai_sampel.xlsx');
+// }
+
+
+
 
 }
 

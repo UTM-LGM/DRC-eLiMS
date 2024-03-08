@@ -10,6 +10,7 @@ import { userDTO } from '../models/userDTO';
 
 import * as html2pdf from 'html2pdf.js';
 import { Staff } from '../models/staff';
+import { loginImporter } from '../models/loginImporters';
 
 @Component({
   selector: 'app-surat-iringan',
@@ -34,7 +35,9 @@ export class SuratIringanComponent {
   isFastTrack: boolean ;
   roleForwarder: boolean = false
   roleUip: boolean = false
+  roleImporter: boolean = false
   staff: Staff = {} as Staff
+  importer: loginImporter = {} as loginImporter
 
   
   constructor(
@@ -78,6 +81,15 @@ export class SuratIringanComponent {
         this.staff = res
         this.roleForwarder = false
         this.roleUip = true
+      })
+    }
+    else if (this.roleId == 3) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        this.authservice.changeUser(res);
+        this.importer = res
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleImporter = true
       })
     }
 

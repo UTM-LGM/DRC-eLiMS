@@ -16,9 +16,7 @@
 
                     <div class="company-group" [class.first-group]="isFirst">
 
-
-
-                        <body>                   
+                        <body>
 
                             <p class="urgent-text" *ngIf="isFastTrack==true">
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -39,11 +37,11 @@
                             </p>
 
                             <p>
-                                Global Testing & Consultancy for Rubber (G-TACR) Sungai Petani<br>
+                                Global Testing & Consultancy for Rubber (G-TAC<span class="small-r">R</span>) Sungai Petani<br>
                                 Lembaga Getah Malaysia Wilayah Negeri Kedah/Perlis/ P. Pinang<br>
                                 Lot PT 71847, Pusat Bandar Amanjaya, <br>
                                 08000 Sungai Petani, Kedah. <br>
-                                (U.P.: Pengurus Teknikal G-TACR Sungai Petani)
+                                (U.P.: Pengurus Teknikal G-TAC<span class="small-r">R</span>  Sungai Petani)
                             </p>
 
                             <p>
@@ -54,10 +52,6 @@
 
                             <p>
                                 <b>
-                                    <!-- <u>
-                                        UJIAN KANDUNGAN GETAH KERING (KGK)/<i>DRY RUBBER CONTENT (DRC)</i><br>
-                                    </u> -->
-
                                     <u>
                                         UJIAN KANDUNGAN GETAH KERING (KGK)/<i class="underlined-text">DRY RUBBER CONTENT
                                             (DRC)</i><br>
@@ -70,22 +64,21 @@
                             <p> Merujuk kepada perkara di atas.</p>
 
                             <p>
-                                2. Disertakan contoh-contoh getah yang diambil semasa pengimportan getah melalui
-                                stesen
-                                ini
-                                bagi
-                                tujuan Ujian
-                                Kandungan Getah Kering (KGK)/ <i>Dry Rubber Content (DRC)</i>. Butiran lanjut adalah
-                                seperti di
-                                <b>Lampiran A</b>
-                                yang
-                                disertakan.
+                                2. Disertakan contoh-contoh getah yang diambil semasa pengimportan getah melalui stesen ini bagi tujuan Ujian
+                                Kandungan Getah Kering (KGK)/ <i>Dry Rubber Content (DRC)</i>. Butiran lanjut adalah seperti di
+                                <b>Lampiran A</b> yang disertakan.
                             </p>
 
-                            <p>
+                            <p *ngIf="roleForwarder || roleUip">
                                 Nama syarikat pengimport : <b>{{ companyGroup.key }}</b><br>
                                 Alamat syarikat pengimport : <b>{{ companyGroup.items[0].importerAddress ||
                                     companyGroup.items[0].companyAddress }}</b><br>
+                                Jumlah Sampel: <b>{{ companyGroup.items.length }}</b><br>
+                            </p>
+
+                            <p *ngIf="roleImporter">
+                                Nama syarikat penghantar : <b>{{ samples[0].agentName }}</b><br>
+                                Alamat syarikat penghantar : <b>{{ samples[0].companyAddress }}</b><br>
                                 Jumlah Sampel: <b>{{ companyGroup.items.length }}</b><br>
                             </p>
 
@@ -118,9 +111,10 @@
 
                             <p><br><br>
 
-                                
+
                                 <!-- <span *ngif="roleForwarder"><b>({{user.name}})</b></span><br> -->
-                                <span ><b>({{samples[0].forwarderName}})</b></span><br>
+                                <span *ngIf="!roleImporter"><b>({{samples[0].forwarderName}})</b></span><br>
+                                <span *ngIf="roleImporter"><b>({{samples[0].companyName}})</b></span><br>
 
                             </p>
 

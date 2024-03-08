@@ -11,6 +11,7 @@ import { K1Detail } from '../../models/k1Detail';
 import { CetakLabelService } from '../cetak-label.service';
 import { UserService } from 'src/app/User/user.service';
 import * as QRCode from 'qrcode-generator';
+import { loginImporter } from 'src/app/models/loginImporters';
 
 @Component({
   selector: 'app-ulang-cetak-label',
@@ -35,6 +36,10 @@ export class UlangCetakLabelComponent implements OnInit {
   ip: number = 20;
   roleId: any;
   sampleTypeName: string
+  importer: loginImporter = {} as loginImporter
+  roleForwarder: boolean
+  roleUip: boolean
+  roleImporter: boolean
 
 
   constructor(
@@ -61,14 +66,28 @@ export class UlangCetakLabelComponent implements OnInit {
       this.userService.GetUserInfo(this.loginAs).subscribe(res => {
         this.authService.changeUser(res);
         this.user = res
+        this.roleForwarder = true
         this.getElimsSamplesByUsername2()
       })
     }
+    else if (this.roleId == 3) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        console.log(res)
+        this.authService.changeUser(res);
+        this.user = res
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleImporter = true
+        this.getElimsSamplesByUsername2()
+      })
+    }
+
     else if (this.roleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         console.log(res)
         this.authService.changeUser(res);
         this.user = res
+        this.roleUip = true
         this.getElimsSamplesByUsername2()
       })
     }
@@ -154,11 +173,11 @@ export class UlangCetakLabelComponent implements OnInit {
       // Create QR codes
       const qrCode1 = QRCode(0, 'L');
 
-      if (this.roleId == 1) {
+      if (this.roleId == 1 || this.roleId == 3) {
         qrCode1.addData(sample1.customNo);
       }
       else if (this.roleId == 2) {
-        qrCode1.addData(sample1.customNo + "- UIP");
+        qrCode1.addData(sample1.customNo);
       }
 
       qrCode1.make();
@@ -168,10 +187,10 @@ export class UlangCetakLabelComponent implements OnInit {
       if (sample2) {
         const qrCode2 = QRCode(0, 'L');
 
-        if (this.roleId == 1) {
+        if (this.roleId == 1 || this.roleId == 3) {
           qrCode2.addData(sample2.customNo);
         } else if (this.roleId == '2') {
-          qrCode2.addData(sample2.customNo + "- UIP");
+          qrCode2.addData(sample2.customNo);
         }
 
         qrCode2.make();
@@ -188,7 +207,7 @@ export class UlangCetakLabelComponent implements OnInit {
       doc.setFontSize(fontSize);
 
 
-      if (this.roleId == 1) {
+      if (this.roleId == 1 || this.roleId == 3) {
         if (sample1.customNo) {
           doc.text("*" + `${sample1.customNo} ` + "*", x + 21, y + 5);
         }
@@ -216,13 +235,14 @@ export class UlangCetakLabelComponent implements OnInit {
         doc.text(`${formattedDate1}`, x + 21, y + 18);
       }
 
-      if (sample1.companyName || sample1.importerName) {
-        const lines = doc.splitTextToSize(sample1.companyName || sample1.importerName, 52);
+
+      if (sample1.importerName) {
+        const lines = doc.splitTextToSize(sample1.importerName, 52);
         doc.text(lines, x + 21, y + 22);
       }
 
 
-      if (this.roleId == 1) {
+      if (this.roleId == 1 || this.roleId == 3) {
         if (sample1.forwarderName) {
           const lines = doc.splitTextToSize('FA : ' + sample1.forwarderName, 53);
           doc.text(lines, x + 21, y + 29);
@@ -232,15 +252,9 @@ export class UlangCetakLabelComponent implements OnInit {
         doc.text(lines, x + 21, y + 29);
       }
 
-
-      // if (sample1.forwarderAddress) {
-      //   const lines = doc.splitTextToSize(sample1.forwarderAddress, 53);
-      //   doc.text(lines, x + 21, y + 33);
-      // }
-
       if (sample2) {
 
-        if (this.roleId == 1) {
+        if (this.roleId == 1 || this.roleId == 3) {
           if (sample2.customNo) {
             doc.text("*" + `${sample2.customNo}` + "*", x + boxWidth + 21, y + 5);
           }
@@ -267,21 +281,24 @@ export class UlangCetakLabelComponent implements OnInit {
           doc.text(`${formattedDate2}`, x + boxWidth + 21, y + 18);
         }
 
-        if (sample2.companyName || sample2.importerName) {
-          const lines1 = doc.splitTextToSize(sample2.companyName || sample2.importerName, 52);
+  
+           if (sample2.importerName) {
+          const lines1 = doc.splitTextToSize(sample2.importerName, 52);
           doc.text(lines1, x + boxWidth + 21, y + 22);
         }
+       
 
-        if (this.roleId == 1) {
+        if (this.roleId == 1 || this.roleId == 3) {
           if (sample2.forwarderName) {
             const lines1 = doc.splitTextToSize('FA : ' + sample2.forwarderName, 53);
             doc.text(lines1, x + boxWidth + 21, y + 29);
           }
         }
         if (this.roleId == 2) {
-            const lines1 = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
-            doc.text(lines1, x + boxWidth + 21, y + 29);
+          const lines1 = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
+          doc.text(lines1, x + boxWidth + 21, y + 29);
         }
+
         // if (sample2.forwarderAddress) {
         //   const lines1 = doc.splitTextToSize(sample2.forwarderAddress, 52);
         //   doc.text(lines1, x + boxWidth + 21, y + 33);

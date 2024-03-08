@@ -9,6 +9,7 @@ import { RubberType } from '../../models/rubberType';
 import { userDTO } from '../../models/userDTO';
 import * as html2pdf from 'html2pdf.js';
 import { Staff } from 'src/app/models/staff';
+import { loginImporter } from 'src/app/models/loginImporters';
 
 @Component({
   selector: 'app-lampiran',
@@ -34,7 +35,9 @@ export class LampiranComponent {
   namaStesen:any
   roleForwarder: boolean = false
   roleUip: boolean = false
+  roleImporter: boolean = false
   staff: Staff = {} as Staff
+  importer: loginImporter = {} as loginImporter
 
   constructor(
     private elimsService: ElimsService,
@@ -68,6 +71,15 @@ export class LampiranComponent {
         this.staff = res
         this.roleForwarder = false
         this.roleUip = true
+      })
+    }
+    else if (this.roleId == 3) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        this.authservice.changeUser(res);
+        this.importer = res
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleImporter = true
       })
     }
 

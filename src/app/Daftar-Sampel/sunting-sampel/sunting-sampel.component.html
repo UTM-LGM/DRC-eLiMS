@@ -38,14 +38,35 @@
                                         <input type="date" class="form-control readonly-input"
                                             [value]="sample.importedDate | date: 'yyyy-MM-dd'" disabled readonly>
                                     </ng-container>
+                                    <div>
+                                        <small class="instruction">* Tarikh import yang diikrar dalam perakuan kepada
+                                          Kastam</small>
+                                      </div>
                                     <div *ngIf="notes && !sample.remarks">
                                         <p class="notes">Sampel perlu sampai di makmal GTACR pada :{{ notes }}</p>
                                     </div>
                                 </div>
                             </div><br>
 
+                            <div class="row form-group" *ngIf="roleImporter">
+                                <div class="col-sm-4">
+                                    <label class="label_bm">Tarikh Sampel Diterima</label><br>
+                                    <label class="label_bi">Date Sample Received</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <ng-container *ngIf="showSmk">
+                                        <input type="date" class="form-control readonly-input"  id="DateSampleReceived"
+                                        [(ngModel)]="sample.dateSampleReceived"
+                                            [value]="sample.dateSampleReceived | date: 'yyyy-MM-dd'" disabled readonly>
+                                    </ng-container>
+                                    <div>
+                                        <small class="instruction">* Tarikh sampel diterima di kilang</small>
+                                      </div>
+                                </div>
+                            </div><br>
 
-                            <div class="col-lg-12 row" *ngIf="showRemarks">
+
+                            <!-- <div class="col-lg-12 row" *ngIf="showRemarks">
                                 <div class="col-lg-4">
                                     <label class="label_title">Catatan</label><br>
                                     <label class="label_bi">Remarks</label>
@@ -69,6 +90,33 @@
                                         <a style="color: rgb(10, 96, 189); cursor: pointer;text-decoration: underline;"
                                             (click)="viewFile(sample.evidence)">{{sample.evidence}}</a>
 
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <div class="col-lg-12 row" *ngIf="showRemarks || sample.remarks || sample.evidence">
+                                <div class="col-lg-4" *ngIf="sample.remarks">
+                                    <label class="label_title">Catatan</label><br>
+                                    <label class="label_bi">Remarks</label>
+                                </div>
+                                <div class="col-lg-8 mb-3" *ngIf="sample.remarks">
+                                    <textarea class="form-control" id="Remarks" name="Remarks"
+                                        [(ngModel)]="sample.remarks" rows="6" cols="50"></textarea>
+                                    <small class="instruction">*Alasan jika melebihi tempoh masa yang telah
+                                        ditetapkan</small>
+                                </div>
+                        
+                                <div class="col-sm-4" *ngIf="sample.evidence">
+                                    <label class="label_bm">Bukti</label><br>
+                                    <label class="label_bi">Evidence</label>
+                                </div>
+                                <div class="col-sm-8" *ngIf="sample.evidence">
+                                    <input type="file" class="form-control readonly-input" id="Evidence" name="Evidence"
+                                        (change)="handleFileInput($event)">
+                                    <small class="instruction"> * Sila sertakan bukti jika melebihi tempoh masa yang telah ditetapkan</small>
+                                    <div *ngIf="sample.evidence">
+                                        <a style="color: rgb(10, 96, 189); cursor: pointer;text-decoration: underline;"
+                                            (click)="viewFile(sample.evidence)">{{sample.evidence}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -160,12 +208,6 @@
                                 <label class="label_bi">Sample Type</label>
                             </div>
                             <div class="col-sm-8">
-                                <!-- <select class="form-select readonly-input" name="SampleTypeId" id="SampleTypeId"
-                                    [(ngModel)]="sample.sampleTypeId">
-                                    <option value="" hidden>{{sample.sampleType}}</option>
-                                    <option *ngFor="let sample of sampleTypes" [value]="sample.id">
-                                        {{sample.sampleType}}</option>
-                                </select> -->
                                 <select class="form-select readonly-input" name="TypeCodeId" id="TypeCodeId"
                                 [(ngModel)]="sample.typeCodeId">
                                 <option value="" hidden>{{sample.typeCode}}</option>
@@ -180,7 +222,7 @@
 
                     <div class="col-md-6 shadow rounded p-5 mb-5">
 
-                        <div class="row form-group" *ngIf="showSmk">
+                        <div class="row form-group" *ngIf="showSmk && !roleImporter">
                             <div class="col-sm-4">
                                 <label class="label_bm">Syarikat Pengimport</label><br>
                                 <label class="label_bi">Importer Company</label>
@@ -191,8 +233,19 @@
                             </div>
                         </div><br>
 
+                        <div class="row form-group" *ngIf="showSmk && roleImporter">
+                            <div class="col-sm-4">
+                                <label class="label_bm">Syarikat Penghantar</label><br>
+                                <label class="label_bi">Agent Forwarder</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control readonly-input" [value]="sample.agentName"
+                                    disabled readonly>
+                            </div>
+                        </div><br>
 
-                        <div class="row form-group" *ngIf="!showSmk">
+
+                        <div class="row form-group" *ngIf="!showSmk ">
                             <div class="col-sm-4">
                                 <label class="label_title">Syarikat Pengimport<span class="required"
                                         style="color:red;">*</span></label><br>

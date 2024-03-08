@@ -113,7 +113,6 @@
               </div>
             </div>
 
-
             <div class="row flex d-flex mb-3">
               <div class="col-lg-1">
                 <label class="label_title">Tarikh Import<span class="required" style="color:red;">*</span></label><br>
@@ -132,14 +131,33 @@
                 </div>
               </div>
 
-              <div class="col-lg-6 row">
+              <div class="col-lg-1" *ngIf="roleImporter">
+                <label class="label_title">Tarikh Sampel Diterima<span class="required"
+                        style="color:red;">*</span></label><br>
+                <label class="label_bi">Date Sample Received</label>
+            </div>
+
+            <div class="col-lg-5"  *ngIf="roleImporter" >
+                <input type="date" class="form-control" id="DateSampleReceived" name="DateSampleReceived"
+                    [(ngModel)]="k1Detail.dateSampleReceived"
+                    (change)="onDateChange()" required><br>
+                <div>
+                  <small class="instruction">* Tarikh sampel diterima di kilang</small>
+                </div>
+            </div>
+
+              <div class="col-lg-6 row" >
                 <div class="col-lg-2">
-                  <label class="label_title">Catatan</label><br>
+                  <label class="label_title">Catatan
+                    <span class="required" style="color:red;" *ngIf="lateSample">*</span>
+                  </label><br>
                   <label class="label_bi">Remarks</label>
                 </div>
                 <div class="col-lg-10 mb-3">
-                  <textarea class="form-control" id="Remarks" name="Remarks" [(ngModel)]="k1Detail.remarks" rows="4"
+                  <textarea class="form-control" id="Remarks" name="Remarks" [(ngModel)]="k1Detail.remarks" rows="4" [required]="lateSample"
                     cols="50"></textarea>
+                    <small class="instruction">* Alasan jika melebihi tempoh masa yang telah
+                      ditetapkan</small>
                 </div>
                 <div class="col-sm-2">
                   <label class="label_bm">Bukti</label><br>
@@ -148,49 +166,45 @@
                 <div class="col-sm-10">
                   <input type="file" class="form-control" id="Evidence" name="Evidence"
                     (change)="handleFileInput($event)">
-                  <small class="instruction">Sila sertakan bukti jika melebihi tempoh masa yang telah ditetapkan</small>
+                  <small class="instruction">* Sila sertakan bukti jika melebihi tempoh masa yang telah ditetapkan</small>
                 </div>
               </div>
             </div>
 
-
-            <div class="row flex d-flex content-fluid mb-3">
-              <div class="col-lg-1">
+            <div class="row flex d-flex content-fluid mb-3" >
+              <div class="col-lg-1"  *ngIf="!roleImporter">
                 <label class="label_title">Syarikat Pengimport<span class="required"
                     style="color:red;">*</span></label><br>
                 <label class="label_bi">Importer Company</label>
               </div>
-              <div class="col-lg-5">
+              <div class="col-lg-5" *ngIf="!roleImporter">
                 <input type="text" class="form-control readonly-input" [value]=" k1Header.importerName" disabled
                   readonly>
               </div>
 
-
-              <!-- <div class="col-lg-1" *ngIf="roleImporter">
+              <div class="col-lg-1" *ngIf="roleImporter">
                 <label class="label_title">Syarikat Penghantar<span class="required"
                     style="color:red;">*</span></label><br>
-                <label class="label_bi">Forwarding Agent</label>
+                <label class="label_bi">Agent Forwarder</label>
               </div>
-              <div class="col-lg-5">
+              <div class="col-lg-5" *ngIf="roleImporter">
                 <input type="text" class="form-control readonly-input" [value]=" k1Header.agentName" disabled
                   readonly>
-              </div> -->
-
-
-              <!-- <div class="col-lg-1">
-                <label class="label_title">Syarikat Pengimport<span class="required"
-                    style="color:red;">*</span></label><br>
-                <label class="label_bi">Importer Company</label>
               </div>
-              <div class="col-lg-5">
-                <select class="form-select" name="companyId" id="companyId" [(ngModel)]="sample.companyId"
-                  formControlName="companyId" required>
+
+              <div class="col-lg-1" *ngIf="roleImporter">
+                <label class="label_title">Syarikat Penghantar<span class="required"
+                    style="color:red;">*</span></label><br>
+                <label class="label_bi">Agent Forwarder</label>
+              </div>
+              <div class="col-lg-5" *ngIf="roleImporter">
+                <select class="form-select" name="forwarderId" id="forwarderId" [(ngModel)]="sample.forwarderId">
                   <option class="pilih" value="default">--Pilih--</option>
-                  <option *ngFor="let company of companies" [value]="company.companyId">
-                    {{company.importerName}}{{company.name}}
+                  <option *ngFor="let forwarder of forwarders" [value]="forwarder.forwarderId">
+                   {{forwarder.name}}
                   </option>
                 </select>
-              </div> -->
+              </div>
 
               <div class="col-lg-1" *ngIf="roleForwarder">
                 <label class="label_title">Syarikat Pengimport</label><br>
@@ -203,19 +217,22 @@
                     {{company.name}}
                   </option>
                 </select>
+                <small class="instruction">* Sila pilih Syarikat Pengimport untuk kegunaan sistem Elims  </small>
+
               </div>
 
 
 
               <div class="col-lg-1" *ngIf="roleUip">
-                <label class="label_title">Syarikat Pengimport</label><br>
+                <label class="label_title">Syarikat Pengimport<span class="required"
+                  style="color:red;">*</span></label><br>
                 <label class="label_bi">Importer Company</label>
               </div>
               <div class="col-lg-5"*ngIf="roleUip">
                 <select class="form-select" name="companyId" id="companyId" [(ngModel)]="sample.companyId" required>
                   <option class="pilih" value="default">--Pilih--</option>
                   <option *ngFor="let company of companies" [value]="company.companyId">
-                    {{company.importerName}}{{company.name}}
+                    {{company.name}}
                   </option>
                 </select>
               </div>
@@ -287,7 +304,7 @@
               <div class="col-lg-3">
                 <input type="number" class="form-control readonly-input" [value]=" k1Header.grossWeight" disabled
                   readonly>
-                <small class="instruction">Berat basah (dalam kilogram) dengan pembungkusan</small>
+                <small class="instruction">* Berat basah (dalam kilogram) dengan pembungkusan</small>
               </div>
 
               <!-- <div class="col-lg-1">
@@ -318,7 +335,7 @@
               <div class="col-lg-3">
                 <input type="text" class="form-control" id="Quantity" name="Quantity" [(ngModel)]="formattedQuantity"
                   (ngModelChange)="enforceDRCLimit()" appCommaNumber required>
-                <small class="instruction">Berat basah (dalam kilogram) tanpa pembungkusan</small>
+                <small class="instruction">* Berat basah (dalam kilogram) tanpa pembungkusan</small>
                 <div *ngIf="showErrorMessage" style="color: red;">Berat melebihi berat yang diikrar dalam K1</div>
               </div>
 

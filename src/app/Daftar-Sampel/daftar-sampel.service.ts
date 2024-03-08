@@ -7,6 +7,8 @@ import { K1Detail } from '../models/k1Detail';
 import { StationCode } from '../models/stationCode';
 import { CompanyForwarder } from '../models/companyForwarder';
 import { Company } from '../models/company';
+import { Forwarder } from '../models/forwarder';
+import { TypeCode } from '../models/typeCode';
 
 @Injectable({
   providedIn: 'root'
@@ -90,8 +92,26 @@ export class DaftarSampelService {
     return this.http.get<Company>(this.baseApiUrl + '/api/CompanyForwarders/GetCompanyForwarderbyId/' + forwarderId);
   }
 
+  GetForwarderbyCompanyId(companyId: number): Observable<Forwarder> {
+    console.log(companyId)
+    return this.http.get<Forwarder>(this.baseApiUrl + '/api/CompanyForwarders/GetForwarderbyCompanyId/' + companyId);
+  }
 
+  GetCompanyId(companyId: number): Observable<Company> {
+    console.log(companyId)
+    return this.http.get<Company>(this.baseApiUrl + '/api/Companies/GetCompanyId/' + companyId);
+  }
   
 
+  GetForwarders() {
+    return this.http.get<Forwarder>(this.baseApiUrl + '/api/Forwarders/GetForwarders');
+  }
+
+
+  GetOldSystemIdbyId(id: number): Observable<TypeCode> {
+    console.log(id)
+    return this.http.get<TypeCode>(this.baseApiUrl + '/api/TypeCodes/GetOldSystemIdbyId/' + id);
+  }
+  
 
 }

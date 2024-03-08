@@ -12,6 +12,8 @@ import { CetakLabelService } from '../cetak-label.service';
 import { UserService } from 'src/app/User/user.service';
 import { Staff } from 'src/app/models/staff';
 import * as QRCode from 'qrcode-generator';
+import { loginImporter } from 'src/app/models/loginImporters';
+import { Observable, concatMap, forkJoin, of } from 'rxjs';
 
 @Component({
   selector: 'app-cetak-label',
@@ -30,7 +32,7 @@ export class CetakLabelComponent implements OnInit {
   sample: Sample = {} as Sample
   user: userDTO = {} as userDTO
   staff: Staff = {} as Staff
-
+  importer: loginImporter = {} as loginImporter
   checkAll: boolean = false
   lepassubmit: boolean = false
 
@@ -81,6 +83,18 @@ export class CetakLabelComponent implements OnInit {
         this.getUserElimsSamples(this.user)
       })
     }
+    else if (this.roleId == 3) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        console.log(res)
+        this.authService.changeUser(res);
+        this.importer = res
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleImporter = true
+        this.getImporterElimsSamples(this.importer)
+      })
+    }
+
     else if (this.roleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         console.log(res)
@@ -90,18 +104,7 @@ export class CetakLabelComponent implements OnInit {
         this.roleUip = true
         this.getStaffElimsSamples(this.staff)
       })
-    }    else if (this.roleId == 13) {
-      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
-        console.log(res)
-        this.authService.changeUser(res);
-        this.staff = res
-        this.roleForwarder = false
-        this.roleUip = false
-        this.roleImporter = true
-        this.getStaffElimsSamples(this.staff)
-      })
     }
-
 
   }
 
@@ -114,6 +117,17 @@ export class CetakLabelComponent implements OnInit {
     },
     )
   }
+
+  getImporterElimsSamples(importer: loginImporter) {
+    console.log(importer.username)
+    this.elimsService.GetElimsSamplesByUsername(importer.username, 1).subscribe(data => {
+      this.samples = data;
+      this.latexSample = data
+      console.log(this.samples)
+    },
+    )
+  }
+
   getStaffElimsSamples(staff: Staff) {
     console.log(staff.username)
     this.elimsService.GetElimsSamplesByUsername(staff.username, 1).subscribe(data => {
@@ -194,11 +208,11 @@ export class CetakLabelComponent implements OnInit {
       // Create QR codes
       const qrCode1 = QRCode(0, 'L');
 
-      if (this.roleId == 1 || this.roleId == 13) {
+      if (this.roleId == 1 || this.roleId == 3) {
         qrCode1.addData(sample1.customNo);
       }
       else if (this.roleId == 2) {
-        qrCode1.addData(sample1.customNo + "- UIP");
+        qrCode1.addData(sample1.customNo);
       }
 
       qrCode1.make();
@@ -208,10 +222,10 @@ export class CetakLabelComponent implements OnInit {
       if (sample2) {
         const qrCode2 = QRCode(0, 'L');
 
-        if (this.roleId == 1 || this.roleId == 13) {
+        if (this.roleId == 1 || this.roleId == 3) {
           qrCode2.addData(sample2.customNo);
         } else if (this.roleId == '2') {
-          qrCode2.addData(sample2.customNo + "- UIP");
+          qrCode2.addData(sample2.customNo);
         }
 
         qrCode2.make();
@@ -228,7 +242,7 @@ export class CetakLabelComponent implements OnInit {
       doc.setFontSize(fontSize);
 
 
-      if (this.roleId == 1 || this.roleId == 13) {
+      if (this.roleId == 1 || this.roleId == 3) {
         if (sample1.customNo) {
           doc.text("*" + `${sample1.customNo} ` + "*", x + 21, y + 5);
         }
@@ -256,13 +270,14 @@ export class CetakLabelComponent implements OnInit {
         doc.text(`${formattedDate1}`, x + 21, y + 18);
       }
 
-      if (sample1.companyName || sample1.importerName) {
-        const lines = doc.splitTextToSize(sample1.companyName || sample1.importerName, 52);
+
+      if (sample1.importerName) {
+        const lines = doc.splitTextToSize(sample1.importerName, 52);
         doc.text(lines, x + 21, y + 22);
       }
 
 
-      if (this.roleId == 1) {
+      if (this.roleId == 1 || this.roleId == 3) {
         if (sample1.forwarderName) {
           const lines = doc.splitTextToSize('FA : ' + sample1.forwarderName, 53);
           doc.text(lines, x + 21, y + 29);
@@ -271,21 +286,10 @@ export class CetakLabelComponent implements OnInit {
         const lines = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
         doc.text(lines, x + 21, y + 29);
       }
-      else if (this.roleId == 13) {
-        if (sample1.companyName) {
-        const lines = doc.splitTextToSize('SP : ' + sample1.companyName, 53);
-          doc.text(lines, x + 21, y + 29);
-      }
-    }
-
-      // if (sample1.forwarderAddress) {
-      //   const lines = doc.splitTextToSize(sample1.forwarderAddress, 53);
-      //   doc.text(lines, x + 21, y + 33);
-      // }
 
       if (sample2) {
 
-        if (this.roleId == 1 || this.roleId == 13) {
+        if (this.roleId == 1 || this.roleId == 3) {
           if (sample2.customNo) {
             doc.text("*" + `${sample2.customNo}` + "*", x + boxWidth + 21, y + 5);
           }
@@ -312,21 +316,24 @@ export class CetakLabelComponent implements OnInit {
           doc.text(`${formattedDate2}`, x + boxWidth + 21, y + 18);
         }
 
-        if (sample2.companyName || sample2.importerName) {
-          const lines1 = doc.splitTextToSize(sample2.companyName || sample2.importerName, 52);
+  
+           if (sample2.importerName) {
+          const lines1 = doc.splitTextToSize(sample2.importerName, 52);
           doc.text(lines1, x + boxWidth + 21, y + 22);
         }
+       
 
-        if (this.roleId == 1 || this.roleId == 13) {
+        if (this.roleId == 1 || this.roleId == 3) {
           if (sample2.forwarderName) {
             const lines1 = doc.splitTextToSize('FA : ' + sample2.forwarderName, 53);
             doc.text(lines1, x + boxWidth + 21, y + 29);
           }
         }
         if (this.roleId == 2) {
-            const lines1 = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
-            doc.text(lines1, x + boxWidth + 21, y + 29);
+          const lines1 = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
+          doc.text(lines1, x + boxWidth + 21, y + 29);
         }
+
         // if (sample2.forwarderAddress) {
         //   const lines1 = doc.splitTextToSize(sample2.forwarderAddress, 52);
         //   doc.text(lines1, x + boxWidth + 21, y + 33);
@@ -344,36 +351,84 @@ export class CetakLabelComponent implements OnInit {
 
 
 
+  // onYesClick() {
+  //   this.k1Detail.labelPrintedOn = new Date();
+  //   this.k1Detail.labelPrintedBy = this.loginAs;
+  //   this.k1Detail.labelPrinted = true;
+
+  //   this.cetakSample.labelPrintedOn = new Date();
+  //   this.cetakSample.labelPrintedBy = this.loginAs;
+  //   this.cetakSample.labelPrinted = true;
+
+  //   for (const sample of this.samples) {
+  //     let id = sample.k1DetailId;
+  //     const rubberTypeId = sample.rubberTypeId
+  //     if (this.checkAll || sample.checked) {
+
+  //       this.cetakLabelService.Putk1DetailLabelTelahDicetak(id, this.k1Detail).subscribe(
+  //         res => { this.mesYaTidak = "yes" }
+  //       );
+
+  //       if (rubberTypeId == 2) {
+  //         this.getahBongkahService.PutBRLabelTelahDicetak(id, this.cetakSample).subscribe(
+  //           res => { this.mesYaTidak = "yes" }
+  //         );
+
+  //       } else if (rubberTypeId == 1) {
+  //         this.drclimstrainingService.PutLtxLabelTelahDicetak(id, this.cetakSample).subscribe(
+  //           res => { this.mesYaTidak = "yes" }
+  //         );
+  //       }
+  //     }
+  //   }
+  // }
+
   onYesClick() {
     this.k1Detail.labelPrintedOn = new Date();
     this.k1Detail.labelPrintedBy = this.loginAs;
     this.k1Detail.labelPrinted = true;
-
+  
     this.cetakSample.labelPrintedOn = new Date();
     this.cetakSample.labelPrintedBy = this.loginAs;
     this.cetakSample.labelPrinted = true;
-
+  
+    let observables: Observable<any>[] = [];
+  
     for (const sample of this.samples) {
       let id = sample.k1DetailId;
-      const rubberTypeId = sample.rubberTypeId
+      const rubberTypeId = sample.rubberTypeId;
+  
       if (this.checkAll || sample.checked) {
-
-        this.cetakLabelService.Putk1DetailLabelTelahDicetak(id, this.k1Detail).subscribe(
-          res => { this.mesYaTidak = "yes" }
+        observables.push(
+          of(null).pipe(
+            concatMap(() => {
+              if (rubberTypeId == 2) {
+                return this.getahBongkahService.PutBRLabelTelahDicetak(id, this.cetakSample);
+              } else if (rubberTypeId == 1) {
+                return this.drclimstrainingService.PutLtxLabelTelahDicetak(id, this.cetakSample);
+              } else {
+                return of(null); // return a completed observable if rubberTypeId is neither 1 nor 2
+              }
+            }),
+            concatMap(() => {
+              return this.cetakLabelService.Putk1DetailLabelTelahDicetak(id, this.k1Detail);
+            })
+          )
         );
-
-        if (rubberTypeId == 2) {
-          this.getahBongkahService.PutBRLabelTelahDicetak(id, this.cetakSample).subscribe(
-            res => { this.mesYaTidak = "yes" }
-          );
-
-        } else if (rubberTypeId == 1) {
-          this.drclimstrainingService.PutLtxLabelTelahDicetak(id, this.cetakSample).subscribe(
-            res => { this.mesYaTidak = "yes" }
-          );
-        }
       }
     }
+  
+    forkJoin(observables).subscribe(
+      () => {
+        this.mesYaTidak = "yes";
+        console.log("All updates completed successfully");
+        // Additional logic after all updates are completed
+      },
+      (error) => {
+        console.error("Error occurred during updates", error);
+        // Handle error if needed
+      }
+    );
   }
 
   onNoClick() {

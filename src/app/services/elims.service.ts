@@ -15,6 +15,8 @@ import { UipbkhRefRunNo } from '../models/uipbkhRefRunNo';
 import { K1Detail } from '../models/k1Detail';
 import { TestMethod } from '../models/testMethod';
 import { TypeCode } from '../models/typeCode';
+import { loginForwarder } from '../models/loginForwarder';
+import { loginImporter } from '../models/loginImporters';
 
 @Injectable({
   providedIn: 'root'
@@ -46,8 +48,8 @@ export class ElimsService {
   //   return this.http.get<SampleType>(this.baseApiUrl + '/api/RefSampleTypes/GetRefSampleTypeByRubberType/' + rubberTypeId);
   // }
 
-  GetRefSampleTypeByRubberType(rubberTypeId: number): Observable<TypeCode> {
-    return this.http.get<TypeCode>(this.baseApiUrl + '/api/TypeCodes/GetRefSampleTypeByRubberType/' + rubberTypeId);
+  GetRefSampleTypeByRubberType(rubberTypeId: number): Observable<TypeCode[]> {
+    return this.http.get<TypeCode[]>(this.baseApiUrl + '/api/TypeCodes/GetRefSampleTypeByRubberType/' + rubberTypeId);
   }
 
   GetCompanies(forwarderId: number) {
@@ -57,6 +59,11 @@ export class ElimsService {
   GetCompaniesbySMKImportersCode(smkImportersCode: string) {
     return this.http.get<Company>(this.baseApiUrl + '/api/Companies/GetCompaniesbySMKImportersCode/' + smkImportersCode);
   }
+
+  GetForwardersbySMKImportersCode(smkImportersCode: string) {
+    return this.http.get<Forwarder>(this.baseApiUrl + '/api/Companies/GetForwardersbySMKImportersCode/' + smkImportersCode);
+  }
+
 
   GetElimsBankCodes() {
     return this.http.get<BankCode>(this.baseApiUrl + '/api/BankCodes/GetElimsBankCodes');
@@ -114,15 +121,22 @@ GetRefTestMethodByRubberType(rubberTypeId: number): Observable<TestMethod> {
     const params = new HttpParams().set('statusCodeId', statusCodeId.toString()).set('username', username.toString());
     return this.http.get<Sample[]>(this.baseApiUrl + '/api/K1Detail/GetElimsSamplesByUsername', { params });
   }
+
+
+  GetBatchCetakWorksheet() {
+    return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetBatchCetakWorksheet');
+  }
+
+  GetElimsAllBatch(statusCodeId:number) {
+    return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetElimsAllBatch/'+ statusCodeId);
+  }
+
+  // GetElimsAllBatch(statusCodeId: number, k1Detail: K1Detail): Observable<Batch[]> {
+  //   const params = new HttpParams().set('statusCodeId', statusCodeId.toString()); // Convert statusCodeId to string
+  //   return this.http.get<Batch[]>(`${this.baseApiUrl}/api/Batch/GetElimsAllBatch`, { params });
+  // }
   
 
-  // deleteElimsSampleHeader(sampleId: number) {
-  //   return this.http.delete(this.baseApiUrl + '/api/K1Header/deleteElimsSampleHeader/' + sampleId);
-  // } 
-
-  GetElimsAllBatch() {
-    return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetElimsAllBatch');
-  }
 
   getTarikhSampelDihantar() {
     return this.http.get<Batch[]>(this.baseApiUrl + '/api/ElimsBatches/getTarikhSampelDihantar');
@@ -146,9 +160,12 @@ GetRefTestMethodByRubberType(rubberTypeId: number): Observable<TestMethod> {
     return this.http.put<Staff>(this.baseApiUrl + '/api/Staffs/updateProfile/' + staffId, updateProfileRequest);
   }
 
+  PutCompanyProfile(companyId: number, updateProfileRequest: loginImporter): Observable<loginImporter> {
+    return this.http.put<loginImporter>(this.baseApiUrl + '/api/Companies/PutCompanyProfile/' + companyId, updateProfileRequest);
+  }
+
   GetUipbkhByRefRunNo(runNo: number) {
     return this.http.get<UipbkhRefRunNo>(this.baseApiUrl + '/api/UipbkhRefRunNoes/GetUipbkhByRefRunNo/' + runNo)
-
   }
 
 
@@ -157,18 +174,41 @@ GetRefTestMethodByRubberType(rubberTypeId: number): Observable<TestMethod> {
 
   }
 
+  GetSamplesByBatchId(batchId: number) {
+    return this.http.get<any>(this.baseApiUrl + '/api/Batches/GetSamplesByBatchId/' + batchId)
+
+  }
 
 
+  // PutDaftarTerimaSampel(sampleId: number, k1Detail: K1Detail) {
+  //   return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutDaftarTerimaSampel/' + sampleId, k1Detail);
+  // }
+
+ 
+  PutSampleLabRefNo(k1Detail: K1Detail) {
+    return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutSampleLabRefNo', k1Detail);
+  }
 
   
-  PutDaftarTerimaSampel(sampleId: number, k1Detail: K1Detail) {
-    return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutDaftarTerimaSampel/' + sampleId, k1Detail);
+  PutDaftarTerimaSampelLabRef(customNo: string, k1Detail: K1Detail) {
+    return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutDaftarTerimaSampelLabRef/' + customNo, k1Detail);
   }
 
-
-  GetElimsBatchesWithSamplesStatusCode6() {
-    return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetBatchesWithSamplesStatusCode6/withSamplesStatusCode6');
+  PutDaftarTerimaSampel(customNo: string, k1Detail: K1Detail) {
+    return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutDaftarTerimaSampel/' + customNo, k1Detail);
   }
+
+ 
+  // GetElimsBatchesWithSamplesStatusCode6(username: String, statusCodeId: number): Observable<Batch[]> {
+  //   // console.log(statusCodeId)
+  //   const params = new HttpParams().set('statusCodeId', statusCodeId).set('username', username.toString());
+  //   return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetElimsBatchesWithSamplesStatusCode6', { params });
+  // }
+
+
+  // GetElimsBatchesWithSamplesStatusCode6() {
+  //   return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetBatchesWithSamplesStatusCode6/withSamplesStatusCode6');
+  // }
 
 
 

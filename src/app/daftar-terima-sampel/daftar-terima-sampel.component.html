@@ -3,45 +3,215 @@
     <mat-card-content>
       <h1 class="attractive-title">Terima Sampel</h1>
       <div class="mat-card-container">
-        <p>Senarai batch</p>
+        <!-- <p>Senarai batch</p> -->
 
-        <div class="table-responsive">
+        <!-- <div>
+          <label for="batchId">Batch ID:</label>
+          <input type="text" id="batchId" [(ngModel)]="batchId">
+          <button (click)="sampleList(batchId)">Search</button>
+        </div><br> -->
 
-          <table class="table table-striped">
-            <thead>
-              <tr class="tableheader">
-                <th scope="col"></th>
-                <th scope="col">Batch Id</th>
-                <th scope="col">Forwarding Agent</th>
-                <th scope="col">Bank</th>
-                <th scope="col">No Cek</th>
-                <th scope="col">Amaun </th>
-                <th scope="col">Tarikh Hantar</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let batch of batches; let i = index">
-                <td>
-                  <a href="javascript:void(0)" (click)="sampleList(batch.batchId)">Select</a>
+
+
+        <div class="row form-group">
+          <div class="col-sm-2">
+            <label class="label_title">Batch ID:</label><br>
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control readonly-input" id="batchId" [(ngModel)]="batchId">      
+          </div>
+          <div class="col-sm-2">
+            <button type="button" class="btn btn-primary search-button" (click)="sampleList(batchId)"> Cari </button>
+          </div>
+          
+          <!-- <div class="col-sm-2">
+            <label class="label_bm">Jenis Getah</label><br>
+            <label class="label_bi">Rubber Type</label>
+          </div>
+          <div class="col-sm-3">
+            <div class="d-flex">
+              <select class="form-select" name="RubberType" id="RubberType" [(ngModel)]="rubberTypeId"
+                (change)="changeJenisGetah($event)">
+                <option value="" disabled selected>--Pilih--</option>
+                <option *ngFor="let rubberType of rubberTypes" [value]="rubberType.id">
+                  {{rubberType.rubberType}}
+                </option>
+              </select>
+              <button type="button" class="btn btn-primary search-button ms-2" (click)="searchRubberType()"> Cari </button>
+            </div>
+          </div> -->
+        </div><br>
+        
+
+        <!-- <div class="row form-group">
+          <div class="col-sm-2">
+              <label class="label_bm">Laluan Pantas</label><br>
+              <label class="label_bi">Fast Track</label>
+          </div>
+          <div class="col-sm-4">
+              <select class="form-select" name="isFastTrack" id="isFastTrack"
+                  [(ngModel)]="isFastTrack" required>
+                  <option class="pilih" value="default">--Pilih--</option>
+                  <option value="true">YA</option>
+                  <option value="false">TIDAK</option>
+              </select>
+          </div>
+      </div><br> -->
+
+
+
+
+
+        <!-- <div class="row form-group">
+          <div class="col-sm-2">
+            <label class="label_title">Batch ID:</label><br>
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control readonly-input" id="batchId" [(ngModel)]="batchId">      
+          </div>
+          <div class="col-sm-2">
+            <button type="button" class="btn btn-primary search-button" (click)="sampleList(batchId)"> Cari </button>
+          </div>
+        </div><br> -->
+        
+
+        <form *ngIf="samples.length > 0" (ngSubmit)="addSample1()">
+          <div>
+            <h2>No Borang Kastam</h2>
+            <div *ngFor="let sample of samples; let i = index">
+              <input type="text" id="customNo{{i}}" name="customNo{{i}}" [(ngModel)]="sample.customNo">
+            </div>
+          </div><br>
+          <button type="submit" class="btn btn-primary">Daftar</button>
+        </form>
+
+
+        <!-- jenis getah -->
+        <!-- <div class="row form-group">
+          <div class="col-sm-2">
+            <label class="label_bm">Jenis Getah</label><br>
+            <label class="label_bi">Rubber Type</label>
+          </div>
+          <div class="col-sm-3">
+            <div class="d-flex">
+              <select class="form-select" name="RubberType" id="RubberType" [(ngModel)]="rubberTypeId"
+                (change)="changeJenisGetah($event)">
+                <option value="" disabled selected>--Pilih--</option>
+                <option *ngFor="let rubberType of rubberTypes" [value]="rubberType.id">
+                  {{rubberType.rubberType}}
+                </option>
+              </select>
+              <div class="col-sm-2">
+              <button type="button" class="btn btn-primary search-button ms-2" (click)="searchRubberType()"> Cari
+              </button></div>
+            </div>
+          </div>
+        </div><br> -->
+
+
+
+
+
+        <mat-form-field>
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="keyword" #input>
+        </mat-form-field>
+
+        <div class="mat-elevation-z8">
+          <div class="list-container">
+
+            <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+
+
+              <ng-container matColumnDef="expandIcon">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let row">
+                  <button mat-icon-button (click)="toggleRow(row)">
+                    <mat-icon>{{ row.isExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+                  </button>
                 </td>
+              </ng-container>
 
-                <td>{{batch.batchId}}</td>
-                <td>{{batch.forwarderName}}{{batch.unitName}} </td>
-                <td>{{batch.bankCode}} </td>
-                <td>{{batch.chequeNo}}</td>
-                <td>{{batch.chequeAmount}} </td>
-                <td>{{batch.sentOn | date:"dd/MM/yyy"}} </td>
+
+              <ng-container matColumnDef="batchId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch Id </th>
+                <td mat-cell *matCellDef="let row"> <a href="javascript:void(0)" (click)="sampleList(row.batchId)">
+                    {{row.batchId}}</a></td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="sampleCount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Bilangan Sampel</th>
+                <td mat-cell *matCellDef="let row">{{unregisteredSampleCount }} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="rubberType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Jenis Getah</th>
+                <td mat-cell *matCellDef="let row"> {{row.rubberType}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="isFastTrack">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Laluan Pantas </th>
+                <td mat-cell *matCellDef="let row"> {{row.isFastTrack}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="forwarderName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Syarikat Penghantar </th>
+                <td mat-cell *matCellDef="let row"> {{row.forwarderName}}</td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="bankCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Bank</th>
+                <td mat-cell *matCellDef="let row">
+                  {{row.bankCode}}</td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="receipt">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Resit</th>
+                <td mat-cell *matCellDef="let row"><a
+                    style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
+                    (click)="viewReceipt(row.receipt,row.batchId)">{{row.receipt}}</a></td>
+              </ng-container>
+
+              <ng-container matColumnDef="chequeNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Cek</th>
+                <td mat-cell *matCellDef="let row"> {{row.chequeNo}}</td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="chequeAmount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Amaun</th>
+                <td mat-cell *matCellDef="let row">
+                  {{row.chequeAmount}}</td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="sentOn">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarikh Hantar</th>
+                <td mat-cell *matCellDef="let row">{{row.sentOn | date:"dd/MM/yyy"}}</td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="10">No data matching the filter "{{input.value}}"</td>
               </tr>
 
-            </tbody>
-          </table>
-        </div>
+
+            </table>
+          </div>
+
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="20"></mat-paginator>
+        </div><br>
+
 
         <div *ngIf="samples.length > 0">
 
-
           <p style="color: red;">{{ unregisteredSampleCount }} sampel belum didaftar terima</p>
-
 
           <div class="table-responsive">
 
@@ -64,8 +234,8 @@
                   <td></td>
                   <td>{{sample.k1DetailId}}</td>
                   <td>{{sample.customNo}} </td>
-                  <td>{{sample.companyName}}{{sample.importerName}} </td>
-                  <td>{{sample.sampleType}}</td>
+                  <td>{{sample.importerName}} </td>
+                  <td>{{sample.typeCode}}</td>
                   <td>{{sample.importedDate | date:"dd/MM/yyy"}} </td>
                   <td>{{sample.quantity}} </td>
                 </tr>
@@ -74,59 +244,7 @@
             </table>
           </div>
 
-          <!-- <app-sampel-belum-terima></app-sampel-belum-terima> -->
-
-          <p>Daftar Terima Sampel</p>
-
-
-
-          <!-- <form (ngSubmit)="addSample()">
-            <div class="col-lg-1">
-              <label class="label_title">Custom no<span class="required" style="color:red;">*</span></label><br>
-              <label class="label_bi">Custom no</label>
-            </div>
-            <div class="col-lg-5">
-              Add this input field for customNo
-              <input type="text" class="form-control" [(ngModel)]="k1Detail.customNo" name="customNo"  required>
-            </div>
-
-            <div mat-dialog-actions align="end">
-              <button type="submit" class="btn btn-primary" style="margin-left: 5px;">Daftar</button>
-            </div>
-          </form> -->
-
-
-          <form  [formGroup]="customNosForm" (ngSubmit)="addSample()" class="container mt-4">
-            <!-- Existing code for the first custom number field -->
-            <div class="row">       
-              <div formArrayName="customNos">
-              <div *ngFor="let customNo of customNos.controls; let i = index" class="row mt-2">
-                <div class="col-lg-7 offset-lg-3">
-                  <input type="text" class="form-control" [(ngModel)]="additionalCustomNosData[i]" [formControl]="customNo" required>
-                </div>
-              </div>
-            </div>
-              <div class="col-lg-2 text-right">
-                <button type="button" class="btn btn-secondary mt-2" (click)="addCustomNoField()">Add</button>
-              </div>
-            </div>
-
-
-            <div class="row mt-3">
-              <div class="col-lg-7 offset-lg-3" mat-dialog-actions align="end">
-                <button type="submit" class="btn btn-primary">Daftar</button>
-              </div>
-            </div>
-          </form>
-
-
-
-
         </div>
-
-
-
-
       </div>
     </mat-card-content>
   </mat-card>

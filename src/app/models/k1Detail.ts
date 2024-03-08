@@ -36,6 +36,8 @@ export interface K1Detail {
     verifiedBy: string;
     printedOn: string;
     printedBy: string;
+    labelTestedOn: Date;
+    labelTestedBy: string;
     resultSentOn: string;
     resultSentBy: string;
     labelPrinted: boolean;
@@ -76,8 +78,10 @@ export interface K1Detail {
     sampleRunNo: string;
     creatorRoleId: number;
     grossWeight: number;
-    agentName  :string
+    agentName  :string;   
 
+     dateSampleReceived : Date;
+     smkimportersCode: string;
 
     
 

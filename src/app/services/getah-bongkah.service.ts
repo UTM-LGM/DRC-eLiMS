@@ -21,7 +21,7 @@ export class GetahBongkahService {
 
   PostBRSamples(sample: Sample, statusCodeId: number): Observable<Sample> {
     sample.statusCodeId = statusCodeId;
-    sample.typeCodeId = 3;
+    // sample.typeCodeId = 3;
     return this.http.post<Sample>(this.baseApiUrl + '/api/BRSamples/PostBRSamples', sample);
   }
 

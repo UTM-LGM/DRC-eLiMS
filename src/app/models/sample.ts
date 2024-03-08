@@ -8,6 +8,7 @@ export interface Sample {
     k1DetailId: number;
     sampleId: number;
     batchId: number;
+    staffId: number;
     rubberTypeId: number;
     rubberType: string;
     sampleTypeId: number;
@@ -97,6 +98,7 @@ export interface Sample {
 
     unitName: string;
     agentName : string;
-   
-
+    dateSampleReceived: Date;
+    smkimportersCode : string;
+    oldSystemId : number;
 }

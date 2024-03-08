@@ -43,4 +43,8 @@ export interface Batch {
     testMethodId: number;
     testMethod: string;
     isFastTrack: boolean;
+    memoPrinted : boolean;
+
+    position:string;
+    rubberTypeId:number;
 }
