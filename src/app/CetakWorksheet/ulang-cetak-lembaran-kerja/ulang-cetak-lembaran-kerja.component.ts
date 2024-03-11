@@ -95,7 +95,7 @@ export class UlangCetakLembaranKerjaComponent {
       console.log('All Samples:', res);
       this.samples = res;
       // Filter samples based on statusCodeId == 6
-      this.samples = res.filter(sample => sample.statusCodeId === 6);
+      this.samples = res.filter(sample => sample.statusCodeId === 7);
 
       console.log('Filtered Samples:', this.samples);
     });
@@ -151,7 +151,7 @@ export class UlangCetakLembaranKerjaComponent {
       // const rubberTypeId = sample.rubberTypeId
       if (this.checkAll || sample.checked) {
 
-        this.cetakWorksheet.PutCetakLembaranKerja(id, this.k1Detail).subscribe(
+        this.cetakWorksheet.PutUlangCetakLembaranKerja(id, this.k1Detail).subscribe(
           res => { this.mesYaTidak = "yes" }
         );
 

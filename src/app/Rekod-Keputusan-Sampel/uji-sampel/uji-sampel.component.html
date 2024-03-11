@@ -1,0 +1,132 @@
+<div class="container mb-3">
+    <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
+        <mat-card-content>
+            <h1 class="attractive-title">Uji Sampel</h1>
+
+
+
+            <h3 *ngIf="!lepassubmit">Senarai Batch</h3>
+            <h3 *ngIf="lepassubmit">Berikut adalah senarai sampel yang dipilih untuk cetak worksheet.</h3>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped" *ngIf="!lepassubmit">
+                    <thead>
+                        <tr class="tableheader">
+                            <th scope="col"></th>
+                            <th scope="col">Batch Id</th>
+                            <th scope="col">Agent Penghantar</th>
+                            <th scope="col">Bil. Sampel</th>
+                            <th scope="col">Bank</th>
+                            <th scope="col">No Cek</th>
+                            <th scope="col">Amaun </th>
+                            <th scope="col">Tarikh Hantar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let batch of batches; let i = index">
+
+                            <td>
+                                <a href="javascript:void(0)" (click)="sampleList(batch.batchId)">Select</a>
+                            </td>
+
+                            <td>{{batch.batchId}}</td>
+                            <td>{{batch.forwarderName}}</td>
+                            <td>{{batch.forwarderName}}</td>
+                            <td>{{batch.bankCode}} </td>
+                            <td>{{batch.chequeNo}}</td>
+                            <td>{{batch.chequeAmount}} </td>
+                            <td>{{batch.sentOn | date:"dd/MM/yyy"}} </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+
+
+            <div *ngIf="samples.length > 0">
+
+                <!-- <p style="color: red;">{{ unregisteredSampleCount }} sampel belum didaftar terima</p> -->
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="tableheader">
+                                <th scope="col"></th>
+                                <th scope="col" *ngIf="!lepassubmit">
+                                    <input type="checkbox" [(ngModel)]="checkAll" (change)="checkAllChanged()">
+                                </th>
+                                <th scope="col">Sample Id</th>
+                                <th scope="col">Batch Id</th>
+                                <th scope="col">Ruj. Makmal</th>
+                                <th scope="col">No Kastam</th>
+                                <th scope="col">Syarikat</th>
+                                <th scope="col">Jenis</th>
+                                <th scope="col">Tarikh Import </th>
+                                <th scope="col">Tarikh Terima </th>
+                                <th scope="col">Kuantiti(kg)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let sample of samples; let i = index">
+
+                                <th scope="row" *ngIf="!lepassubmit">
+                                    <!-- <input type="checkbox" [(ngModel)]="sample.checked" (change)="checkSingleChanged()"
+                      [value]="sample.k1HeaderId"> -->
+                                    <mat-checkbox class="example-margin" [(ngModel)]="sample.checked"
+                                        (change)="checkSingleChanged()"></mat-checkbox>
+                                </th>
+
+                                <td></td>
+                                <td>{{sample.k1DetailId}}</td>
+                                <td>{{sample.batchId}}</td>
+                                <td>{{sample.labRefNo}}</td>
+                                <td>{{sample.customNo}} </td>
+                                <td>{{sample.importerName}} </td>
+                                <td>{{sample.typeCode}}</td>
+                                <td>{{sample.importedDate | date:"dd/MM/yyy"}} </td>
+                                <td>{{sample.receivedOn | date:"dd/MM/yyy"}} </td>
+                                <td>{{sample.quantity}} </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+
+            <div class="row form-group">
+                <div class="col-lg-2">
+                    <label class="label_title">Nama Penguji<span class="required"
+                            style="color:red;">*</span></label><br>
+                    <label class="label_bi">Tester Name</label>
+                </div>
+                <div class="col-lg-5">
+                    <select class="form-select" name="staffId" id="staffId" [(ngModel)]="staff.staffId">
+                        <option class="pilih" value="default">--Pilih--</option>
+                        <option *ngFor="let role of roles" [value]="role.staffId">
+                            {{role.staffName}}
+                        </option>
+                    </select>
+                </div>
+            </div><br>
+
+            <button type="submit" (click)="checkout()" class="btn btn-primary">Checkout</button>
+            <!-- <button *ngIf="!lepassubmit" type="submit" (click)="displaySelected()" class="btn btn-primary">Pilih</button> -->
+
+
+
+
+
+
+
+
+
+
+        </mat-card-content>
+    </mat-card>
+</div>

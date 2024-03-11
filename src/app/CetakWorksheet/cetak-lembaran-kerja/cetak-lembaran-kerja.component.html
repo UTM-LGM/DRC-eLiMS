@@ -70,8 +70,10 @@
               <tr *ngFor="let sample of samples; let i = index">
 
                 <th scope="row" *ngIf="!lepassubmit">
-                  <input type="checkbox" [(ngModel)]="sample.checked" (change)="checkSingleChanged()"
-                    [value]="sample.k1HeaderId">
+                  <!-- <input type="checkbox" [(ngModel)]="sample.checked" (change)="checkSingleChanged()"
+                    [value]="sample.k1HeaderId"> -->
+                    <mat-checkbox class="example-margin" [(ngModel)]="sample.checked" (change)="checkSingleChanged()"
+                    ></mat-checkbox>
                 </th>
 
                 <td></td>

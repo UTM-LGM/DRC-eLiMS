@@ -4,4 +4,5 @@ export class staffRole {
   staffRole: number;
   role: string;
   roleId: number;
+  staffName: string;
 }

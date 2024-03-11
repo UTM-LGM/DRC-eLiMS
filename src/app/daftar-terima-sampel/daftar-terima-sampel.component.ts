@@ -15,15 +15,40 @@ import { MatSort } from '@angular/material/sort';
 import { DaftarSampelService } from '../Daftar-Sampel/daftar-sampel.service';
 import { HantarSampelService } from '../Hantar-Sampel/hantar-sampel.service';
 import { RubberType } from '../models/rubberType';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+
 
 @Component({
   selector: 'app-daftar-terima-sampel',
   templateUrl: './daftar-terima-sampel.component.html',
-  styleUrls: ['./daftar-terima-sampel.component.css']
+  styleUrls: ['./daftar-terima-sampel.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
+
 })
 export class DaftarTerimaSampelComponent {
 
+  columnsToDisplay = [ 
+    
+  'expandIcon',
+  'batchId',
+  'rubberType',
+  'isFastTrack',
+  'forwarderName',
+  'bankCode',
+  'receipt',
+  'chequeNo',
+  'chequeAmount',
+  'sentOn',
+  'sampleCount',
+]
 
+  expandedElement: Sample | null;
   displayedColumns: string[] = [
     'expandIcon',
     'batchId',
@@ -47,6 +72,7 @@ export class DaftarTerimaSampelComponent {
 
   batch: Batch = {} as Batch;
   samples: Sample[] = [];
+  samples1: Sample[] = [];
   batches: any;
   k1Details: K1Detail[] = [];
   batchId: number;
@@ -246,6 +272,16 @@ export class DaftarTerimaSampelComponent {
     });
   }
 
+
+  allSampleByBatch(batchId: number) {
+    // this.selectedBatchId = batchId;
+    this.elimsService.GetElimsSamplesByBatchId(batchId).subscribe(res => {
+      console.log(res)
+      this.samples = res;
+      this.calculateUnregisteredSampleCount();
+
+    });
+  }
 
   calculateUnregisteredSampleCount() {
 

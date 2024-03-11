@@ -16,5 +16,10 @@ export class CetakWorksheetService {
     return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutCetakLembaranKerja/' + sampleId, k1Detail);
   }
 
+  PutUlangCetakLembaranKerja(sampleId: number, k1Detail: K1Detail) {
+    return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutUlangCetakLembaranKerja/' + sampleId, k1Detail);
+  }
+
+
 
 }

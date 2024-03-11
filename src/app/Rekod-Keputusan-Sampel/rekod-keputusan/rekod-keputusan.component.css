@@ -1,0 +1,32 @@
+.attractive-title {
+    font-family: "Your Chosen Font",  'Helvetica,';
+    font-size: 36px;
+    color: #08864b;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .tableheader {
+    background-color: #3e4141;
+    color: rgb(234, 223, 223);
+  }
+  
+  thead .tableheader tr th {
+    color: white;
+  }
+  
+  th {
+    color: white;
+    font-weight: 300;
+    background-color: #3e4141;
+  }
+  
+  .mat-icon {
+  
+    height: 15px;
+    width: 15px;
+  
+  }
+  
+  .material-icons {
+    font-size: 15px;
+  }

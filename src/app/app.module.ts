@@ -72,6 +72,9 @@ import { CetakWorksheetComponent } from './cetak-worksheet/cetak-worksheet.compo
 import { SajarahPenghantaranComponent } from './sajarah-penghantaran/sajarah-penghantaran.component';
 import { MaklumatPenghantaranComponent } from './maklumat-penghantaran/maklumat-penghantaran.component';
 import { UlangCetakLembaranKerjaComponent } from './CetakWorksheet/ulang-cetak-lembaran-kerja/ulang-cetak-lembaran-kerja.component';
+import { UjiSampelComponent } from './Rekod-Keputusan-Sampel/uji-sampel/uji-sampel.component';
+import { RekodKeputusanComponent } from './Rekod-Keputusan-Sampel/rekod-keputusan/rekod-keputusan.component';
+import { SahKeputusanComponent } from './Rekod-Keputusan-Sampel/sah-keputusan/sah-keputusan.component';
 
 
 
@@ -115,7 +118,10 @@ import { UlangCetakLembaranKerjaComponent } from './CetakWorksheet/ulang-cetak-l
     CetakWorksheetComponent,
     SajarahPenghantaranComponent,
     MaklumatPenghantaranComponent,
-    UlangCetakLembaranKerjaComponent
+    UlangCetakLembaranKerjaComponent,
+    UjiSampelComponent,
+    RekodKeputusanComponent,
+    SahKeputusanComponent
 
   ],
   imports: [

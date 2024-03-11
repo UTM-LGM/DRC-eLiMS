@@ -27,6 +27,9 @@ import { SuratIringanComponent } from './surat-iringan/surat-iringan.component';
 import { LampiranComponent } from './Hantar-Sampel/lampiran/lampiran.component';
 import { CetakWorksheetComponent } from './cetak-worksheet/cetak-worksheet.component';
 import { UlangCetakLembaranKerjaComponent } from './CetakWorksheet/ulang-cetak-lembaran-kerja/ulang-cetak-lembaran-kerja.component';
+import { UjiSampelComponent } from './Rekod-Keputusan-Sampel/uji-sampel/uji-sampel.component';
+import { RekodKeputusanComponent } from './Rekod-Keputusan-Sampel/rekod-keputusan/rekod-keputusan.component';
+import { SahKeputusanComponent } from './Rekod-Keputusan-Sampel/sah-keputusan/sah-keputusan.component';
 
 
 
@@ -211,6 +214,22 @@ const routes: Routes = [
     component: SuratIringanComponent
   },
 
+  {
+    path: 'uji-sampel',
+    component: UjiSampelComponent
+  },
+
+  {
+    path: 'rekod-keputusan',
+    component: RekodKeputusanComponent
+  },
+  
+
+  {
+    path: 'sah-keputusan',
+    component: SahKeputusanComponent
+  },
+  
 ];
 
 @NgModule({
