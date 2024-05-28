@@ -1,0 +1,205 @@
+<div class="container mb-3">
+    <mat-card>
+        <mat-card-content>
+            <h1 class="attractive-title">Ulang Cetak Keputusan Ujian</h1>
+
+            <h3 *ngIf="!lepassubmit">Cetak Keputusan</h3>
+            <h3 *ngIf="lepassubmit">Berikut adalah senarai sampel yang dipilih untuk ulang cetak keputusan.</h3>
+
+
+            <div class="mat-card-container"  *ngIf="!lepassubmit" >
+
+
+                <div class="row form-group">
+                    <div class="col-sm-2">
+                        <label class="label_bm">Batch Id</label><br>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="batchId" name="batchId"
+                            (input)="filterByBatchId($event)">
+                    </div>
+                </div><br>
+
+
+                <div class="mat-elevation-z8">
+                    <div class="list-container">
+
+                        <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+
+
+                            <ng-container matColumnDef="batchId">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch Id </th>
+                                <td mat-cell *matCellDef="let row"> {{row.batchId}}</td>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="rubberType">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Jenis Getah</th>
+                                <td mat-cell *matCellDef="let row"> {{row.rubberType}}</td>
+                            </ng-container>
+
+
+
+                            <ng-container matColumnDef="forwarderName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Syarikat Penghantar </th>
+                                <td mat-cell *matCellDef="let row"> {{row.forwarderName}}</td>
+                            </ng-container>
+
+
+                            <!-- <ng-container matColumnDef="importerName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Syarikat Pengimport </th>
+                                <td mat-cell *matCellDef="let row"> {{row.importerName}}</td>
+                            </ng-container> -->
+
+
+                            <ng-container matColumnDef="chequeNo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>No.Cek/Resit</th>
+                                <td mat-cell *matCellDef="let row">
+                                  <a *ngIf="row.creatorRoleId != 2 "
+                                    style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
+                                    (click)="viewReceipt(row.receipt,row.batchId)">{{row.receipt}}</a>
+                
+                                  <a *ngIf="row.creatorRoleId == 2"
+                                    style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
+                                    (click)="viewMemo(row.batchId)">memo</a>
+                                    {{row.chequeNo}}
+                
+                                </td>
+                              </ng-container>
+
+
+                            <ng-container matColumnDef="importedDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarikh Import</th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{row.importedDate| date:"dd/MM/yyy"}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="receivedOn">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarikh Terima</th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{row.receivedOn| date:"dd/MM/yyy"}}</td>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="sentOn">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarikh Hantar</th>
+                                <td mat-cell *matCellDef="let row">{{row.sentOn | date:"dd/MM/yyy"}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="chequeAmount">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Amaun</th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{row.chequeAmount}}</td>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="expandedDetail">
+                                <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
+                                    <div class="example-element-detail"
+                                        [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+
+                                        <div class="example-element-description w-100">
+                                            <!-- {{element.id}} -->
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr class="tableheader">
+                                                        <th scope="col" class="black">
+                                                            <!-- <input type="checkbox" [(ngModel)]="checkAll" (change)="checkAllChanged()"> -->
+                                                          </th>
+                                                        <th class="black" scope="col">Sampel Id</th>
+                                                        <th class="black" scope="col">Ruj. Makmal</th>
+                                                        <th class="black" scope="col">No Kastam</th>
+                                                        <th class="black" scope="col">Syarikat</th>
+                                                        <th class="black" scope="col">Jenis</th>
+                                                        <th class="black" scope="col">Tarikh Import </th>
+                                                      
+                                                        <th class="black" scope="col">Kuantiti(kg)</th>
+                                            
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let sample of row.samples; let i = index">
+
+
+                                                        <td scope="row">
+                                                            <input type="checkbox" [(ngModel)]="sample.checked" (change)="checkSingleChanged()"
+                                                              [value]="sample.k1HeaderId">
+                                                          </td>
+                                                        <td>{{sample.k1DetailId}}</td>
+                                                        <td>{{sample.labRefNo}}</td>
+                                                        <td>{{sample.customNo}} </td>
+                                                        <td>{{sample.importerName}} </td>
+                                                        <td>{{sample.typeCode}}</td>
+                                                        <td>{{sample.importedDate | date:"dd/MM/yyy"}} </td>
+                                               
+                                                        <td>{{sample.quantity}} </td>
+                              
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                            <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" class="example-element-row"
+                                [class.example-expanded-row]="expandedElement === row"
+                                (click)="expandedElement = expandedElement === row ? null : row">
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row">
+                            </tr>
+
+                        </table>
+                    </div>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="20"></mat-paginator>
+                </div><br>
+
+            </div>
+
+
+
+            <table *ngIf="lepassubmit" class="table table-striped">
+                <thead>
+                  <tr class="tableheader">
+                    <th class="black" scope="col">Sampel Id</th>
+                    <th class="black" scope="col">Batch Id</th>
+                    <th class="black" scope="col">Ruj. Makmal</th>
+                    <th class="black" scope="col">No Kastam</th>
+                    <th class="black" scope="col">Syarikat Pengimport</th>
+                    <th class="black" scope="col">Jenis</th>
+                    <th class="black" scope="col">Tarikh import</th>
+                    <th class="black" scope="col">Tarikh Terima</th>
+                    <!-- <th class="black" scope="col">Kuantiti(kg)</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let sample of selectedSamples; let i = index">
+                    <td>{{sample.k1DetailId}}</td>
+                    <td>{{sample.batchId}}</td>
+                    <td>{{sample.labRefNo}} </td>
+                    <td>{{sample.customNo}} </td>
+                    <td>{{sample.importerName}} </td>
+                    <td>{{sample.typeCode}}</td>
+                    <td>{{sample.importedDate | date:"dd/MM/yyy"}} </td>
+                    <td>{{sample.receivedOn | date:"dd/MM/yyy"}} </td>
+                    <!-- <td>{{sample.quantity}} </td> -->
+                  </tr>
+                </tbody>
+              </table>
+
+              <button *ngIf="!lepassubmit" type="submit" (click)="displaySelected()" class="btn btn-primary" [disabled]="!isAnyCheckboxSelected()">Pilih</button>
+
+
+              <div *ngIf="lepassubmit" align="center">
+                <button type="submit" class="btn btn-primary mr-5" (click)="ulangCetakKeputusan()">Ulang Cetak Keputusan</button>
+              </div><br>
+
+
+
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+<title></title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+ 
+</head>
+
+<body bgcolor="#A0A0A0" vlink="blue" link="blue">
+<div id="page1-div" style="position:relative;width:892px;height:1263px;">
+
+<img width="892" height="1263" src="assets/image/target0.jpg" alt="background image"/>
+<p style="position:absolute;top:206px;left:54px;white-space:nowrap" class="ft12">No. rujukan sampel : {{ k1Detail.labRefNo}} <br/><br/>PERINGATAN! Pastikan suhu oven 70 deg C sebelum masukkan sampel.<br/></p>
+<p style="position:absolute;top:127px;left:117px;white-space:nowrap" class="ft10">{{ k1Detail.testMethod }}</p>
+<p style="position:absolute;top:91px;left:286px;white-space:nowrap" class="ft10">LEMBAGA GETAH MALAYSIA</p>
+<p style="position:absolute;top:118px;left:376px;white-space:nowrap" class="ft10">G-TACR</p>
+<p style="position:absolute;top:145px;left:259px;white-space:nowrap" class="ft10">UNIT KANDUNGAN GETAH KERING</p>
+<p style="position:absolute;top:172px;left:385px;white-space:nowrap" class="ft10">(DRC)</p>
+
+ <!-- <p style="position:absolute;top:159px;left:673px;white-space:nowrap" class="ft11"> <qrcode [qrdata]="k1Detail.customNo"></qrcode></p> -->
+ <p style="position:absolute;top:80px;left:660px;white-space:nowrap" class="ft11">
+    <img [src]="qrCodeDataUrl" alt="QR Code">
+  </p>
+<p style="position:absolute;top:190px;left:670px;white-space:nowrap" class="ft11">{{ k1Detail.customNo }}</p>
+<p style="position:absolute;top:307px;left:135px;white-space:nowrap" class="ft12">Penimbang Id<br/>Ketuhar Id<br/>Masa/Suhu masuk<br/>Masa/Suhu keluar</p>
+<p style="position:absolute;top:418px;left:135px;white-space:nowrap" class="ft12">Berat Getah 1<br/>Berat Getah 2</p>
+
+<p style="position:absolute;top:490px;left:135px;white-space:nowrap" class="ft12">TIMBANGAN PERTAMA<br/>Berat Getah Kering 1<br/>Berat Getah Kering 2</p>
+
+<p style="position:absolute;top:586px;left:135px;white-space:nowrap" class="ft12">TIMBANGAN KEDUA<br/>Berat Getah Kering 1<br/>Berat Getah Kering 2</p>
+
+<p style="position:absolute;top:682px;left:135px;white-space:nowrap" class="ft12">% KANDUNGAN GETAH KERING<br/>Anggaran pertama<br/>Anggaran kedua<br/>Purata<br/>Catatan</p>
+<p style="position:absolute;top:817px;left:135px;white-space:nowrap" class="ft12">Nama<br/>Tandatangan<br/>Tarikh Ujian</p>
+
+<p style="position:absolute;top:900px;left:54px;white-space:nowrap" class="ft12">Nama Penguji : {{ staff.username}} <br/></p>
+<p style="position:absolute;top:925px;left:54px;white-space:nowrap" class="ft12">Tarikh untuk Menguji: {{ k1Detail.worksheetTestOn| date: 'dd-MM-yyyy' }} <br/></p>
+
+</div>
+
+
+</body>
+</html>
+
+

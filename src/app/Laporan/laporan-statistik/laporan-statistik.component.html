@@ -1,0 +1,187 @@
+<div class="container mb-3">
+  <mat-card>
+    <mat-card-content>
+      <h1 class="attractive-title">Laporan Statistik</h1>
+      <div class="mat-card-container">
+        <span><br>
+          <div class="row form-group">
+            <div class="col-sm-2">
+              <label>Tarikh</label><br>
+            </div>
+            <div class="col-sm-2">
+              <label for="startDate" class="label_bm">Dari:</label>
+              <input type="date" id="startDate" class="form-control" [(ngModel)]="fromDate">
+            </div>
+            <div class="col-sm-2">
+              <label for="endDate" class="label_bm">Hingga:</label>
+              <input type="date" id="endDate" class="form-control" [(ngModel)]="toDate">
+            </div>
+          </div>
+          <br>
+        </span>
+
+        <div class="col-lg-2">
+          <button type="submit" class="btn btn-primary" style="margin-left: 5px;" (click)="searchSample()">Cari</button>
+        </div>
+      </div>
+
+      <mat-tab-group><br>
+          <mat-tab label="PENGUJI/PENGESAH">
+            <div>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Bil</th>
+                    <th>Penguji</th>
+                    <th>Terima</th>
+                    <th>Sedang Uji</th>
+                    <th>Telah Uji</th>
+                    <th>Telah Disah</th>
+                    <th>Ulangan</th>     
+                    <th>Jumlah</th>            
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let sampleCounts of sampleCounts; let i=index">
+                    <td>{{ i + 1}}</td>
+                    <td>{{ sampleCounts.staffName }}</td>
+                    <td>{{ sampleCounts.countReceivedBy }}</td>
+                    <td>{{ sampleCounts.countInLabBy }}</td>
+                    <td>{{ sampleCounts.countTestedBy }}</td>
+                    <td>{{ sampleCounts.countVerifiedBy }}</td>
+                    <td>{{ sampleCounts.countRetest }}</td>
+                    <td>{{ sampleCounts.totalSamples }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mat-tab>
+
+        <mat-tab label="KASTAM"><br>
+          <div>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Bil</th>
+                  <th>Kastam</th>
+                  <th>Hantar</th>
+                  <th>Terima</th>
+                  <th>Lateks Pekat</th>
+                  <th>Lateks Ladang</th>
+                  <th>Getah Sekerap Buku</th>
+                  <th>Getah Buku Skim</th>
+                  <th>Getah Tidak Berasap</th>
+                  <th>Getah Krip</th>
+                  <th>Getah Asap Berbunga (RSS)</th>
+                  <th>BlockRubber/TSR</th>
+                  <th>Jumlah</th>
+
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let customOffice of customOffices; let i=index">
+                  <td>{{ i + 1}}</td>
+                  <td>{{ customOffice.customOfficeAddress }}</td>
+                  <td>{{ customOffice.sentOn }}</td>
+                  <td>{{ customOffice.receivedOn }}</td>
+                  <td>{{ customOffice.lateksPekat }}</td>
+                  <td>{{ customOffice.lateksLadang }}</td>
+                  <td>{{ customOffice.getahSekerapBuku }}</td>
+                  <td>{{ customOffice.getahBukuSkim }}</td>
+                  <td>{{ customOffice.getahTidakBerasap }}</td>
+                  <td>{{ customOffice.getahKrip }}</td>
+                  <td>{{ customOffice.getahAsapBerbunga }}</td>
+                  <td>{{ customOffice.tsr }}</td>                 
+                  <td>{{ customOffice.totalSamples }}</td>
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-tab>
+
+
+
+        <mat-tab label="SYARIKAT PENGHANTAR"><br>
+          <div>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Bil</th>
+                  <th>Syarikat Penghantar</th>
+                  <th>Daftar</th>
+                  <th>Di Hantar</th>
+                  <th>Di Terima</th>
+                  <th>Belum Uji</th>
+                  <th>Sedang Di Uji</th>
+                  <th>Telah Di Uji</th>
+                  <th>Telah Di Sah</th>
+                  <th>Di Lulus</th>
+                  <th>Jumlah</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let forwarder of forwarders; let i=index">
+                  <td>{{ i + 1}}</td>
+                  <td>{{ forwarder.forwarderName }}</td>
+                  <td>{{ forwarder.createdOn }}</td>
+                  <td>{{ forwarder.sentOn }}</td>
+                  <td>{{ forwarder.receivedOn }}</td>
+                  <td>{{ forwarder.inLabOn }}</td>
+                  <td>{{ forwarder.inLabOn }}</td>
+                  <td>{{ forwarder.testedOn }}</td>
+                  <td>{{ forwarder.verifiedOn }}</td>
+                  <td>{{ forwarder.approvedOn }}</td>
+                  <td>{{ forwarder.totalSamples }}</td>
+                </tr>
+
+                <tr *ngIf="totalCounts">
+                  <td colspan="2">Total</td>
+                  <td>{{ totalCounts.totalCreatedOn }}</td>
+                  <td>{{ totalCounts.totalSentOn }}</td>
+                  <td>{{ totalCounts.totalReceivedOn }}</td>
+                  <td>{{ totalCounts.totalInLabOn }}</td>
+                  <td>{{ totalCounts.totalInLabOn }}</td>
+                  <td>{{ totalCounts.totalTestedOn }}</td>
+                  <td>{{ totalCounts.totalVerifiedOn }}</td>
+                  <td>{{ totalCounts.totalApprovedOn }}</td>
+                  <td>{{ totalCounts.totalSamples }}</td>
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
+        </mat-tab>
+
+
+        <mat-tab label="PELULUS/PENANDATANGAN"><br>
+          <div>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Bil</th>
+                  <th>Pelulus</th>
+                  <th>Di Lulus</th>
+                  <!-- <th>Cetak Keputusan</th>
+                  <th>Jumlah</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let sampleApp of sampleApproval; let i=index">
+                  <td>{{ i + 1}}</td>
+                  <td>{{ sampleApp.staffName }}</td>
+                  <td>{{ sampleApp.countApprovedBy }}</td>
+                  <!-- <td>{{ sampleApp.countResultLetterApprovedBy }}</td>
+                  <td>{{ sampleApp.totalSamples }}</td>
+                </tr> -->
+              </tbody>
+            </table>
+          </div>
+        </mat-tab>
+
+      </mat-tab-group>
+
+    </mat-card-content>
+  </mat-card>
+</div>

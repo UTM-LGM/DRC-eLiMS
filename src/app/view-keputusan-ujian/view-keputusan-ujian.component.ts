@@ -57,11 +57,12 @@ export class ViewKeputusanUjianComponent implements OnInit {
   notes: string;
   selectedDateSum: Date;
   customOffice: any
-  roleId: any;
+  userRoleId: any;
   creatorRoleId: any;
   roleForwarder: boolean = false
   roleImporter: boolean = false
   roleUip: boolean = false
+  roleGtacr: boolean = false
   staff: Staff = {} as Staff
   batchId2: number
 
@@ -77,14 +78,14 @@ export class ViewKeputusanUjianComponent implements OnInit {
 
     if (this.authservice.isloggedin()) {
       this.loginAs = this.authservice.getSessionUsername()
-      this.roleId = this.authservice.getSessionRole()
+      this.userRoleId = this.authservice.getSessionRole()
       console.log(this.loginAs)
     }
     else {
       this.loginAs = '';
     }
 
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       this.userService.GetUserInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.user = res
@@ -93,7 +94,7 @@ export class ViewKeputusanUjianComponent implements OnInit {
         console.log(this.roleForwarder)
       })
     }
-    else if (this.roleId == 2) {
+    else if (this.userRoleId == 2 ) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.staff = res
@@ -102,7 +103,7 @@ export class ViewKeputusanUjianComponent implements OnInit {
       })
     }
 
-    else if (this.roleId == 3) {
+    else if (this.userRoleId == 3) {
       this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.importer = res
@@ -111,6 +112,19 @@ export class ViewKeputusanUjianComponent implements OnInit {
         this.roleImporter = false
       })
     }
+
+    else if (this.userRoleId == 4 ) {
+      this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
+        this.authservice.changeUser(res);
+        this.staff = res
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleGtacr = true
+        
+      })
+    }
+
+
 
     this.route.paramMap.subscribe({
       next: (params) => {

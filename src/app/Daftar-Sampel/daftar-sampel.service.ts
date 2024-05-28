@@ -5,7 +5,6 @@ import { K1Header } from '../models/k1Header';
 import { Observable } from 'rxjs';
 import { K1Detail } from '../models/k1Detail';
 import { StationCode } from '../models/stationCode';
-import { CompanyForwarder } from '../models/companyForwarder';
 import { Company } from '../models/company';
 import { Forwarder } from '../models/forwarder';
 import { TypeCode } from '../models/typeCode';
@@ -113,5 +112,11 @@ export class DaftarSampelService {
     return this.http.get<TypeCode>(this.baseApiUrl + '/api/TypeCodes/GetOldSystemIdbyId/' + id);
   }
   
+
+
+  PutDateReceivedInLab(sampleId: number, k1Detail: K1Detail) {
+    return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutDateReceivedInLab/' + sampleId, k1Detail);
+  }
+
 
 }

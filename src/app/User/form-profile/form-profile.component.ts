@@ -87,50 +87,82 @@ export class FormProfileComponent {
 
   }
 
+
   updateProfile() {
     if (this.role == 1) {
-      this.elimsService.PutForwarderProfile(this.forwarder.forwarderId, this.forwarder).subscribe(response => {
-        if (response) {
-          this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
-          window.location.reload();
-        } else {
-          this.toastr.error('Profile gagal dikemaskini', 'Error');
+        this.elimsService.PutForwarderProfile(this.forwarder.forwarderId, this.forwarder).subscribe(response => {
+            if (response) {
+                this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
+                window.location.reload();
+            } else {
+                this.toastr.error('Profile gagal dikemaskini', 'Error');
+            }
+        });
+    } else if (this.role == 2) {
+        if (this.staff.newPassword !== this.staff.confirmPassword) {
+            this.toastr.error('Kata laluan baru tidak sepadan', 'Error');
+            return;
         }
-      });
-    }
-
-    else if (this.role == 2) {
-      this.elimsService.updateStaffProfile(this.staff.staffId, this.staff).subscribe(response => {
-        if (response) {
-          this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
-          window.location.reload();
-        } else {
-          this.toastr.error('Profile gagal dikemaskini', 'Error');
-        }
-      });
-    } 
-     else if (this.role == 3) {
-      this.elimsService.PutCompanyProfile(this.importer.companyId, this.importer).subscribe(response => {
-        if (response) {
-          this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
-          window.location.reload();
-        } else {
-          this.toastr.error('Profile gagal dikemaskini', 'Error');
-        }
-      });
+        
+        this.elimsService.updateStaffProfile(this.staff.staffId, this.staff).subscribe(response => {
+            if (response) {
+                this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
+                window.location.reload();
+            } else {
+                this.toastr.error('Profile gagal dikemaskini', 'Error');
+            }
+        });
+    } else if (this.role == 3) {
+        this.elimsService.PutCompanyProfile(this.importer.companyId, this.importer).subscribe(response => {
+            if (response) {
+                this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
+                window.location.reload();
+            } else {
+                this.toastr.error('Profile gagal dikemaskini', 'Error');
+            }
+        });
     }
     
     this.router.navigateByUrl('profile');
+}
 
-    // this.userService.UploadSignature(this.staffId, this.file).subscribe(() => {
-    //   console.log('File uploaded successfully');
-    // },
-    //   error => {
-    //     console.error('Error uploading file:', error);
-    //   });
-    // this.router.navigate(['/form-profile']);
 
-  }
+  // updateProfile() {
+  //   if (this.role == 1) {
+  //     this.elimsService.PutForwarderProfile(this.forwarder.forwarderId, this.forwarder).subscribe(response => {
+  //       if (response) {
+  //         this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
+  //         window.location.reload();
+  //       } else {
+  //         this.toastr.error('Profile gagal dikemaskini', 'Error');
+  //       }
+  //     });
+  //   }
+
+  //   else if (this.role == 2) {
+  //     this.elimsService.updateStaffProfile(this.staff.staffId, this.staff).subscribe(response => {
+  //       if (response) {
+  //         this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
+  //         window.location.reload();
+  //       } else {
+  //         this.toastr.error('Profile gagal dikemaskini', 'Error');
+  //       }
+  //     });
+  //   } 
+  //    else if (this.role == 3) {
+  //     this.elimsService.PutCompanyProfile(this.importer.companyId, this.importer).subscribe(response => {
+  //       if (response) {
+  //         this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
+  //         window.location.reload();
+  //       } else {
+  //         this.toastr.error('Profile gagal dikemaskini', 'Error');
+  //       }
+  //     });
+  //   }
+    
+  //   this.router.navigateByUrl('profile');
+
+  // }
 
   // images
   handleFileInput(event: any) {

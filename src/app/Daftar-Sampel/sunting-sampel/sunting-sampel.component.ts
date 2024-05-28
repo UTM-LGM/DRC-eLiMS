@@ -55,7 +55,7 @@ export class SuntingSampelComponent implements OnInit {
   typeCodes: any
   rubberTypes: any
 
-  roleId: any
+  userRoleId: any
   loginAs: any;
   staff: Staff = {} as Staff
   importer: loginImporter = {} as loginImporter
@@ -91,7 +91,7 @@ export class SuntingSampelComponent implements OnInit {
 
     if (this.authService.isloggedin()) {
       this.loginAs = this.authService.getSessionUsername()
-      this.roleId = this.authService.getSessionRole()
+      this.userRoleId = this.authService.getSessionRole()
 
     }
     else {
@@ -99,7 +99,7 @@ export class SuntingSampelComponent implements OnInit {
     }
 
 
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       this.userService.GetUserInfo(this.loginAs).subscribe(res => {
         this.authService.changeUser(res);
         this.user = res
@@ -112,7 +112,7 @@ export class SuntingSampelComponent implements OnInit {
 
       })
     }
-    else if (this.roleId == 2) {
+    else if (this.userRoleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authService.changeUser(res);
         console.log(res)
@@ -127,7 +127,7 @@ export class SuntingSampelComponent implements OnInit {
     }
 
 
-    else if (this.roleId == 3) {
+    else if (this.userRoleId == 3) {
       this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
         this.authService.changeUser(res);
         console.log(res)
@@ -148,12 +148,12 @@ export class SuntingSampelComponent implements OnInit {
       nomborKastam: ['', Validators.required],
     })
 
-    this.username = this.authService.getSessionUsername()
-    this.authService.getUser(this.username).subscribe(x => {
-      this.authService.changeUser(x);
-      this.authService.changeIsLoggedIn(true);
-      this.user = x;
-    });
+    // this.username = this.authService.getSessionUsername()
+    // this.authService.getUser(this.username).subscribe(x => {
+    //   this.authService.changeUser(x);
+    //   this.authService.changeIsLoggedIn(true);
+    //   this.user = x;
+    // });
 
     this.k1Detail.country = this.sample.country
     this.sample.country = this.k1Detail.country
@@ -381,7 +381,7 @@ export class SuntingSampelComponent implements OnInit {
 
     let sum;
 
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       this.authservice.GetCustomOffice(this.user.customOfficeId).subscribe(x => {
         console.log(x);
         this.customOffice = x;
@@ -394,7 +394,7 @@ export class SuntingSampelComponent implements OnInit {
         this.calculateAndDisplayDateInfo(dateValue, sum);
       });
 
-    } else if (this.roleId == 2) {
+    } else if (this.userRoleId == 2) {
       if (this.staff.unit == 'UIP') {
         sum = dateValue.getDate() + 14;
       } else if (this.staff.unit == 'UIPBKH') {

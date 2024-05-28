@@ -15,12 +15,12 @@ export class LoginComponent implements OnInit {
   user: loginDTO = {} as loginDTO;
   isProcess: boolean = false;
   userDetail: any
-  staffRoles: any
+  // staffRoles: any
   afterLogin: boolean = false
   selectedRole: number
-  roles: any
+  userRoles: any
   loginAs: any;
-  roleId: any;
+  userRoleId: any;
   roleForwarder: boolean
   roleUip: boolean
   staff: Staff = {} as Staff
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.GetRolesForLogin().subscribe(data => {
-      this.roles = data
+      this.userRoles = data
       console.log(data)
     })
 
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
 
   //         this.authService.GetRoleById(this.selectedRole).subscribe(
   //           roleData => {
-  //             sessionStorage.setItem('roleId', roleData.roleId.toString());
+  //             sessionStorage.setItem('userRoleId', roleData.userRoleId.toString());
   //             sessionStorage.setItem('roleName', roleData.role);
   //             this.isProcess = false;
 
@@ -101,7 +101,7 @@ export class LoginComponent implements OnInit {
 
   //           this.authService.GetRoleById(this.selectedRole).subscribe(
   //             roleData => {
-  //               sessionStorage.setItem('roleId', roleData.roleId.toString());
+  //               sessionStorage.setItem('userRoleId', roleData.userRoleId.toString());
   //               sessionStorage.setItem('roleName', roleData.role);
   //               this.isProcess = false;
 
@@ -133,7 +133,7 @@ export class LoginComponent implements OnInit {
   //               this.authService.getUserDto(this.userDetail.username, this.selectedRole);
   //               this.authService.GetRoleById(this.selectedRole).subscribe(
   //                 roleData => {
-  //                   sessionStorage.setItem('roleId', roleData.roleId.toString());
+  //                   sessionStorage.setItem('userRoleId', roleData.userRoleId.toString());
   //                   sessionStorage.setItem('roleName', roleData.role);
   //                   this.isProcess = false;
   //                   sessionStorage.setItem('username', this.userDetail.username);
@@ -158,7 +158,7 @@ export class LoginComponent implements OnInit {
 
   //               this.authService.GetRoleById(this.selectedRole).subscribe(
   //                 roleData => {
-  //                   sessionStorage.setItem('roleId', roleData.roleId.toString());
+  //                   sessionStorage.setItem('userRoleId', roleData.userRoleId.toString());
   //                   sessionStorage.setItem('roleName', roleData.role);
   //                   this.isProcess = false;
   //                   sessionStorage.setItem('username', this.userDetail.username);
@@ -204,30 +204,35 @@ export class LoginComponent implements OnInit {
             // this.setSessionStorage();
             
           } 
-          
-          else if ( this.selectedRole == 3){
-            this.authService.getUserDto(this.userDetail.username, this.selectedRole);
-          }       
-          
+    
           else if ( this.selectedRole == 2){
             this.authService.GetStaffRolebyStaffId(this.userDetail.staffId).subscribe(
               staffRoleData => {
+                console.log(staffRoleData)
                 this.userObjects = staffRoleData;
-                const userRole2 = this.userObjects.filter((user) => user.staffRole == 2);
-                const userRole4 = this.userObjects.filter((user) => user.staffRole == 4);
+                const staffRole2 = this.userObjects.filter((user) => user.staffRole == 7);
+                const staffRole4 = this.userObjects.filter((user) => user.staffRole == 4);
 
-                if (userRole2.length != 0 && this.selectedRole == 2) {
+                if (staffRole2.length != 0 && this.selectedRole == 2) {
                   this.authService.getUserDto(this.userDetail.username, this.selectedRole);
                   // this.setSessionStorage();
-                } else if (userRole4.length != 0 && this.selectedRole == 4) {
+                } else if (staffRole4.length != 0 && this.selectedRole == 4) {
                   this.authService.getUserDto(this.userDetail.username, this.selectedRole);
                   // this.setSessionStorage();
-                } else {
+                } 
+                
+                else {
                   this.toastr.error('Nama pengguna dan kata laluan salah');
                 }
+                console.log(staffRole2)
               },
             );
           }
+
+
+          else if ( this.selectedRole == 3){
+            this.authService.getUserDto(this.userDetail.username, this.selectedRole);
+          }       
 
         },
         error => {
@@ -243,11 +248,11 @@ export class LoginComponent implements OnInit {
   setSessionStorage() {
     this.authService.GetRoleById(this.selectedRole).subscribe(
       roleData => {
-        sessionStorage.setItem('roleId', roleData.roleId.toString());
+        sessionStorage.setItem('userRoleId', roleData.roleId.toString());
         sessionStorage.setItem('roleName', roleData.role);
         this.isProcess = false;
         sessionStorage.setItem('username', this.userDetail.username);
-        sessionStorage.setItem('role', this.selectedRole.toString());
+        // sessionStorage.setItem('role', this.selectedRole.toString());
 
       // window.location.reload();
       // setTimeout(() => {
@@ -270,9 +275,9 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  displayLogin(roleId: number) {
+  displayLogin(userRoleId: number) {
     this.afterLogin = true
-    this.selectedRole = roleId
+    this.selectedRole = userRoleId
     console.log(this.selectedRole)
   }
 

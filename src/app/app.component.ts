@@ -4,7 +4,6 @@ import { staffRole } from './models/staffRole';
 import { ActivatedRoute, NavigationEnd, Route, Router } from '@angular/router';
 import { Batch } from './models/batch';
 import { filter } from 'rxjs/operators';
-import { HantarSampelService } from './Hantar-Sampel/hantar-sampel.service';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +24,11 @@ export class AppComponent {
   batchId: number;
   batch: Batch = {} as Batch;
 
-  constructor(private authService: AuthService, private router: Router,private route:ActivatedRoute,  private hantarSampelService: HantarSampelService,){
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+  )
+    {
      this.authService.currentLoggedIn.subscribe(res => this.isLoggin = res)
   }
 

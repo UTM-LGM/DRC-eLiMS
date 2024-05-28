@@ -2,280 +2,119 @@
     <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
         <mat-card-content>
             <h1 class="attractive-title">Rekod Keputusan</h1>
+            <mat-form-field>
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="keyword" #input>
+            </mat-form-field>
 
+            <div class="mat-elevation-z8">
+                <div class="list-container">
 
+                    <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 
-            <h3 *ngIf="!lepassubmit">Senarai Batch</h3>
-            <h3 *ngIf="lepassubmit">Berikut adalah senarai sampel yang dipilih untuk cetak worksheet.</h3>
+                        <ng-container matColumnDef="batchId">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch Id </th>
+                            <td mat-cell *matCellDef="let row"> {{row.batchId}}</td>
+                        </ng-container>
 
-            <div class="table-responsive">
+                        <ng-container matColumnDef="rubberType">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Jenis Getah</th>
+                            <td mat-cell *matCellDef="let row"> {{row.rubberType}}</td>
+                        </ng-container>
 
-                <table class="table table-striped" *ngIf="!lepassubmit">
-                    <thead>
-                        <tr class="tableheader">
-                            <th scope="col"></th>
-                            <th scope="col">Batch Id</th>
-                            <th scope="col">Agent Penghantar</th>
-                            <th scope="col">Bil. Sampel</th>
-                            <th scope="col">Bank</th>
-                            <th scope="col">No Cek</th>
-                            <th scope="col">Amaun </th>
-                            <th scope="col">Tarikh Hantar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let batch of batches; let i = index">
-
-                            <td>
-                                <a href="javascript:void(0)" (click)="sampleList(batch.batchId)">Select</a>
+                        <ng-container matColumnDef="isFastTrack">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Laluan Pantas </th>
+                            <td mat-cell *matCellDef="let row">
+                                {{ row.isFastTrack ? 'YA' : 'TIDAK' }}
                             </td>
+                        </ng-container>
 
-                            <td>{{batch.batchId}}</td>
-                            <td>{{batch.forwarderName}}</td>
-                            <td>{{batch.forwarderName}}</td>
-                            <td>{{batch.bankCode}} </td>
-                            <td>{{batch.chequeNo}}</td>
-                            <td>{{batch.chequeAmount}} </td>
-                            <td>{{batch.sentOn | date:"dd/MM/yyy"}} </td>
+                        <ng-container matColumnDef="forwarderName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Syarikat Penghantar </th>
+                            <td mat-cell *matCellDef="let row"> {{row.forwarderName}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="receivedOn">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarikh Terima</th>
+                            <td mat-cell *matCellDef="let row">{{row.receivedOn | date:"dd/MM/yyy"}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="sampleCount">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Bil. Sampel</th>
+                            <td mat-cell *matCellDef="let row"> {{row.sampleCount}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="expandedDetail">
+                            <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
+                                <div class="example-element-detail"
+                                    [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+
+                                    <div class="example-element-description w-100">
+                                        <!-- {{element.id}} -->
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr class="tableheader">
+                                                    <th class="black"></th>
+                                                    <th class="black" scope="col">Sampel Id</th>
+                                                    <th class="black" scope="col">Ruj. Makmal</th>
+                                                    <th class="black" scope="col">No Kastam</th>
+                                                    <th class="black" scope="col">Syarikat Pengimport</th>
+                                                    <th class="black" scope="col">Jenis</th>
+                                                    <th class="black" scope="col">Tarikh Terima</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let sample of row.samples; let i = index">
+                                                    <td>
+                                                        <a href="javascript:void(0)"
+                                                            (click)="sampleList(sample.k1DetailId)">Select</a>
+                                                    </td>
+                                                    <td>{{sample.k1DetailId}}</td>
+                                                    <td>{{sample.labRefNo}} </td>
+                                                    <td>{{sample.customNo}} </td>
+                                                    <td>{{sample.importerName}} </td>
+                                                    <td>{{sample.typeCode}}</td>
+                                                    <td>{{sample.receivedOn | date:"dd/MM/yyy"}} </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" class="example-element-row"
+                            [class.example-expanded-row]="expandedElement === row"
+                            (click)="expandedElement = expandedElement === row ? null : row">
                         </tr>
+                        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
 
-                    </tbody>
-                </table>
-            </div>
-
-
-
-            <div *ngIf="samples.length > 0">
-
-                <!-- <p style="color: red;">{{ unregisteredSampleCount }} sampel belum didaftar terima</p> -->
-
-                <div class="table-responsive">
-
-                    <table class="table table-striped">
-                        <thead>
-                            <tr class="tableheader">
-                                <th scope="col"></th>
-                                <th scope="col" *ngIf="!lepassubmit">
-                                    <input type="checkbox" [(ngModel)]="checkAll" (change)="checkAllChanged()">
-                                </th>
-                                <th scope="col">Sample Id</th>
-                                <th scope="col">Batch Id</th>
-                                <th scope="col">Ruj. Makmal</th>
-                                <th scope="col">No Kastam</th>
-                                <th scope="col">Syarikat</th>
-                                <th scope="col">Jenis</th>
-                                <th scope="col">Tarikh Import </th>
-                                <th scope="col">Tarikh Terima </th>
-                                <th scope="col">Kuantiti(kg)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let sample of samples; let i = index">
-
-                                <th scope="row" *ngIf="!lepassubmit">
-                                    <!-- <input type="checkbox" [(ngModel)]="sample.checked" (change)="checkSingleChanged()"
-                      [value]="sample.k1HeaderId"> -->
-                                    <mat-checkbox class="example-margin" [(ngModel)]="sample.checked"
-                                        (change)="checkSingleChanged()"></mat-checkbox>
-                                </th>
-
-                                <td></td>
-                                <td>{{sample.k1DetailId}}</td>
-                                <td>{{sample.batchId}}</td>
-                                <td>{{sample.labRefNo}}</td>
-                                <td>{{sample.customNo}} </td>
-                                <td>{{sample.importerName}} </td>
-                                <td>{{sample.typeCode}}</td>
-                                <td>{{sample.importedDate | date:"dd/MM/yyy"}} </td>
-                                <td>{{sample.receivedOn | date:"dd/MM/yyy"}} </td>
-                                <td>{{sample.quantity}} </td>
-                            </tr>
-
-                        </tbody>
                     </table>
                 </div>
 
-            </div>
-
-
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="20"></mat-paginator>
+            </div><br><br>
 
             <div class="row form-group">
                 <div class="col-sm-2">
-                    <label class="label_title">Nombor borang kastam:</label><br>
+                    <label>No. borang kastam:</label><br>
                 </div>
                 <div class="col-sm-2">
                     <input type="text" class="form-control readonly-input" id="customNo" [(ngModel)]="customNo">
                 </div>
                 <div class="col-sm-2">
-                    <button type="button" class="btn btn-primary search-button" (click)="searchCustomNo()"> Cari
+                    <button type="button" class="btn btn-primary search-button" (click)="searchCustomNo(customNo)"> Cari
                     </button>
                 </div>
             </div><br>
 
-
+            <hr>
 
             <!-- lembaran worksheet -->
-
-            <div class="mat-card-container">
-                <form (ngSubmit)="addRekodKeputusan()">
-
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label>No. Rujukan Sampel : </label><br>
-                </div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="labRefNo" name="labRefNo"
-                        [(ngModel)]="k1Detail.labRefNo">
-                </div>
-            </div><br>
-
-
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label class="label_title">Jenis Ujian : </label><br>
-                </div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="labRefNo" name="labRefNo"
-                        [(ngModel)]="k1Detail.labRefNo">
-                </div>
-            </div><br>
-
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label class="label_title">Berat susu/Getah1 : </label><br>
-                </div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="labRefNo" name="labRefNo"
-                        [(ngModel)]="k1Detail.labRefNo">
-                </div>
-            </div><br>
-
-
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label class="label_title">Berat susu/Getah2 : </label><br>
-                </div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="labRefNo" name="labRefNo"
-                        [(ngModel)]="k1Detail.labRefNo">
-                </div>
-            </div><br>
-
-
-            <p>TIMBANGAN PERTAMA</p>
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label class="label_title">Berat Getah Kering 1  : </label><br>
-                </div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="labRefNo" name="labRefNo"
-                        [(ngModel)]="k1Detail.labRefNo">
-                </div>
-            </div><br>
-
-
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label class="label_title">Berat Getah Kering 2 : </label><br>
-                </div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="labRefNo" name="labRefNo"
-                        [(ngModel)]="k1Detail.labRefNo">
-                </div>
-            </div><br>
-
-            <p>TIMBANGAN KEDUA</p>
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label class="label_title">Berat Getah Kering 1  : </label><br>
-                </div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="labRefNo" name="labRefNo"
-                        [(ngModel)]="k1Detail.labRefNo">
-                </div>
-            </div><br>
-
-
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label class="label_title">Berat Getah Kering 2 : </label><br>
-                </div>
-                <div class="col-lg-4">
-                    <input type="text" class="form-control" id="labRefNo" name="labRefNo"
-                        [(ngModel)]="k1Detail.labRefNo"><br>
-                        <button type="submit" class="btn btn-primary" style="margin-left: 5px;">Kira</button>
-                </div>
-            </div><br>
-
-
-            <p>% KANDUNGAN GETAH KERING</p>
-
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label class="label_title">Anggaran Pertama : </label><br>
-                </div>
-                <div class="col-lg-4">
-                    <!-- <input type="text" class="form-control" id="labRefNo" name="labRefNo"
-                        [(ngModel)]="k1Detail.labRefNo"> -->
-                </div>
-            </div><br>
-
-
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label class="label_title">Anggaran Kedua : </label><br>
-                </div>
-                <div class="col-lg-4">
-                    <!-- <input type="text" class="form-control" id="labRefNo" name="labRefNo"
-                        [(ngModel)]="k1Detail.labRefNo"> -->
-                </div>
-            </div><br>
-
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label class="label_title">Purata : </label><br>
-                </div>
-                <div class="col-lg-4">
-                    <!-- <input type="text" class="form-control" id="labRefNo" name="labRefNo"
-                        [(ngModel)]="k1Detail.labRefNo"> -->
-                </div>
-            </div><br>
-
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label class="label_title">Catatan : </label><br>
-                </div>
-                <div class="col-lg-4">
-                    <textarea type="text" class="form-control" id="labRefNo" name="labRefNo"
-                        [(ngModel)]="k1Detail.labRefNo"></textarea>
-                </div>
-            </div><br>
-
-
-
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label class="label_title">Nama Penguji : </label><br>
-                </div>
-                <div class="col-lg-4">
-                    <!-- <input type="text" class="form-control" id="labRefNo" name="labRefNo"
-                        [(ngModel)]="k1Detail.labRefNo"> -->
-                </div>
-            </div><br>
-
-            <div class="row form-group">
-                <div class="col-lg-2">
-                    <label class="label_title">Tarikh Ujian : </label><br>
-                </div>
-                <div class="col-lg-4">
-                    <!-- <input type="text" class="form-control" id="labRefNo" name="labRefNo"
-                        [(ngModel)]="k1Detail.labRefNo"> -->
-                        <button type="submit" class="btn btn-primary" style="margin-left: 5px;">Simpan</button>
-                </div>
-            </div><br>
-
-        </form>
-    </div>
+            <div>
+                <app-detail-keputusan [k1Detail]="k1Detail" *ngIf="showForm"></app-detail-keputusan>
+            </div>
 
         </mat-card-content>
     </mat-card>

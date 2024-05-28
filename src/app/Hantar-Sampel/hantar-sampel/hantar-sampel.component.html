@@ -303,8 +303,7 @@
                   <label class="label_title">Resit <span class="required" style="color:red;">*</span></label>
                 </div>
                 <div class="col-md-8 ">
-                  <input type="file" class="form-control" id="Receipt" name="Receipt"
-                    (change)="handleFileInput($event)">
+                  <input type="file" class="form-control" id="Receipt" name="Receipt" (change)="handleFileInput($event)">
                   <small class="instruction">* maksimum file 2 MB</small>
                 </div>
               </div>
@@ -484,7 +483,7 @@
 
 
         <div class="card-body" *ngIf="roleUip">
-          <button type="submit" class="btn btn-primary btn-block" [disabled]="!sahPenghantaranClicked"
+          <button type="submit" class="btn btn-primary btn-block"  [disabled]="daftarClicked" [disabled]="!sahPenghantaranClicked"
             (click)="memo(batchData)" color="red" style="margin-left: 5px;">Memo</button>
           <!-- <button type="submit" class="btn btn-primary btn-block" color="red" [disabled]="!sahPenghantaranClicked" (click)="lampiran(batchData)"
             style="margin-left: 5px;">Lampiran</button> -->

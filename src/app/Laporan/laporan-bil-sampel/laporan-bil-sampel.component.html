@@ -1,0 +1,176 @@
+<div class="container mb-3">
+  <mat-card>
+    <mat-card-content>
+
+      <h1 class="attractive-title">Laporan Bil. Sampel</h1>
+      <div class="mat-card-container">
+
+        <!-- <span>
+            <div class="row form-group">
+              <div class="col-sm-2">
+                <label>Tarikh</label><br>
+              </div>
+              <div class="col-sm-4">
+                <input type="date" class="form-control" [(ngModel)]="selectedDate" (change)="fetchSampleCounts()">
+              </div>
+            </div><br>
+          </span> -->
+
+
+
+        <div class="row form-group">
+          <div class="col-sm-2">
+            <label>Carian berdasarkan</label><br>
+          </div>
+          <div class="col-sm-4">
+            <select class="form-select" name="SearchBy" id="SearchBy" (change)="changeSearchBy($event)">
+              <option value="" disabled selected>--Pilih--</option>
+              <option *ngFor="let search of searchBy" [value]="search">{{search}}</option>
+            </select>
+          </div>
+        </div><br>
+
+
+        <span *ngIf="showDate"><br>
+          <div class="row form-group">
+            <div class="col-sm-2">
+              <label>Tarikh :</label><br>
+            </div>
+            <div class="col-sm-2">
+              <label for="startDate" class="label_bm">Dari:</label>
+              <input type="date" id="startDate" class="form-control" [(ngModel)]="fromDate">
+            </div>
+            <div class="col-sm-2">
+              <label for="endDate" class="label_bm">Hingga:</label>
+              <input type="date" id="endDate" class="form-control" [(ngModel)]="toDate">
+            </div>
+          </div>
+          <br>
+        </span>
+
+
+        <div class="row form-group" *ngIf="showRubberType">
+          <div class="col-sm-2">
+            <label>Jenis Getah :</label><br>
+          </div>
+          <div class="col-sm-4">
+            <select class="form-select" name="RubberType" id="RubberType" (change)="changeJenisGetah($event)"
+              [(ngModel)]="rubberTypeId">
+              <option value="" disabled selected>--Pilih--</option>
+              <option *ngFor="let rubberType of rubberTypes" [value]="rubberType.id">
+                {{rubberType.rubberType}}
+              </option>
+            </select>
+          </div>
+        </div><br>
+
+
+        <div class="row form-group" *ngIf="showRubberType">
+          <div class="col-lg-2">
+            <label>Jenis Sampel :</label><br>
+          </div>
+
+          <div class="col-sm-4">
+            <select class="form-select readonly-input" name="TypeCodeId" id="TypeCodeId" [(ngModel)]="typeCodeId"
+              required>
+              <option value="">--Pilih--</option>
+              <option *ngFor="let typeCode of typeCodes" [value]="typeCode.id">
+                {{typeCode.sampleType}}</option>
+            </select>
+          </div>
+        </div><br>
+
+
+        <!-- Sample statistics table -->
+        <div *ngIf="isSearched"> <!-- Ensure isSearched is true to display the counts -->
+          <p>Statistik : </p>
+          <div *ngIf="sampleCounts">
+
+            <div class="row">
+              <div class="col-6">
+                <table>
+
+                  <tr>
+                    <td>Bil sampel yang didaftar</td>
+                    <td>
+                      : {{sampleCounts.countCreatedOn}}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Bil sampel yang telah dihantar ke GTACR</td>
+                    <td>
+                      : {{sampleCounts.countSentOn}}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Bil sampel yang telah diterima oleh GTACR</td>
+                    <td>
+                      : {{sampleCounts.countReceivedOn}}
+                    </td>
+                  </tr>
+
+                    <!-- tgk balik -->
+                  <tr>
+                    <td>Bil sampel yang belum diuji</td>
+                    <td>
+                      : {{sampleCount7And8}}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Bil sampel yang di'checkout'</td>
+                    <td>
+                      : {{sampleCounts.countInLabOn}}
+                    </td>
+                  </tr>
+
+
+                  <!-- tgk balik -->
+                  <tr>
+                    <td>Bil sampel yang sedang diuji</td>
+                    <td>
+                      : {{sampleCount6 }}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Bil sampel yang telah diuji</td>
+                    <td>
+                      : {{sampleCounts.countTestedOn}}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Bil sampel yang telah diluluskan</td>
+                    <td>
+                      : {{sampleCounts.countApprovedOn}}
+                    </td>
+                  </tr>
+
+
+                </table>
+
+              </div>
+
+            </div>
+          </div>
+          <div *ngIf="sampleCounts.length === 0">
+            No results found.
+          </div>
+        </div>
+
+
+
+      </div>
+
+
+      <div class="col-lg-2">
+        <button type="submit" class="btn btn-primary" style="margin-left: 5px;" (click)="searchSample()">Cari</button>
+      </div>
+
+
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -30,6 +30,7 @@
             </div>
           </div><br>
 
+          
           <div class="row form-group" *ngIf="creatorRoleId == 3">
             <div class="col-sm-4">
               <label class="label_bm">Tarikh Sampel Diterima</label><br>
@@ -374,7 +375,7 @@
               </div>
             </div><br>
 
-            <div class="row form-group">
+            <!-- <div class="row form-group">
               <div class="col-sm-4">
                 <label class="label_bm">Tarikh Sampel Terima di Makmal</label><br>
                 <label class="label_bi">Date Sample Received at Lab</label>
@@ -383,7 +384,7 @@
                 <input type="text" class="form-control readonly-input"
                   readonly>
               </div>
-            </div><br>
+            </div><br> -->
   
             <div class="row form-group">
               <div class="col-sm-4">
@@ -391,8 +392,7 @@
                 <label class="label_bi">Date of Registration in the Lab</label>
               </div>
               <div class="col-sm-8">
-                <input type="text" class="form-control readonly-input"
-                  readonly>
+                <input type="text" class="form-control readonly-input" [value]="sample.receivedOn | date: 'dd-MM-yyyy'" readonly>
               </div>
             </div><br>
 
@@ -425,10 +425,19 @@
               </div>
             </div><br>
 
+            
           </div>
 
 
 
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Bil hari</label><br>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.totalDaysFromImportToReceived" readonly>
+            </div>
+          </div><br>
 
 
           <div *ngIf="creatorRoleId == 2 ">
@@ -457,8 +466,122 @@
                   (click)="viewMemo()">memo</a>
               </div>
             </div><br>
+
           </div>
 
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Terima oleh </label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.receivedBy" readonly>
+              </div>
+            </div><br>
+
+            
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Tarikh diuji</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.inLabOn | date: 'dd-MM-yyyy'" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Uji Oleh</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.inLabBy" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Tarikh Keputusan</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.testedOn | date: 'dd-MM-yyyy'" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Keputusan Oleh</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.testedBy" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Tarikh Disah</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.verifiedOn | date: 'dd-MM-yyyy'" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Disah Oleh</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.verifiedBy" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Tarikh Dilulus</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.approvedOn | date: 'dd-MM-yyyy'" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Dilulus Oleh</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.approvedBy" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Tarikh Pos </label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.resultSentOn | date: 'dd-MM-yyyy'" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Pos Oleh</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.resultSentBy" readonly>
+              </div>
+            </div><br>
+
+
+
+            
           <div mat-dialog-actions align="end">
             <button (click)="goBack()" class="btn btn-primary mr-5">Back</button>
           </div>

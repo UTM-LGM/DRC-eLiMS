@@ -1,0 +1,442 @@
+<div class="container mb-3">
+    <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
+        <mat-card-content>
+            <h1 class="attractive-title">Keputusan Ujian</h1>
+            <div class="card">
+                <h4 class="card-header">Masukkan salah satu data untuk carian dan <b style="font-weight: bold;">Jenis
+                        Getah</b> adalah diwajibkan.
+                </h4>
+                <div class="card-body">
+                    <div class="row form-group">
+                        <div class="col-sm-2">
+                            <label class="label_bm">Jenis Getah <span style="color:red;">*</span></label><br>
+                            <label class="label_bi">Rubber Type</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-select" name="RubberType" id="RubberType"
+                                (change)="changeJenisGetah($event)" [(ngModel)]="rubberTypeId">
+                                <option value="" disabled selected>--Pilih--</option>
+                                <option *ngFor="let rubberType of rubberTypes" [value]="rubberType.id">
+                                    {{rubberType.rubberType}}
+                                </option>
+                            </select>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-2">
+                            <label class="label_bm">Carian berdasarkan</label><br>
+                            <label class="label_bi">Search By</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-select" name="SearchBy" id="SearchBy" [(ngModel)]="searchedby"
+                                (change)="changeSearchBy($event)">
+                                <option value="" disabled selected>--Pilih--</option>
+                                <option *ngFor="let search of searchBy" [value]="search">{{search}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <span *ngIf=" showCompanyName"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Syarikat Pengimport </label><br>
+                                <label class="label_bi">Importing Company</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="form-select" name="companyId" id="companyId" [(ngModel)]="companyId"
+                                    required>
+                                    <option class="pilih" value="default">--Pilih--</option>
+                                    <option *ngFor="let company of companies" [value]="company.companyId">
+                                        {{company.importerName}} {{company.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div><br>
+                    </span>
+
+
+                    <span *ngIf=" showForwarderName"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Syarikat Penghantar</label><br>
+                                <label class="label_bi">Forwarding agent</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="form-select" name="forwarderId" id="forwarderId"
+                                    [(ngModel)]="forwarderId" required>
+                                    <option class="pilih" value="default">--Pilih--</option>
+                                    <option *ngFor="let forwarder of forwarders" [value]="forwarder.forwarderId">
+                                        {{forwarder.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div><br>
+                    </span>
+
+
+                    <span *ngIf=" showImportedDate || showForwarderName || showCompanyName"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Tarikh Import</label><br>
+                                <label class="label_bi">Imported Date </label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="fromDate" class="label_bm">Dari:</label>
+                                <input type="date" id="fromDate" class="form-control" [(ngModel)]="fromDate">
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="toDate" class="label_bm">Hingga:</label>
+                                <input type="date" id="toDate" class="form-control" [(ngModel)]="toDate">
+                            </div>
+                        </div>
+                        <br>
+                    </span>
+
+                    <span *ngIf=" showCustomNo"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">No Kastam </label><br>
+                                <label class="label_bi">Custom No </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" [(ngModel)]="customNo" class="form-control" id="CustomNo"
+                                    name="CustomNo">
+                            </div>
+                        </div><br>
+                    </span>
+
+                    <span *ngIf=" showLabRegNo"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">No Ruj Makmal </label><br>
+                                <label class="label_bi">Lab Reg No </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" [(ngModel)]="labRefNo" class="form-control" id="LabRefNo"
+                                    name="LabRefNo">
+                            </div>
+                        </div><br>
+                    </span>
+
+                    <span *ngIf=" showSampleId"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Sampel Id </label><br>
+                                <label class="label_bi">Sample Id </label><br>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" [(ngModel)]="k1HeaderId" class="form-control" id="K1HeaderId"
+                                    name="K1HeaderId">
+                            </div>
+                        </div><br>
+                    </span>
+
+                    <span *ngIf="showBatchId"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Batch Id </label><br>
+                                <label class="label_bi">Batch Id </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" [(ngModel)]="batchId" class="form-control" id="BatchId"
+                                    name="BatchId">
+                            </div>
+                        </div><br>
+                    </span>
+
+                    <span *ngIf="showDriverName"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Nama Pemandu</label><br>
+                                <label class="label_bi">Driver's Name </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" [(ngModel)]="driverName" class="form-control" id="driverName"
+                                    name="driverName">
+                            </div>
+                        </div><br>
+                    </span>
+
+                    <span *ngIf="showIdentificationDriver"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Mykad/ Pasport Pemandu </label><br>
+                                <label class="label_bi">Identification/Passport's Driver </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" [(ngModel)]="icDriver" class="form-control" id="icDriver"
+                                    name="icDriver">
+                            </div>
+                        </div><br>
+                    </span>
+
+                    <span *ngIf=" showHsCode"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">HS Code </label><br>
+                                <label class="label_bi">Kod HS</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" [(ngModel)]="hsCode" class="form-control" id="hsCode" name="hsCode">
+                            </div>
+                        </div><br>
+                    </span>
+
+                    <span *ngIf=" showStatus"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Status Sampel</label><br>
+                                <label class="label_bi">Sample status </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="form-select" name="statusCodeId" id="statusCodeId"
+                                    [(ngModel)]="statusCodeId" required>
+                                    <option class="pilih" value="default">--Pilih--</option>
+                                    <option value="1">Telah didaftar</option>
+                                    <option value="2">Label Telah Dicetak</option>
+                                    <!-- <option value="3">Hantar ke LGM</option> -->
+                                    <option value="5">Hantar ke GTACR</option>
+                                </select>
+                            </div>
+                        </div><br>
+                    </span>
+
+                    <span *ngIf=" showSampleType"><br>
+                        <div class="row form-group">
+                            <div class="col-lg-2">
+                                <label class="label_title">Jenis Sampel<span class="required"
+                                        style="color:red;">*</span></label><br>
+                                <label class="label_bi">Sample Type</label>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <select class="form-select readonly-input" name="TypeCodeId" id="TypeCodeId"
+                                    [(ngModel)]="typeCodeId" required>
+                                    <option value="">--Pilih--</option>
+                                    <option *ngFor="let typeCode of typeCodes" [value]="typeCode.id">
+                                        {{typeCode.sampleType}}</option>
+                                </select>
+                            </div>
+                        </div><br>
+                    </span>
+
+
+                    <span *ngIf=" showDRC"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Kandungan Getah Kering (KGK) </label><br>
+                                <label class="label_bi">Dry Rubber Content</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" [(ngModel)]="drc" class="form-control" id="drc" name="drc">
+                            </div>
+                        </div><br>
+                    </span>
+
+                    <span *ngIf=" showQuantity"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Kuantiti </label><br>
+                                <label class="label_bi">Quantity </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" [(ngModel)]="quantity" class="form-control" id="quantity"
+                                    name="quantity">
+                            </div>
+                        </div><br>
+                    </span>
+
+                    <span *ngIf=" showNamaBank"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Nama bank </label><br>
+                                <label class="label_bi">Bank Name</label>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <select class="form-control" name="bankCode" id="bankCode" [(ngModel)]="bankCode">
+                                    <option value="" disabled selected>--Pilih--</option>
+                                    <option *ngFor="let bankCode of bankCodes" [value]="bankCode.bankCode">
+                                        {{bankCode.bankName}}</option>
+                                </select>
+                            </div>
+                        </div><br>
+                    </span>
+
+                  
+                    <span *ngIf=" showCompanyName || showForwarderName ">
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Tujuan Sampel Dihantar</label><br>
+                                <label class="label_bi">Sent Sample Purpose</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="form-select" name="SamplePropose" id="SamplePropose"
+                                    [(ngModel)]="samplePropose" required>
+                                    <option class="pilih" value="default">--Pilih--</option>
+                                    <option value="Pengecualian Ses (CE)">Pengecualian Ses (CE)</option>
+                                    <option value="Lain-lain">Lain-lain</option>
+                                </select>
+                            </div>
+                        </div><br>
+                    </span>
+
+
+                    <!-- <span *ngIf="showCompanyName">
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Tarikh Import</label><br>
+                                <label class="label_bi">Imported Date </label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="importedMonth" class="label_bm">Pilih Bulan:</label>
+                                <select class="form-select" id="importedMonth" (change)="changeImportedMonth($event)">
+                                    <option value="" disabled selected>--Pilih Bulan--</option>
+                                    <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="importedYear" class="label_bm">Pilih Tahun:</label>
+                                <select class="form-select" id="importedYear" (change)="changeImportedYear($event)">
+                                    <option value="" disabled selected>--Pilih Tahun--</option>
+                                    <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                    </span>
+
+
+                    <span *ngIf="showCompanyName">
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Sample Propose</label><br>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="samplePropose" id="samplePropose"
+                                    [(ngModel)]="samplePropose" placeholder="Enter Sample Propose">
+                            </div>
+                        </div>
+                    </span> -->
+
+
+
+
+                   
+
+
+                    <span *ngIf=" showSamplePropose &&  userRoleId == '2'"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">Tujuan Sampel Dihantar</label><br>
+                                <label class="label_bi">Sent Sample Purpose</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="form-select" name="SamplePropose" id="SamplePropose"
+                                    [(ngModel)]="samplePropose" required>
+                                    <option class="pilih" value="default">--Pilih--</option>
+                                    <option value="Pengecualian Ses (CE)">Pengecualian Ses (CE)</option>
+                                    <option value="Lain-lain">Lain-lain</option>
+                                </select>
+                            </div>
+                        </div><br>
+                    </span>
+
+                    <div mat-dialog-actions align="end">
+                        <label for="errorMes" *ngIf="errorMes" style="color: red;">Sila isi maklumat
+                            bertanda*</label><br>
+                        <button type="submit" class="btn btn-primary" style="margin-left: 5px;"
+                            (click)="searchSample()">Cari</button>
+                        <!-- <button type="submit" class="btn btn-primary" style="margin-left: 5px;">Reset</button> -->
+                    </div>
+                </div>
+            </div><br>
+
+
+            <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
+                <h4 class="card-header attractive-title">Senarai Sampel</h4>
+
+                <div style="text-align: right;">
+
+                    <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to
+                        Excel</button>
+                </div><br>
+
+                <mat-form-field>
+                    <mat-label>Filter</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="keyword" #input>
+                </mat-form-field>
+
+                <div class="mat-elevation-z8" #table>
+                    <div class="list-container">
+
+                        <table mat-table [dataSource]="dataSource" matSort>
+                            <ng-container matColumnDef="k1DetailId">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Bil </th>
+                                <td mat-cell *matCellDef="let row; let i = index">
+                                    {{dataSource.filteredData.indexOf(row)+1}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="customNo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> No Borang Kastam </th>
+                                <td mat-cell *matCellDef="let row"> {{row.customNo}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="importedDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarikh Import</th>
+                                <td mat-cell *matCellDef="let row"> {{row.importedDate | date: 'dd-MM-yyyy' }}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="samplePropose">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tujuan Sample Dihantar</th>
+                                <td mat-cell *matCellDef="let row"> {{row.samplePropose}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="quantity">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Kuantiti </th>
+                                <td mat-cell *matCellDef="let row"> {{row.quantity}}</td>
+                            </ng-container>
+
+                            <ng-container *ngIf=" roleForwarder || roleUip || roleGtacr" matColumnDef="importerName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Syarikat Pengimport</th>
+                                <td mat-cell *matCellDef="let row">
+                                    <!-- {{row.importerName}}{{row.companyName}}</td> -->
+                                    {{row.importerName}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container *ngIf=" roleImporter" matColumnDef="importerName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Syarikat Penghantar</th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{row.agentName}}</td>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status</th>
+                                <td mat-cell *matCellDef="let row"> {{row.status}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <button mat-icon-button color="black" (click)="viewSample(row.k1DetailId)"
+                                        matTooltip="Semak">
+                                        <mat-icon>remove_red_eye</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                    </div>
+                    <label for="" *ngIf="errorNotFound" style="color: red;"> Sampel tidak dijumpai</label>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="20"></mat-paginator>
+                </div>
+            </mat-card>
+        </mat-card-content>
+    </mat-card>
+</div>

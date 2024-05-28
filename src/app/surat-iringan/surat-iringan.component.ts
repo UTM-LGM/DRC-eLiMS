@@ -21,7 +21,7 @@ export class SuratIringanComponent {
   @Input() sendBatchId: number;
   batch: Batch = {} as Batch;
   loginAs: any;
-  roleId: any;
+  userRoleId: any;
   selectedCheckboxCount: number = 0;
   batchId: number;
   emailRecipient: any[] = [];
@@ -57,7 +57,7 @@ export class SuratIringanComponent {
 
     if (this.authService.isloggedin()) {
       this.loginAs = this.authService.getSessionUsername()
-      this.roleId = this.authService.getSessionRole()
+      this.userRoleId = this.authService.getSessionRole()
 
     }
     else {
@@ -66,7 +66,7 @@ export class SuratIringanComponent {
 
 
 
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       this.userService.GetUserInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.user = res
@@ -75,7 +75,7 @@ export class SuratIringanComponent {
         console.log(this.roleForwarder)
       })
     }
-    else if (this.roleId == 2) {
+    else if (this.userRoleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.staff = res
@@ -83,7 +83,7 @@ export class SuratIringanComponent {
         this.roleUip = true
       })
     }
-    else if (this.roleId == 3) {
+    else if (this.userRoleId == 3) {
       this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.importer = res

@@ -6,14 +6,13 @@ import { HomeComponent } from './General/home/home.component';
 import { SuntingSampelComponent } from './Daftar-Sampel/sunting-sampel/sunting-sampel.component';
 import { UlangCetakLabelComponent } from './Cetak-Label/ulang-cetak-label/ulang-cetak-label.component';
 import { HantarSampelComponent } from './Hantar-Sampel/hantar-sampel/hantar-sampel.component';
-import { KeputusanUjianComponent } from './keputusan-ujian/keputusan-ujian.component';
+import { KeputusanUjianComponent } from './KeputusanUjian/keputusan-ujian/keputusan-ujian.component';
 import { ViewSampleComponent } from './Daftar-Sampel/view-sample/view-sample.component';
 import { TarikhSampelDihantarComponent } from './Hantar-Sampel/tarikh-sampel-dihantar/tarikh-sampel-dihantar.component';
 import { DaftarSampelSMKComponent } from './Daftar-Sampel/daftar-sampel-smk/daftar-sampel-smk.component';
 import { AuthGuardService } from './services/auth/auth-guard.service';
 import { ElimsSenaraiSampelComponent } from './Daftar-Sampel/elims-senarai-sampel/elims-senarai-sampel.component';
 import { RegisterComponent } from './General/register/register.component';
-import { LaporanComponent } from './laporan/laporan.component';
 import { ProfileComponent } from './User/profile/profile.component';
 import { FormProfileComponent } from './User/form-profile/form-profile.component';
 import { MemoComponent } from './Hantar-Sampel/memo/memo.component';
@@ -22,14 +21,30 @@ import { PrintMemoComponent } from './print-memo/print-memo.component';
 import { DaftarTerimaSampelComponent } from './daftar-terima-sampel/daftar-terima-sampel.component';
 import { CetakLembaranKerjaComponent } from './CetakWorksheet/cetak-lembaran-kerja/cetak-lembaran-kerja.component';
 import { SampelBelumTerimaComponent } from './sampel-belum-terima/sampel-belum-terima.component';
-import { ViewMaklumatPenghantaranComponent } from './view-maklumat-penghantaran/view-maklumat-penghantaran.component';
 import { SuratIringanComponent } from './surat-iringan/surat-iringan.component';
 import { LampiranComponent } from './Hantar-Sampel/lampiran/lampiran.component';
-import { CetakWorksheetComponent } from './cetak-worksheet/cetak-worksheet.component';
+import { CetakWorksheetComponent } from './CetakWorksheet/cetak-worksheet/cetak-worksheet.component';
 import { UlangCetakLembaranKerjaComponent } from './CetakWorksheet/ulang-cetak-lembaran-kerja/ulang-cetak-lembaran-kerja.component';
 import { UjiSampelComponent } from './Rekod-Keputusan-Sampel/uji-sampel/uji-sampel.component';
 import { RekodKeputusanComponent } from './Rekod-Keputusan-Sampel/rekod-keputusan/rekod-keputusan.component';
 import { SahKeputusanComponent } from './Rekod-Keputusan-Sampel/sah-keputusan/sah-keputusan.component';
+import { CetakKeputusanComponent } from './CetakKeputusan/cetak-keputusan/cetak-keputusan.component';
+import { CetakSuratKeputusanComponent } from './CetakKeputusan/cetak-surat-keputusan/cetak-surat-keputusan.component';
+import { PosKeputusanComponent } from './CetakKeputusan/pos-keputusan/pos-keputusan.component';
+import { RekodKelulusanComponent } from './Kelulusan/rekod-kelulusan/rekod-kelulusan.component';
+import { PdfCetakKeputusanComponent } from './pdf-cetak-keputusan/pdf-cetak-keputusan.component';
+import { SampelSimpananLgmComponent } from './Kelulusan/sampel-simpanan-lgm/sampel-simpanan-lgm.component';
+import { PdfCetakKeputusanUipComponent } from './pdf-cetak-keputusan-uip/pdf-cetak-keputusan-uip.component';
+import { KeputusanUjianPelulusComponent } from './KeputusanUjian/keputusan-ujian-pelulus/keputusan-ujian-pelulus.component';
+import { UlangKeputusanUjianComponent } from './KeputusanUjian/ulang-keputusan-ujian/ulang-keputusan-ujian.component';
+import { LaporanBilSampelComponent } from './Laporan/laporan-bil-sampel/laporan-bil-sampel.component';
+import { LaporanPengujiComponent } from './Laporan/laporan-penguji/laporan-penguji.component';
+import { LaporanStatistikComponent } from './Laporan/laporan-statistik/laporan-statistik.component';
+import { LaporanKuantitiComponent } from './Laporan/laporan-kuantiti/laporan-kuantiti.component';
+import { LaporanTahapKecekapanComponent } from './Laporan/laporan-tahap-kecekapan/laporan-tahap-kecekapan.component';
+import { LaporanKgkComponent } from './Laporan/laporan-kgk/laporan-kgk.component';
+import { TarikhTerimaSampelComponent } from './Daftar-Sampel/tarikh-terima-sampel/tarikh-terima-sampel.component';
+import { LaporanBilHariComponent } from './Laporan/laporan-bil-hari/laporan-bil-hari.component';
 
 
 
@@ -116,11 +131,6 @@ const routes: Routes = [
   },
 
   {
-    path: 'laporan',
-    component: LaporanComponent, canActivate:[AuthGuardService]
-  },
-
-  {
     path: 'profile',
     component: ProfileComponent, canActivate:[AuthGuardService]
   },
@@ -197,9 +207,8 @@ const routes: Routes = [
     component: SuratIringanComponent
   },
 
-
   {
-    path: 'cetak-worksheet/:k1DetailId',
+    path: 'cetak-lembaran-kerja/cetak-worksheet/:k1DetailId',
     component: CetakWorksheetComponent
   },
 
@@ -229,6 +238,105 @@ const routes: Routes = [
     path: 'sah-keputusan',
     component: SahKeputusanComponent
   },
+
+  {
+    path: 'cetak-worksheet',
+    component: CetakWorksheetComponent
+  },
+
+  {
+    path: 'cetak-keputusan',
+    component: CetakKeputusanComponent
+  },
+
+  {
+    path: 'cetak-surat-keputusan',
+    component: CetakSuratKeputusanComponent
+  },
+
+  {
+    path: 'pos-keputusan',
+    component: PosKeputusanComponent
+  },
+
+
+  {
+    path: 'rekod-kelulusan',
+    component: RekodKelulusanComponent
+  },
+
+  {
+    path: 'detail-keputusan',
+    component: CetakKeputusanComponent
+  },
+
+  {
+    path: 'pdf-cetak-keputusan',
+    component: PdfCetakKeputusanComponent
+  },
+
+  {
+    path: 'sampel-simpanan-lgm',
+    component: SampelSimpananLgmComponent
+  },
+
+  {
+    path: 'pdf-cetak-keputusan-uip',
+    component: PdfCetakKeputusanUipComponent
+  },
+
+  {
+    path: 'keputusan-ujian-pelulus',
+    component: KeputusanUjianPelulusComponent
+  },
+
+  {
+    path: 'ulang-keputusan-ujian',
+    component:UlangKeputusanUjianComponent
+  },
+
+
+
+  {
+    path: 'laporan-bil-sampel',
+    component:LaporanBilSampelComponent
+  },
+
+  {
+    path: 'laporan-penguji',
+    component:LaporanPengujiComponent
+  },
+
+  {
+    path: 'laporan-statistik',
+    component:LaporanStatistikComponent
+  },
+
+  {
+    path: 'laporan-kuantiti',
+    component:LaporanKuantitiComponent
+  },
+
+  {
+    path: 'laporan-tahap-kecekapan',
+    component:LaporanTahapKecekapanComponent
+  },
+
+  {
+    path: 'laporan-kgk',
+    component:LaporanKgkComponent
+  },
+  
+  {
+    path: 'tarikh-terima-sampel',
+    component:TarikhTerimaSampelComponent
+  },
+  
+  {
+    path: 'laporan-bil-hari',
+    component:LaporanBilHariComponent
+  },
+
   
 ];
 

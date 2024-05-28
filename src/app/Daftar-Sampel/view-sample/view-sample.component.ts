@@ -49,7 +49,7 @@ export class ViewSampleComponent implements OnInit {
   selectedDateSum: Date;
   customOffice: any
 
-  roleId: any;
+  userRoleId: any;
   roleForwarder: boolean
   roleUip: boolean
   roleImporter: boolean
@@ -95,13 +95,13 @@ export class ViewSampleComponent implements OnInit {
   ngOnInit() {
     if (this.authservice.isloggedin()) {
       this.loginAs = this.authservice.getSessionUsername()
-      this.roleId = this.authservice.getSessionRole()
+      this.userRoleId = this.authservice.getSessionRole()
       console.log(this.loginAs)
     }
     else {
       this.loginAs = '';
     }
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       this.userService.GetUserInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.user = res
@@ -110,7 +110,7 @@ export class ViewSampleComponent implements OnInit {
 
       })
     }
-    else if (this.roleId == 2) {
+    else if (this.userRoleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.staff = res
@@ -119,7 +119,7 @@ export class ViewSampleComponent implements OnInit {
       })
     }
 
-    else if (this.roleId == 3) {
+    else if (this.userRoleId == 3) {
       this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.importer = res

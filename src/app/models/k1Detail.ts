@@ -1,4 +1,5 @@
 export interface K1Detail {
+    details: any;
     find(arg0: (detail: { itemDescription: any; }) => boolean): unknown;
     showRemarks: any;
 
@@ -14,7 +15,7 @@ export interface K1Detail {
     sampleTypeId: number;
     rubberType: string;
     sampleType: string;
-    typeCode:string;
+    typeCode: string;
     labRefNo: string;
     customNo: string;
     quantity: number;
@@ -69,20 +70,41 @@ export interface K1Detail {
     itemDescription: string;
     tariffCode: string;
     tariffCodeNew: string;
-    statusCodeId:number;
-    sampleIdNew:number;
-    isSMK:boolean;
+    statusCodeId: number;
+    sampleIdNew: number;
+    isSMK: boolean;
     importerName: string;
     importerAddress: string;
     registrationSeqNo: string;
     sampleRunNo: string;
     creatorRoleId: number;
     grossWeight: number;
-    agentName  :string;   
+    agentName: string;
 
-     dateSampleReceived : Date;
-     smkimportersCode: string;
+    dateSampleReceived: Date;
+    smkimportersCode: string;
+    testMethod: string;
+    worksheetTestOn: Date;
 
-    
+
+    customOffice: string;
+    customAddress: string;
+    customPostcode: number;
+    forwarderPostcode: number;
+    importedDate: Date;
+    result: string;
+    chequeAmount: number;
+    bankName: string;
+    chequeNo: string;
+    ikmNo: string;
+    staffPosition: string;
+    uipRegNo: string;
+    staffName: string;
+    testMethodId: number;
+    prove : string;
+    catatan : string;
+    dateReceivedInLab : Date;
+    //  forwarderName: string;
+    //  forwarderAddress: string;
 
 }

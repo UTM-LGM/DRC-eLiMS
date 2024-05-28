@@ -9,6 +9,7 @@ import { register } from 'src/app/models/register';
 import { Role } from 'src/app/models/role';
 import { staffRole } from 'src/app/models/staffRole';
 import { userDTO } from 'src/app/models/userDTO';
+import { userRole } from 'src/app/models/userRole';
 
 @Injectable({
   providedIn: 'root'
@@ -197,19 +198,24 @@ export class AuthService {
   }
 
   getSessionRole() {
-    return sessionStorage.getItem('role')
+    return sessionStorage.getItem('userRoleId')
   }
 
   GetForwarder(): Observable<Forwarder> {
     return this.httpclient.get<Forwarder>(this.baseApiUrl + '/api/Forwarders/GetForwarders');
   }
 
-  GetRoleById(roleId: number): Observable<Role> {
-    return this.httpclient.get<Role>(this.baseApiUrl + '/api/Roles/GetRoleById/' + roleId);
+  // GetRoleById(roleId: number): Observable<Role> {
+  //   return this.httpclient.get<Role>(this.baseApiUrl + '/api/Roles/GetRoleById/' + roleId);
+  // }
+
+  GetRoleById(roleId: number): Observable<userRole> {
+    return this.httpclient.get<userRole>(this.baseApiUrl + '/api/UserRoles/GetRoleById/' + roleId);
   }
 
-  GetRolesForLogin(): Observable<Role> {
-    return this.httpclient.get<Role>(this.baseApiUrl + '/api/Roles/GetRolesForLogin');
+
+  GetRolesForLogin(): Observable<userRole> {
+    return this.httpclient.get<userRole>(this.baseApiUrl + '/api/UserRoles/GetRolesForLogin');
   }
 
   GetStaffRolebyStaffId(staffId: number): Observable<staffRole[]> {

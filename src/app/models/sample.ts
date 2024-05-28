@@ -1,4 +1,5 @@
 export interface Sample {
+    samples: any;
     rub: any;
     isRegistered: any;
     status: string;
@@ -101,4 +102,16 @@ export interface Sample {
     dateSampleReceived: Date;
     smkimportersCode : string;
     oldSystemId : number;
+
+    wet1 : number;
+    wet2 : number;
+    dry1 : number;
+    dry2 : number;
+    result1 : number;
+    catatan : string;
+    testMethodId : number;
+    testMethod : string;
+    prove : string;
+    totalDaysFromImportToReceived : number;
+
 }

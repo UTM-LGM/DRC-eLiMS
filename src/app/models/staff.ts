@@ -11,4 +11,10 @@ export class Staff {
     unit: string;
     unitName: string;
     signature: string;
+    staffRole : number [];
+
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+
 }

@@ -24,16 +24,14 @@ export class HomeComponent implements OnInit {
   changedDate = '';
   username: any
   loginAs: any
-  roleId: any
+  userRoleId: any
   roleForwarder: boolean
   roleUip: boolean
   roleGtacr: boolean
   roleImporter : boolean
 
-
   constructor(
     private authService: AuthService,
-    private elimsService: ElimsService,
     private userService: UserService,
   ) { }
 
@@ -43,17 +41,17 @@ export class HomeComponent implements OnInit {
     //   // console.log(res)
     // })
 
-    // this.roleId = this.authService.getSessionRole()
+    // this.userRoleId = this.authService.getSessionRole()
 
     if (this.authService.isloggedin()) {
       this.loginAs = this.authService.getSessionUsername()
-      this.roleId = this.authService.getSessionRole()
+      this.userRoleId = this.authService.getSessionRole()
     }
     else {
       this.loginAs = '';
     }
 
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       this.username = this.authService.getSessionUsername()
       this.authService.getUser(this.username).subscribe(res => {
         this.authService.changeUser(res);
@@ -63,7 +61,7 @@ export class HomeComponent implements OnInit {
     }
 
 
-      else if(this.roleId == 3){
+      else if(this.userRoleId == 3){
       this.username = this.authService.getSessionUsername()
       this.authService.getImporter(this.username).subscribe(res => {
         this.authService.changeUser(res);
@@ -73,7 +71,7 @@ export class HomeComponent implements OnInit {
       })    
     }
     
-    else if (this.roleId == 2 || this.roleId == 4) {
+    else if (this.userRoleId == 2 || this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authService.changeUser(res);
         this.staff = res
@@ -81,8 +79,6 @@ export class HomeComponent implements OnInit {
         this.roleUip = true
       })
     }
-
-  
 
   }
 

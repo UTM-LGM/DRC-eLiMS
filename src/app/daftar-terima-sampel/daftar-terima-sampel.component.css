@@ -120,8 +120,6 @@
     display: flex;
   }
   
-
-  
   .example-element-description {
     padding: 16px;
   }
@@ -131,7 +129,27 @@
   }
   
 
-
+  .btn-circle-shadow {
+    background-color: white;
+    color: blue;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust shadow as needed */
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn-circle-shadow:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Adjust shadow on hover */
+  }
+  
+  .btn-circle-shadow i {
+    font-size: 24px; /* Adjust icon size as needed */
+  }
   
 
 

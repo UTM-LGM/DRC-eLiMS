@@ -11,8 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { userDTO } from '../../models/userDTO';
 import { AuthService } from '../../services/auth/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogDaftarSampelComponent } from '../../dialogbox/dialog-daftar-sampel/dialog-daftar-sampel.component';
-import { Observable, forkJoin, map, switchMap } from 'rxjs';
+import { Observable,  map} from 'rxjs';
 import { RubberType } from 'src/app/models/rubberType';
 import { DaftarSampelService } from '../daftar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
@@ -21,7 +20,6 @@ import { SpinnerComponent } from 'src/app/dialogbox/spinner/spinner.component';
 import { StationCode } from 'src/app/models/stationCode';
 import { MatSort } from '@angular/material/sort';
 import { loginImporter } from 'src/app/models/loginImporters';
-import { Forwarder } from 'src/app/models/forwarder';
 import { TypeCode } from 'src/app/models/typeCode';
 
 @Component({
@@ -74,7 +72,7 @@ export class DaftarSampelSMKComponent implements OnInit {
   isDataLoading: boolean = false;
   isDataFound: boolean = false;
   unmatchedK1: any[] = [];
-  roleId: any;
+  userRoleId: any;
   roleForwarder: boolean;
   roleUip: boolean;
   roleImporter: boolean;
@@ -110,13 +108,13 @@ export class DaftarSampelSMKComponent implements OnInit {
   ngOnInit() {
     if (this.authservice.isloggedin()) {
       this.loginAs = this.authservice.getSessionUsername()
-      this.roleId = this.authservice.getSessionRole()
+      this.userRoleId = this.authservice.getSessionRole()
     }
     else {
       this.loginAs = '';
     }
 
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       this.userService.GetUserInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.user = res
@@ -170,7 +168,7 @@ export class DaftarSampelSMKComponent implements OnInit {
       })
     }
 
-    if (this.roleId == 3) {
+    if (this.userRoleId == 3) {
       this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.importer = res
@@ -226,7 +224,7 @@ export class DaftarSampelSMKComponent implements OnInit {
     }
 
 
-    else if (this.roleId == 2) {
+    else if (this.userRoleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.staff = res
@@ -400,7 +398,7 @@ export class DaftarSampelSMKComponent implements OnInit {
 
 
 
-      if (this.roleId == "1") {
+      if (this.userRoleId == "1") {
         this.dataKastamService.getK1DetailAgentCode(this.customNo, this.agentCode).subscribe(x => {
           this.k1DetailKastam = x;
           console.log(this.k1DetailKastam);
@@ -440,7 +438,7 @@ export class DaftarSampelSMKComponent implements OnInit {
       }
 
 
-      else if (this.roleId == "2") {
+      else if (this.userRoleId == "2") {
         let customNoWithUip = this.customNo + 'uip'; // Append 'uip' to customNo
       
         this.dataKastamService.getK1Detail(this.customNo).subscribe(x => {
@@ -484,8 +482,8 @@ export class DaftarSampelSMKComponent implements OnInit {
       
 
 
-      else if (this.roleId == '3') {
-        console.log(this.roleId)
+      else if (this.userRoleId == '3') {
+        console.log(this.userRoleId)
         this.dataKastamService.getK1DetailByImporterCode(this.customNo, this.importerCode).subscribe(x => {
           this.k1DetailKastam = x;
 
@@ -563,7 +561,7 @@ export class DaftarSampelSMKComponent implements OnInit {
         this.k1Header = y;
         this.onDateChange();
 
-        if (this.roleId == 1) {
+        if (this.userRoleId == 1) {
           this.importerCompanies = this.importerCompanies.filter(importerCompaniesdata => {
             // console.log(this.importerCompanies);
             const trimmedImporterCode = y.importerCode.trim();
@@ -581,7 +579,7 @@ export class DaftarSampelSMKComponent implements OnInit {
 
         }
 
-        else if (this.roleId == 2) {
+        else if (this.userRoleId == 2) {
           this.importerCompanies = this.importerCompanies.filter(importerCompaniesdata => {
             console.log(this.importerCompanies)
             const trimmedImporterCode = y.importerCode.trim();
@@ -622,14 +620,14 @@ export class DaftarSampelSMKComponent implements OnInit {
     const nomborKastam = this.sampleForm.get('nomborKastam')?.value ?? '';
     this.customNo = kodStesen + tahun + nomborKastam;
     this.k1Detail.createdBy = this.loginAs;
-    this.k1Detail.creatorRoleId = this.roleId
+    this.k1Detail.creatorRoleId = this.userRoleId
 
-    if(this.roleId ==1 || this.roleId == 3){
+    if(this.userRoleId ==1 || this.userRoleId == 3){
       this.k1Detail.customNo = this.customNo
       this.k1Header.customNo = this.customNo;
       this.sample.customNo = this.customNo;
     }
-    else if(this.roleId== 2){
+    else if(this.userRoleId== 2){
        this.k1Detail.customNo = this.customNo + 'uip';
        this.k1Header.customNo = this.customNo + 'uip';
        this.sample.customNo = this.customNo + 'uip';
@@ -651,17 +649,17 @@ export class DaftarSampelSMKComponent implements OnInit {
     this.k1Header.isSMK = true;
     this.k1Header.companyId = this.sample.companyId;
 
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       this.sample.forwarderId = this.user.forwarderId;
       this.k1Detail.forwarderId = this.user.forwarderId;
     }
 
-    else if (this.roleId == 2) {
+    else if (this.userRoleId == 2) {
       this.sample.forwarderId = 22;
       this.k1Detail.forwarderId = 22;
     }
 
-    else if (this.roleId == 3) {
+    else if (this.userRoleId == 3) {
       // this.sample.forwarderId = this.k1Detail.forwarderId;
       this.k1Detail.companyId = this.importer.companyId;
       this.sample.companyId = this.importer.companyId;
@@ -729,7 +727,11 @@ export class DaftarSampelSMKComponent implements OnInit {
             });
         });
 
-      } else if (this.k1Detail.rubberTypeId == 2) {
+      } 
+      
+      
+      
+      else if (this.k1Detail.rubberTypeId == 2) {
 
         this.daftarSampelService.PostK1HeaderSample(this.k1Header, statusCodeId).subscribe(res => {
           this.k1Detail.k1HeaderId = res.k1HeaderId;
@@ -780,7 +782,7 @@ export class DaftarSampelSMKComponent implements OnInit {
   // }
 
   checkRequired(): boolean | undefined {
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       if (
         (this.formattedDRC == null || this.formattedDRC == 0) ||
         (this.k1Detail.samplePropose == null || this.k1Detail.samplePropose == '') ||
@@ -796,12 +798,13 @@ export class DaftarSampelSMKComponent implements OnInit {
       }
       return true;
 
-    } else if (this.roleId == 3) {
+    } else if (this.userRoleId == 3) {
       if (
         (this.formattedDRC == null || this.formattedDRC == 0) ||
         (this.k1Detail.samplePropose == null || this.k1Detail.samplePropose == '') ||
         (this.k1Header.driverName == null || this.k1Header.driverName == '') ||
         (this.formattedQuantity == null || this.formattedQuantity == '') ||
+        (this.k1Detail.dateSampleReceived == null) ||
         (this.k1Header.icDriver == null || this.k1Header.icDriver == '') ||
         (this.sample.forwarderId == null) ||
 
@@ -813,7 +816,7 @@ export class DaftarSampelSMKComponent implements OnInit {
       return true;
 
     }
-    else if (this.roleId == 2) {
+    else if (this.userRoleId == 2) {
       if (
         (this.formattedDRC == null || this.formattedDRC == 0) ||
         (this.k1Detail.samplePropose == null || this.k1Detail.samplePropose == '') ||
@@ -840,7 +843,7 @@ export class DaftarSampelSMKComponent implements OnInit {
   onDateChange() {
     const dateValue = new Date(this.k1Header.importedDate);
     let sum;
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       this.authservice.GetCustomOffice(this.user.customOfficeId).subscribe(x => {
         console.log(x);
         this.customOffice = x;
@@ -887,7 +890,7 @@ export class DaftarSampelSMKComponent implements OnInit {
       });
     }
 
-    else if (this.roleId == 2) {
+    else if (this.userRoleId == 2) {
       if (this.staff.unit === 'UIP') {
         sum = dateValue.getDate() + 14;
       } else if (this.staff.unit === 'UIPBKH') {
@@ -920,7 +923,7 @@ export class DaftarSampelSMKComponent implements OnInit {
       console.log(this.selectedDateSum.toDateString());
     }
 
-    else if (this.roleId == 3) {
+    else if (this.userRoleId == 3) {
       const dateImported = new Date(this.k1Header.importedDate);
       const dateSampleReceived = new Date(this.k1Detail.dateSampleReceived);
 

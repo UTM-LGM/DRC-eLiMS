@@ -34,7 +34,7 @@ export class UlangCetakLabelComponent implements OnInit {
   latex1: any
   page: number = 1;
   ip: number = 20;
-  roleId: any;
+  userRoleId: any;
   sampleTypeName: string
   importer: loginImporter = {} as loginImporter
   roleForwarder: boolean
@@ -56,13 +56,13 @@ export class UlangCetakLabelComponent implements OnInit {
 
     if (this.authService.isloggedin()) {
       this.loginAs = this.authService.getSessionUsername()
-      this.roleId = this.authService.getSessionRole()
+      this.userRoleId = this.authService.getSessionRole()
     }
     else {
       this.loginAs = '';
     }
 
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       this.userService.GetUserInfo(this.loginAs).subscribe(res => {
         this.authService.changeUser(res);
         this.user = res
@@ -70,7 +70,7 @@ export class UlangCetakLabelComponent implements OnInit {
         this.getElimsSamplesByUsername2()
       })
     }
-    else if (this.roleId == 3) {
+    else if (this.userRoleId == 3) {
       this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
         console.log(res)
         this.authService.changeUser(res);
@@ -82,7 +82,7 @@ export class UlangCetakLabelComponent implements OnInit {
       })
     }
 
-    else if (this.roleId == 2) {
+    else if (this.userRoleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         console.log(res)
         this.authService.changeUser(res);
@@ -173,10 +173,10 @@ export class UlangCetakLabelComponent implements OnInit {
       // Create QR codes
       const qrCode1 = QRCode(0, 'L');
 
-      if (this.roleId == 1 || this.roleId == 3) {
+      if (this.userRoleId == 1 || this.userRoleId == 3) {
         qrCode1.addData(sample1.customNo);
       }
-      else if (this.roleId == 2) {
+      else if (this.userRoleId == 2) {
         qrCode1.addData(sample1.customNo);
       }
 
@@ -187,9 +187,9 @@ export class UlangCetakLabelComponent implements OnInit {
       if (sample2) {
         const qrCode2 = QRCode(0, 'L');
 
-        if (this.roleId == 1 || this.roleId == 3) {
+        if (this.userRoleId == 1 || this.userRoleId == 3) {
           qrCode2.addData(sample2.customNo);
-        } else if (this.roleId == '2') {
+        } else if (this.userRoleId == '2') {
           qrCode2.addData(sample2.customNo);
         }
 
@@ -207,11 +207,11 @@ export class UlangCetakLabelComponent implements OnInit {
       doc.setFontSize(fontSize);
 
 
-      if (this.roleId == 1 || this.roleId == 3) {
+      if (this.userRoleId == 1 || this.userRoleId == 3) {
         if (sample1.customNo) {
           doc.text("*" + `${sample1.customNo} ` + "*", x + 21, y + 5);
         }
-      } else if (this.roleId == 2) {
+      } else if (this.userRoleId == 2) {
         if (sample1.customNo) {
           doc.text(`${sample1.customNo} - UIP`, x + 21, y + 5);
         }
@@ -242,23 +242,23 @@ export class UlangCetakLabelComponent implements OnInit {
       }
 
 
-      if (this.roleId == 1 || this.roleId == 3) {
+      if (this.userRoleId == 1 || this.userRoleId == 3) {
         if (sample1.forwarderName) {
           const lines = doc.splitTextToSize('FA : ' + sample1.forwarderName, 53);
           doc.text(lines, x + 21, y + 29);
         }
-      } else if (this.roleId == 2) {
+      } else if (this.userRoleId == 2) {
         const lines = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
         doc.text(lines, x + 21, y + 29);
       }
 
       if (sample2) {
 
-        if (this.roleId == 1 || this.roleId == 3) {
+        if (this.userRoleId == 1 || this.userRoleId == 3) {
           if (sample2.customNo) {
             doc.text("*" + `${sample2.customNo}` + "*", x + boxWidth + 21, y + 5);
           }
-        } else if (this.roleId == 2) {
+        } else if (this.userRoleId == 2) {
           if (sample2.customNo) {
             doc.text(`${sample2.customNo} - UIP`, x + boxWidth + 21, y + 5);
           }
@@ -288,13 +288,13 @@ export class UlangCetakLabelComponent implements OnInit {
         }
        
 
-        if (this.roleId == 1 || this.roleId == 3) {
+        if (this.userRoleId == 1 || this.userRoleId == 3) {
           if (sample2.forwarderName) {
             const lines1 = doc.splitTextToSize('FA : ' + sample2.forwarderName, 53);
             doc.text(lines1, x + boxWidth + 21, y + 29);
           }
         }
-        if (this.roleId == 2) {
+        if (this.userRoleId == 2) {
           const lines1 = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
           doc.text(lines1, x + boxWidth + 21, y + 29);
         }

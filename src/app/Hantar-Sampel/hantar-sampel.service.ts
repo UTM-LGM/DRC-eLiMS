@@ -281,11 +281,15 @@ export class HantarSampelService {
     });
   
     return this.http.post(`${this.baseApiUrl}/api/Batches/uploadSuratIringan1/${batchId}`, formData, { headers });
-
-   
-
   }
   
+
+
+  
+  PutBatchPrinted(batchId: number) {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.put<string>(this.baseApiUrl + '/api/Batches/PutBatchPrinted/' + batchId,httpOptions);
+  }
 
 
 

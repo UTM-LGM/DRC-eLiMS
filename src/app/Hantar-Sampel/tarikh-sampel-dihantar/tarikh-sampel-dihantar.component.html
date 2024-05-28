@@ -3,99 +3,183 @@
     <mat-card-content>
       <h1 class="attractive-title">Tarikh Sampel Dihantar</h1>
 
-      <div class="mat-card-container">
+      <div class="box-container" *ngIf="!lepassubmit">
+        <div class="mat-card-container">
 
-        <form (ngSubmit)="updateBatch()">
+          <form (ngSubmit)="updateBatch()">
 
-          <div *ngIf="roleForwarder || roleImporter">
-            <div class="row form-group">
-              <div class="col-sm-2">
-                <label class="label_bm"> Batch Id<span class="required" style="color:red;"> *</span></label><br>
-                <label class="label_bi">Batch Id</label>
-              </div>
-              <div class="col-sm-4">
-                <input type="number" class="form-control" id="batchId" name="batchId"
-                  [(ngModel)]="batch.batchId">
+            <div *ngIf="roleForwarder || roleImporter">
+
+              <p>Sila kemaskini maklumat penghantaran sampel dengan merujuk batch id dibawah.</p><br>
+
+              <div class="row form-group">
+                <div class="col-sm-2">
+                  <label class="label_bm"> Batch Id<span class="required" style="color:red;"> *</span></label><br>
+                  <label class="label_bi">Batch Id</label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="number" class="form-control" id="batchId" name="batchId" [(ngModel)]="batch.batchId">
                   <small class="instruction"> * masukkan nombor batch Id</small>
+                </div>
               </div>
+              <br>
             </div>
-            <br>
-          </div>
 
-          <div *ngIf="roleUip">
+            <div *ngIf="roleUip">
+
+              <p>Sila kemaskini maklumat penghantaran sampel dengan merujuk senarai nombor rujukan dibawah.</p><br>
+
+              <div class="row form-group">
+                <div class="col-sm-2">
+                  <label class="label_bm">Nombor Rujukan<span class="required" style="color:red;"> *</span></label>
+                  <label class="label_bi">Reference No</label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" id="uipRegNo" name="uipRegNo" [(ngModel)]="batch.uipRegNo"
+                    required>
+                  <small class="instruction"> * masukkan nombor rujukan</small>
+                </div>
+              </div>
+              <br>
+            </div>
+
             <div class="row form-group">
               <div class="col-sm-2">
-                <label class="label_bm">Nombor Rujukan<span class="required" style="color:red;"> *</span></label>
-                <label class="label_bi">Reference No</label>
+                <label class="label_bm">Tarikh<span class="required" style="color:red;">*</span></label><br>
+                <label class="label_bi"> Date</label>
               </div>
               <div class="col-sm-4">
-                <input type="text" class="form-control" id="uipRegNo" name="uipRegNo"
-                  [(ngModel)]="batch.uipRegNo" required>
+                <input type="date" class="form-control" id="Date" name="dateSampleDelivered"
+                  [(ngModel)]="batch.dateSampleDelivered" required>
               </div>
             </div>
             <br>
-          </div>
 
-          <div class="row form-group">
-            <div class="col-sm-2">
-              <label class="label_bm">Tarikh<span class="required" style="color:red;">*</span></label><br>
-              <label class="label_bi"> Date</label>
+            <div class="row form-group">
+              <div class="col-sm-2">
+                <label class="label_title"> Penghantaran<span class="required" style="color:red;">*</span></label><br>
+                <label class="label_bi">Delivery</label>
+              </div>
+              <div class="col-sm-4">
+                <select class="form-select" id="delivery" (change)="changeDelivery($event)" name="delivery"
+                  [(ngModel)]="batch.delivery" required>
+                  <option value="" disabled selected>--Pilih--</option>
+                  <option *ngFor="let penghantaran of delivery" [value]="penghantaran">
+                    {{penghantaran}}
+                  </option>
+                </select>
+              </div>
             </div>
-            <div class="col-sm-4">
-              <input type="date" class="form-control" id="Date" name="dateSampleDelivered"
-                [(ngModel)]="batch.dateSampleDelivered" required>
-            </div>
-          </div>
-          <br>
+            <br>`
 
-          <div class="row form-group">
-            <div class="col-sm-2">
-              <label class="label_title"> Penghantaran<span class="required" style="color:red;">*</span></label><br>
-              <label class="label_bi">Delivery</label>
-            </div>
-            <div class="col-sm-4">
-              <select class="form-select" id="delivery" (change)="changeDelivery($event)" name="delivery"
-                [(ngModel)]="batch.delivery" required>
-                <option value="" disabled selected>--Pilih--</option>
-                <option *ngFor="let penghantaran of delivery" [value]="penghantaran">
-                  {{penghantaran}}
-                </option>
-              </select>
-            </div>
-          </div>
-          <br>
+            <div class="row form-group" *ngIf="showDelivery">
+              <div class="col-sm-2">
+                <label class="label_bm">Syarikat Penghantar</label>
+                <label class="label_bi">Courier Services</label>
+              </div>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="courierServices" name="courierServices"
+                  [(ngModel)]="batch.courierServices" required>
+              </div>
+            </div> <br>
 
-          <div class="row form-group" *ngIf="showDelivery">
-            <div class="col-sm-2">
-              <label class="label_bm">Syarikat Penghantar</label>
-              <label class="label_bi">Courier Services</label>
+            <div class="row form-group" *ngIf="showDelivery">
+              <div class="col-sm-2">
+                <label class="label_bm">Nombor Pengesanan</label>
+                <label class="label_bi">Tracking No</label>
+              </div>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="trackingNo" name="trackingNo" [(ngModel)]="batch.trackingNo"
+                  required>
+              </div>
             </div>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" id="courierServices" name="courierServices"
-                [(ngModel)]="batch.courierServices" required>
-            </div>
-          </div> <br>
 
-          <div class="row form-group" *ngIf="showDelivery">
-            <div class="col-sm-2">
-              <label class="label_bm">Nombor Pengesanan</label>
-              <label class="label_bi">Tracking No</label>
+            <div mat-dialog-actions align="center">
+              <button type="submit" class="btn btn-primary" style="margin-left: 5px;">Hantar</button>
             </div>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" id="trackingNo" name="trackingNo"
-                [(ngModel)]="batch.trackingNo" required>
-            </div>
-          </div>
+          </form>
+        </div>
+      </div><br>
 
-          <div mat-dialog-actions align="center">
-            <button type="submit" class="btn btn-primary" style="margin-left: 5px;">Hantar</button>
-          </div>
-        </form>
+
+      <!-- BAHAGIAN PILIH BATCH ID -->
+      <div class="content-header  d-flex">
+      </div><br>
+
+      <p *ngIf="!lepassubmit">Sila pilih batch Id untuk dicetak </p>
+
+
+
+      <mat-tab-group class="mb-2" *ngIf="!lepassubmit">
+        <mat-tab label="Batch Id yang belum dikemaskini">
+          <app-sajarah-penghantaran (selectedSampleToSend)="receiveData($event)"></app-sajarah-penghantaran>
+        </mat-tab>
+
+        <mat-tab label="Batch Id yang telah dikemaskini">
+          <app-maklumat-penghantaran (selectedSampleToSend)="receiveData($event)"></app-maklumat-penghantaran>
+        </mat-tab>
+      </mat-tab-group>
+
+
+      <div align="end">
+        <button type="submit" (click)="sendSample()" class="btn btn-primary mb-2" *ngIf="!lepassubmit">Pilih</button>
       </div>
 
-      <div>
-        <app-view-maklumat-penghantaran></app-view-maklumat-penghantaran>
+      <!-- TABLE SELEPAS TEKAN BUTTON PILIH -->
+      <table class="table table-striped" *ngIf="lepassubmit">
+        <thead>
+          <tr class="tableheader">
+            <!-- <th class="black" scope="col">Sample Id</th> -->
+            <th class="black" scope="col">Batch Id</th>
+            <th class="black" scope="col">Tarikh</th>
+            <th class="black" scope="col">Penghantaran</th>
+            <th class="black" scope="col">Syarikat Penghantar</th>
+            <th class="black" scope="col">Nombor Pengesanan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let batch of receivedDataFromChild; let i = index">
+            <!-- <td>{{batch.k1DetailId}}</td> -->
+            <td>{{batch.batchId}}</td>
+            <td>{{batch.dateSampleDelivered | date:"dd/MM/yyy"}} </td>
+            <td>{{batch.delivery}} </td>
+            <td>{{batch.courierServices}} </td>
+            <td>{{batch.trackingNo}} </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div align="center">
+        <button (click)="generatePDFWithQRCode()" *ngIf="lepassubmit" type="submit" class="btn btn-primary mb-2">Cetak</button>
+      </div><br>
+
+
+      <div *ngIf="lepassubmit" class="card">
+        <h4 class="card-header">Pengesahan Cetakan Batch</h4>
+        <div class="card-body">
+          <p class="card-text"><b><i>**Sila pastikan pengesahan cetakan batch dibuat selepas mencetak batch.</i></b>
+          </p>
+          <p class="card-text">Adakah batch telah berjaya dicetak?</p>
+
+          <span>
+            <button type="submit" class="btn btn-primary btn-block" (click)="onYesClick()">Ya</button>
+            <span style="margin-right: 10px;"></span><!-- This creates space -->
+            <button type="submit" class="btn btn-danger btn-block" (click)="onNoClick()">Tidak</button>
+          </span>
+
+          <br><br>
+          <label style="color:red;" *ngIf="mesYaTidak=='yes'">Pengesahan Cetakan Batch: 'YA' telah berjaya
+            direkodkan</label>
+          <label style="color:red;" *ngIf="mesYaTidak=='tidak'">Pengesahan Cetakan Batch: 'TIDAK' telah berjaya
+            direkodkan</label>
+        </div>
+      </div><br>
+
+
+      <div align="end">
+        <button type="submit" (click)="goBack()" class="btn btn-primary mb-2" *ngIf="lepassubmit">Kembali</button>
       </div>
+
 
     </mat-card-content>
   </mat-card>

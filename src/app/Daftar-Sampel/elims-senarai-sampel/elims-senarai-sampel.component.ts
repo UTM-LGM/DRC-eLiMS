@@ -47,7 +47,7 @@ export class ElimsSenaraiSampelComponent implements OnInit {
   k1Header: any
   sampleDetails: any;
   loginAs: any;
-  roleId: any
+  userRoleId: any
   companyName: any
   userFiltered: boolean = false;
   importer: loginImporter = {} as loginImporter
@@ -72,12 +72,12 @@ export class ElimsSenaraiSampelComponent implements OnInit {
 
     if (this.authservice.isloggedin()) {
       this.loginAs = this.authservice.getSessionUsername()
-      this.roleId = this.authservice.getSessionRole()
+      this.userRoleId = this.authservice.getSessionRole()
     }
     else {
       this.loginAs = '';
     }
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       this.userService.GetUserInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.user = res
@@ -88,7 +88,7 @@ export class ElimsSenaraiSampelComponent implements OnInit {
         
       })
     }
-    else if (this.roleId == 3) {
+    else if (this.userRoleId == 3) {
       this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
         console.log(res)
         this.authservice.changeUser(res);
@@ -99,7 +99,7 @@ export class ElimsSenaraiSampelComponent implements OnInit {
         this.getElimsSamplesByUsername()
       })
     }
-    else if (this.roleId == 2) {
+    else if (this.userRoleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         console.log(res)
         this.authservice.changeUser(res);

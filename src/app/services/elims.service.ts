@@ -17,6 +17,8 @@ import { TestMethod } from '../models/testMethod';
 import { TypeCode } from '../models/typeCode';
 import { loginForwarder } from '../models/loginForwarder';
 import { loginImporter } from '../models/loginImporters';
+import { StatusCode } from '../models/statusCode';
+import { staffRole } from '../models/staffRole';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +27,7 @@ export class ElimsService {
 
   statusCodeId: number
   baseApiUrl: string = environment.baseApiUrlElims;
+  baseApiOffline: string = environment.baseApiUrlElimsLocal;
 
   constructor(private http: HttpClient) { }
 
@@ -32,6 +35,11 @@ export class ElimsService {
   GetAllCountries(): Observable<Country> {
     return this.http.get<Country>(this.baseApiUrl + '/api/Countries/GetAllCountries/');
   }
+
+  GetStaffRoles(): Observable<staffRole> {
+    return this.http.get<staffRole>(this.baseApiUrl + '/api/StaffRoles/GetStaffRoles/');
+  }
+
 
 
   GetRefRubberTypes(): Observable<RubberType[]> {
@@ -89,7 +97,7 @@ export class ElimsService {
 
 //test
 getElimsSample(sampleId: number): Observable<any> {
-  return this.http.get<any>(this.baseApiUrl + '/api/K1Detail/getElimsSample/' + sampleId);
+  return this.http.get<any>(this.baseApiUrl + '/api/K1Detail/GetElimsSample/' + sampleId);
 }
 
 
@@ -131,6 +139,33 @@ GetRefTestMethodByRubberType(rubberTypeId: number): Observable<TestMethod> {
     return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetElimsAllBatch/'+ statusCodeId);
   }
 
+  GetDateReceivedInLab(statusCodeId:number) {
+    return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetDateReceivedInLab/'+ statusCodeId);
+  }
+
+  GetKeputusanUjian(statusCodeId:number) {
+    return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetKeputusanUjian/'+ statusCodeId);
+  }
+  // GetBatchByStatusCodeId(statusCodeId:number[]) {
+  //   return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetBatchByStatusCodeId/'+ statusCodeId);
+  // }
+  GetBatchByStatusCodeId(statusCodeIds: number[]) {
+    // Construct the query parameters
+    let params = new HttpParams();
+    statusCodeIds.forEach(id => {
+      params = params.append('statusCodeId', id.toString());
+    });
+
+    // Make the GET request with the query parameters
+    return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetBatchByStatusCodeId', { params });
+}
+
+  GetBatchByInLabBy(statusCodeId:number,inLabBy:string) {
+    return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetBatchByInLabBy/'+ statusCodeId + "/"+inLabBy);
+  }
+
+
+
   // GetElimsAllBatch(statusCodeId: number, k1Detail: K1Detail): Observable<Batch[]> {
   //   const params = new HttpParams().set('statusCodeId', statusCodeId.toString()); // Convert statusCodeId to string
   //   return this.http.get<Batch[]>(`${this.baseApiUrl}/api/Batch/GetElimsAllBatch`, { params });
@@ -154,6 +189,10 @@ GetRefTestMethodByRubberType(rubberTypeId: number): Observable<TestMethod> {
     return this.http.get<Forwarder[]>(this.baseApiUrl + '/api/Forwarders/GetForwarders');
   }
 
+  GetStatusCodes(): Observable < StatusCode[] > {
+    return this.http.get<StatusCode[]>(this.baseApiUrl + '/api/StatusCodes/GetStatusCodes');
+  }
+
 
   updateStaffProfile(staffId: number, updateProfileRequest: Staff): Observable<Staff> {
     // console.log(updateSampleRequest)
@@ -173,6 +212,11 @@ GetRefTestMethodByRubberType(rubberTypeId: number): Observable<TestMethod> {
     return this.http.get<Sample[]>(this.baseApiUrl + '/api/K1Detail/GetElimsSamplesByBatchId/' + batchId)
 
   }
+
+  GetElimsSamplesByCustomNo(customNo: string) {
+    return this.http.get<Sample[]>(this.baseApiUrl + '/api/K1Detail/GetElimsSamplesByCustomNo/' + customNo)
+  }
+
 
   GetSamplesByBatchId(batchId: number) {
     return this.http.get<any>(this.baseApiUrl + '/api/Batches/GetSamplesByBatchId/' + batchId)
@@ -196,6 +240,11 @@ GetRefTestMethodByRubberType(rubberTypeId: number): Observable<TestMethod> {
 
   PutDaftarTerimaSampel(customNo: string, k1Detail: K1Detail) {
     return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutDaftarTerimaSampel/' + customNo, k1Detail);
+  }
+
+
+  PutVerifiedResult(customNo: string, k1Detail: K1Detail) {
+    return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutVerifiedResult/' + customNo, k1Detail);
   }
 
  

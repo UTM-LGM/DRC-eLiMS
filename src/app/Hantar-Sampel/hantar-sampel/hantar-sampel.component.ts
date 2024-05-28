@@ -9,12 +9,11 @@ import 'jspdf-autotable';
 import { GetahBongkahService } from '../../services/getah-bongkah.service';
 import { ElimsService } from '../../services/elims.service';
 import { environment } from '../../environments/environment';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {  FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Staff } from '../../models/staff';
 import { K1Detail } from '../../models/k1Detail';
 import { UipRefRunNo } from 'src/app/models/uipRefRunNo';
-import { SampleType } from 'src/app/models/sampleType';
 import { UipbkhRefRunNo } from 'src/app/models/uipbkhRefRunNo';
 import { UipbkhMemoRunNo } from 'src/app/models/uipbkhMemoRunNo';
 import { UipMemoRunNo } from 'src/app/models/uipMemoRunNo';
@@ -71,7 +70,7 @@ export class HantarSampelComponent {
 
   selectedCheckboxCount: number = 0;
   rubberTypes: any
-  roleId: any;
+  userRoleId: any;
   roleForwarder: boolean
   roleUip: boolean
   roleImporter: boolean
@@ -107,7 +106,7 @@ export class HantarSampelComponent {
   groupedSamples: any[];
   resetcalculateSelectedCheckboxCount  : any[] = []
   importer: loginImporter = {} as loginImporter
-
+  daftarClicked = false;
   
   baseApiUrl: string = environment.baseApiUrlElims;
 
@@ -129,14 +128,14 @@ export class HantarSampelComponent {
     //byusername 
     if (this.authService.isloggedin()) {
       this.loginAs = this.authService.getSessionUsername()
-      this.roleId = this.authService.getSessionRole()
+      this.userRoleId = this.authService.getSessionRole()
 
     }
     else {
       this.loginAs = '';
     }
 
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       this.userService.GetUserInfo(this.loginAs).subscribe(res => {
         this.authService.changeUser(res);
         this.user = res
@@ -148,7 +147,7 @@ export class HantarSampelComponent {
 
       })
     }
-    else if (this.roleId == 2) {
+    else if (this.userRoleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authService.changeUser(res);
         this.staff = res
@@ -162,7 +161,7 @@ export class HantarSampelComponent {
     }
 
     
-    if (this.roleId == 3) {
+    if (this.userRoleId == 3) {
       this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
         console.log(res)
         this.authService.changeUser(res);
@@ -517,76 +516,145 @@ export class HantarSampelComponent {
 
 
   memo(batchData: Batch) {
-    if (this.staff.unit == "UIP") {
-      for (const sample of this.samples) {
-        let id = sample.k1DetailId;
-        const rubberTypeId = sample.rubberTypeId
-        console.log("ini maklumat sample loop : ", sample)
-        ////////////PutUipSampleRunNo/////////////
-        this.hantarSampelService.PutUipSampleRunNo(this.thisyear).subscribe(resUipRunNo => {
-          console.log(resUipRunNo)
-          this.k1Detail.sampleRunNo = "UIP/" + resUipRunNo.runNo + "/" + resUipRunNo.year
-          this.k1Detail.statusCodeId = 5
+    
+    this.daftarClicked = true;
 
-          this.hantarSampelService.PutElimsSampleBatchId(id, this.k1Detail).subscribe(
-            resBatch => {
-              console.log(this.k1Detail)
-              this.mesYaTidak = "yes";
-              console.log(resBatch)
-              this.hantarSampelService.PutUipMemoRunNo(this.thisyear).subscribe(res => {
-                this.batch.uipRegNo = "LGM/BEPP/UIP/500-5/" + res.year + "(" + res.runNo + ")";
-                this.hantarSampelService.PutBatchUipRefRunNo(batchData.batchId, this.batch).subscribe(res => { });
-                console.log(res);
-                this.router.navigateByUrl("memo/" + batchData.batchId)
-                  .then(() => {
-                  });
-              });
+    // if (this.staff.unit == "UIP") {
+      
+    //   // Iterate through sorted samples
+    //   for (const sample of this.samples) {
+    //     console.log(sample.k1DetailId);
+    //     let id = sample.k1DetailId;
+    //     console.log("ini maklumat sample loop : ", sample);
+    //     ////////////PutUipSampleRunNo/////////////
+    //     this.hantarSampelService.PutUipSampleRunNo(this.thisyear).subscribe(resUipRunNo => {
+    //       console.log(resUipRunNo);
+    //       this.k1Detail.sampleRunNo = "UIP/" + resUipRunNo.runNo + "/" + resUipRunNo.year;
+    //       this.k1Detail.statusCodeId = 5;
+    
+    //       this.hantarSampelService.PutElimsSampleBatchId(id, this.k1Detail).subscribe(
+    //         resBatch => {
+    //           console.log(this.k1Detail);
+    //           this.mesYaTidak = "yes";
+    //           console.log(resBatch);
+    //           this.hantarSampelService.PutUipMemoRunNo(this.thisyear).subscribe(res => {
+    //             this.batch.uipRegNo = "LGM/BEPP/UIP/500-5/" + res.year + "(" + res.runNo + ")";
+    //             this.hantarSampelService.PutBatchUipRefRunNo(batchData.batchId, this.batch).subscribe(res => { });
+    //             console.log(res);
+    //             this.router.navigateByUrl("memo/" + batchData.batchId)
+    //               .then(() => {
+    //               });
+    //           });
+    //         });
+    //     });
+    //   }
+    // }
+
+
+    if (this.staff.unit === "UIP") {
+      // Sorting samples by k1DetailId
+      this.samples.sort((a, b) => a.k1DetailId - b.k1DetailId);
+    
+      // Initialize promise chain with a resolved promise
+      let promiseChain = Promise.resolve();
+    
+      // Iterate through sorted samples and chain HTTP requests
+      this.samples.forEach(sample => {
+        promiseChain = promiseChain.then(() => {
+          return new Promise((resolve, reject) => {
+            this.hantarSampelService.PutUipSampleRunNo(this.thisyear).subscribe(resUipRunNo => {
+              console.log(resUipRunNo);
+              this.k1Detail.sampleRunNo = "UIP/" + resUipRunNo.runNo + "/" + resUipRunNo.year;
+              this.k1Detail.statusCodeId = 5;
+    
+              let id = sample.k1DetailId;
+              this.hantarSampelService.PutElimsSampleBatchId(id, this.k1Detail).subscribe(
+                resBatch => {
+                  console.log(this.k1Detail);
+                  this.mesYaTidak = "yes";
+                  console.log(resBatch);
+                  resolve(); // Resolve the promise to continue the chain
+                },
+                error => {
+                  reject(error); // Reject the promise if an error occurs
+                }
+              );
             });
-        })
-      }
-
-    }
-
-
-    else if (this.staff.unit == "UIPBKH") {
-      for (const sample of this.samples) {
-        let id = sample.k1DetailId;
-        const rubberTypeId = sample.rubberTypeId
-        console.log("ini maklumat sample loop : ", sample)
-        this.hantarSampelService.PutUipbkhSampleRunNo(this.thisyear).subscribe(resUipbkhRunNo => {
-          this.k1Detail.sampleRunNo = "UIPBKH/" + resUipbkhRunNo.runNo + "/" + resUipbkhRunNo.year
-          this.k1Detail.statusCodeId = 5
-          this.hantarSampelService.PutElimsSampleBatchId(id, this.k1Detail).subscribe(
-            resBatch => {
-              this.mesYaTidak = "yes";
-            }
-          );
-        })
-      }
-
-      this.hantarSampelService.PutUipbkhMemoRunNo(this.thisyear).subscribe(res => {
-        this.batch.uipRegNo = "LGM/BEPP/UIPBKH/500-5/" + res.year + "(" + res.runNo + ")";
-        this.hantarSampelService.PutBatchUipRefRunNo(batchData.batchId, this.batch).subscribe(res => { });
-        console.log(res);
-        this.router.navigateByUrl("memo/" + batchData.batchId)
-          .then(() => {
           });
+        });
+      });
+    
+      // After all HTTP requests are completed
+      promiseChain.then(() => {
+        this.hantarSampelService.PutUipMemoRunNo(this.thisyear).subscribe(res => {
+          this.batch.uipRegNo = "LGM/BEPP/UIP/500-5/" + res.year + "(" + res.runNo + ")";
+          this.hantarSampelService.PutBatchUipRefRunNo(batchData.batchId, this.batch).subscribe(res => { });
+          console.log(res);
+          this.router.navigateByUrl("memo/" + batchData.batchId)
+            .then(() => {
+              // Handle success
+            })
+            .catch(error => {
+              // Handle error
+            });
+        });
       });
     }
+  
+
+    else if (this.staff.unit == "UIPBKH") {
+
+
+        // Sorting samples by k1DetailId
+        this.samples.sort((a, b) => a.k1DetailId - b.k1DetailId);
+    
+        // Initialize promise chain with a resolved promise
+        let promiseChain = Promise.resolve();
+      
+        // Iterate through sorted samples and chain HTTP requests
+        this.samples.forEach(sample => {
+          promiseChain = promiseChain.then(() => {
+            return new Promise((resolve, reject) => {
+              this.hantarSampelService.PutUipbkhSampleRunNo(this.thisyear).subscribe(resUipbkhRunNo => {
+                console.log(resUipbkhRunNo);
+                this.k1Detail.sampleRunNo = "UIPBKH/" + resUipbkhRunNo.runNo + "/" + resUipbkhRunNo.year;
+                this.k1Detail.statusCodeId = 5;
+      
+                let id = sample.k1DetailId;
+                this.hantarSampelService.PutElimsSampleBatchId(id, this.k1Detail).subscribe(
+                  resBatch => {
+                    console.log(this.k1Detail);
+                    this.mesYaTidak = "yes";
+                    console.log(resBatch);
+                    resolve(); // Resolve the promise to continue the chain
+                  },
+                  error => {
+                    reject(error); // Reject the promise if an error occurs
+                  }
+                );
+              });
+            });
+          });
+        });
+      
+        // After all HTTP requests are completed
+        promiseChain.then(() => {
+          this.hantarSampelService.PutUipbkhMemoRunNo(this.thisyear).subscribe(res => {
+            this.batch.uipRegNo = "LGM/BEPP/UIPBKH/500-5/" + res.year + "(" + res.runNo + ")";
+            this.hantarSampelService.PutBatchUipRefRunNo(batchData.batchId, this.batch).subscribe(res => { });
+            console.log(res);
+            this.router.navigateByUrl("memo/" + batchData.batchId)
+              .then(() => {
+                // Handle success
+              })
+              .catch(error => {
+                // Handle error
+              });
+          });
+        });
+
+    }
   }
-
-
-  // calculateAmount() {
-  //   this.batch.chequeAmount = 0;
-  //   this.selectedSamples = this.samples.filter((sample) => sample.checked);
-  //   for (let sample of this.selectedSamples) {
-  //     if (sample.rubberType === 'Lateks') {
-  //       this.batch.chequeAmount += 23;
-  //     } else if (sample.rubberType === 'Getah Bongkah') {
-  //       this.batch.chequeAmount += 49;
-  //     }
-  //   }
-  // }
 
 
   calculateAmount() {
@@ -602,7 +670,7 @@ export class HantarSampelComponent {
 
 
 
-      if (this.roleId == 1 || this.roleId==3) {
+      if (this.userRoleId == 1 || this.userRoleId==3) {
 
         if (this.batch.testMethodId == 8) {
           this.batch.chequeAmount += 108;
@@ -662,27 +730,6 @@ export class HantarSampelComponent {
     this.batch.testMethodId = defaultTestMethods[this.selectedRubberType];
   }
 
-  // calculateAmount() {
-  //   this.batch.chequeAmount = 0;
-  //   this.selectedSamples = this.samples.filter((sample) => sample.checked);
-  a
-  //   for (let sample of this.selectedSamples) {
-  //     let baseAmount = 0;
-
-  //     if (sample.rubberType === 'Lateks') {
-  //       baseAmount = 26;
-  //     } else if (sample.rubberType === 'Getah Bongkah') {
-  //       baseAmount = 55;
-  //     }
-
-  //     // Apply 6% SST
-  //     const sstRate = 0.06;
-  //     const sstAmount = baseAmount * sstRate;
-
-  //     // Add the base amount and SST amount to the total cheque amount
-  //     this.batch.chequeAmount += baseAmount + sstAmount;
-  //   }
-  // }
 
   viewFile(path: string): void {
     window.open(environment.baseApiUrlElimsReceipt + this.batchId2 + "_" + path, "_blank");
@@ -698,68 +745,7 @@ export class HantarSampelComponent {
     this.selectedCheckboxCount = this.samples.length;
   }
 
-  // filterSamplesByRubberType(e: any) {
-  //   this.companies = new Set<string>();
-
-  //   if (!this.samples || this.selectedRubberType === undefined || this.selectedRubberType === null) {
-  //     // Handle the case when this.samples is undefined or null, or selectedRubberType is undefined or null
-  //     return;
-  //   }
-
-  //   this.filteredSamples = this.filteredSamplesTemp = this.samples.filter(sample => sample.rubberType === this.selectedRubberType);
-  //   console.log(this.filteredSamples);
-
-  //   // this.filteredSamples.forEach(element => {
-  //   //   this.companies.add(element.companyName) + (element.importerName) ;
-  //   //   console.log(Array.from(this.companies)); // Convert Set to Array for logging
-  //   // });
-
-
-  //   // Assuming filteredSamples is an array of objects with the properties 'importerName' and 'companyName'
-  //   this.companies = new Set<string>();
-
-  //   this.filteredSamples.forEach(element => {
-  //     const key = (element.importerName || '') + (element.companyName || '');
-  //     if (key.trim() !== '') {
-  //       this.companies.add(key);
-  //     }
-  //   });
-
-  //   console.log(Array.from(this.companies)); // Convert Set to Array for logging
-
-  //   // Update the condition to match the values of your radio buttons
-  //   if (this.selectedRubberType === "Lateks") {
-  //     this.elimsService.GetRefTestMethodByRubberType(1).subscribe(data => {
-  //       this.testMethods = data;
-  //       console.log(data);
-  //     });
-  //   } else if (this.selectedRubberType === "Getah Bongkah") {
-  //     this.elimsService.GetRefTestMethodByRubberType(2).subscribe(data => {
-  //       this.testMethods = data;
-  //       console.log(data);
-  //     });
-  //   }
-
-  //   this.showTestMethods = true;
-
-  //   this.setDefaultTestMethod();
-
-  // }
-
-
-  // filterSamplesByCompany(event: any) {
-  //   this.filteredSamples = this.filteredSamplesTemp.filter(sample => {
-  //     return (
-  //       (sample.importerName && sample.importerName.includes(event.target.value)) ||
-  //       (sample.companyName && sample.companyName.includes(event.target.value))
-  //     );
-  //   });
-  //   console.log('Filtered samples:', this.filteredSamples);
-  // }
-
-
-
-
+ 
 
   filterSamplesByRubberType(e: any) {
 

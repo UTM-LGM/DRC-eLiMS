@@ -7,9 +7,9 @@
     <div *ngIf="!afterLogin" class="w-12 m-0 p-0">
       <b>Sila pilih log masuk di bawah :</b><br><br>
 
-      <div *ngFor=" let role of roles">
+      <div *ngFor=" let role of userRoles">
         <button type="button" class="btn btn-block btn-outline-secondary btn-login" style="border: none;"
-          (click)="displayLogin(role.roleId)">{{role.role1}}</button>
+          (click)="displayLogin(role.roleId)">{{role.role}}</button>
       </div>
     </div>
 
