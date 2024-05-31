@@ -1,22 +1,24 @@
 <div class="container mb-3">
 
 
-  <div align="end">
-    <button class="btn btn-primary" (click)="print()" style="margin-right: 10px;"> <i class="fa-solid fa-print"
-        style="color: #ffffff;"></i> Cetak</button>
 
+  <div align="end">
+    <button class="btn btn-primary" [disabled]="printing" (click)="print()">
+      <i class="fa-solid fa-print" style="color: #ffffff;"></i> Cetak
+    </button>
   </div>
 
 
+  <div id="page1-div" id="pdfContent" >
   <mat-card>
     <div class="sample" #pdfContent>
-      <ng-container *ngFor="let companyGroup of groupedSamples; let isFirst = first" tyle="page-break-before: always;">
 
-        <div id="page1-div" id="pdfContent" style="position: relative; width: auto; height: auto;">
+      <ng-container *ngFor="let companyGroup of groupedSamples; let isFirst = first" >
+      <!-- <ng-container *ngFor="let companyGroup of groupedSamples; let isFirst = first" style="page-break-before: absolute;"> -->
 
-          <mat-card-content>
+          <mat-card-content >
 
-            <div class="company-group" [class.first-group]="isFirst">
+            <div class="company-group" [class.first-group]="isFirst" style="position: relative; width: 892px; height: 1140px;  padding-top:155px">
 
               <div class="mat-card-container">
                 <div>
@@ -78,7 +80,7 @@
                 </table><br>
                   </div>
 
-                  <table class="table table-light">
+                  <table style="width:100%" class="listTable">
                     <thead>
                       <tr>
                         <th scope="col">No</th>
@@ -97,28 +99,46 @@
                     </tbody>
                   </table>
 
-                  Bayaran ujian sebanyak {{k1Details[0].chequeAmount}} telah dibuat melalui cek
+                  <p>Bayaran ujian sebanyak {{k1Details[0].chequeAmount}} telah dibuat melalui cek
                   {{k1Details[0].bankName}}-{{k1Details[0].chequeNo}}. <br>
-                  Keputusan ini hanya merujuk kepada sampel yang diterima dan diuji seperti di atas sahaja.<br><br>
+                  Keputusan ini hanya merujuk kepada sampel yang diterima dan diuji seperti di atas sahaja.<br><br></p>
+                  <div *ngIf="companyGroup.items.length<=8">
+                    <div style="margin-top: 200px;">
+                      <p><b>"BERKHIDMAT UNTUK NEGARA"</b></p>
+    
+                      {{k1Details[0].resultLetterApprovedBy}}<br>
+                      (IKM No : {{k1Details[0].ikmNo}} )<br>
+                      {{k1Details[0].staffPosition}} <br>
+                      Lembaga Getah Malaysia<br>
+                      b/p Ketua Pengarah<br>
+    
+                    </div>
+                  </div>
+                  <div *ngIf="companyGroup.items.length>8">
+                    <div>
+                      <p><b>"BERKHIDMAT UNTUK NEGARA"</b></p>
+    
+                      {{k1Details[0].resultLetterApprovedBy}}<br>
+                      (IKM No : {{k1Details[0].ikmNo}} )<br>
+                      {{k1Details[0].staffPosition}} <br>
+                      Lembaga Getah Malaysia<br>
+                      b/p Ketua Pengarah<br>
+    
+                    </div>
+                  </div>
 
-                  <p><b>"BERKHIDMAT UNTUK NEGARA"</b></p>
-
-                  {{k1Details[0].resultLetterApprovedBy}}<br>
-                  (IKM No : {{k1Details[0].ikmNo}} )<br>
-                  {{k1Details[0].staffPosition}} <br>
-                  Lembaga Getah Malaysia<br>
-                  b/p Ketua Pengarah<br>
-
+                 
+                  
                 </div>
               </div>
             </div>
           </mat-card-content>
-        </div>
-
-      </ng-container> 
-    </div><hr>
-    
-  </mat-card>
+        </ng-container> 
+        
+      </div>
+      
+    </mat-card>
+  </div>
 
  
 

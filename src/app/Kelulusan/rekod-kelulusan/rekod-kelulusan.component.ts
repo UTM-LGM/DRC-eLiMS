@@ -113,7 +113,7 @@ export class RekodKelulusanComponent {
       });
     }
 
-    this.statusCodeId = 10;
+    this.statusCodeId = 8;
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       this.batches = data;
       console.log(this.batches[0].samples);
@@ -167,14 +167,14 @@ export class RekodKelulusanComponent {
     this.k1Detail.creatorRoleId= this.samples.creatorRoleId;
 
     const id = this.samples.k1DetailId;
-    // this.cetakKeputusanService.PutApproved(id, this.k1Detail).subscribe(
-    //   res => {
-    //     this.toastr.success('Berjaya merekod keputusan', 'Berjaya');
-    //   },
-    //   error => {
-    //     console.error('Failed to record decision', error);
-    //   }
-    // );
+    this.cetakKeputusanService.PutApproved(id, this.k1Detail).subscribe(
+      res => {
+        this.toastr.success('Berjaya merekod keputusan', 'Berjaya');
+      },
+      error => {
+        console.error('Failed to record decision', error);
+      }
+    );
 
 
     //this.emailRecipient = ["nurizzatul@lgm.gov.my"];
@@ -194,7 +194,7 @@ export class RekodKelulusanComponent {
 
 
     if (this.k1Detail.creatorRoleId == 2) {
-    this.rekodKelulusanService.uipNotificationResultLetter(this.staff.staffId, this.batchId, this.emailRecipient).subscribe(
+    this.rekodKelulusanService.uipNotificationResultLetter(this.staff.staffId, id, this.emailRecipient).subscribe(
       () => {
         console.log("Email for request status 009 has been sent to the recipients");
 

@@ -45,84 +45,85 @@ import { LaporanTahapKecekapanComponent } from './Laporan/laporan-tahap-kecekapa
 import { LaporanKgkComponent } from './Laporan/laporan-kgk/laporan-kgk.component';
 import { TarikhTerimaSampelComponent } from './Daftar-Sampel/tarikh-terima-sampel/tarikh-terima-sampel.component';
 import { LaporanBilHariComponent } from './Laporan/laporan-bil-hari/laporan-bil-hari.component';
+import { CetakComponent } from './cetak/cetak.component';
 
 
 
 const routes: Routes = [
   {
-    path : "Elims", component:HomeComponent, pathMatch: "full"
+    path: "Elims", component: HomeComponent, pathMatch: "full"
   },
 
-  
+
   {
-    path:'home',
-    component: HomeComponent, canActivate:[AuthGuardService]
+    path: 'home',
+    component: HomeComponent, canActivate: [AuthGuardService]
   },
 
   {
-    path:'register',
+    path: 'register',
     component: RegisterComponent
   },
 
   {
-    path:'sample',
-    component: ElimsSenaraiSampelComponent, canActivate:[AuthGuardService]
+    path: 'sample',
+    component: ElimsSenaraiSampelComponent, canActivate: [AuthGuardService]
   },
 
   {
-    path:'daftar-sampel',
-    component: DaftarSampelComponent, canActivate:[AuthGuardService]
+    path: 'daftar-sampel',
+    component: DaftarSampelComponent, canActivate: [AuthGuardService]
   },
 
   {
-    path:'sample/edit/:k1DetailId',
-    component: SuntingSampelComponent, canActivate:[AuthGuardService]
+    path: 'sample/edit/:k1DetailId',
+    component: SuntingSampelComponent, canActivate: [AuthGuardService]
   },
 
   {
-    path:'cetak-label',
-    component: CetakLabelComponent, canActivate:[AuthGuardService]
-  },
-  
-  {
-    path:'ulang-cetak-label',
-    component: UlangCetakLabelComponent, canActivate:[AuthGuardService]
+    path: 'cetak-label',
+    component: CetakLabelComponent, canActivate: [AuthGuardService]
   },
 
   {
-    path:'ulang-cetak-label',
-    component: UlangCetakLabelComponent, canActivate:[AuthGuardService]
+    path: 'ulang-cetak-label',
+    component: UlangCetakLabelComponent, canActivate: [AuthGuardService]
   },
 
   {
-    path:'hantar-sampel',
-    component: HantarSampelComponent, canActivate:[AuthGuardService]
+    path: 'ulang-cetak-label',
+    component: UlangCetakLabelComponent, canActivate: [AuthGuardService]
   },
 
   {
-    path:'keputusan-ujian',
-    component: KeputusanUjianComponent, canActivate:[AuthGuardService]
+    path: 'hantar-sampel',
+    component: HantarSampelComponent, canActivate: [AuthGuardService]
   },
 
   {
-    path:'sample/view-sample/:k1DetailId',
-    component: ViewSampleComponent, canActivate:[AuthGuardService]
+    path: 'keputusan-ujian',
+    component: KeputusanUjianComponent, canActivate: [AuthGuardService]
   },
 
   {
-    path:'sample/view-keputusan-ujian/:k1DetailId',
-    component: ViewKeputusanUjianComponent, canActivate:[AuthGuardService]
+    path: 'sample/view-sample/:k1DetailId',
+    component: ViewSampleComponent, canActivate: [AuthGuardService]
+  },
+
+  {
+    path: 'sample/view-keputusan-ujian/:k1DetailId',
+    component: ViewKeputusanUjianComponent, canActivate: [AuthGuardService]
   },
 
 
   {
-    path:'tarikh-sampel-dihantar',
-    component: TarikhSampelDihantarComponent, canActivate:[AuthGuardService]
+    path: 'tarikh-sampel-dihantar',
+    component: TarikhSampelDihantarComponent, canActivate: [AuthGuardService]
   },
 
   {
-    path:'daftar-sampel-smk',
-    component: DaftarSampelSMKComponent, canActivate:[AuthGuardService]
+    path: 'daftar-sampel-smk',
+    component: DaftarSampelSMKComponent, canActivate: [AuthGuardService]
   },
 
   {
@@ -132,12 +133,12 @@ const routes: Routes = [
 
   {
     path: 'profile',
-    component: ProfileComponent, canActivate:[AuthGuardService]
+    component: ProfileComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'form-profile',
-    component: FormProfileComponent, canActivate:[AuthGuardService]
+    component: FormProfileComponent, canActivate: [AuthGuardService]
   },
 
   // {
@@ -147,7 +148,7 @@ const routes: Routes = [
 
   {
     path: 'memo/:batchId',
-    component: MemoComponent
+    component: MemoComponent, canActivate: [AuthGuardService]
   },
 
   // {
@@ -162,182 +163,187 @@ const routes: Routes = [
 
   {
     path: 'print-memo/:batchId',
-    component: PrintMemoComponent
+    component: PrintMemoComponent, canActivate: [AuthGuardService]
   },
 
   //route GTACR
   {
     path: 'daftar-terima-sampel',
-    component: DaftarTerimaSampelComponent
+    component: DaftarTerimaSampelComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'daftar-terima-sampel/:batchId',
-    component: DaftarTerimaSampelComponent
+    component: DaftarTerimaSampelComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'sampel-belum-terima/:batchId/',
-    component: SampelBelumTerimaComponent
+    component: SampelBelumTerimaComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'cetak-lembaran-kerja',
-    component: CetakLembaranKerjaComponent
+    component: CetakLembaranKerjaComponent, canActivate: [AuthGuardService]
   },
-  
+
 
   {
     path: 'surat-iringan',
-    component: SuratIringanComponent
+    component: SuratIringanComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'lampiran',
-    component: LampiranComponent
+    component: LampiranComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'lampiran/:batchId',
-    component: LampiranComponent
+    component: LampiranComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'surat-iringan/:batchId',
-    component: SuratIringanComponent
+    component: SuratIringanComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'cetak-lembaran-kerja/cetak-worksheet/:k1DetailId',
-    component: CetakWorksheetComponent
+    component: CetakWorksheetComponent, canActivate: [AuthGuardService]
   },
 
-  
+
   {
     path: 'ulang-cetak-lembaran-kerja',
-    component: UlangCetakLembaranKerjaComponent
+    component: UlangCetakLembaranKerjaComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'surat-iringan/:batchId/:username',
-    component: SuratIringanComponent
+    component: SuratIringanComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'uji-sampel',
-    component: UjiSampelComponent
+    component: UjiSampelComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'rekod-keputusan',
-    component: RekodKeputusanComponent
+    component: RekodKeputusanComponent, canActivate: [AuthGuardService]
   },
-  
+
 
   {
     path: 'sah-keputusan',
-    component: SahKeputusanComponent
+    component: SahKeputusanComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'cetak-worksheet',
-    component: CetakWorksheetComponent
+    component: CetakWorksheetComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'cetak-keputusan',
-    component: CetakKeputusanComponent
+    component: CetakKeputusanComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'cetak-surat-keputusan',
-    component: CetakSuratKeputusanComponent
+    component: CetakSuratKeputusanComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'pos-keputusan',
-    component: PosKeputusanComponent
+    component: PosKeputusanComponent, canActivate: [AuthGuardService]
   },
 
 
   {
     path: 'rekod-kelulusan',
-    component: RekodKelulusanComponent
+    component: RekodKelulusanComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'detail-keputusan',
-    component: CetakKeputusanComponent
+    component: CetakKeputusanComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'pdf-cetak-keputusan',
-    component: PdfCetakKeputusanComponent
+    component: PdfCetakKeputusanComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'sampel-simpanan-lgm',
-    component: SampelSimpananLgmComponent
+    component: SampelSimpananLgmComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'pdf-cetak-keputusan-uip',
-    component: PdfCetakKeputusanUipComponent
+    component: PdfCetakKeputusanUipComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'keputusan-ujian-pelulus',
-    component: KeputusanUjianPelulusComponent
+    component: KeputusanUjianPelulusComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'ulang-keputusan-ujian',
-    component:UlangKeputusanUjianComponent
+    component: UlangKeputusanUjianComponent, canActivate: [AuthGuardService]
   },
 
 
 
   {
     path: 'laporan-bil-sampel',
-    component:LaporanBilSampelComponent
+    component: LaporanBilSampelComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'laporan-penguji',
-    component:LaporanPengujiComponent
+    component: LaporanPengujiComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'laporan-statistik',
-    component:LaporanStatistikComponent
+    component: LaporanStatistikComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'laporan-kuantiti',
-    component:LaporanKuantitiComponent
+    component: LaporanKuantitiComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'laporan-tahap-kecekapan',
-    component:LaporanTahapKecekapanComponent
+    component: LaporanTahapKecekapanComponent, canActivate: [AuthGuardService]
   },
 
   {
     path: 'laporan-kgk',
-    component:LaporanKgkComponent
-  },
-  
-  {
-    path: 'tarikh-terima-sampel',
-    component:TarikhTerimaSampelComponent
-  },
-  
-  {
-    path: 'laporan-bil-hari',
-    component:LaporanBilHariComponent
+    component: LaporanKgkComponent, canActivate: [AuthGuardService]
   },
 
-  
+  {
+    path: 'tarikh-terima-sampel',
+    component: TarikhTerimaSampelComponent, canActivate: [AuthGuardService]
+  },
+
+  {
+    path: 'laporan-bil-hari',
+    component: LaporanBilHariComponent, canActivate: [AuthGuardService]
+  },
+
+  {
+    path: 'cetak-keputusan/cetak',
+    component: CetakComponent, canActivate: [AuthGuardService]
+  },
+
+
 ];
 
 @NgModule({

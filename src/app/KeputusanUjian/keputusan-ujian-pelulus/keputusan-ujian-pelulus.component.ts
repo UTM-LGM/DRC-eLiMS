@@ -97,7 +97,7 @@ export class KeputusanUjianPelulusComponent {
         this.roleGtacr = true
       })
     }
-    this.statusCodeId = 13;
+    this.statusCodeId = 11;
     this.elimsService.GetKeputusanUjian(this.statusCodeId).subscribe(data => {
       this.batches = data;
 

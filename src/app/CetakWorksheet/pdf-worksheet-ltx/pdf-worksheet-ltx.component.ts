@@ -26,7 +26,7 @@ export class PdfWorksheetLtxComponent {
 
 
   constructor(
-    private elimsService: ElimsService,
+
     private authService: AuthService,
     private userService: UserService,
 

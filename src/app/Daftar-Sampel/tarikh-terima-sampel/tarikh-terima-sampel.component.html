@@ -273,12 +273,12 @@
                 </div>
                 <div class="col-lg-4">
                     <input type="date" class="form-control" id="dateReceivedInLab" name="dateReceivedInLab"
-                        [(ngModel)]="k1Detail.dateReceivedInLab"><br>
+                        [(ngModel)]="k1Detail.dateReceivedInLab"(change)="onDateChange($event)"><br>
                 </div>
             </div><br>
 
             <div align="end">
-                <button type="submit" class="btn btn-primary mr-5">Terima</button>
+                <button type="submit" class="btn btn-primary mr-5"  [disabled]="!isDateSelected">Terima</button>
             </div><br>
         </form><br>
 

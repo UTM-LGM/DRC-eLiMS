@@ -46,9 +46,9 @@ export class CetakWorksheetComponent {
 
 
   callGeneratePdf(){
-    setTimeout(() => {
+    // setTimeout(() => {
       this.generatePdf();
-    }, 1000); // Adjust the delay as needed
+    // }, 1000); // Adjust the delay as needed
   }
 
 
@@ -81,7 +81,7 @@ export class CetakWorksheetComponent {
     };
 
     // Replace the original content with the modified content
-    element.innerHTML = styledContent;
+    element.innerHTML;
 
     // Generate PDF
     html2pdf().from(element).set(opt).outputPdf().then((pdfBlob) => {

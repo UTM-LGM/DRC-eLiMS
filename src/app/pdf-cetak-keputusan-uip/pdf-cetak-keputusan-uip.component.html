@@ -2,36 +2,39 @@
 
 
     <div align="end">
-        <button class="btn btn-primary" (click)="print()" style="margin-right: 10px;"> <i class="fa-solid fa-print"
-                style="color: #ffffff;"></i> Cetak</button>
+        <button id="printButton"class="btn btn-primary" (click)="print()" style="margin-right: 10px;"> <i class="fa-solid fa-print"
+                style ="color: #ffffff;"></i> Cetak</button>
     </div>
 
+    <div id="page1-div" id="pdfContent" style="position: relative; width: auto; height: auto;">
 
     <mat-card>
         <div class="sample" #pdfContent>
             <mat-card-content>
-                <div class="mat-card-container">
+                <div class="mat-card-container " >
                     <div>
+                        <div class="container mb-100" style="margin-top: 155px;">
+                            <!-- Your existing content here -->
+                        </div>
+                        
 
-                        <!-- Our report no : LGM/BKPT/G-TACR/7.8/{{k1Details[0].labRefNo}}/0063-0072<br> -->
-                        <!-- Our report no : LGM/BKPT/G-TACR/7.8/{{generateReportNo(k1Details[0].labRefNo)}}<br> -->
-                        Our report no : LGM/BKPT/G-TACR/7.8/{{ generateReportNo(k1Details) }}<br>
+                        <p>Our report no : LGM/BKPT/G-TACR/7.8/{{ generateReportNo(k1Details) }}<br>
 
                         Your Reference :{{k1Details[0].uipRegNo}}<br><br>
 
 
-                        {{ today | date :'dd MMM yyyy'}}<br>
+                        {{ today | date :'dd MMM yyyy'}}<br></p>
 
-                        <p>Attn. : {{k1Details[0].staffName}}</p><br>
+                        <p>Attn. : {{k1Details[0].staffName}}</p>
 
 
-                        Pejabat LGM Blok E,<br>
+                        <p>Pejabat LGM Blok E,<br>
                         Aras 1 , Kompleks ICQS,<br>
                         06050 Bukit Kayu Hitam,<br>
                         Kedah, Malaysia. <br><br>
 
 
-                        ANALYTICAL REPORT <br>
+                        ANALYTICAL REPORT <br></p>
 
                         <p>We report the following results ; </p><br />
 
@@ -46,7 +49,7 @@
                             </span>
 
                         </p> -->
-                        <table>
+                        <table class="infoTable">
                             <tr>
                                 <td>Your Letter dated</td>
                                 <td>
@@ -117,15 +120,15 @@
 
 
                         
-                        <table class="table table-light">
+                        <table class="listTable">
                             <thead>
                                 <tr>
                                     <th scope="col">No</th>
-                                    <th scope="col">No. Daftar LGM</th>
-                                    <th scope="col">No. Daftar LGM</th>
-                                    <th scope="col">Tarikh Import</th>
-                                    <th scope="col">Jenis Getah</th>
-                                    <th scope="col">Keputusan Ujian KGK (% Berat)</th>
+                                    <th scope="col">LGM Ref No</th>
+                                    <th scope="col">Custom No.</th>
+                                    <th scope="col">Imported Date</th>
+                                    <th scope="col">Rubber Type</th>
+                                    <th scope="col">Result  KGK (% Weight)</th>
 
                                 </tr>
                             </thead>
@@ -136,9 +139,9 @@
                                         <td  *ngIf="k1Detail.rubberTypeId == 2">SS/{{k1Detail.sampleRunNo}}</td> -->
                                         <td>{{k1Detail.labRefNo}}</td>
                                         <td>{{k1Detail.customNo}}</td>
-                                        <td>{{k1Detail.result}}</td>
+                                        <td>{{k1Detail.importedDate| date: 'dd MMMM yyyy'}}</td>
+                                        <td>{{k1Detail.rubberType}}</td>
                                     <td>{{k1Detail.result}}</td>
-                                    <td>{{k1Detail.testedOn | date: 'dd MMMM yyyy'}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -146,24 +149,25 @@
 
                         <br>
 
-                        <p>The test result produced based on the sample received.</p><br>
+                        <p>The test result produced based on the sample received.</p>
 
-                        <b>"MALAYSIA MADANI"<br>
+                        <p><b>"MALAYSIA MADANI"<br>
                             "BERKHIDMAT UNTUK NEGARA"<br>
-                            "KREATIF, INOVATIF, PROGRESIF"<br><br></b>
+                            "KREATIF, INOVATIF, PROGRESIF"<br><br></b></p>
 
 
                         <p>Saya yang menjalankan amanah,</p><br>
 
-                        {{k1Details[0].resultLetterApprovedBy}}<br>
+                        <p>{{k1Details[0].resultLetterApprovedBy}}<br>
                         (IKM No : {{k1Details[0].ikmNo}} )<br>
                         {{k1Details[0].staffPosition}} <br>
                         Lembaga Getah Malaysia<br>
-                        b/p Ketua Pengarah<br>
+                        b/p Ketua Pengarah<br></p>
 
                     </div>
                 </div>
             </mat-card-content>
         </div>
     </mat-card>
+    </div>
 </div>

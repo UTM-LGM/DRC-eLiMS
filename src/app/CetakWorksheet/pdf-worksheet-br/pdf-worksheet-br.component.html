@@ -8,11 +8,11 @@
 </head>
 
 <body bgcolor="#A0A0A0" vlink="blue" link="blue">
-<div id="page1-div" style="position:relative;width:892px;height:1263px;">
+<div id="page1-div" style="position:relative;width:892px;height:1123px;">
 
-<img width="892" height="1263" src="assets/image/target0.jpg" alt="background image"/>
-<p style="position:absolute;top:206px;left:54px;white-space:nowrap" class="ft12">No. rujukan sampel : {{ k1Detail.labRefNo}} <br/><br/>PERINGATAN! Pastikan suhu oven 70 deg C sebelum masukkan sampel.<br/></p>
-<p style="position:absolute;top:127px;left:117px;white-space:nowrap" class="ft10">{{ k1Detail.testMethod }}</p>
+<img width="892" height="1123" src="assets/image/target0.jpg" alt="background image"/>
+<p style="position:absolute;top:195px;left:54px;white-space:nowrap" class="ft12">No. rujukan sampel : {{ k1Detail.labRefNo}} <br/><br/>PERINGATAN! Pastikan suhu oven 70 deg C sebelum masukkan sampel.<br/></p>
+<p style="position:absolute;top:127px;left:53px;white-space:nowrap" class="ft10">{{ k1Detail.testMethod }}</p>
 <p style="position:absolute;top:91px;left:286px;white-space:nowrap" class="ft10">LEMBAGA GETAH MALAYSIA</p>
 <p style="position:absolute;top:118px;left:376px;white-space:nowrap" class="ft10">G-TACR</p>
 <p style="position:absolute;top:145px;left:259px;white-space:nowrap" class="ft10">UNIT KANDUNGAN GETAH KERING</p>
@@ -23,18 +23,22 @@
     <img [src]="qrCodeDataUrl" alt="QR Code">
   </p>
 <p style="position:absolute;top:190px;left:670px;white-space:nowrap" class="ft11">{{ k1Detail.customNo }}</p>
-<p style="position:absolute;top:307px;left:135px;white-space:nowrap" class="ft12">Penimbang Id<br/>Ketuhar Id<br/>Masa/Suhu masuk<br/>Masa/Suhu keluar</p>
-<p style="position:absolute;top:418px;left:135px;white-space:nowrap" class="ft12">Berat Getah 1<br/>Berat Getah 2</p>
+<p style="position:absolute;top:267px;left:135px;white-space:nowrap" class="ft12">Penimbang Id<br/>Ketuhar Id<br/>Masa/Suhu masuk<br/>Masa/Suhu keluar</p>
+<p style="position:absolute;top:370px;left:135px;white-space:nowrap" class="ft12">Berat Getah 1<br/>Berat Getah 2</p>
 
-<p style="position:absolute;top:490px;left:135px;white-space:nowrap" class="ft12">TIMBANGAN PERTAMA<br/>Berat Getah Kering 1<br/>Berat Getah Kering 2</p>
+<p style="position:absolute;top:433px;left:135px;white-space:nowrap" class="ft12">TIMBANGAN PERTAMA<br/>Berat Getah Kering 1<br/>Berat Getah Kering 2</p>
 
-<p style="position:absolute;top:586px;left:135px;white-space:nowrap" class="ft12">TIMBANGAN KEDUA<br/>Berat Getah Kering 1<br/>Berat Getah Kering 2</p>
+<p style="position:absolute;top:520px;left:135px;white-space:nowrap" class="ft12">TIMBANGAN KEDUA<br/>Berat Getah Kering 1<br/>Berat Getah Kering 2</p>
 
-<p style="position:absolute;top:682px;left:135px;white-space:nowrap" class="ft12">% KANDUNGAN GETAH KERING<br/>Anggaran pertama<br/>Anggaran kedua<br/>Purata<br/>Catatan</p>
-<p style="position:absolute;top:817px;left:135px;white-space:nowrap" class="ft12">Nama<br/>Tandatangan<br/>Tarikh Ujian</p>
+<p style="position:absolute;top:605px;left:135px;white-space:nowrap" class="ft12">% KANDUNGAN GETAH KERING</p>
+<p style="position:absolute;top:628px;left:135px;white-space:nowrap" class="ft12">Anggaran pertama</p>
+<p style="position:absolute;top:650px;left:135px;white-space:nowrap" class="ft12">Anggaran kedua</p>
+<p style="position:absolute;top:670px;left:135px;white-space:nowrap" class="ft12">Purata</p>
+<p style="position:absolute;top:690px;left:135px;white-space:nowrap" class="ft12">Catatan</p>
+<p style="position:absolute;top:723px;left:135px;white-space:nowrap" class="ft12">Nama<br/>Tandatangan<br/>Tarikh Ujian</p>
 
-<p style="position:absolute;top:900px;left:54px;white-space:nowrap" class="ft12">Nama Penguji : {{ staff.username}} <br/></p>
-<p style="position:absolute;top:925px;left:54px;white-space:nowrap" class="ft12">Tarikh untuk Menguji: {{ k1Detail.worksheetTestOn| date: 'dd-MM-yyyy' }} <br/></p>
+<p style="position:absolute;top:840px;left:54px;white-space:nowrap" class="ft12">Nama Penguji : {{ staff.username}} <br/></p>
+<p style="position:absolute;top:810px;left:54px;white-space:nowrap" class="ft12">Tarikh untuk Menguji: {{ k1Detail.worksheetTestOn| date: 'dd-MM-yyyy' }} <br/></p>
 
 </div>
 

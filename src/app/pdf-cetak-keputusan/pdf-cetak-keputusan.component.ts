@@ -30,6 +30,8 @@ export class PdfCetakKeputusanComponent {
 
   groupedSamples: any[]; // Add this variable
   samples: any;
+  printing: boolean = false;
+  
   @ViewChild('pdfContent') pdfContent!: ElementRef;
   
     constructor(
@@ -96,11 +98,9 @@ export class PdfCetakKeputusanComponent {
   }
 
 
-  generatePdf(): void { 
-    // this.isPreview = false;
-    const element = document.getElementById('pdfContent2');
+  generatePdf(): void {
+    const element = document.getElementById('pdfContent');
   
-    // Check if the element is null before proceeding
     if (!element) {
       console.error("Element with ID 'pdfContent' not found.");
       return;
@@ -112,7 +112,7 @@ export class PdfCetakKeputusanComponent {
   
     var opt = {
       margin: [1.5, 0.5, 0.5, 0.5],
-      filename: 'Lampiran.pdf',
+      filename: 'cetakKeputusan.pdf',
       html2canvas: { scale: 2 },
       jsPDF: { 
         unit: 'in', 
@@ -120,32 +120,99 @@ export class PdfCetakKeputusanComponent {
         orientation: 'portrait', 
         font: 'times', 
       },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+      enableLinks: true
     };
   
     // Replace the original content with the modified content
     element.innerHTML = styledContent;
   
-    // Generate PDF
-    html2pdf().from(element).set(opt).outputPdf().then((pdfBlob) => {
+    // Generate PDF with page numbers
+    html2pdf().from(element).set(opt).toPdf().get('pdf').then(function (pdf) {
+      const totalPages = pdf.internal.getNumberOfPages();
+  
+      for (let i = 1; i <= totalPages; i++) {
+        pdf.setPage(i);
+        pdf.setFontSize(10);
+        pdf.text(`Page ${i} of ${totalPages}`, pdf.internal.pageSize.getWidth() / 2, pdf.internal.pageSize.getHeight() - 0.5, {
+          align: 'center'
+        });
+      }
+    }).save().then(() => {
       // Restore the original content
       element.innerHTML = content;
-  
-      // Save the blob or trigger a download as needed
-      const downloadLink = document.createElement('a');
-      downloadLink.href = URL.createObjectURL(pdfBlob);
-      downloadLink.download = 'suratIringan.pdf';
-      downloadLink.click();
-    });html2pdf(element, opt);
+    });
   }
   
   
+
+
+  // print() {
+
+  //   const printContents = this.pdfContent?.nativeElement.innerHTML;
+  //   const originalContents = document.body.innerHTML;
+  //   document.body.innerHTML = printContents;
+  //   window.print();
+  //   document.body.innerHTML = originalContents;
+  //   this.printing = false; // Enable the button after printing is done
+  // }
+
+
+
+
   print() {
     const printContents = this.pdfContent?.nativeElement.innerHTML;
-    const originalContents = document.body.innerHTML;
-    document.body.innerHTML = printContents;
-    window.print();
-    document.body.innerHTML = originalContents;
+    const printWindow = window.open('', '_blank');
+
+    if (printWindow) {
+      // Write the contents to the new tab
+      printWindow.document.open();
+      printWindow.document.write(`
+            <html>
+            <head>
+                <title>DRC-eLiMS</title>
+                <style>
+                body, p,th,td {
+                  font-family: Arial, sans-serif;
+                  font-size: 14pt;               
+              }
+
+              td,
+              th, p {
+   
+                font-size: 17px !important;
+                white-space: normal;
+                // word-wrap: break-word;
+                // max-width: 300px;
+              }
+              .listTable td, .listTable th {
+                border: 1px solid black;
+                border-collapse: collapse; 
+                padding: 7px;
+                /* Add padding here */
+              }
+              table {
+                border-collapse: collapse;
+              }
+
+           
+                </style>
+            </head>
+            <body>
+                ${printContents}
+            </body>
+            </html>
+        `);
+      printWindow.document.close();
+
+      // Print the contents of the new tab
+      printWindow.print();
+    } else {
+      alert('Unable to open print preview. Please check your browser settings or popup blockers.');
+    }
   }
+
+
 
 
 //   print() {

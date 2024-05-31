@@ -92,7 +92,7 @@ export class CetakLembaranKerjaComponent {
       this.loadBatches();
     }
 
-    this.statusCodeId = 6;
+    this.statusCodeId = 4;
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       this.batches = data;
       console.log(data)
@@ -158,7 +158,7 @@ export class CetakLembaranKerjaComponent {
     uniqueCustomNos.forEach(customNo => {
       this.elimsService.GetElimsSamplesByCustomNo(customNo).subscribe(res => {
         console.log(res);
-        this.selectedSamples.push(...res.filter(sample => sample.statusCodeId === 6));
+        this.selectedSamples.push(...res.filter(sample => sample.statusCodeId === 4));
       });
     });
   }

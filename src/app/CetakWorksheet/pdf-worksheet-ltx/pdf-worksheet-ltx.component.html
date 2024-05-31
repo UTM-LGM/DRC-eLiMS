@@ -9,32 +9,38 @@
 
 </style>
 </head>
+
 <body bgcolor="#A0A0A0" vlink="blue" link="blue">
-<div id="page1-div" style="position:relative;width:892px;height:1263px;">
-<img width="892" height="1263" src="assets/image/targetLtx.png" alt="background image"/>
-<p style="position:absolute;top:68px;left:54px;white-space:nowrap" class="ft10">TFORM 1 Ammd. 1 (1998)</p>
-<p style="position:absolute;top:206px;left:54px;white-space:nowrap" class="ft12">No. rujukan sampel :&#160; {{ k1Detail.labRefNo}} &#160;&#160;<br/>&#160;</p>
-<p style="position:absolute;top:740px;left:54px;white-space:nowrap" class="ft10">Suhu pengeringan: 70°C ± 2°C</p>
-<p style="position:absolute;top:115px;left:117px;white-space:nowrap" class="ft12">{{ k1Detail.testMethod}}<br/>ISO 126</p>
-<p style="position:absolute;top:98px;left:286px;white-space:nowrap" class="ft10">LEMBAGA GETAH MALAYSIA</p>
-<p style="position:absolute;top:125px;left:376px;white-space:nowrap" class="ft10">G-TACR</p>
-<p style="position:absolute;top:152px;left:259px;white-space:nowrap" class="ft10">UNIT KANDUNGAN GETAH KERING</p>
-<p style="position:absolute;top:179px;left:385px;white-space:nowrap" class="ft10">(DRC)</p>
-<p style="position:absolute;top:80px;left:660px;white-space:nowrap" class="ft11">
+<div id="page1-div" style="position:relative;width:892px;height:1123px;">
+<img width="892" height="1123" src="assets/image/targetLtx.png" alt="background image"/>
+<p style="position:absolute;top:68px;left:54px;" class="ft10">TFORM 1 Ammd. 1 (1998)</p>
+<p style="position:absolute;top:190px;left:54px;" class="ft12">No. rujukan sampel :&#160; {{ k1Detail.labRefNo}} &#160;&#160;<br/>&#160;</p>
+<p style="position:absolute;top:670px;left:54px;" class="ft10">Suhu pengeringan: 70°C ± 2°C</p>
+<p style="position:absolute;top:115px;left:52px;" class="ft12">{{ k1Detail.testMethod}}<br/></p>
+<p style="position:absolute;top:80px;left:286px;" class="ft10">LEMBAGA GETAH MALAYSIA</p>
+<p style="position:absolute;top:107px;left:376px;" class="ft10">G-TACR</p>
+<p style="position:absolute;top:134px;left:259px;" class="ft10">UNIT KANDUNGAN GETAH KERING</p>
+<p style="position:absolute;top:161px;left:385px;" class="ft10">(DRC)</p>
+<p style="position:absolute;top:80px;left:660px;" class="ft11">
     <img [src]="qrCodeDataUrl" alt="QR Code">
   </p>
-<p style="position:absolute;top:190px;left:673px;white-space:nowrap" class="ft11">*{{ k1Detail.customNo }}*</p>
-<p style="position:absolute;top:244px;left:135px;white-space:nowrap" class="ft12">Berat Susu 1<br/>Berat Susu 2</p>
-<p style="position:absolute;top:299px;left:449px;white-space:nowrap" class="ft10">.</p>
-<p style="position:absolute;top:316px;left:135px;white-space:nowrap" class="ft12">TIMBANGAN PERTAMA<br/>Berat Getah Kering 1<br/>Berat Getah Kering 2</p>
-<p style="position:absolute;top:395px;left:449px;white-space:nowrap" class="ft10">.</p>
-<p style="position:absolute;top:412px;left:135px;white-space:nowrap" class="ft12">TIMBANGAN KEDUA<br/>Berat Getah Kering 1<br/>Berat Getah Kering 2</p>
-<p style="position:absolute;top:484px;left:449px;white-space:nowrap" class="ft10">.</p>
-<p style="position:absolute;top:508px;left:135px;white-space:nowrap" class="ft12">% KANDUNGAN GETAH KERING<br/>Anggaran pertama<br/>Anggaran kedua<br/>Purata<br/>Catatan</p>
-<p style="position:absolute;top:643px;left:135px;white-space:nowrap" class="ft12">Nama<br/>Tandatangan<br/>Tarikh Ujian</p>
+<p style="position:absolute;top:190px;left:673px;" class="ft11">*{{ k1Detail.customNo }}*</p>
+<p style="position:absolute;top:215px;left:135px;" class="ft12">Berat Susu 1<br/>Berat Susu 2</p>
+<p style="position:absolute;top:299px;left:449px;" class="ft10">.</p>
+<p style="position:absolute;top:278px;left:135px;" class="ft12">TIMBANGAN PERTAMA<br/>Berat Getah Kering 1<br/>Berat Getah Kering 2</p>
+<p style="position:absolute;top:395px;left:449px;" class="ft10">.</p>
+<p style="position:absolute;top:363px;left:135px;" class="ft12">TIMBANGAN KEDUA<br/>Berat Getah Kering 1<br/>Berat Getah Kering 2</p>
+<p style="position:absolute;top:484px;left:449px;" class="ft10">.</p>
+<p style="position:absolute;top:450px;left:135px;" class="ft12">% KANDUNGAN GETAH KERING</p>
+  <p style="position:absolute;top:472px;left:135px;" class="ft12">Anggaran pertama</p>
+  <p style="position:absolute;top:495px;left:135px;" class="ft12">Anggaran kedua</p>
+  <p style="position:absolute;top:515px;left:135px;" class="ft12">Purata</p>
+  <p style="position:absolute;top:535px;left:135px;" class="ft12">  Catatan</p>
 
-<p style="position:absolute;top:800px;left:54px;white-space:nowrap" class="ft12">Nama Penguji : {{ staff.username}} <br/></p>
-<p style="position:absolute;top:825px;left:54px;white-space:nowrap" class="ft12">Tarikh Untuk Menguji: {{k1Detail.worksheetTestOn| date: 'dd-MM-yyyy' }}<br/></p>
+<p style="position:absolute;top:569px;left:135px;" class="ft12">Nama<br/>Tandatangan<br/>Tarikh Ujian</p>
+
+<p style="position:absolute;top:700px;left:54px;" class="ft12">Nama Penguji : {{ staff.username}} <br/></p>
+<p style="position:absolute;top:724px;left:54px;" class="ft12">Tarikh Untuk Menguji: {{k1Detail.worksheetTestOn| date: 'dd-MM-yyyy' }}<br/></p>
 
 </div>
 </body>

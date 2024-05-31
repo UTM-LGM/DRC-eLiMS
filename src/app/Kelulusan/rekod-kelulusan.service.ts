@@ -26,11 +26,10 @@ export class RekodKelulusanService {
 
 
 
-uipNotificationResultLetter(staffId: number, batchId: number, emailRecipient: string[]) {
-  const body = { emailRecipient };
+uipNotificationResultLetter(staffId: number, k1DetailId: number, emailRecipients: string[]) {
+  const body = emailRecipients; // recipients are sent as the body
   const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-
-  return this.http.post(this.baseApiUrl + '/api/Email/uipNotificationResultLetter/' + staffId + '/' + batchId, emailRecipient, httpOptions);
+  return this.http.post(`${this.baseApiUrl}/api/Email/uipNotificationResultLetter/${staffId}/${k1DetailId}`, body);
 }
 
   

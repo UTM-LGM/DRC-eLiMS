@@ -106,7 +106,7 @@ export class PosKeputusanComponent {
       })
     }
 
-    this.statusCodeId = 12;
+    this.statusCodeId = 10;
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       this.batches = data;
       console.log(this.batches[0].samples)

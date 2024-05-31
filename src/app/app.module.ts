@@ -100,6 +100,7 @@ import { DeliveryDateNotUpdatedComponent } from './CetakKeputusan/delivery-date-
 import { DeliveryUpdatedComponent } from './CetakKeputusan/delivery-updated/delivery-updated.component';
 import { TarikhTerimaSampelComponent } from './Daftar-Sampel/tarikh-terima-sampel/tarikh-terima-sampel.component';
 import { LaporanBilHariComponent } from './Laporan/laporan-bil-hari/laporan-bil-hari.component';
+import { CetakComponent } from './cetak/cetak.component';
 
 
 // import { QRCodeModule } from 'angularx-qrcode';
@@ -171,6 +172,7 @@ import { LaporanBilHariComponent } from './Laporan/laporan-bil-hari/laporan-bil-
     DeliveryUpdatedComponent,
     TarikhTerimaSampelComponent,
     LaporanBilHariComponent,
+    CetakComponent,
 
   ],
   imports: [

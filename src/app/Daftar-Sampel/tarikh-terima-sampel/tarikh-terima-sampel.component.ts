@@ -74,6 +74,8 @@ export class TarikhTerimaSampelComponent {
   showFastTrack: boolean = false
   showBatchId: boolean = false
   customFields: { value: string }[] = [];
+  isDateSelected: boolean = false;
+  selectedSamples: Sample[] = [];
 
   constructor(
     private elimsService: ElimsService,
@@ -104,7 +106,7 @@ export class TarikhTerimaSampelComponent {
       this.searchFastTrack()
     }
 
-    this.statusCodeId = 5;
+    this.statusCodeId = 3;
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       this.batches = data;
       console.log(this.batches)
@@ -163,7 +165,7 @@ export class TarikhTerimaSampelComponent {
     this.elimsService.GetElimsSamplesByBatchId(batchId).subscribe(res => {
       console.log(res);
 
-      this.samples = res.filter(sample => sample.statusCodeId === 5);
+      this.samples = res.filter(sample => sample.statusCodeId === 3);
     });
   }
 
@@ -281,4 +283,14 @@ export class TarikhTerimaSampelComponent {
     }
   }
 
+
+  onDateChange(event: any) {
+    this.isDateSelected = !!event.target.value; // Check if the date is selected
+  }
+
+
+
+
+
+  
 }

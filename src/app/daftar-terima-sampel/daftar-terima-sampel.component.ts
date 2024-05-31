@@ -73,7 +73,8 @@ export class DaftarTerimaSampelComponent {
   showFastTrack: boolean = false
   showBatchId: boolean = false
   customFields: { value: string }[] = [];
-
+  isSubmitting: boolean = false; 
+  
   constructor(
     private elimsService: ElimsService,
     private authService: AuthService,
@@ -103,7 +104,7 @@ export class DaftarTerimaSampelComponent {
       this.searchFastTrack()
     }
 
-    this.statusCodeId = 5;
+    this.statusCodeId = 3;
     this.elimsService.GetDateReceivedInLab(this.statusCodeId).subscribe(data => {
       this.batches = data;
       console.log(this.batches)
@@ -124,6 +125,7 @@ export class DaftarTerimaSampelComponent {
 
 
   registerReceived() {
+    this.isSubmitting = true; // Disable the button after click
     const currentDate = new Date();
     const month = ('0' + (currentDate.getMonth() + 1)).slice(-2); // Zero-padding month
     const year = currentDate.getFullYear().toString().slice(-2); // Taking last two digits of year
@@ -132,40 +134,51 @@ export class DaftarTerimaSampelComponent {
     // Sort samples by k1DetailId
     this.samples.sort((a, b) => a.k1DetailId - b.k1DetailId);
 
-    // Use Array.prototype.reduce() to chain asynchronous operations
-    this.samples.reduce((promiseChain, sample) => {
-      return promiseChain.then(() => {
-        return new Promise((resolve, reject) => {
-          const rubberTypeId = sample.rubberTypeId;
-          if (sample.customNo) {
-            this.k1Detail.receivedBy = this.staff.username;
+    // Collect all promises in an array
+    const promises: Promise<void>[] = this.samples.map(sample => {
+        return new Promise<void>((resolve, reject) => {
+            const rubberTypeId = sample.rubberTypeId;
+            if (sample.customNo) {
+                this.k1Detail.receivedBy = this.staff.username;
 
-            let labRefPrefix = rubberTypeId == 1 ? "CL-SP/" : "CR-MB/";
+                let labRefPrefix = rubberTypeId == 1 ? "CL-SP/" : "CR-MB/";
 
-            this.hantarSampelService.PutLabRefNo(monthyear, sample)
-              .subscribe(resLabRefNo => {
-                const labRefNo = labRefPrefix + resLabRefNo.monthyear + "/" + resLabRefNo.runningno;
-                this.k1Detail.labRefNo = labRefNo;
-                console.log(this.k1Detail);
-                this.elimsService.PutDaftarTerimaSampel(sample.customNo, this.k1Detail).subscribe(
-                  res => {
-                    console.log("Berjaya Update");
-                    this.toastr.success('Sampel Berjaya Didaftar Terima', 'Berjaya');
-                    resolve(); // Resolve the promise
-                  },
-                  error => {
-                    console.log("Gagal Update : " + error);
-                    reject(error); // Reject the promise
-                  }
-                );
-              });
-          } else {
-            resolve(); // Resolve the promise if customNo is not available
-          }
+                this.hantarSampelService.PutLabRefNo(monthyear, sample)
+                    .subscribe(
+                        resLabRefNo => {
+                            const labRefNo = labRefPrefix + resLabRefNo.monthyear + "/" + resLabRefNo.runningno;
+                            this.k1Detail.labRefNo = labRefNo;
+                            console.log(this.k1Detail);
+                            this.elimsService.PutDaftarTerimaSampel(sample.customNo, this.k1Detail).subscribe(
+                                res => {
+                                    resolve(); // Resolve the promise
+                                },
+                                error => {
+                                    reject(error); // Reject the promise
+                                }
+                            );
+                        },
+                        error => {
+                            reject(error); // Reject the promise if PutLabRefNo fails
+                        }
+                    );
+            } else {
+                resolve(); // Resolve the promise if customNo is not available
+            }
         });
-      });
-    }, Promise.resolve()); // Start with a resolved promise
-  }
+    });
+
+    // Use Promise.all to wait for all promises to complete
+    Promise.all(promises)
+        .then(() => {
+            this.toastr.success('Sampel Berjaya Didaftar Terima', 'Berjaya');
+        })
+        .catch(error => {
+            console.error('An error occurred:', error);
+            this.toastr.error('Some samples failed to register', 'Error');
+        });
+}
+
 
 
 
@@ -182,7 +195,7 @@ export class DaftarTerimaSampelComponent {
     this.elimsService.GetElimsSamplesByBatchId(batchId).subscribe(res => {
       console.log(res);
 
-      this.samples = res.filter(sample => sample.statusCodeId === 5);
+      this.samples = res.filter(sample => sample.statusCodeId === 3);
     });
   }
 
@@ -277,7 +290,7 @@ export class DaftarTerimaSampelComponent {
     uniqueCustomNos.forEach(customNo => {
       this.elimsService.GetElimsSamplesByCustomNo(customNo).subscribe(res => {
         console.log(res);
-        this.samples.push(...res.filter(sample => sample.statusCodeId === 5));
+        this.samples.push(...res.filter(sample => sample.statusCodeId === 3));
       });
     });
   }

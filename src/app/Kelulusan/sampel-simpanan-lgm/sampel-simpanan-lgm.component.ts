@@ -88,7 +88,7 @@ export class SampelSimpananLgmComponent {
       this.loadBatches();
     }
 
-    this.codeId = [6, 7, 8, 9, 10, 11];
+    this.codeId = [4, 5, 6, 7, 8, 9];
     this.codeId.forEach(element => {
 
       this.elimsService.GetElimsAllBatch(element).subscribe(data => {

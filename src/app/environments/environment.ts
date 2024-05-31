@@ -49,7 +49,7 @@ export const environment = {
   baseApiUrlElimsLocal: 'https://localhost:8001',
   baseApiUrlElimsEvidence: 'https://api02.lgm.gov.my/ApiTestElims/wwwroot/evidence/',
   baseApiUrlElimsReceipt: 'https://api02.lgm.gov.my/ApiTestElims/wwwroot/receipt/',
-  baseApiUrlElimsMemo: 'https://api02.lgm.gov.my/ApiTestElims/wwwroot/receipt/',
+  baseApiUrlElimsMemo: 'https://api02.lgm.gov.my/ApiTestElims/wwwroot/memo/',
   baseApiUrlElimsProve: 'https://api02.lgm.gov.my/ApiTestElims/wwwroot/prove/',
   baseApiUrlElimsSign: 'https://api02.lgm.gov.my/ApiTestElims/wwwroot/signature/',
 };

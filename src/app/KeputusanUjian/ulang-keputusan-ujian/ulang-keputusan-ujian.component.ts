@@ -91,7 +91,7 @@ export class UlangKeputusanUjianComponent {
       })
 
     }
-    this.statusCodeId = 13;
+    this.statusCodeId = 11;
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       this.batches = data;
 

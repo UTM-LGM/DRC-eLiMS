@@ -116,7 +116,7 @@ export class RekodKeputusanComponent {
       })
     }
 
-    this.statusCodeId = 8;
+    this.statusCodeId = 6;
     this.elimsService.GetBatchByInLabBy(this.statusCodeId, this.loginAs).subscribe(data => {
       this.batches = data;
       console.log(data)
@@ -128,7 +128,7 @@ export class RekodKeputusanComponent {
   }
 
   searchCustomNo(customNo: string) {
-    this.statusCodeId = 8;
+    this.statusCodeId = 6;
     this.rekodKeputusanService.GetResultsByCustomNo(customNo, this.statusCodeId).subscribe(res => {
       console.log(res)
       if (res.length > 0) {
@@ -169,6 +169,7 @@ export class RekodKeputusanComponent {
       console.log(data)
       this.showForm = true;
       this.k1Detail= data
+   
 
     });
     this.rekodKelulusanService.GetResultbySampleId(k1DetailId).subscribe(dataResult => {

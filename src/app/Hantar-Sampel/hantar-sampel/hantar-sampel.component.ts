@@ -565,7 +565,7 @@ export class HantarSampelComponent {
             this.hantarSampelService.PutUipSampleRunNo(this.thisyear).subscribe(resUipRunNo => {
               console.log(resUipRunNo);
               this.k1Detail.sampleRunNo = "UIP/" + resUipRunNo.runNo + "/" + resUipRunNo.year;
-              this.k1Detail.statusCodeId = 5;
+              this.k1Detail.statusCodeId = 3;
     
               let id = sample.k1DetailId;
               this.hantarSampelService.PutElimsSampleBatchId(id, this.k1Detail).subscribe(
@@ -618,7 +618,7 @@ export class HantarSampelComponent {
               this.hantarSampelService.PutUipbkhSampleRunNo(this.thisyear).subscribe(resUipbkhRunNo => {
                 console.log(resUipbkhRunNo);
                 this.k1Detail.sampleRunNo = "UIPBKH/" + resUipbkhRunNo.runNo + "/" + resUipbkhRunNo.year;
-                this.k1Detail.statusCodeId = 5;
+                this.k1Detail.statusCodeId = 3;
       
                 let id = sample.k1DetailId;
                 this.hantarSampelService.PutElimsSampleBatchId(id, this.k1Detail).subscribe(

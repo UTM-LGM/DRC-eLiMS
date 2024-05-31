@@ -110,7 +110,7 @@ export class UjiSampelComponent {
       })
     }
 
-    this.statusCodeId = 7;
+    this.statusCodeId = 5;
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       this.batches = data;
       console.log(data)
@@ -253,7 +253,7 @@ export class UjiSampelComponent {
     uniqueCustomNos.forEach(customNo => {
       this.elimsService.GetElimsSamplesByCustomNo(customNo).subscribe(res => {
         console.log(res);
-        this.selectedSamples.push(...res.filter(sample => sample.statusCodeId === 7));
+        this.selectedSamples.push(...res.filter(sample => sample.statusCodeId === 5));
       });
     });
   }

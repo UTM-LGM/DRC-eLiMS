@@ -255,72 +255,120 @@ calculateAverage() {
 
 
 
+  // getLimitValue() {
+
+  //   // Calculate tolerance value
+  //   const tolerance = Math.abs(this.estimate1 - this.estimate2);
+  //   const tolerance1 = Math.abs(((this.estimate1 - this.estimate2) / this.average) * 100);
+    
+  //   // UPB/L/001
+  //   if (this.result.testMethod == 1) {
+
+  //     if (tolerance > 0.2) {
+  //       this.limitValue = `Nilai purata melebihi > 0.2 (${tolerance}), sampel perlu diuji semula.`;
+  //       return; // Abort saving if tolerance > 0.25
+  //     }
+  //   }
+
+  //   // MS 281*
+  //   else if (this.result.testMethod == 2) {
+  //     if (tolerance > 0.1) {
+  //       this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
+  //       return;
+  //     }
+  //   }
+  //   // ISO 126*
+  //   else if (this.result.testMethod == 3) {
+  //     if (tolerance1 > 0.1) {
+  //       this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance1}), sampel perlu diuji semula.`;
+  //       return;
+  //     }
+  //   }
+  //   // MS 466*
+  //   else if (this.result.testMethod == 4) {
+  //     if (tolerance > 0.2) {
+  //       this.limitValue = `Nilai purata melebihi > 0.2 (${tolerance}), sampel perlu diuji semula.`;
+  //       return;
+  //     }
+  //   }
+  //   // UPB/R/007
+  //   else if (this.result.testMethod == 5) {
+  //     if (tolerance > 0.1) {
+  //       this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
+  //       return;
+  //     }
+  //   }
+  //   // MS 2531**
+  //   else if (this.result.testMethod == 6) {
+  //     if (tolerance1 < 0.001) {
+  //       this.limitValue = `Nilai purata melebihi < 0.001 (${tolerance1}), sampel perlu diuji semula.`;
+  //       return;
+  //     }
+  //   }
+  //   // LGM/GTACR/R/01
+  //   else if (this.result.testMethod == 7) {
+
+  //     if (tolerance > 0.1) {
+  //       this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
+  //       return;
+  //     }
+  //   }
+  //   // RS 1-1**
+  //   else if (this.result.testMethod == 8) {
+  //     if (tolerance1 > 0.1) {
+  //       this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance1}), sampel perlu diuji semula.`;
+  //       return;
+  //     }
+  //   }
+
+  // }
+
   getLimitValue() {
-
     // Calculate tolerance value
-    const tolerance = Math.abs(this.estimate1 - this.estimate2);
-    const tolerance1 = Math.abs(((this.estimate1 - this.estimate2) / this.average) * 100);
+    const tolerance = Math.abs(this.estimate1 - this.estimate2).toFixed(2);
+    const tolerance1 = Math.abs(((this.estimate1 - this.estimate2) / this.average) * 100).toFixed(2);
+
+    // Convert tolerance values to numbers for comparison purposes
+    const toleranceNum = parseFloat(tolerance);
+    const tolerance1Num = parseFloat(tolerance1);
+
+    // Reset the limit value
+    this.limitValue = '';
+
+    // Set the limit value only if tolerance exceeds the limit
     // UPB/L/001
-    if (this.result.testMethod == 1) {
-
-      if (tolerance > 0.2) {
+    if (this.result.testMethod == 1 && toleranceNum > 0.2) {
         this.limitValue = `Nilai purata melebihi > 0.2 (${tolerance}), sampel perlu diuji semula.`;
-        return; // Abort saving if tolerance > 0.25
-      }
     }
-
     // MS 281*
-    else if (this.result.testMethod == 2) {
-      if (tolerance > 0.1) {
+    else if (this.result.testMethod == 2 && toleranceNum > 0.1) {
         this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
-        return;
-      }
     }
     // ISO 126*
-    else if (this.result.testMethod == 3) {
-      if (tolerance1 > 0.1) {
+    else if (this.result.testMethod == 3 && tolerance1Num > 0.1) {
         this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance1}), sampel perlu diuji semula.`;
-        return;
-      }
     }
     // MS 466*
-    else if (this.result.testMethod == 4) {
-      if (tolerance > 0.2) {
+    else if (this.result.testMethod == 4 && toleranceNum > 0.2) {
         this.limitValue = `Nilai purata melebihi > 0.2 (${tolerance}), sampel perlu diuji semula.`;
-        return;
-      }
     }
     // UPB/R/007
-    else if (this.result.testMethod == 5) {
-      if (tolerance > 0.1) {
+    else if (this.result.testMethod == 5 && toleranceNum > 0.1) {
         this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
-        return;
-      }
     }
     // MS 2531**
-    else if (this.result.testMethod == 6) {
-      if (tolerance1 < 0.001) {
+    else if (this.result.testMethod == 6 && tolerance1Num < 0.001) {
         this.limitValue = `Nilai purata melebihi < 0.001 (${tolerance1}), sampel perlu diuji semula.`;
-        return;
-      }
     }
     // LGM/GTACR/R/01
-    else if (this.result.testMethod == 7) {
-
-      if (tolerance > 0.1) {
+    else if (this.result.testMethod == 7 && toleranceNum > 0.1) {
         this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
-        return;
-      }
     }
     // RS 1-1**
-    else if (this.result.testMethod == 8) {
-      if (tolerance1 > 0.1) {
+    else if (this.result.testMethod == 8 && tolerance1Num > 0.1) {
         this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance1}), sampel perlu diuji semula.`;
-        return;
-      }
     }
-
-  }
+}
 
 
 

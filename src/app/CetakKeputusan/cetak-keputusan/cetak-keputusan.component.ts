@@ -14,6 +14,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { UserService } from 'src/app/User/user.service';
 import { CetakKeputusanService } from '../cetak-keputusan.service';
 import { RekodKeputusanService } from 'src/app/Rekod-Keputusan-Sampel/rekod-keputusan.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cetak-keputusan',
@@ -81,6 +82,7 @@ export class CetakKeputusanComponent {
     private userService: UserService,
     private cetakKeputusanService: CetakKeputusanService,
     private rekodKeputusanService: RekodKeputusanService,
+    private router: Router,
 
   ) { }
 
@@ -123,7 +125,7 @@ export class CetakKeputusanComponent {
     }
 
 
-    this.statusCodeId = 11;
+    this.statusCodeId = 9;
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       this.batches = data;
       console.log(this.batches[0].samples)
@@ -180,7 +182,41 @@ export class CetakKeputusanComponent {
         }
       );
     }
+
+    //this.router.navigate(['cetak-keputusan/cetak']);
+
+
   }
+
+
+
+
+  // generatePDF(k1DetailId: number) {
+  //   const listk1DetailId: number[] = [];  // Explicitly type the array as number[]
+  
+  //   for (const sample of this.selectedSamples) {
+  //     const id = sample.k1DetailId;
+  //     this.creatorRoleId = sample.creatorRoleId;
+  //     console.log(sample);
+      
+  //     // Collect the ID to list and call the service
+  //     this.cetakKeputusanService.PutResultLetterApprovedBy(id, this.k1Detail).subscribe(
+  //       res => {
+  //         this.isPrint = true;
+  //         listk1DetailId.push(id);  // Collecting IDs
+  //       },
+  //       err => {
+  //         console.error('Error in PutResultLetterApprovedBy:', err);
+  //       },
+  //       () => {
+  //         // Once all samples are processed, navigate to the other page with collected IDs
+  //         if (listk1DetailId.length === this.selectedSamples.length) {
+  //           this.router.navigate(['cetak-keputusan/cetak'], { queryParams: { ids: listk1DetailId.join(',') } });
+  //         }
+  //       }
+  //     );
+  //   }
+  // }
 
 
   onYesClick() {
@@ -252,7 +288,7 @@ export class CetakKeputusanComponent {
     uniqueCustomNos.forEach(customNo => {
       this.elimsService.GetElimsSamplesByCustomNo(customNo).subscribe(res => {
         console.log(res);
-        this.selectedSamples.push(...res.filter(sample => sample.statusCodeId === 11));
+        this.selectedSamples.push(...res.filter(sample => sample.statusCodeId === 9));
       });
     });
   }

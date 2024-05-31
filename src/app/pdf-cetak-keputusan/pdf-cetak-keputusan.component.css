@@ -146,3 +146,27 @@
     page-break-before: always;
   }
   
+  .company-group.first-group {
+    page-break-before: auto;
+  }
+
+  @media print {
+    .preview-hr {
+        display: none;
+  
+    }
+  
+    .times {
+      font-size: 22px;
+    }
+  }
+
+
+
+  /* .pdf-page {
+    page-break-before: always;
+    position: relative;
+    width: auto;
+    height: auto;
+  } */
+

@@ -41,31 +41,27 @@ export class UlangCetakLembaranKerjaComponent {
 
   expandedElement: Sample | null;
 
-
   dataSource!: MatTableDataSource<Batch>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  codeId: any[] = [];
   batches: Batch[] = [];
   samples: Sample[] = [];
-  selectedBatchId: number;
   loginAs: any;
   userRoleId: any;
   roleGtacr: boolean
   staff: Staff = {} as Staff
-  statusCode: number
   k1Detail: K1Detail = {} as K1Detail;
   sample: Sample = {} as Sample;
-  username: string
-  checkAll: boolean = false
   lepassubmit: boolean = false
   isPrint: boolean = false
   statusCodeId: number = 0;
   selectedSamples: Sample[] = [];
   mesYaTidak: any
   batch: any;
-  listk1DetailId: any[] = [];
+  listk1DetailId: any[] = []
+  customNo: string = '';
+  customFields: { value: string }[] = [];
 
   constructor(
     private elimsService: ElimsService,
@@ -93,31 +89,24 @@ export class UlangCetakLembaranKerjaComponent {
         this.roleGtacr = true
 
       })
+      this.loadBatches();
     }
 
-    this.codeId = [7, 8, 9];
+    this.statusCodeId = 4;
+    this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
+      this.batches = data;
+      console.log(data)
 
-      this.elimsService.GetBatchByStatusCodeId(this.codeId).subscribe(data => {
-        data.forEach(resData => {
-          this.batches.push(resData);
 
-          // this.sample.rubberType = this.batch.rubberType
+      this.dataSource = new MatTableDataSource<Batch>(this.batches);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
 
-        });
-      
-        this.batches.sort((a, b) => a.batchId - b.batchId);
-      
-        this.dataSource = new MatTableDataSource<Batch>(this.batches);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      });
-      
 
-    
+    });
     console.log(this.listk1DetailId)
   }
 
- // https://api02.lgm.gov.my/ApiElims/api/Batches/GetBatchByStatusCodeId?statusCodeId=7&statusCodeId=8&statusCodeId=9
 
   checkSingleChanged() {
     this.selectedSamples = [];
@@ -132,55 +121,46 @@ export class UlangCetakLembaranKerjaComponent {
 
 
   displaySelected() {
-    
     this.lepassubmit = true;
-
-    // Filter batches to include only those with selected samples
-    // this.batches = this.batches.filter(batch => batch.samples.some(sample => sample.checked));
-    // Filter samples to include only the selected ones
     for (const batch of this.batches) {
-      // for (const sample of batch.samples) {
-      //   if (sample.checked) {
-      //     const id = sample.k1DetailId;
-      //     this.cetakWorksheet.PutWorksheetTestOn(id, this.k1Detail).subscribe(
-      //       res => { }
-      //     );
-
-      //     this.k1Detail.worksheetTestOn
-      //     console.log(this.k1Detail)
-
-      //   }
-      // }
       batch.samples = batch.samples.filter(sample => sample.checked);
-      
     }
-    
   }
 
 
+  generatePDF() {
 
-  generatePDF(k1DetailId: number) {
+    for (const sample of this.selectedSamples) {
+      this.cetakWorksheet.PutWorksheetTestOn(sample.k1DetailId, this.k1Detail).subscribe(
+        res => {
 
-    for (const batch of this.batches) {
-      for (const sample of batch.samples) {
-        if (sample.checked) {
-          const id = sample.k1DetailId;
-          this.cetakWorksheet.PutWorksheetTestOn(id, this.k1Detail).subscribe(
-            res => { 
-              this.isPrint = true;
-                          
-              this.selectedSamples.forEach(sample => {
-                this.listk1DetailId.push(sample.k1DetailId)
-                console.log(this.listk1DetailId)
-              })
-            }
-          );
+          this.isPrint = true;
+          this.selectedSamples.forEach(sample => {
+            this.listk1DetailId.push(sample.k1DetailId)
+            console.log(this.listk1DetailId)
+          })
         }
-      }
+      );
     }
+  }
 
-  
 
+  searchByCustomNos() {
+    // Concatenate the current customNo with customFields values
+    const customNos = [this.customNo, ...this.customFields.map(field => field.value)];
+    // Remove duplicates by converting to Set and then back to array
+    const uniqueCustomNos = [...new Set(customNos)];
+
+    // Clear previous results
+    this.selectedSamples = [];
+
+    // Perform search for each unique custom number
+    uniqueCustomNos.forEach(customNo => {
+      this.elimsService.GetElimsSamplesByCustomNo(customNo).subscribe(res => {
+        console.log(res);
+        this.selectedSamples.push(...res.filter(sample => sample.statusCodeId === 4));
+      });
+    });
   }
 
 
@@ -194,30 +174,77 @@ export class UlangCetakLembaranKerjaComponent {
   }
 
 
-  onYesClick() {
-    this.k1Detail.labelTestedOn = new Date();
-    this.k1Detail.labelTestedBy = this.loginAs;
-
-    for (const batch of this.batches) {
-      for (const sample of batch.samples) {
-        if (sample.checked) {
-          const id = sample.k1DetailId;
-          this.cetakWorksheet.PutCetakLembaranKerja(id, this.k1Detail).subscribe(
-            res => { this.mesYaTidak = "yes" }
-          );
-        }
-      }
+  filterByCustomNo(event: any) {
+    const customNo = event.target.value;
+    if (customNo) {
+      const filteredBatches = this.batches.filter(batch => batch.samples.customNo.toString() == (customNo));
+      this.dataSource = new MatTableDataSource<Batch>(filteredBatches);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    } else {
+      this.loadBatches();
     }
+
+    
   }
 
+  addField() {
+    this.customFields.push({ value: '' });
+  }
+
+  loadBatches() {
+    this.dataSource = new MatTableDataSource<Batch>(this.batches);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+
+  onYesClick() {
+    for (const sample of this.selectedSamples) {
+      const id = sample.k1DetailId;
+      this.cetakWorksheet.PutCetakLembaranKerja(id, this.k1Detail).subscribe(
+        res => { this.mesYaTidak = "yes" }
+      );
+    }
+
+  }
 
   onNoClick() {
     this.mesYaTidak = "tidak"
   }
 
 
+  isAnyCheckboxSelected(): boolean {
+    return this.selectedSamples.some(sample => sample.checked);
+
+  }
+
+  // Add a method to check if the button should be enabled
+  isButtonEnabled(): boolean {
+    // Enable if at least one checkbox is selected or No. Borang Kastam field is filled
+    return this.isAnyCheckboxSelected() || this.customNo.trim() !== '';
+  }
+
+
+
+  addFieldIfEmpty(index: number = -1) {
+    if (index === -1) {
+      // Check if the first field is empty
+      if (this.customNo.trim() !== '' && this.customFields.length === 0) {
+        // Add a new field
+        this.customFields.push({ value: '' });
+      }
+    } else {
+      // Check if the current field is not the last field and is not empty
+      if (index === this.customFields.length - 1 && this.customFields[index].value.trim() !== '') {
+        // Add a new field if the last field is not empty
+        this.customFields.push({ value: '' });
+      }
+    }
+  }
 
   generatePDF1() {
+
     const selectedSamples = this.samples.filter(sample => sample.checked);
     if (selectedSamples.length === 0) {
       alert('Please select at least one sample.');
@@ -396,10 +423,6 @@ export class UlangCetakLembaranKerjaComponent {
     window.open(pdfUrl, '_blank');
   }
 
-  isAnyCheckboxSelected(): boolean {
-    return this.selectedSamples.some(sample => sample.checked);
-  }
-  
 
 }
 

@@ -154,7 +154,7 @@
                             <th class="black" scope="col">Jenis</th>
                             <th class="black" scope="col">Tarikh Import </th>
                             <th class="black" scope="col">Kuantiti(kg)</th>
-                            <th class="black" scope="col">Tarikh Terima di Makmal</th>
+                            <!-- <th class="black" scope="col">Tarikh Terima di Makmal</th> -->
                           </tr>
                         </thead>
                         <tbody>
@@ -166,7 +166,7 @@
                             <td>{{sample.typeCode}}</td>
                             <td>{{sample.importedDate | date:"dd/MM/yyy"}} </td>
                             <td>{{sample.quantity}} </td>
-                            <td>{{sample.dateReceivedInLab | date:"dd/MM/yyy"}} </td>
+                            <!-- <td>{{sample.dateReceivedInLab | date:"dd/MM/yyy"}} </td> -->
                           </tr>
 
                         </tbody>
@@ -261,8 +261,8 @@
 
         <!-- List sample   -->
 
-        <form *ngIf="samples.length > 0" (ngSubmit)="registerReceived()">
-          <div>
+        <!-- <form *ngIf="samples.length > 0" (ngSubmit)="registerReceived()"> -->
+          <div *ngIf="samples.length > 0">
             <h2>Daftar Terima Sampel</h2>
             <div>
               <table class="table table-striped">
@@ -289,13 +289,17 @@
                 </tbody>
               </table>
             </div>
+            <div align="end">
+            <button class="btn btn-primary mr-5"(click)="registerReceived()" [disabled]="isSubmitting">Daftar</button>
+          </div>
+
           </div>
           <br>
 
-          <div align="end">
+          <!-- <div align="end">
             <button type="submit" class="btn btn-primary mr-5">Daftar</button>
-          </div><br>
-        </form><br>
+          </div><br> -->
+        <!-- </form><br> -->
 
       </div>
     </mat-card-content>
