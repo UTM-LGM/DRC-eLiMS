@@ -88,30 +88,87 @@ export class SampelSimpananLgmComponent {
       this.loadBatches();
     }
 
-    this.codeId = [4, 5, 6, 7, 8, 9];
-    this.codeId.forEach(element => {
+    // this.codeId = [4, 5, 6, 7, 8, 9];
+    // this.codeId.forEach(element => {
 
+    //   this.elimsService.GetElimsAllBatch(element).subscribe(data => {
+    //     data.forEach(resData => {
+    //       const receivedOn = new Date(resData.receivedOn);
+    //       const approvedOn = new Date(resData.approvedOn);
+    //       let dayssincereceived = (approvedOn.getTime() !== 0) ?
+    //         (approvedOn.getTime() - receivedOn.getTime()) / (1000 * 3600 * 24) :
+    //         (this.today.getTime() - receivedOn.getTime()) / (1000 * 3600 * 24) + 1;
+    //       dayssincereceived = Math.floor(dayssincereceived);
+    //       console.log(resData);
+    //       resData.daysSinceReceived = dayssincereceived;
+    //       this.batches.push(resData);
+    //     });
+
+    //     this.batches.sort((a, b) => a.batchId - b.batchId);
+
+    //     this.dataSource = new MatTableDataSource<Batch>(this.batches);
+    //     this.dataSource.paginator = this.paginator;
+    //     this.dataSource.sort = this.sort;
+    //   });
+
+    // }
+
+    
+    this.codeId = [4, 5, 6, 7, 8, 9];
+    const holidays = [
+      '2024-06-17',//raya haji
+      '2024-06-18',//raya haji
+      // Add more holidays as needed
+    ];
+    
+    this.codeId.forEach(element => {
       this.elimsService.GetElimsAllBatch(element).subscribe(data => {
         data.forEach(resData => {
           const receivedOn = new Date(resData.receivedOn);
           const approvedOn = new Date(resData.approvedOn);
-          let dayssincereceived = (approvedOn.getTime() !== 0) ?
-            (approvedOn.getTime() - receivedOn.getTime()) / (1000 * 3600 * 24) :
-            (this.today.getTime() - receivedOn.getTime()) / (1000 * 3600 * 24) + 1;
+          let dayssincereceived;
+    
+          if (approvedOn.getTime() !== 0) {
+            dayssincereceived = calculateBusinessDays(receivedOn, approvedOn);
+          } else {
+            dayssincereceived = calculateBusinessDays(receivedOn, this.today) + 1;
+          }
+    
           dayssincereceived = Math.floor(dayssincereceived);
           console.log(resData);
           resData.daysSinceReceived = dayssincereceived;
           this.batches.push(resData);
         });
-
+    
         this.batches.sort((a, b) => a.batchId - b.batchId);
-
+    
         this.dataSource = new MatTableDataSource<Batch>(this.batches);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       });
-
-    })
+    });
+    
+    function isHoliday(date: Date): boolean {
+      return holidays.includes(date.toISOString().split('T')[0]);
+    }
+    
+    function calculateBusinessDays(startDate: Date, endDate: Date): number {
+      let count = 0;
+      let currentDate = new Date(startDate);
+    
+      while (currentDate <= endDate) {
+        const dayOfWeek = currentDate.getDay();
+        if (dayOfWeek !== 5 && dayOfWeek !== 6 && !isHoliday(currentDate)) {
+          count++;
+        }
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    
+      return count;
+    }
+    
+  
+  
 
 
     this.elimsService.GetRefRubberTypes().subscribe(data => {

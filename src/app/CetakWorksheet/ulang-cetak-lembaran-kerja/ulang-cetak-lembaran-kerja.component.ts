@@ -31,6 +31,7 @@ export class UlangCetakLembaranKerjaComponent {
 
   columnsToDisplay = [
 
+    'select',
     'batchId',
     'rubberType',
     'isFastTrack',
@@ -120,6 +121,26 @@ export class UlangCetakLembaranKerjaComponent {
   }
 
 
+  toggleBatchSelection(batch: Batch, isSelected: boolean) {
+    for (const sample of batch.samples) {
+      sample.checked = isSelected;
+    }
+    this.updateSelectedSamples();
+  }
+
+  updateSelectedSamples() {
+    this.selectedSamples = [];
+    for (const batch of this.batches) {
+      for (const sample of batch.samples) {
+        if (sample.checked) {
+          this.selectedSamples.push(sample);
+        }
+      }
+    }
+    console.log(this.selectedSamples);
+  }
+
+
   displaySelected() {
     this.lepassubmit = true;
     for (const batch of this.batches) {
@@ -206,7 +227,9 @@ export class UlangCetakLembaranKerjaComponent {
         res => { this.mesYaTidak = "yes" }
       );
     }
-
+    setTimeout(() => {
+      window.location.reload();
+    },1000); // Delay in milliseconds (2000ms = 2s)
   }
 
   onNoClick() {

@@ -32,6 +32,7 @@ export class CetakKeputusanComponent {
 
   columnsToDisplay = [
 
+    'select',
     'batchId',
     'rubberType',
     'isFastTrack',
@@ -42,7 +43,7 @@ export class CetakKeputusanComponent {
     'chequeAmount',
     'receivedOn',
     'sampleCount',
-    'sampleApproved',
+    'countSampleBasedSameBatchId',
   ]
 
   expandedElement: Sample | null;
@@ -166,6 +167,27 @@ export class CetakKeputusanComponent {
   }
 
 
+
+  toggleBatchSelection(batch: Batch, isSelected: boolean) {
+    for (const sample of batch.samples) {
+      sample.checked = isSelected;
+    }
+    this.updateSelectedSamples();
+  }
+
+  updateSelectedSamples() {
+    this.selectedSamples = [];
+    for (const batch of this.batches) {
+      for (const sample of batch.samples) {
+        if (sample.checked) {
+          this.selectedSamples.push(sample);
+        }
+      }
+    }
+    console.log(this.selectedSamples);
+  }
+
+
   generatePDF(k1DetailId: number) {
 
     for (const sample of this.selectedSamples) {
@@ -229,6 +251,11 @@ export class CetakKeputusanComponent {
         res => { this.mesYaTidak = "yes" }
       );
     }
+
+    setTimeout(() => {
+      window.location.reload();
+    },2000); // Delay in milliseconds (2000ms = 2s)
+    
   }
 
 

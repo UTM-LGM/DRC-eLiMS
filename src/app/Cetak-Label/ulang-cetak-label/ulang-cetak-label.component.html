@@ -1,4 +1,5 @@
-<div class="sample" #pdfContent style="page-break-after: always"class="container mb-5 shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
+<div class="sample" #pdfContent style="page-break-after: always"
+  class="container mb-5 shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
   <mat-card-content>
 
     <h1 class="attractive-title">Ulang Cetak label</h1>
@@ -6,6 +7,7 @@
     <h3 *ngIf="lepassubmit">Berikut adalah senarai sampel yang dipilih untuk dicetak label.</h3>
 
 
+    <!-- Sample List -->
     <div class="card-body table-responsive p-4" *ngIf="samples.length > 0">
       <table>
         <tr>
@@ -17,7 +19,7 @@
           <th scope="col">Tarikh Import</th>
           <th scope="col">Jenis Getah</th>
           <th scope="col">Kuantiti(kg)</th>
-          <th *ngIf="roleForwarder || roleUip"scope="col">Syarikat Pengimport</th>
+          <th *ngIf="roleForwarder || roleUip" scope="col">Syarikat Pengimport</th>
           <th scope="col" *ngIf="roleImporter">Syarikat Penghantar</th>
         </tr>
         <tr
@@ -26,16 +28,13 @@
             <input type="checkbox" [(ngModel)]="sample.checked" (change)="checkSingleChanged()"
               [value]="sample.k1HeaderId">
           </th>
-          <!-- <td>{{ i + 1 }}</td> -->
           <td>{{ (page - 1) * ip + i + 1 }}</td>
           <td>{{sample.customNo}}</td>
           <td>{{sample.importedDate | date: 'dd-MM-yyyy' }}</td>
-          <!-- <td>{{sample.sampleType}}</td> -->
           <td>{{sample.typeCode}}</td>
           <td>{{sample.quantity}}</td>
           <td *ngIf="roleForwarder || roleUip">{{ sample.importerName }}</td>
           <td *ngIf="roleImporter">{{ sample.agentName }}</td>
-          <!-- <td>{{ sample.importerName }}{{ sample.companyName }}</td> -->
         </tr>
       </table><br>
       <div class="text-center col-12" *ngIf="!lepassubmit">
@@ -47,13 +46,20 @@
       <p><i><b>Tiada Sampel</b></i></p>
     </div><br>
 
+
+
+    <!-- button pilih  -->
     <button *ngIf="!lepassubmit" type="submit" (click)="displaySelected()" class="btn btn-primary">Pilih</button><br>
 
+
+    <!-- button cetak -->
     <div *ngIf="lepassubmit" align="center">
       <button id="download-pdf" (click)="generatePDFWithQRCode()" type="submit"
         class="btn btn-primary mr-5">Cetak</button>
     </div><br>
 
+
+    <!-- Prngesahan Cetakan label -->
     <div *ngIf="lepassubmit" class="card">
       <h4 class="card-header">Pengesahan Cetakan label</h4>
       <div class="card-body">

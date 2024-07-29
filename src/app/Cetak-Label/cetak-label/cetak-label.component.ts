@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import jsPDF from 'jspdf';
 import { Sample } from '../../models/sample';
-import { DrclimstrainingService } from '../../services/drclimstraining.service';
-import { GetahBongkahService } from '../../services/getah-bongkah.service';
 import { ElimsService } from '../../services/elims.service';
 import { K1Detail } from '../../models/k1Detail';
-import { K1Header } from '../../models/k1Header';
 import { AuthService } from '../../services/auth/auth.service';
 import { userDTO } from '../../models/userDTO';
 import { CetakLabelService } from '../cetak-label.service';
@@ -13,7 +10,6 @@ import { UserService } from 'src/app/User/user.service';
 import { Staff } from 'src/app/models/staff';
 import * as QRCode from 'qrcode-generator';
 import { loginImporter } from 'src/app/models/loginImporters';
-import { Observable, concatMap, forkJoin, of } from 'rxjs';
 
 @Component({
   selector: 'app-cetak-label',
@@ -23,39 +19,24 @@ import { Observable, concatMap, forkJoin, of } from 'rxjs';
 export class CetakLabelComponent implements OnInit {
 
   samples: Sample[] = [];
-  k1Details: K1Detail[] = [];
-  selectedSamples: number[] = [];
-
   k1Detail: K1Detail = {} as K1Detail;
-  k1Header: K1Header = {} as K1Header;
   cetakSample: Sample = {} as Sample
-  sample: Sample = {} as Sample
   user: userDTO = {} as userDTO
   staff: Staff = {} as Staff
   importer: loginImporter = {} as loginImporter
   checkAll: boolean = false
   lepassubmit: boolean = false
-
   mesYaTidak: any
-  sampleCode2: any
-  pdfUrl: string | null = null;
-  statusCode: number;
-  statusCode2: number;
-  sample1: any
   loginAs: any;
   latexSample: any
-  latex1: any
-  page: number = 1;
-  ip: number = 20;
   userRoleId: any;
   roleForwarder: boolean
   roleUip: boolean
   roleImporter: boolean
-  username: string;
+  page: number = 1;
+  ip: number = 20;
 
   constructor(
-    private drclimstrainingService: DrclimstrainingService,
-    private getahBongkahService: GetahBongkahService,
     private elimsService: ElimsService,
     private authService: AuthService,
     private cetakLabelService: CetakLabelService,
@@ -316,12 +297,11 @@ export class CetakLabelComponent implements OnInit {
           doc.text(`${formattedDate2}`, x + boxWidth + 21, y + 18);
         }
 
-  
-           if (sample2.importerName) {
+        if (sample2.importerName) {
           const lines1 = doc.splitTextToSize(sample2.importerName, 52);
           doc.text(lines1, x + boxWidth + 21, y + 22);
         }
-       
+
 
         if (this.userRoleId == 1 || this.userRoleId == 3) {
           if (sample2.forwarderName) {
@@ -334,11 +314,6 @@ export class CetakLabelComponent implements OnInit {
           doc.text(lines1, x + boxWidth + 21, y + 29);
         }
 
-        // if (sample2.forwarderAddress) {
-        //   const lines1 = doc.splitTextToSize(sample2.forwarderAddress, 52);
-        //   doc.text(lines1, x + boxWidth + 21, y + 33);
-        // }     
-
       }
       y += boxHeight + 0; // Change the box spacing here
     }
@@ -347,7 +322,6 @@ export class CetakLabelComponent implements OnInit {
     const pdfUrl = URL.createObjectURL(pdfBlob);
     window.open(pdfUrl, '_blank');
   }
-
 
 
 
@@ -383,56 +357,83 @@ export class CetakLabelComponent implements OnInit {
   //   }
   // }
 
+
+
+  // before Remove
+  // onYesClick() {
+  //   this.k1Detail.labelPrintedOn = new Date();
+  //   this.k1Detail.labelPrintedBy = this.loginAs;
+  //   this.k1Detail.labelPrinted = true;
+
+  //   this.cetakSample.labelPrintedOn = new Date();
+  //   this.cetakSample.labelPrintedBy = this.loginAs;
+
+
+  //   let observables: Observable<any>[] = [];
+
+  //   for (const sample of this.samples) {
+  //     let id = sample.k1DetailId;
+  //     const rubberTypeId = sample.rubberTypeId;
+
+  //     if (this.checkAll || sample.checked) {
+  //       observables.push(
+  //         of(null).pipe(
+  //           concatMap(() => {
+  //             if (rubberTypeId == 2) {
+  //               return this.getahBongkahService.PutBRLabelTelahDicetak(id, this.cetakSample);
+  //             } else if (rubberTypeId == 1) {
+  //               return this.drclimstrainingService.PutLtxLabelTelahDicetak(id, this.cetakSample);
+  //             } else {
+  //               return of(null); // return a completed observable if rubberTypeId is neither 1 nor 2
+  //             }
+  //           }),
+  //           concatMap(() => {
+  //             return this.cetakLabelService.Putk1DetailLabelTelahDicetak(id, this.k1Detail);
+  //           })
+  //         )
+  //       );
+  //     }
+  //   }
+
+  //   forkJoin(observables).subscribe(
+  //     () => {
+  //       this.mesYaTidak = "yes";
+  //       console.log("All updates completed successfully");
+  //       // Additional logic after all updates are completed
+  //     },
+  //     (error) => {
+  //       console.error("Error occurred during updates", error);
+  //       // Handle error if needed
+  //     }
+  //   );
+  // }
+
+
+  // after remove
   onYesClick() {
     this.k1Detail.labelPrintedOn = new Date();
     this.k1Detail.labelPrintedBy = this.loginAs;
     this.k1Detail.labelPrinted = true;
-  
+
     this.cetakSample.labelPrintedOn = new Date();
     this.cetakSample.labelPrintedBy = this.loginAs;
 
-  
-    let observables: Observable<any>[] = [];
-  
     for (const sample of this.samples) {
       let id = sample.k1DetailId;
-      const rubberTypeId = sample.rubberTypeId;
-  
       if (this.checkAll || sample.checked) {
-        observables.push(
-          of(null).pipe(
-            concatMap(() => {
-              if (rubberTypeId == 2) {
-                return this.getahBongkahService.PutBRLabelTelahDicetak(id, this.cetakSample);
-              } else if (rubberTypeId == 1) {
-                return this.drclimstrainingService.PutLtxLabelTelahDicetak(id, this.cetakSample);
-              } else {
-                return of(null); // return a completed observable if rubberTypeId is neither 1 nor 2
-              }
-            }),
-            concatMap(() => {
-              return this.cetakLabelService.Putk1DetailLabelTelahDicetak(id, this.k1Detail);
-            })
-          )
+
+        this.cetakLabelService.Putk1DetailLabelTelahDicetak(id, this.k1Detail).subscribe(
+          res => { this.mesYaTidak = "yes" }
         );
       }
     }
-  
-    forkJoin(observables).subscribe(
-      () => {
-        this.mesYaTidak = "yes";
-        console.log("All updates completed successfully");
-        // Additional logic after all updates are completed
-      },
-      (error) => {
-        console.error("Error occurred during updates", error);
-        // Handle error if needed
-      }
-    );
   }
+
+
 
   onNoClick() {
     this.mesYaTidak = "tidak"
   }
+
 
 }

@@ -1,0 +1,633 @@
+<div class="container mb-3">
+  <mat-card>
+    <mat-card-content>
+      <h1 class="attractive-title">Papar Sampel</h1>
+      <div class="mat-card-container row">
+        <div class="col-md-6 shadow rounded p-5 mb-5">
+
+          <div class="content-header  d-flex">
+            <h3>Maklumat Daftar Sampel</h3>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">No Rujukan Makmal</label><br>
+              <label class="label_bi">Lab Ref No</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.labRefNo" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">No Borang Kastam</label><br>
+              <label class="label_bi">Custom No</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.customNo" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Tarikh Import</label><br>
+              <label class="label_bi">Import Date</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.importedDate  | date: 'dd-MM-yyyy'"
+                readonly>
+            </div>
+          </div><br>
+
+          
+          <div class="row form-group" *ngIf="creatorRoleId == 3">
+            <div class="col-sm-4">
+              <label class="label_bm">Tarikh Sampel Diterima</label><br>
+              <label class="label_bi">Date Sample Received</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.dateSampleReceived  | date: 'dd-MM-yyyy'"
+                readonly>
+            </div>
+          </div><br>
+
+          <div *ngIf="sample.remarks || sample.evidence">
+            <div class="row form-group">
+              <div class="col-sm-4">
+                <label class="label_bm">Catatan</label><br>
+                <label class="label_bi">Remarks</label>
+              </div>
+              <div class="col-sm-8">
+                <textarea type="text" class="form-control readonly-input" [value]="sample.remarks" readonly rows="4"
+                  cols="50" *ngIf="sample.remarks"></textarea>
+              </div>
+            </div><br>
+
+            <div class="row form-group" *ngIf="sample.evidence">
+              <div class="col-sm-4">
+                <label class="label_bm">Bukti</label><br>
+                <label class="label_bi">Evidence</label>
+              </div>
+              <div class="col-sm-8">
+                <a style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
+                  (click)="viewFile(sample.evidence)">{{sample.evidence}}</a>
+              </div>
+            </div><br>
+          </div>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Kuantiti (kg)</label><br>
+              <label class="label_bi">Quantity (kg)</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.quantity" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Kandungan Getah Kering (%)</label><br>
+              <label class="label_bi">Dry Rubber Content (%)</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.drc" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm"> Getah Kering (kg)</label><br>
+              <label class="label_bi">Dry Weight (kg)</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.dryWeight" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Jenis Getah</label><br>
+              <label class="label_bi">Rubber Type</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.rubberType" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Jenis Sampel</label><br>
+              <label class="label_bi">Sample Type</label>
+            </div>
+            <div class="col-sm-8">
+              <!-- <input type="text" class="form-control readonly-input" [value]="sample.sampleType" readonly> -->
+              <input type="text" class="form-control readonly-input" [value]="sample.typeCode" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group" *ngIf="creatorRoleId == 1 || creatorRoleId ==2">
+            <div class="col-sm-4">
+              <label class="label_bm">Syarikat Pengimport</label><br>
+              <label class="label_bi">Importer Company</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.importerName || sample.companyName"
+                readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group" *ngIf="creatorRoleId == 3">
+            <div class="col-sm-4">
+              <label class="label_bm">Syarikat Penghantar</label><br>
+              <label class="label_bi">Agent Forwarder</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.agentName || sample.forwarderName"
+                readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Tujuan Sampel Dihantar</label><br>
+              <label class="label_bi">Sent Sample Purpose</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.samplePropose" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Nama Pembekal</label><br>
+              <label class="label_bi">Supplier Name</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.supplierName" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Negara Pembekal</label><br>
+              <label class="label_bi">Supplier Country</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.country" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Kod HS</label><br>
+              <label class="label_bi">HS Code</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.hsCode" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Nama Pemandu</label><br>
+              <label class="label_bi">Driver's Name</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.driverName" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">I/C/ Pasport Pemandu</label><br>
+              <label class="label_bi">Driver's Identification/Passport </label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.icDriver" readonly>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">No. Pendaftaran Lori</label><br>
+              <label class="label_bi">Lorry Reg. No</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.lorryNo" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">No. Trelar/ Kontena/ Tank</label><br>
+              <label class="label_bi">Trailer/ Contena/ Tanker No</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.trailerNo" readonly>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Status</label><br>
+              <label class="label_bi">Status</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.status" readonly>
+            </div>
+          </div><br>
+
+
+
+        </div>
+
+
+        <div class="col-md-6 shadow rounded p-5 mb-5">
+
+
+       
+
+          <div class="content-header  d-flex">
+            <h3>Tarikh Sampel Dihantar</h3>
+          </div><br>
+
+          <div class="row form-group" *ngIf="creatorRoleId == 1 || creatorRoleId == 3">
+            <div class="col-sm-4">
+              <label class="label_bm">Batch Id</label><br>
+              <label class="label_bi">Batch Id</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.batchId" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group" *ngIf="creatorRoleId == 2">
+            <div class="col-sm-4">
+              <label class="label_bm">No Rujukan</label><br>
+              <label class="label_bi">Reference No</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.uipRegNo" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Tarikh Sampel Dihantar</label><br>
+              <label class="label_bi">Date Sample Delivered</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input"
+                [value]="sample.dateSampleDelivered  | date: 'dd-MM-yyyy'" readonly>
+            </div>
+          </div><br>
+
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Penghantaran</label><br>
+              <label class="label_bi">Delivery</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.delivery" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Syarikat Penghantar</label><br>
+              <label class="label_bi">Courier Services</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.courierServices" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Nombor Pengesanan</label><br>
+              <label class="label_bi">Tracking No</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.trackingNo" readonly>
+            </div>
+          </div><br>
+
+          <div *ngIf="creatorRoleId == 1 || creatorRoleId == 3">
+
+            <div class="content-header  d-flex">
+              <h3>Maklumat Penghantaran Batch</h3>
+            </div><br>
+
+            <div class="row form-group">
+              <div class="col-sm-4">
+                <label class="label_bm">Nama Bank</label><br>
+                <label class="label_bi">Bank Name</label>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.bankName" readonly>
+              </div>
+            </div><br>
+
+            <div class="row form-group">
+              <div class="col-sm-4">
+                <label class="label_bm">No Cek</label><br>
+                <label class="label_bi">Cheque No</label>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.chequeNo" readonly>
+              </div>
+            </div><br>
+
+            <div class="row form-group">
+              <div class="col-sm-4">
+                <label class="label_bm">Jumlah (RM)</label><br>
+                <label class="label_bi">Total Amount (RM)</label>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.chequeAmount" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group">
+              <div class="col-sm-4">
+                <label class="label_bm">No Transaksi</label><br>
+                <label class="label_bi">Transaction No</label>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.transactionNo" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group">
+              <div class="col-sm-4">
+                <label class="label_bm">Tarikh Transaksi</label><br>
+                <label class="label_bi">Transaction Date</label>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.date  | date: 'dd-MM-yyyy'"
+                  readonly>
+              </div>
+            </div><br>
+
+            <div class="row form-group">
+              <div class="col-sm-4">
+                <label class="label_bm">Resit</label><br>
+                <label class="label_bi">Receipt</label>
+              </div>
+              <div class="col-sm-8">
+                <a style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
+                  (click)="viewReceipt(sample.receipt)">{{sample.receipt}}</a>
+              </div>
+            </div><br>
+
+            <!-- <div class="row form-group">
+              <div class="col-sm-4">
+                <label class="label_bm">Tarikh Sampel Terima di Makmal</label><br>
+                <label class="label_bi">Date Sample Received at Lab</label>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input"
+                  readonly>
+              </div>
+            </div><br> -->
+  
+         
+
+
+            <div class="content-header  d-flex">
+              <h3>Surat-surat Berkaitan</h3>
+            </div><br>
+
+
+            <div class="row form-group">
+              <div class="col-sm-4">
+                <label class="label_bm">Surat Iringan</label><br>
+                <label class="label_bi">Accompanying Letter</label>
+              </div>
+              <div class="col-sm-8">
+                <a style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
+                  (click)="viewSuratIringan()">surat iringan</a>
+              </div>
+            </div><br>
+
+            <!-- <div class="row form-group">
+              <div class="col-sm-4">
+                <label class="label_bm">Surat Iringan</label><br>
+                <label class="label_bi">Accompanying Letter</label>
+              </div>
+              <div class="col-sm-8">
+                <a style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
+                  (click)="viewSuratKeputusan()">surat Keputusan</a>
+              </div>
+            </div><br> -->
+
+
+            <div class="row form-group">
+              <div class="col-sm-4">
+                <label class="label_bm">Lampiran</label><br>
+                <label class="label_bi">Appendix</label>
+              </div>
+              <div class="col-sm-8">
+                <a style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
+                  (click)="viewLampiran()">lampiran</a>
+              </div>
+            </div><br>
+
+            
+          </div>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Tarikh terima di Makmal</label><br>
+              <label class="label_bi">Date of receive in the Lab</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.dateReceivedInLab | date: 'dd-MM-yyyy'" readonly>
+            </div>
+          </div><br>
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Tarikh Daftar di Makmal</label><br>
+              <label class="label_bi">Date of register in the Lab</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.receivedOn | date: 'dd-MM-yyyy'" readonly>
+            </div>
+          </div><br>
+
+
+          <div class="row form-group">
+            <div class="col-sm-4">
+              <label class="label_bm">Bil hari dari tarikh import hingga terima</label><br>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control readonly-input" [value]="sample.totalDaysFromImportToReceived" readonly>
+            </div>
+          </div><br>
+
+
+          <div *ngIf="creatorRoleId == 2 ">
+            <div class="content-header  d-flex">
+              <h3>Maklumat Barangan/Perkhidmatan Diperlukan</h3>
+            </div><br>
+
+            <div class="row form-group">
+              <div class="col-sm-4">
+                <label class="label_bm">Jumlah</label><br>
+                <label class="label_bi">Total Amount (RM)</label>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.chequeAmount" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group">
+              <div class="col-sm-4">
+                <label class="label_bm">Memo</label><br>
+                <label class="label_bi">Memo</label>
+              </div>
+              <div class="col-sm-8">
+                <a style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
+                  (click)="viewMemo()">memo</a>
+              </div>
+            </div><br>
+
+          </div>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Terima oleh </label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.receivedBy" readonly>
+              </div>
+            </div><br>
+
+            
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Tarikh diuji</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.inLabOn | date: 'dd-MM-yyyy'" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Uji Oleh</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.inLabBy" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Tarikh Keputusan</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.testedOn | date: 'dd-MM-yyyy'" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Keputusan Oleh</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.testedBy" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Tarikh Disah</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.verifiedOn | date: 'dd-MM-yyyy'" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Disah Oleh</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.verifiedBy" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Tarikh Dilulus</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.approvedOn | date: 'dd-MM-yyyy'" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Dilulus Oleh</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.approvedBy" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Tarikh Pos </label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.resultSentOn | date: 'dd-MM-yyyy'" readonly>
+              </div>
+            </div><br>
+
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Pos Oleh</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.resultSentBy" readonly>
+              </div>
+            </div><br>
+
+            <div class="row form-group"  *ngIf="roleGtacr">
+              <div class="col-sm-4">
+                <label class="label_bm">Keputusan Ujian</label><br>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control readonly-input" [value]="sample.result| number:'1.2-2'" readonly>
+              </div>
+            </div><br>
+
+
+
+            
+          <div mat-dialog-actions align="end">
+            <button (click)="goBack()" class="btn btn-primary mr-5">Back</button>
+          </div>
+        </div><br>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

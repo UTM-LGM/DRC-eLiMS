@@ -47,9 +47,6 @@ export class SidenavComponent implements OnInit {
   ngOnInit() {
 
 
-
-
-
     if (this.authService.isloggedin()) {
       this.loginAs = this.authService.getSessionUsername()
       this.userRoleId = this.authService.getSessionRole()

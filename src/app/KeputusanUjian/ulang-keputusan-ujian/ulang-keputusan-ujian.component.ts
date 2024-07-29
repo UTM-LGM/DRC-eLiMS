@@ -31,6 +31,7 @@ export class UlangKeputusanUjianComponent {
 
   columnsToDisplay = [
 
+    'select',
     'batchId',
     'rubberType',
     'forwarderName',
@@ -127,6 +128,25 @@ export class UlangKeputusanUjianComponent {
   }
 
 
+  toggleBatchSelection(batch: Batch, isSelected: boolean) {
+    for (const sample of batch.samples) {
+      sample.checked = isSelected;
+    }
+    this.updateSelectedSamples();
+  }
+
+  updateSelectedSamples() {
+    this.selectedSamples = [];
+    for (const batch of this.batches) {
+      for (const sample of batch.samples) {
+        if (sample.checked) {
+          this.selectedSamples.push(sample);
+        }
+      }
+    }
+    console.log(this.selectedSamples);
+  }
+
   checkSingleChanged() {
     this.selectedSamples = [];
     for (const row of this.batches) {
@@ -159,10 +179,16 @@ export class UlangKeputusanUjianComponent {
         res => {
           // Display toastr notification when the request is successful
           this.toastr.success('Keputusan ulang cetak berhasil!', 'Berjaya');
+          setTimeout(() => {
+            window.location.reload();
+          },2000); 
         },
         error => {
           // Handle error if needed
           console.error('Error:', error);
+          setTimeout(() => {
+            window.location.reload();
+          },2000); 
         }
       );
     }

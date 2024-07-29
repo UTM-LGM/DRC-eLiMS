@@ -31,6 +31,7 @@ export class UjiSampelComponent {
 
   columnsToDisplay = [
 
+    'select',
     'batchId',
     'rubberType',
     'isFastTrack',
@@ -160,6 +161,25 @@ export class UjiSampelComponent {
   }
 
 
+  toggleBatchSelection(batch: Batch, isSelected: boolean) {
+    for (const sample of batch.samples) {
+      sample.checked = isSelected;
+    }
+    this.updateSelectedSamples();
+  }
+
+  updateSelectedSamples() {
+    this.selectedSamples = [];
+    for (const batch of this.batches) {
+      for (const sample of batch.samples) {
+        if (sample.checked) {
+          this.selectedSamples.push(sample);
+        }
+      }
+    }
+    console.log(this.selectedSamples);
+  }
+  
   updateCheckoutButtonVisibility() {
     if (this.checkboxClicked || this.selectedSamples.length > 0) {
       return true; // Display the Checkout button

@@ -54,7 +54,9 @@
                                 <p>2. Pihak kami memohon kerjasama pihak tuan untuk menjalankan ujian kandungan Getah
                                     Kering
                                     ke atas sampel mengikut kaedah ujian
-                                    <span><b>UPB/{{samples[0].sampleCategory}}/001</b></span>
+                                    <!-- <span><b>UPB/{{samples[0].sampleCategory}}/001</b></span> -->
+                                       <span *ngIf="samples[0].rubberTypeId == 1"><b>UPB/{{samples[0].sampleCategory}}/001</b></span>
+                                    <span *ngIf="samples[0].rubberTypeId == 2"><b>UPB/{{samples[0].sampleCategory}}/007</b></span>
                                     seperti berikut :-
                                 </p>
 

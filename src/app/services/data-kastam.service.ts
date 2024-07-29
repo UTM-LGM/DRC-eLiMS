@@ -37,7 +37,6 @@ export class DataKastamService {
     return this.http.get<any>(url);
   }
 
-  
   getK1Detail1(id: number): Observable<K1Detail> {
     return this.http.get<K1Detail>(this.baseApiUrl + '/api/K1Detail/getK1Detail1/' + id);
   }

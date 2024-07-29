@@ -8,10 +8,11 @@
         <h3 *ngIf="!lepassubmit">Sila pilih sampel untuk mencetak label</h3>
         <h3 *ngIf="lepassubmit">Berikut adalah senarai sampel yang dipilih untuk dicetak label.</h3>
 
-        <div class="card-body table-responsive" *ngIf="samples.length > 0">
+        <!-- List sample  -->
+        <div class="card-body table-responsive " *ngIf="samples.length > 0">
           <table>
             <tr>
-              <th scope="col" *ngIf="!lepassubmit">
+              <th scope="col" *ngIf="!lepassubmit" class="text-center">
                 <input type="checkbox" [(ngModel)]="checkAll" (change)="checkAllChanged()">
               </th>
               <th scope="col">Id</th>
@@ -19,7 +20,7 @@
               <th scope="col">Tarikh Import</th>
               <th scope="col">Jenis Getah</th>
               <th scope="col">Kuantiti(kg)</th>
-              <th *ngIf="roleForwarder || roleUip"scope="col">Syarikat Pengimport</th>
+              <th *ngIf="roleForwarder || roleUip" scope="col">Syarikat Pengimport</th>
               <th scope="col" *ngIf="roleImporter">Syarikat Penghantar</th>
 
             </tr>
@@ -37,7 +38,6 @@
               <td>{{ sample.quantity }}</td>
               <td *ngIf="roleForwarder || roleUip">{{ sample.importerName }}</td>
               <td *ngIf="roleImporter">{{ sample.agentName }}</td>
-              <!-- <td>{{ sample.importerName }}{{ sample.companyName }}</td> -->
             </tr>
           </table><br>
 
@@ -50,13 +50,20 @@
           <p><i><b>Tiada Sampel</b></i></p>
         </div><br>
 
+
+
+        <!-- button Pilih -->
         <button *ngIf="!lepassubmit" type="submit" (click)="displaySelected()" class="btn btn-primary">Pilih</button>
 
+
+        <!-- button cetak -->
         <div *ngIf="lepassubmit" align="center">
           <button id="download-pdf" (click)="generatePDFWithQRCode()" type="submit"
             class="btn btn-primary mr-5">Cetak</button>
         </div><br>
 
+
+        <!-- Pengesahan cetakan label  -->
         <div *ngIf="lepassubmit" class="card">
           <h4 class="card-header">Pengesahan Cetakan label</h4>
           <div class="card-body">

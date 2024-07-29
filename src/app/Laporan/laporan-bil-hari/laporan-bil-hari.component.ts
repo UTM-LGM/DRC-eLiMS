@@ -16,14 +16,13 @@ export class LaporanBilHariComponent {
   isSearched: boolean = false;
 
 
-    
-constructor(
-  private laporanService: LaporanService,
+  constructor(
+    private laporanService: LaporanService,
   ) { }
 
 
-  ngOnInit() {}
-  
+  ngOnInit() { }
+
 
   searchSample(): void {
     // Determine which parameters to include based on the selected criteria
@@ -34,14 +33,14 @@ constructor(
       (data) => {
         this.reportKgk = data;
         console.log(this.reportKgk);
-        this.isSearched = true; 
+        this.isSearched = true;
       },
       (error) => {
         console.error('Error fetching sample counts:', error);
       }
     );
 
-}
+  }
 
 
 }

@@ -100,13 +100,11 @@ export class LaporanPengujiComponent {
   // }
   
   searchSample(): void {
-    // Determine which parameters to include based on the selected criteria
     let startDate: Date | undefined = this.fromDate;
     let endDate: Date | undefined = this.toDate;
-    let inLabBy: string | undefined = this.k1Detail.inLabBy;
+    let tester: string | undefined = this.k1Detail.inLabBy;
   
-    // Call the API with the selected parameters
-    this.laporanService.CountSamplesByInLabOn(startDate, endDate, inLabBy).subscribe(
+    this.laporanService.CountSamplesByInLabOn(startDate, endDate, tester).subscribe(
       (data) => {
         this.sampleCounts = data;
         console.log(this.sampleCounts);
@@ -116,7 +114,7 @@ export class LaporanPengujiComponent {
         console.error('Error fetching sample counts:', error);
       }
     );
-}
+  }
 
 
 

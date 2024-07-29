@@ -31,6 +31,7 @@
     color: white;
     font-weight: 300;
     background-color: #3e4141;
+    
   }
   
   
@@ -156,3 +157,9 @@
   .example-element-description-attribution {
     opacity: 0.5;
   }
+
+  .center-table th,
+  .center-table td {
+    text-align: center;
+  }
+  

@@ -1,22 +1,13 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import { AuthService } from '../../services/auth/auth.service';
 import { ElimsService } from '../../services/elims.service';
 import { ActivatedRoute } from '@angular/router';
 import { Batch } from '../../models/batch';
-import { Sample } from '../../models/sample';
 import { Staff } from '../../models/staff';
 import { RubberType } from '../../models/rubberType';
-import { SampleType } from '../../models/sampleType';
-import { UipRefRunNo } from '../../models/uipRefRunNo';
-import { UipSampleRunNo } from '../../models/uipSampleRunNo';
-import { UipMemoRunNo } from '../../models/uipMemoRunNo';
 import { HantarSampelService } from '../hantar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
-import { K1Detail } from 'src/app/models/k1Detail';
 import * as html2pdf from 'html2pdf.js';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-memo',
@@ -26,47 +17,44 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 export class MemoComponent {
 
 
-  batchData: Batch = {} as Batch;
-  sample: Sample = {} as Sample;
-  samples: any
-  batches: Batch[] = [];
-
-  batchId: number;
-  unit: any;
-  loginAs: any;
-  role: any
-  userRoleId: any;
-  roleForwarder: boolean
-  roleUip: boolean
   staff: Staff = {} as Staff;
-
+  batches: Batch[] = [];
   rubberTypes: RubberType[]
-  sampleType: SampleType = {} as SampleType
-  uipRefRunNo: UipRefRunNo = {} as UipRefRunNo
-  refLableSamples: any
-  uipRefRunNoes: any
-  uipbkhRefRunNoes: any
-  sampleCategory: string
-
-  selectedCheckboxCount: number = 0;
-  selectedRubberType: string = "";
-  batch: Batch = {} as Batch;
-  rubberType: any
-
-  uipMemoRunNo: UipMemoRunNo = {} as UipMemoRunNo
-  uipSampleRunNo: UipSampleRunNo = {} as UipSampleRunNo
-  uipMemoRunNoes: any
-  uipSampleRunNoes: any
   emailRecipient: any[] = [];
+  samples: any
+  batchId: number;
+  loginAs: any;
+  userRoleId: any;
+  refLableSamples: any
+  selectedCheckboxCount: number = 0;
+  batch: Batch = {} as Batch;
   file: any | null
-  k1Detail: K1Detail = {} as K1Detail
-  emailRecord: any[] = []
-  sampleCode: string
   isPreview: boolean = true;
-  signatureImageBase64: SafeResourceUrl;
-  signaturePath: string;
-  memoPrinted: number; // Assuming this array holds your data
-  isPrintButtonClicked = false; // Add this variable
+  memoPrinted: number; 
+  isPrintButtonClicked = false; 
+
+  // batchData: Batch = {} as Batch;
+  // sample: Sample = {} as Sample;
+  // unit: any;
+  // role: any
+  // roleForwarder: boolean
+  // roleUip: boolean
+  // sampleType: SampleType = {} as SampleType
+  // uipRefRunNo: UipRefRunNo = {} as UipRefRunNo
+  // uipRefRunNoes: any
+  // uipbkhRefRunNoes: any
+  // sampleCategory: string
+  // selectedRubberType: string = "";
+  // rubberType: any
+  // uipMemoRunNo: UipMemoRunNo = {} as UipMemoRunNo
+  // uipSampleRunNo: UipSampleRunNo = {} as UipSampleRunNo
+  // uipMemoRunNoes: any
+  // uipSampleRunNoes: any
+  // k1Detail: K1Detail = {} as K1Detail
+  // emailRecord: any[] = []
+  // sampleCode: string
+  // signatureImageBase64: SafeResourceUrl;
+  // signaturePath: string;
 
   @ViewChild('pdfContent') pdfContent!: ElementRef;
   @ViewChild('pdfContent2') pdfContent2!: ElementRef;

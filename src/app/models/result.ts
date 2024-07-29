@@ -16,4 +16,10 @@ export class Result{
     decision: number;
     labRefNo: string;
     prove:string;
+
+   estimate1: number;
+   estimate2: number;
+  inputEstimate1: number;
+
+  batchId : number
 }

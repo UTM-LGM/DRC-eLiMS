@@ -61,7 +61,7 @@ export class AuthService {
       
     }
 
-    else if (selectedRole == 2 || 3) {
+    else if (selectedRole == 2 || 4) {
       const url = `${this.baseApiUrl}/api/Staffs/Post/Login`;
       const requestBody = { username: username, password: password };
       return this.httpclient.post(url, requestBody);
@@ -75,6 +75,12 @@ export class AuthService {
       throw new Error('Invalid selectedRole');
     }
 
+  }
+
+
+  logout(): void {
+
+    window.location.href = '/login';
   }
 
 

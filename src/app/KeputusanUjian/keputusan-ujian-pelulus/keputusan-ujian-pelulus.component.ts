@@ -58,7 +58,7 @@ export class KeputusanUjianPelulusComponent {
   staff: Staff = {} as Staff
   statusCodeId: number = 0;
   rubberTypes: RubberType[];
-
+  samples: Sample[] = [];
   batchId: number;
 
   constructor(
@@ -100,7 +100,7 @@ export class KeputusanUjianPelulusComponent {
     this.statusCodeId = 11;
     this.elimsService.GetKeputusanUjian(this.statusCodeId).subscribe(data => {
       this.batches = data;
-
+console.log(data)
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -128,6 +128,7 @@ export class KeputusanUjianPelulusComponent {
     
     // Check if both year and month are selected
     if (year && month) {
+      console.log("test")
       // Filter batches based on the selected year and month
       const filteredBatches = this.batches.filter(batch => {
         // Extract year and month from the sentOn date of each batch

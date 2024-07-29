@@ -1,29 +1,19 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DrclimstrainingService } from '../../services/drclimstraining.service';
 import { Sample } from '../../models/sample';
 import { Batch } from '../../models/batch';
 import { AuthService } from '../../services/auth/auth.service';
 import { userDTO } from '../../models/userDTO';
 import 'jspdf-autotable';
-import { GetahBongkahService } from '../../services/getah-bongkah.service';
 import { ElimsService } from '../../services/elims.service';
 import { environment } from '../../environments/environment';
-import {  FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Staff } from '../../models/staff';
 import { K1Detail } from '../../models/k1Detail';
-import { UipRefRunNo } from 'src/app/models/uipRefRunNo';
-import { UipbkhRefRunNo } from 'src/app/models/uipbkhRefRunNo';
-import { UipbkhMemoRunNo } from 'src/app/models/uipbkhMemoRunNo';
-import { UipMemoRunNo } from 'src/app/models/uipMemoRunNo';
-import { UipSampleRunNo } from 'src/app/models/uipSampleRunNo';
-import { UipbkhSampleRunNo } from 'src/app/models/uipbkhSampleRunNo';
 import { HantarSampelService } from '../hantar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
 import * as html2pdf from 'html2pdf.js';
 import { loginImporter } from 'src/app/models/loginImporters';
-
 
 @Component({
   selector: 'app-hantar-sampel',
@@ -32,87 +22,54 @@ import { loginImporter } from 'src/app/models/loginImporters';
 })
 export class HantarSampelComponent {
 
-  addPenghantaranBatchRequest: Sample = {} as Sample
   batch: Batch = {} as Batch;
   batchData: Batch = {} as Batch;
   sample: Sample = {} as Sample;
   user: userDTO = {} as userDTO
   k1Detail: K1Detail = {} as K1Detail
+  importer: loginImporter = {} as loginImporter
   staff: Staff = {} as Staff
-  uipRefRunNo: UipRefRunNo = {} as UipRefRunNo
-  uipbkhRefRunNo: UipbkhRefRunNo = {} as UipbkhRefRunNo
-  // sampleType: SampleType = {} as SampleType
-  // sampleType: SampleType = {} as SampleType
-  uipRefRunNoes: any
-  thisyear: string
-  role: any
 
-  batches: Batch[] = [];
   samples: Sample[] = [];
-  runNo: number
-  // selectedSamples: any[] = [];
   selectedSamples: Sample[] = [];
+  filteredSamples: Sample[] = []; 
+  filteredSamplesTemp: Sample[] = []; 
 
   checkAll: boolean = false
   hantarSampel: boolean = false
+  disableSimpanButton: boolean = true;
+  disableNextBtn: boolean = true;
+  checkboxSelected: boolean = false;
+  sahPenghantaranClicked = false;
+  showTestMethods: boolean = false
+  isLampiran: boolean = false;
+  lampiranVisible = false;
+  isSuratIringan: boolean = false;
+  daftarClicked = false;
+  
+  roleForwarder: boolean
+  roleUip: boolean
+  roleImporter: boolean
+  selectedCheckboxCount: number = 0;
+  chequeAmount: number = 0;
   bankCodes: any
   mesYaTidak: any
   batchId2: number
   selectedOption: string;
   file: any | null
-  chequeAmount: number = 0;
   loginAs: any;
-  statusCodeId = 2;
-  latexSample: any
-  batchForm: FormGroup;
-  disableSimpanButton: boolean = true;
-  disableNextBtn: boolean = true;
-
-  selectedCheckboxCount: number = 0;
-  rubberTypes: any
+  thisyear: string
   userRoleId: any;
-  roleForwarder: boolean
-  roleUip: boolean
-  roleImporter: boolean
-  generatedUipRegNo: string;
-
-  selectedRubberType: string = ""; // Initialize with a default value
-  checkboxSelected: boolean = false;
-  
-  filteredSamples: Sample[] = []; // Create a new array to store filtered samples
-  filteredSamplesTemp: Sample[] = []; // Create a new array to store filtered samples
-
-  uipSampleRunNoes: any
-  uipbkhMemoRunNo: UipbkhMemoRunNo = {} as UipbkhMemoRunNo
-  uipMemoRunNo: UipMemoRunNo = {} as UipMemoRunNo
-  uipSampleRunNo: UipSampleRunNo = {} as UipSampleRunNo
-  uipbkhSampleRunNo: UipbkhSampleRunNo = {} as UipbkhSampleRunNo
-  year: string
+  selectedRubberType: string = ""; 
+  selectedCompanyName: string = "";
   username: string
   statusCode: number
-  sahPenghantaranClicked = false;
   companies: any
-  selectedCompanyName: string = "";
   testMethods: any;
-  showTestMethods: boolean = false
-  showPdfLampiran: boolean = false;
-  pdfGenerated: boolean = false; // Track whether the PDF is generated
-  pdfSuratIringan: boolean = false;
-  isLampiran: boolean = false;
-  selectedBatchId: number;
-  batchId: number
-  lampiranVisible = false;
-  isSuratIringan: boolean = false;
-  groupedSamples: any[];
-  resetcalculateSelectedCheckboxCount  : any[] = []
-  importer: loginImporter = {} as loginImporter
-  daftarClicked = false;
   
   baseApiUrl: string = environment.baseApiUrlElims;
 
   constructor(
-    private drclimstrainingService: DrclimstrainingService,
-    private getahBongkahService: GetahBongkahService,
     private elimsService: ElimsService,
     private router: Router,
     private authService: AuthService,
@@ -120,12 +77,10 @@ export class HantarSampelComponent {
     private hantarSampelService: HantarSampelService,
     private userService: UserService,
     private route: ActivatedRoute,
-
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    //byusername 
+
     if (this.authService.isloggedin()) {
       this.loginAs = this.authService.getSessionUsername()
       this.userRoleId = this.authService.getSessionRole()
@@ -160,7 +115,6 @@ export class HantarSampelComponent {
       })
     }
 
-    
     if (this.userRoleId == 3) {
       this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
         console.log(res)
@@ -177,8 +131,7 @@ export class HantarSampelComponent {
     }
 
 
-
-    this.elimsService.GetElimsBankCodes().subscribe(data => {
+    this.elimsService.GetBankCodes().subscribe(data => {
       this.bankCodes = data
     });
 
@@ -188,11 +141,8 @@ export class HantarSampelComponent {
     };
 
     this.batch.testMethodId = defaultTestMethods[this.selectedRubberType];
-
     this.setDefaultTestMethod();
-
   }
-
 
 
   getElimsSamplesByUsername2(username: string) {
@@ -248,7 +198,6 @@ export class HantarSampelComponent {
       }
     }
     console.log(this.selectedSamples);
-    // this.onTestMethodChange();
     this.calculateAmount();
 
     this.selectedOptionChanged();
@@ -311,8 +260,6 @@ export class HantarSampelComponent {
     this.hantarSampelService.PostElimsBatches(this.batch, this.username)
       .subscribe(
         res => {
-
-
           console.log(res.batchId);
           this.batchData.batchId = res.batchId
           this.batchId2 = res.batchId
@@ -326,46 +273,17 @@ export class HantarSampelComponent {
           this.k1Detail.batchId = this.batchId2
           this.k1Detail.sentOn = new Date();
           this.k1Detail.sentBy = this.username
-          this.sample.batchId = this.batchId2
-          this.sample.sentOn = new Date();
-          this.sample.sentBy = this.username
-
-          this.k1Detail.statusCodeId = this.sample.statusCodeId = this.statusCode
+          this.k1Detail.statusCodeId = this.statusCode
 
           console.log("maklumat k1detail: ", this.k1Detail);
           console.log("maklumat batchId2: ", this.batchId2);
           console.log("maklumat sample: ", this.sample);
 
-
           const requests = [];
-          
-          if (this.selectedRubberType == "Lateks") {
-            this.drclimstrainingService.PostLtxBatches(this.batchId2, this.batch, this.username).subscribe(resLtxBatch => {
-              console.log(resLtxBatch.batchId)
-              this.sample.batchId = resLtxBatch.batchId
-              for (const sample of this.samples) {
-                let id = sample.k1DetailId;
-                this.drclimstrainingService.PutLtxSampleBatchId(id, this.sample).subscribe(() => { })
-              }
-            })
-          }
-
-
-          else if (this.selectedRubberType == "Getah Bongkah") {
-            this.getahBongkahService.PostBRBatches(this.batchId2, this.batch, this.username).subscribe(resBRBatch => {
-              console.log(resBRBatch.batchId)
-              this.sample.batchId = resBRBatch.batchId
-              for (const sample of this.samples) {
-                let id = sample.k1DetailId;
-                this.getahBongkahService.PutBRSampleBatchId(id, this.sample).subscribe(() => { })
-              }
-            })
-          }
 
           for (const sample of this.samples) {
             let id = sample.k1DetailId;
 
-            // const rubberTypeId = sample.rubberTypeId
             console.log(sample.k1HeaderId)
 
             this.hantarSampelService.PutElimsSampleBatchId(id, this.k1Detail).subscribe(
@@ -373,7 +291,6 @@ export class HantarSampelComponent {
                 this.mesYaTidak = "yes";
               }
             );
-
 
             if (this.file != null) {
               this.hantarSampelService.UploadReceipt(this.batchData.batchId, this.file).subscribe(() => {
@@ -393,11 +310,6 @@ export class HantarSampelComponent {
 
     this.sahPenghantaranClicked = true;
   }
-
-  // this.drclimstrainingService.PostLtxBatches(this.batchId2, this.batch, this.username).subscribe(() => { console.log("postLatex") })
-  // console.log(this.sample)
-  // this.drclimstrainingService.PutLtxSampleBatchId(id, this.sample)
-  //   .subscribe(() => { console.log("putLatex") }, (error) => { console.log("error " + error) })
 
 
   onNoClick() {
@@ -487,8 +399,6 @@ export class HantarSampelComponent {
 
 
 
-
-
   generatePdfSuratIringan(): void {
     const element = document.getElementById('suratIringan');
     console.log(element);
@@ -518,38 +428,6 @@ export class HantarSampelComponent {
   memo(batchData: Batch) {
     
     this.daftarClicked = true;
-
-    // if (this.staff.unit == "UIP") {
-      
-    //   // Iterate through sorted samples
-    //   for (const sample of this.samples) {
-    //     console.log(sample.k1DetailId);
-    //     let id = sample.k1DetailId;
-    //     console.log("ini maklumat sample loop : ", sample);
-    //     ////////////PutUipSampleRunNo/////////////
-    //     this.hantarSampelService.PutUipSampleRunNo(this.thisyear).subscribe(resUipRunNo => {
-    //       console.log(resUipRunNo);
-    //       this.k1Detail.sampleRunNo = "UIP/" + resUipRunNo.runNo + "/" + resUipRunNo.year;
-    //       this.k1Detail.statusCodeId = 5;
-    
-    //       this.hantarSampelService.PutElimsSampleBatchId(id, this.k1Detail).subscribe(
-    //         resBatch => {
-    //           console.log(this.k1Detail);
-    //           this.mesYaTidak = "yes";
-    //           console.log(resBatch);
-    //           this.hantarSampelService.PutUipMemoRunNo(this.thisyear).subscribe(res => {
-    //             this.batch.uipRegNo = "LGM/BEPP/UIP/500-5/" + res.year + "(" + res.runNo + ")";
-    //             this.hantarSampelService.PutBatchUipRefRunNo(batchData.batchId, this.batch).subscribe(res => { });
-    //             console.log(res);
-    //             this.router.navigateByUrl("memo/" + batchData.batchId)
-    //               .then(() => {
-    //               });
-    //           });
-    //         });
-    //     });
-    //   }
-    // }
-
 
     if (this.staff.unit === "UIP") {
       // Sorting samples by k1DetailId
@@ -603,7 +481,6 @@ export class HantarSampelComponent {
   
 
     else if (this.staff.unit == "UIPBKH") {
-
 
         // Sorting samples by k1DetailId
         this.samples.sort((a, b) => a.k1DetailId - b.k1DetailId);
@@ -667,8 +544,6 @@ export class HantarSampelComponent {
 
     for (let sample of this.selectedSamples) {
       let baseAmount = 0;
-
-
 
       if (this.userRoleId == 1 || this.userRoleId==3) {
 
@@ -814,7 +689,6 @@ export class HantarSampelComponent {
   toggleLampiranVisibility(): void {
     this.lampiranVisible = !this.lampiranVisible;
   }
-
 
 
   showSuratIringan() {

@@ -7,7 +7,6 @@ import { K1Detail } from '../models/k1Detail';
 import { StationCode } from '../models/stationCode';
 import { Company } from '../models/company';
 import { Forwarder } from '../models/forwarder';
-import { TypeCode } from '../models/typeCode';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,7 @@ export class DaftarSampelService {
   // baseApiUrl: string = environment.baseApiUrlElimsLocal;
 
   constructor(private http: HttpClient) { }
-
+  private selectedK1DetailId: number;
   // K1Header
 
   PostK1HeaderSample(k1Header: K1Header, statusCodeId: number): Observable<K1Header> {
@@ -32,12 +31,15 @@ export class DaftarSampelService {
     return this.http.put<K1Header>(this.baseApiUrl + '/api/K1Header/PutK1HeaderSample/', body, httpOptions);
   }
 
-  GetK1HeaderByCustomNo(customNo: string): Observable<K1Header> {
-    console.log(customNo)
-    return this.http.get<K1Header>(this.baseApiUrl + '/api/K1Header/GetK1HeaderByCustomNo/' + customNo);
+  // k1Detail
+
+  setSelectedK1DetailId(k1DetailId: number) {
+    this.selectedK1DetailId = k1DetailId;
   }
 
-  // k1Detail
+  getSelectedK1DetailId(): number {
+    return this.selectedK1DetailId;
+  }
 
   PostK1DetailSample(k1Detail: K1Detail, statusCodeId: number): Observable<K1Detail> {
     k1Detail.statusCodeId = statusCodeId;
@@ -73,50 +75,42 @@ export class DaftarSampelService {
     return this.http.get<StationCode>(this.baseApiUrl + '/api/StationCodes/GetStationCodes');
   }
 
-  // getDataByCustomNoAndAgentCode(customNo: string, agentCode: string): Observable<K1Header> {
-  //   console.log(customNo)
-  //   console.log(agentCode)
-  //   return this.http.get<K1Header>(this.baseApiUrl + '/api/K1Header/getDataByCustomNoAndAgentCode/' + customNo + agentCode);
-  // }
-
-
-  getDataByCustomNoAndAgentCode(customNo: string, agentCode: string): Observable<K1Detail[]> {
-    const apiUrl = `${this.baseApiUrl}/api/K1Header/${customNo}/${agentCode}`;
-    return this.http.get<any>(apiUrl);
-  }
-
-
   GetCompanyForwarderbyId(forwarderId: number): Observable<Company> {
     console.log(forwarderId)
     return this.http.get<Company>(this.baseApiUrl + '/api/CompanyForwarders/GetCompanyForwarderbyId/' + forwarderId);
   }
 
-  GetForwarderbyCompanyId(companyId: number): Observable<Forwarder> {
-    console.log(companyId)
-    return this.http.get<Forwarder>(this.baseApiUrl + '/api/CompanyForwarders/GetForwarderbyCompanyId/' + companyId);
-  }
-
-  GetCompanyId(companyId: number): Observable<Company> {
-    console.log(companyId)
-    return this.http.get<Company>(this.baseApiUrl + '/api/Companies/GetCompanyId/' + companyId);
-  }
-  
-
   GetForwarders() {
     return this.http.get<Forwarder>(this.baseApiUrl + '/api/Forwarders/GetForwarders');
   }
-
-
-  GetOldSystemIdbyId(id: number): Observable<TypeCode> {
-    console.log(id)
-    return this.http.get<TypeCode>(this.baseApiUrl + '/api/TypeCodes/GetOldSystemIdbyId/' + id);
-  }
-  
-
 
   PutDateReceivedInLab(sampleId: number, k1Detail: K1Detail) {
     return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutDateReceivedInLab/' + sampleId, k1Detail);
   }
 
+  // getDataByCustomNoAndAgentCode(customNo: string, agentCode: string): Observable<K1Detail[]> {
+  //   const apiUrl = `${this.baseApiUrl}/api/K1Header/${customNo}/${agentCode}`;
+  //   return this.http.get<any>(apiUrl);
+  // }
+
+  // GetForwarderbyCompanyId(companyId: number): Observable<Forwarder> {
+  //   console.log(companyId)
+  //   return this.http.get<Forwarder>(this.baseApiUrl + '/api/CompanyForwarders/GetForwarderbyCompanyId/' + companyId);
+  // }
+
+  // GetCompanyId(companyId: number): Observable<Company> {
+  //   console.log(companyId)
+  //   return this.http.get<Company>(this.baseApiUrl + '/api/Companies/GetCompanyId/' + companyId);
+  // }
+
+  // GetOldSystemIdbyId(id: number): Observable<TypeCode> {
+  //   console.log(id)
+  //   return this.http.get<TypeCode>(this.baseApiUrl + '/api/TypeCodes/GetOldSystemIdbyId/' + id);
+  // }
+
+  // GetK1HeaderByCustomNo(customNo: string): Observable<K1Header> {
+  //   console.log(customNo)
+  //   return this.http.get<K1Header>(this.baseApiUrl + '/api/K1Header/GetK1HeaderByCustomNo/' + customNo);
+  // }
 
 }

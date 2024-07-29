@@ -55,21 +55,19 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MemoComponent } from './Hantar-Sampel/memo/memo.component';
 import { BorangUka7Component } from './Hantar-Sampel/borang-uka7/borang-uka7.component';
 import { DataDeleteComponent } from './dialogbox/data-delete/data-delete.component';
-import { ViewKeputusanUjianComponent } from './view-keputusan-ujian/view-keputusan-ujian.component';
+import { ViewKeputusanUjianComponent } from './KeputusanUjian/view-keputusan-ujian/view-keputusan-ujian.component';
 import { SpinnerComponent } from './dialogbox/spinner/spinner.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PrintMemoComponent } from './print-memo/print-memo.component';
-import { DaftarTerimaSampelComponent } from './daftar-terima-sampel/daftar-terima-sampel.component';
-import { SampelBelumTerimaComponent } from './sampel-belum-terima/sampel-belum-terima.component';
+import { DaftarTerimaSampelComponent } from './Daftar Terima Sampel/daftar-terima-sampel/daftar-terima-sampel.component';
 import { CetakLembaranKerjaComponent } from './CetakWorksheet/cetak-lembaran-kerja/cetak-lembaran-kerja.component';
-import { ViewMaklumatPenghantaranComponent } from './view-maklumat-penghantaran/view-maklumat-penghantaran.component';
-import { SuratIringanComponent } from './surat-iringan/surat-iringan.component';
+import { ViewMaklumatPenghantaranComponent } from './Hantar-Sampel/view-maklumat-penghantaran/view-maklumat-penghantaran.component';
+import { SuratIringanComponent } from './Hantar-Sampel/surat-iringan/surat-iringan.component';
 import { LampiranComponent } from './Hantar-Sampel/lampiran/lampiran.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { GroupByPipe } from './pipes/group-by.pipe';
 import { CetakWorksheetComponent } from './CetakWorksheet/cetak-worksheet/cetak-worksheet.component';
-import { SajarahPenghantaranComponent } from './sajarah-penghantaran/sajarah-penghantaran.component';
-import { MaklumatPenghantaranComponent } from './maklumat-penghantaran/maklumat-penghantaran.component';
+import { MaklumatPenghantaranComponent } from './Hantar-Sampel/maklumat-penghantaran/maklumat-penghantaran.component';
 import { UlangCetakLembaranKerjaComponent } from './CetakWorksheet/ulang-cetak-lembaran-kerja/ulang-cetak-lembaran-kerja.component';
 import { UjiSampelComponent } from './Rekod-Keputusan-Sampel/uji-sampel/uji-sampel.component';
 import { RekodKeputusanComponent } from './Rekod-Keputusan-Sampel/rekod-keputusan/rekod-keputusan.component';
@@ -81,13 +79,13 @@ import { CetakKeputusanComponent } from './CetakKeputusan/cetak-keputusan/cetak-
 import { CetakSuratKeputusanComponent } from './CetakKeputusan/cetak-surat-keputusan/cetak-surat-keputusan.component';
 import { PosKeputusanComponent } from './CetakKeputusan/pos-keputusan/pos-keputusan.component';
 import { RekodKelulusanComponent } from './Kelulusan/rekod-kelulusan/rekod-kelulusan.component';
-import { DetailKeputusanComponent } from './detail-keputusan/detail-keputusan.component';
-import { PdfCetakKeputusanComponent } from './pdf-cetak-keputusan/pdf-cetak-keputusan.component';
-import { PdfCetakSuratKeputusanComponent } from './pdf-cetak-surat-keputusan/pdf-cetak-surat-keputusan.component';
+import { DetailKeputusanComponent } from './Rekod-Keputusan-Sampel/detail-keputusan/detail-keputusan.component';
+import { PdfCetakKeputusanComponent } from './CetakKeputusan/pdf-cetak-keputusan/pdf-cetak-keputusan.component';
+import { PdfCetakSuratKeputusanComponent } from './CetakKeputusan/pdf-cetak-surat-keputusan/pdf-cetak-surat-keputusan.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { DialogCheckoutComponent } from './dialogbox/dialog-checkout/dialog-checkout.component';
 import { SampelSimpananLgmComponent } from './Kelulusan/sampel-simpanan-lgm/sampel-simpanan-lgm.component';
-import { PdfCetakKeputusanUipComponent } from './pdf-cetak-keputusan-uip/pdf-cetak-keputusan-uip.component';
+import { PdfCetakKeputusanUipComponent } from './CetakKeputusan/pdf-cetak-keputusan-uip/pdf-cetak-keputusan-uip.component';
 import { KeputusanUjianPelulusComponent } from './KeputusanUjian/keputusan-ujian-pelulus/keputusan-ujian-pelulus.component';
 import { UlangKeputusanUjianComponent } from './KeputusanUjian/ulang-keputusan-ujian/ulang-keputusan-ujian.component';
 import { LaporanBilSampelComponent } from './Laporan/laporan-bil-sampel/laporan-bil-sampel.component';
@@ -98,11 +96,13 @@ import { LaporanTahapKecekapanComponent } from './Laporan/laporan-tahap-kecekapa
 import { LaporanKgkComponent } from './Laporan/laporan-kgk/laporan-kgk.component';
 import { DeliveryDateNotUpdatedComponent } from './CetakKeputusan/delivery-date-not-updated/delivery-date-not-updated.component';
 import { DeliveryUpdatedComponent } from './CetakKeputusan/delivery-updated/delivery-updated.component';
-import { TarikhTerimaSampelComponent } from './Daftar-Sampel/tarikh-terima-sampel/tarikh-terima-sampel.component';
+import { TarikhTerimaSampelComponent } from './Daftar Terima Sampel/tarikh-terima-sampel/tarikh-terima-sampel.component';
 import { LaporanBilHariComponent } from './Laporan/laporan-bil-hari/laporan-bil-hari.component';
-import { CetakComponent } from './cetak/cetak.component';
-
-
+import { SajarahPenghantaranComponent } from './Hantar-Sampel/sajarah-penghantaran/sajarah-penghantaran.component';
+import { NoticeComponent } from './Notis/notice/notice.component';
+import { ViewNoticeComponent } from './Notis/view-notice/view-notice.component';
+import { ShowNoticeComponent } from './Notis/show-notice/show-notice.component';
+import { EditNoticeComponent } from './Notis/edit-notice/edit-notice.component';
 // import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
@@ -135,7 +135,6 @@ import { CetakComponent } from './cetak/cetak.component';
     SpinnerComponent,
     PrintMemoComponent,
     DaftarTerimaSampelComponent,
-    SampelBelumTerimaComponent,
     CetakLembaranKerjaComponent,
     ViewMaklumatPenghantaranComponent,
     SuratIringanComponent,
@@ -172,7 +171,10 @@ import { CetakComponent } from './cetak/cetak.component';
     DeliveryUpdatedComponent,
     TarikhTerimaSampelComponent,
     LaporanBilHariComponent,
-    CetakComponent,
+    NoticeComponent,
+    ViewNoticeComponent,
+    ShowNoticeComponent,
+    EditNoticeComponent,
 
   ],
   imports: [

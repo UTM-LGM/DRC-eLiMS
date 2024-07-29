@@ -17,7 +17,17 @@
         <div class="mat-elevation-z8">
           <div class="list-container">
 
-            <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+            <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="table table-striped center-table">
+
+
+              <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                </th>
+                <td mat-cell *matCellDef="let batch">
+                  <mat-checkbox (change)="toggleBatchSelection(batch, $event.checked)"></mat-checkbox>
+                </td>
+              </ng-container>
+
 
               <ng-container matColumnDef="batchId">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch Id </th>
@@ -51,6 +61,21 @@
                 <td mat-cell *matCellDef="let row"> {{row.sampleCount}}</td>
               </ng-container>
 
+              <ng-container matColumnDef="bilHari">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header > Tempoh Simpanan(Bil Hari)</th>
+                <td mat-cell *matCellDef="let row"> {{row.daysSinceReceived}}</td>
+              </ng-container>
+
+              <!-- <ng-container matColumnDef="bilHari">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tempoh Simpanan(Bil Hari)</th>
+                <td mat-cell *matCellDef="let row" [ngClass]="{'red-text': row.daysSinceReceived > 7}">
+                  {{row.daysSinceReceived}}
+                </td>
+              </ng-container>
+               -->
+            
+
+
               <ng-container matColumnDef="expandedDetail">
                 <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
                   <div class="example-element-detail"
@@ -63,6 +88,10 @@
                             <th scope="col" class="black">
                               <!-- <input type="checkbox" [(ngModel)]="checkAll" (change)="checkAllChanged()"> -->
                             </th>
+
+                            <!-- <th scope="col" class="black">
+                              <input type="checkbox" [(ngModel)]="isAllSelected" (change)="toggleAllSelection()">
+                            </th> -->
                             <th class="black" scope="col">Sampel Id</th>
                             <th class="black" scope="col">Batch Id</th>
                             <th class="black" scope="col">Ruj. Makmal</th>
@@ -70,7 +99,7 @@
                             <th class="black" scope="col">Syarikat Pengimport</th>
                             <th class="black" scope="col">Jenis</th>
                             <th class="black" scope="col">Tarikh Import</th>
-                            <th class="black" scope="col">Tarikh Terima</th>
+                            <th class="black" scope="col">Tarikh Daftar Terima</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -162,7 +191,7 @@
 
       <!-- list sample at second page -->
       <div class="table-responsive">
-        <table *ngIf="!isPrint && lepassubmit" class="table table-striped text-wrap ">
+        <table *ngIf="!isPrint && lepassubmit" class="table table-striped text-wrap center-table">
           <thead>
             <tr class="tableheader">
               <th class="black" scope="col">Sampel Id</th>
@@ -200,7 +229,7 @@
           <h2>Senarai Sampel</h2>
           <div>
             <div class="table-responsive">
-              <table class="table table-striped text-wrap">
+              <table class="table table-striped text-wrap center-table">
                 <thead>
                   <tr class="tableheader">
                     <th class="black" scope="col">Sampel Id</th>

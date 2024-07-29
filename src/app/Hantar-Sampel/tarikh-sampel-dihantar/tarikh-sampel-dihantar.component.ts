@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component,  ViewChild } from '@angular/core';
 import { Batch } from '../../models/batch';
 import { ToastrService } from 'ngx-toastr';
 import { DrclimstrainingService } from '../../services/drclimstraining.service';
@@ -7,16 +7,12 @@ import { forkJoin } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Sample } from 'src/app/models/sample';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { userDTO } from 'src/app/models/userDTO';
 import { Staff } from 'src/app/models/staff';
-import { UipRefRunNo } from 'src/app/models/uipRefRunNo';
-import { UipbkhRefRunNo } from 'src/app/models/uipbkhRefRunNo';
 import { HantarSampelService } from '../hantar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
 import { loginImporter } from 'src/app/models/loginImporters';
-import { K1Detail } from 'src/app/models/k1Detail';
 
 import * as QRCode from 'qrcode-generator';
 import jsPDF from 'jspdf';
@@ -29,37 +25,36 @@ import jsPDF from 'jspdf';
 export class TarikhSampelDihantarComponent {
 
   delivery: any = ['Fizikal', 'Perkhidmatan Kurier']
+  importer: loginImporter = {} as loginImporter
   batch: Batch = {} as Batch;
-  sample: Sample = {} as Sample;
   user: userDTO = {} as userDTO
-  batches: Batch[] = [];
+  staff: Staff = {} as Staff
   showDelivery: boolean = false
-  sampleForm: any;
-  loginAs: any;
-  userRoleId: any;
+  lepassubmit: boolean = false
   roleForwarder: boolean
   roleUip: boolean
   roleImporter: boolean
-
-  staff: Staff = {} as Staff
-  uipRefRunNo: UipRefRunNo = {} as UipRefRunNo
-  uipbkhRefRunNo: UipbkhRefRunNo = {} as UipbkhRefRunNo
-  importer: loginImporter = {} as loginImporter
+  loginAs: any;
+  userRoleId: any;
+  mesYaTidak: any
+  receivedDataFromChild: any;
 
   // sample: Sample = {} as Sample;
-  samples: Sample[] = [];
-  lepassubmit: boolean = false
-  mesYaTidak: any
-  k1Detail: K1Detail = {} as K1Detail;
-  receivedDataFromChild: any;
-  selectedBatches: any[] = [];
+  // batches: Batch[] = [];
+  // sampleForm: any;
+  // uipRefRunNo: UipRefRunNo = {} as UipRefRunNo
+  // uipbkhRefRunNo: UipbkhRefRunNo = {} as UipbkhRefRunNo
+  // sample: Sample = {} as Sample;
+  // samples: Sample[] = [];
+  // k1Detail: K1Detail = {} as K1Detail;
+  // selectedBatches: any[] = [];
 
   constructor(
 
 
     private toastr: ToastrService,
-    private drclimstrainingService: DrclimstrainingService,
-    private getahBongkahService: GetahBongkahService,
+    // private drclimstrainingService: DrclimstrainingService,
+    // private getahBongkahService: GetahBongkahService,
     private authservice: AuthService,
     private hantarSampelService: HantarSampelService,
     private userService: UserService,
@@ -119,29 +114,88 @@ export class TarikhSampelDihantarComponent {
   }
 
   //////////////////////BUTTON UPDATE///////////////////////////
+  // updateBatch() {
+  //   if (this.checkRequired()) {
+
+  //     if (this.userRoleId == 1 || this.userRoleId == 3) {
+  //       const addTarikhSampelDihantar = this.hantarSampelService.PostTarikhSampelDihantar(this.batch);
+  //       const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
+  //       const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
+
+  //       forkJoin([
+  //         addTarikhSampelDihantar,
+  //         updateLtxTarikhSampelDihantar,
+  //         updateBRTarikhSampelDihantar
+  //       ]).subscribe(
+  //         {
+  //           next: ((res: any[]) => {
+  //             this.toastr.success('Data berjaya disimpan', 'Berjaya', {
+  //               timeOut: 7000,
+  //             }),
+
+  //               setTimeout(() => {
+  //                 window.location.reload();
+  //               });
+
+  //           }),
+  //           error: (e) => {
+  //             this.toastr.error('Maklumat gagal dikemaskini');
+  //           }
+  //         }
+  //       );
+  //     }
+
+  //     else if (this.userRoleId == 2) {
+
+  //       const addTarikhSampelDihantar = this.hantarSampelService.PostUipTarikhSampelDihantar(this.batch);
+  //       const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
+  //       const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
+
+  //       forkJoin([
+  //         addTarikhSampelDihantar,
+  //         updateLtxTarikhSampelDihantar,
+  //         updateBRTarikhSampelDihantar
+  //       ]).subscribe(
+  //         {
+  //           next: ((res: any[]) => {
+  //             this.toastr.success('Data berjaya disimpan', 'Berjaya', {
+  //               timeOut: 7000,
+  //             }),
+
+  //               setTimeout(() => {
+  //                 window.location.reload();
+  //               });
+
+  //           }),
+
+  //           error: (e) => {
+  //             this.toastr.error('Maklumat gagal dikemaskini');
+  //           }
+  //         }
+  //       );
+  //     }
+  //   }
+
+  // }
+
+
   updateBatch() {
     if (this.checkRequired()) {
-
+  
       if (this.userRoleId == 1 || this.userRoleId == 3) {
         const addTarikhSampelDihantar = this.hantarSampelService.PostTarikhSampelDihantar(this.batch);
-        const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
-        const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
-
-        forkJoin([
-          addTarikhSampelDihantar,
-          updateLtxTarikhSampelDihantar,
-          updateBRTarikhSampelDihantar
-        ]).subscribe(
+  
+        addTarikhSampelDihantar.subscribe(
           {
-            next: ((res: any[]) => {
+            next: (res => {
               this.toastr.success('Data berjaya disimpan', 'Berjaya', {
                 timeOut: 7000,
-              }),
-
-                setTimeout(() => {
-                  window.location.reload();
-                });
-
+              });
+  
+              setTimeout(() => {
+                window.location.reload();
+              });
+  
             }),
             error: (e) => {
               this.toastr.error('Maklumat gagal dikemaskini');
@@ -149,30 +203,24 @@ export class TarikhSampelDihantarComponent {
           }
         );
       }
-
+  
       else if (this.userRoleId == 2) {
-
+  
         const addTarikhSampelDihantar = this.hantarSampelService.PostUipTarikhSampelDihantar(this.batch);
-        const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
-        const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
-
-        forkJoin([
-          addTarikhSampelDihantar,
-          updateLtxTarikhSampelDihantar,
-          updateBRTarikhSampelDihantar
-        ]).subscribe(
+  
+        addTarikhSampelDihantar.subscribe(
           {
-            next: ((res: any[]) => {
+            next: (res => {
               this.toastr.success('Data berjaya disimpan', 'Berjaya', {
                 timeOut: 7000,
-              }),
-
-                setTimeout(() => {
-                  window.location.reload();
-                });
-
+              });
+  
+              setTimeout(() => {
+                window.location.reload();
+              });
+  
             }),
-
+  
             error: (e) => {
               this.toastr.error('Maklumat gagal dikemaskini');
             }
@@ -180,8 +228,9 @@ export class TarikhSampelDihantarComponent {
         );
       }
     }
-
   }
+
+  
 
   //////////////////////CHECKING REQUIRED SEBELUM UPDATE///////////////////////////
   checkRequired() {
@@ -220,7 +269,6 @@ export class TarikhSampelDihantarComponent {
       this.dataSource.paginator.firstPage();
     }
   }
-
 
 
 

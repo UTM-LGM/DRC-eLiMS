@@ -2,19 +2,15 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { K1Detail } from 'src/app/models/k1Detail';
-import { Sample } from 'src/app/models/sample';
 import { userDTO } from 'src/app/models/userDTO';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { DrclimstrainingService } from 'src/app/services/drclimstraining.service';
 import { ElimsService } from 'src/app/services/elims.service';
-import { GetahBongkahService } from 'src/app/services/getah-bongkah.service';
 import { DaftarSampelService } from '../daftar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DataDeleteComponent } from 'src/app/dialogbox/data-delete/data-delete.component';
-import { loginImporter } from 'src/app/models/loginImporters';
 
 @Component({
   selector: 'app-elims-senarai-sampel',
@@ -41,27 +37,19 @@ export class ElimsSenaraiSampelComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   user: userDTO = {} as userDTO
-  sample: Sample = {} as Sample;
-  samples: Sample[] = [];
   k1Details: any
-  k1Header: any
-  sampleDetails: any;
   loginAs: any;
   userRoleId: any
-  companyName: any
-  userFiltered: boolean = false;
-  importer: loginImporter = {} as loginImporter
   roleForwarder: boolean;
   roleUip: boolean;
   roleImporter: boolean;
-
+  selectedRowData: any;
+  selectedK1DetailId: number;
+  
   constructor(
-    private route: ActivatedRoute,
     private elimsService: ElimsService,
     private router: Router,
     private authservice: AuthService,
-    private drclimstrainingService: DrclimstrainingService,
-    private getahBongkahService: GetahBongkahService,
     private daftarSampelService: DaftarSampelService,
     private userService: UserService,
     private dialog: MatDialog,
@@ -85,7 +73,7 @@ export class ElimsSenaraiSampelComponent implements OnInit {
         this.roleUip = false
         this.roleImporter = false
         this.getElimsSamplesByUsername()
-        
+
       })
     }
     else if (this.userRoleId == 3) {
@@ -110,6 +98,8 @@ export class ElimsSenaraiSampelComponent implements OnInit {
         this.getElimsSamplesByUsername()
       })
     }
+
+    
   }
 
   getElimsSamplesByUsername() {
@@ -136,63 +126,37 @@ export class ElimsSenaraiSampelComponent implements OnInit {
   deleteSample(k1DetailId: number, rubberType: string): void {
     console.log(k1DetailId, "   ", rubberType);
     const dialogRef = this.dialog.open(DataDeleteComponent);
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
         this.daftarSampelService.DeleteElimsSample(k1DetailId).subscribe({
           next: () => { },
           error: (error) => {
-            console.error('Error deleting sample from Elim table:', error);
+            console.error('Error deleting sample from Elims table:', error);
           }
         });
-  
-        if (rubberType === "Getah Bongkah") {
-          this.getahBongkahService.DeleteBRSample(k1DetailId).subscribe({
-            next: () => {
-              alert('Sampel telah dipadam!');
-              this.ngOnInit();
-            },
-            error: (error) => {
-              console.error('Error deleting sample from Getah Bongkah table:', error);
-            }
-          });
-        } else if (rubberType === "Lateks") {
-          this.drclimstrainingService.DeleteLtxSample(k1DetailId).subscribe({
-            next: () => {
-              alert('Sampel telah dipadam!');
-              this.ngOnInit();
-            },
-            error: (error) => {
-              console.error('Error deleting sample from Lateks table:', error);
-            }
-          });
-        }
+
       }
     });
   }
-  
 
-  printSample(k1HeaderId: number) {
-    this.router.navigate(['sample/print/' + k1HeaderId])
-  }
 
   viewSample(k1DetailId: number) {
-    this.router.navigate(['sample/view-sample/' + k1DetailId])
+    // this.router.navigate(['sample/view-sample/' + k1DetailId]);
+    this.daftarSampelService.setSelectedK1DetailId(k1DetailId);
+    this.router.navigate(['sample/view-sample']); 
+
   }
 
-  updateSampleElims(k1HeaderId: number) {
-    console.log(k1HeaderId);
-    this.router.navigate(['sample/edit/' + k1HeaderId]);
-  }
 
   updateSample(k1DetailId: number) {
-    console.log(k1DetailId);
-    this.router.navigate(['sample/edit/' + k1DetailId]);
+    // console.log(k1DetailId);
+    // this.router.navigate(['sample/edit/' + k1DetailId]);
+    this.daftarSampelService.setSelectedK1DetailId(k1DetailId);
+    this.router.navigate(['sample/edit']); 
   }
 
-  updateSampleBR(k1HeaderId: number) {
-    console.log(k1HeaderId);
-    this.router.navigate(['sample/edit/' + k1HeaderId]);
-  }
+
+
 
 }

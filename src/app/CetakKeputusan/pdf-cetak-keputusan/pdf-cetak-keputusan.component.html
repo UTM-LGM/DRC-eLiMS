@@ -1,0 +1,264 @@
+<div class="container mb-3">
+  <div align="end">
+    <button class="btn btn-primary" [disabled]="printing" (click)="print()">
+      <i class="fa-solid fa-print" style="color: #ffffff;"></i> Cetak
+    </button>
+  </div>
+  <mat-card>
+    <div class="sample" #pdfContent id="page-one">
+      <table class="report-container">
+        <thead class="report-header">
+          <tr>
+            <th class="report-header-cell ">
+              <h2 class="center-text">LAPORAN UJIAN</h2>
+              <div class="header-info">
+                <div>
+                  <div *ngIf="k1Details[0].rubberTypeId == 1">
+                    NO LAPORAN : LGM/BKPT/G-TACR/7.8/CL-SP/{{k1Details[0].batchId}}<br>
+                    RUJUKAN TUAN : -
+                  </div>
+                  <div *ngIf="k1Details[0].rubberTypeId == 2">
+                    NO LAPORAN : LGM/BKPT/G-TACR/7.8/CR-MB/{{k1Details[0].batchId}}<br>
+                    RUJUKAN TUAN : -
+                  </div>
+                </div>
+                <div class="date-info">
+                  TARIKH : {{ today | date :'dd MMM yyyy'}}<br><br>
+                </div>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tfoot class="report-footer">
+          <tr>
+            <td class="report-footer-cell">
+              <div class="footer-info">
+
+                <!-- FOOTER -->
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+        <tbody class="report-content">
+          <tr>
+            <!-- <td class="center-text">
+                <h2>LAPORAN UJIAN PAGE 1</h2>
+            </td> -->
+          </tr>
+          <tr>
+            <td class="report-content-cell">
+              <div class="main">
+                <!-- <h3>LAPORAN UJIAN</h3> -->
+                <ng-container *ngFor="let companyGroup of groupedSamples; let isFirst = first">
+                  <div class="company-group" [class.first-group]="isFirst" [class.non-first-group]="!isFirst"
+                    *ngIf="isFirst">
+                    <mat-card-content>
+                      <div>
+                        <!-- page 1 -->
+                        <div>
+                          <table>
+                            <tr>
+                              <td class="space"> Alamat</td>
+                              <td class="space">:{{ companyGroup.key | uppercase }}<br>
+                                {{ companyGroup.items[0].importerAddress | uppercase }} <br>
+                              </td>
+                            </tr><br>
+                            <tr>
+                              <td class="space"> Tarikh Laporan</td>
+                              <td class="space">: {{ today | date :'dd MMM yyyy'}}</td>
+                            </tr>
+                            <tr>
+                              <td> Tarikh Surat Tuan</td>
+                              <td>: {{k1Details[0].sentOn | date: 'dd MMMM yyyy'}}</td>
+                            </tr>
+                            <tr>
+                              <td> Tarikh sampel diterima</td>
+                              <td>: {{k1Details[0].receivedOn | date: 'dd MMMM yyyy'}}</td>
+                            </tr>
+                            <tr>
+                              <td>Tarikh ujian dimulakan</td>
+                              <td>: {{ k1Details[0].worksheetTestOn | date: 'dd MMMM yyyy' }}</td>
+                            </tr>
+                            <tr>
+                              <td>Tarikh ujian Tamat</td>
+                              <td>: {{ k1Details[0].testedOn | date: 'dd MMMM yyyy' }}</td>
+                            </tr>
+                            <tr>
+                              <td> Lokasi analisa dijalankan</td>
+                              <td>: MAKMAL G-TACR SUNGAI PETANI</td>
+                            </tr>
+                          </table><br><br><br>
+                          <div>
+                            <div>
+                              <p class="title-spacing">
+                                <b>"BERKHIDMAT UNTUK NEGARA"</b><br>
+                                <b>"KREATIF INOVATIF PROGRESIF"</b><br>
+                                <b>"BERINTEGRITI DAN BEBAS RASUAH"</b><br>
+                              </p>
+                              {{k1Details[0].resultLetterApprovedBy}}<br>
+                              (IKM No : {{k1Details[0].ikmNo}} )<br>
+                              {{k1Details[0].staffPosition}} <br>
+                              Lembaga Getah Malaysia<br>
+                              b/p Ketua Pengarah<br>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+
+                        <!-- page 2 -->
+                        <div class="container px-4 py-2" style="page-break-before: always;">
+                          <p>KEPUTUSAN INI TELAH DIPEROLEHI PADA SAMPEL YANG DISERAHKAN KEPADA G-TACR DAN JENIS-JENIS
+                            UJIAN ADALAH MENGIKUT KEPERLUAN PELANGGAN.</p>
+                          <div>
+                            <div style="display: flex; justify-content: space-between;">
+                              <div>
+                                <h4>NO RUJUKAN SURAT TUAN</h4>
+                                <!-- <div *ngIf="k1Details[0].rubberTypeId == 1">
+                                    LGM/BKPT/G-TACR/7.8/CL-SP/{{k1Details[0].batchId}}<br>
+                                  </div>
+                                  <div *ngIf="k1Details[0].rubberTypeId == 2">
+                                    LGM/BKPT/G-TACR/7.8/CR-MB/{{k1Details[0].batchId}}<br>
+                                  </div> -->
+                              </div>
+                              <div>
+                                <h4>TARIKH SAMPEL DITERIMA</h4>
+                                <p>{{k1Details[0].receivedOn | date: 'dd MMMM yyyy'}}</p>
+                              </div>
+                            </div>
+                            <h4>MAKLUMAT SYARIKAT PENGIMPORT</h4>
+                            <div class="col-8">
+                              <table>
+                                <tr>
+                                  <td class="col1"> Nama Syarikat</td>
+                                  <td>: {{k1Details[0].importerName}}</td>
+                                </tr>
+                                <tr>
+                                  <td> Alamat</td>
+                                  <td>: {{k1Details[0].importerAddress}}</td>
+                                </tr>
+                              </table><br>
+                            </div>
+                            <h4>MAKLUMAT SYARIKAT PENGHANTAR</h4>
+                            <div>
+                              <table>
+                                <tr>
+                                  <td class="col1"> Nama Syarikat</td>
+                                  <td>: {{ k1Details[0].forwarderName | uppercase }}</td>
+                                </tr>
+                                <tr>
+                                  <td> Alamat</td>
+                                  <td>: {{ k1Details[0].forwarderAddress | uppercase }}</td>
+                                </tr>
+                              </table>
+                              <br>
+                              
+                            </div>
+                            <h4>PENERANGAN SAMPEL</h4>
+                            <div class="col-8">
+                              <table>
+                                <tr>
+                                  <td class="col1"> No. Batch</td>
+                                  <td>: {{k1Details[0].batchId}}</td>
+                                </tr>
+                                <tr>
+                                  <td class="col1"> Ujian</td>
+                                  <td>: Kandungan Getah Kering (% KGK)</td>
+                                </tr>
+                                <tr>
+                                  <td> Kaedah Ujian</td>
+                                  <td>: {{k1Details[0].testMethod}}</td>
+                                </tr>
+                                <tr>
+                                  <td>Jumlah Sampel</td>
+                                  <td>: {{ companyGroup.count }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Jenis Sampel </td>
+                                  <td>: Seperti yang diterangkan dalam jadual keputusan</td>
+                                </tr>
+                              </table><br>
+                            </div>
+                            <p><b>Bayaran : </b></p>
+                            <div class="col-8">
+                              <table>
+                                <tr>
+                                  <td class="col1">Bank</td>
+                                  <td>: {{k1Details[0].bankName}}</td>
+                                </tr>
+                                <tr>
+                                  <td> Jumlah (RM)</td>
+                                  <td>: {{k1Details[0].chequeAmount}}</td>
+                                </tr>
+                                <tr>
+                                  <td> No. Transaksi/cek</td>
+                                  <td>: {{k1Details[0].chequeNo}}{{k1Details[0].transactionNo}}</td>
+                                </tr>
+                                <tr>
+                                  <td>Tarikh Transaksi/cek</td>
+                                  <td>: {{k1Details[0].sentOn | date: 'dd MMMM yyyy'}}</td>
+                                </tr>
+                              </table><br>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- <page 3 -->
+                        <div class="container px-4 py-2" style="page-break-before: always;">
+                          <div>
+                            <h2>KEPUTUSAN ANALISIS</h2>
+                            <div class="col-10">
+                              <table class="table table-sm">
+                                <tr>
+                                  <td class="col1">No Batch</td>
+                                  <td>: {{k1Details[0].batchId}}</td>
+                                </tr>
+                                <tr>
+                                  <td> Kaedah Ujian</td>
+                                  <td>: {{k1Details[0].testMethod}}</td>
+                                </tr>
+                              </table><br>
+                            </div>
+                            <table class="listTable">
+                              <thead>
+                                <tr>
+                                  <th scope="col" class="small-no">No</th>
+                                  <th scope="col" class="big-column">No.Daftar LGM</th>
+                                  <th scope="col" class="small-getah">No.Daftar Kastam</th>
+                                  <th scope="col" class="small-getah">Tarikh Import</th>
+                                  <th scope="col">Jenis Getah</th>
+                                  <th scope="col" class="small-column">Keputusan Ujian KGK (% Berat)</th>
+                                  <th scope="col" class="small-column1">Tarikh Sampel Diuji</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let k1Detail of companyGroup.items; let i = index">
+                                  <td>{{ i + 1 }}</td>
+                                  <td class="big-column">{{k1Detail.labRefNo}}</td>
+                                  <td>{{k1Detail.customNo}}</td>
+                                  <td>{{k1Detail.importedDate | date: 'dd/MM/yyyy'}}</td>
+                                  <td>{{k1Detail.typeCode}}</td>
+                                  <td>{{k1Detail.result.toFixed(2)}}</td>
+                                  <td>{{k1Detail.testedOn | date: 'dd/MM/yyyy'}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <p><b>Nota:</b> Keputusan ini hanya merujuk kepada sampel yang diterima dan diuji seperti di
+                              atas sahaja</p>
+                          </div>
+                        </div>
+
+                        
+                      </div>
+                    </mat-card-content>
+                  </div>
+                </ng-container>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </mat-card>
+</div>

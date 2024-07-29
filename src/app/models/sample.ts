@@ -1,4 +1,6 @@
 export interface Sample {
+    estimate2: number;
+    estimate1: number;
     samples: any;
     rub: any;
     isRegistered: any;
@@ -107,11 +109,13 @@ export interface Sample {
     wet2 : number;
     dry1 : number;
     dry2 : number;
+    result : number;
     result1 : number;
     catatan : string;
     testMethodId : number;
     testMethod : string;
     prove : string;
     totalDaysFromImportToReceived : number;
+    dateReceivedInLab : Date;
 
 }

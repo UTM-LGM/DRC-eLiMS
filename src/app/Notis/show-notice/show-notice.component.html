@@ -1,0 +1,12 @@
+<!-- <div class="container"> -->
+    <!-- <h2>Notis</h2> -->
+    <div *ngFor="let notice of selectedNotice" class="notice-card">
+      <mat-card>
+        <mat-card-content>
+          <h3>{{ notice.title }}</h3>
+          <p>{{ notice.message }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  <!-- </div> -->
+  

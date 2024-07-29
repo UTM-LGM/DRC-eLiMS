@@ -133,3 +133,9 @@
   .example-element-description-attribution {
     opacity: 0.5;
   }
+
+  .center-table th,
+  .center-table td {
+    text-align: center;
+  }
+  

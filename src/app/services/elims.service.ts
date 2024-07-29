@@ -73,8 +73,8 @@ export class ElimsService {
   }
 
 
-  GetElimsBankCodes() {
-    return this.http.get<BankCode>(this.baseApiUrl + '/api/BankCodes/GetElimsBankCodes');
+  GetBankCodes() {
+    return this.http.get<BankCode>(this.baseApiUrl + '/api/BankCodes/GetBankCodes');
   }
 
   GetKeteranganByKodStesen(kodStesen:string){

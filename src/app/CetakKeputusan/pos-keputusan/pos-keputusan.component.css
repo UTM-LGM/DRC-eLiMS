@@ -140,3 +140,8 @@ tr.example-element-row:not(.example-expanded-row):active {
   padding: 20px; /* Padding inside the box */
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
 }
+
+.center-table th,
+.center-table td {
+  text-align: center;
+}

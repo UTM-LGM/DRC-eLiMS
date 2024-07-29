@@ -14,6 +14,7 @@ import { KeputusanUjianService } from './keputusan-ujian.service';
 import { UserService } from '../../User/user.service';
 import { loginImporter } from '../../models/loginImporters';
 import * as XLSX from 'xlsx';
+import { DaftarSampelService } from 'src/app/Daftar-Sampel/daftar-sampel.service';
 
 @Component({
   selector: 'app-keputusan-ujian',
@@ -28,25 +29,24 @@ export class KeputusanUjianComponent implements OnInit {
     'Hantar ke LGM',
     'Hantar ke GTACR'
   ]
-
+  
+  importer: loginImporter = {} as loginImporter
   user: userDTO = {} as userDTO
   sample: Sample = {} as Sample
+  forwarders: Forwarder[] = []
+  searchBy: string[]
   loginAs: any;
   statusCodeId: any
   errorMes: boolean
   errorNotFound: boolean
-  searchBy: string[]
   searchedby: any
   k1HeaderId: number;
   rubberTypeId: any;
-  rubberType: any;
   customNo: string;
   samplePropose: string;
-  importedDate: string;
   labRefNo: string;
   samples: any;
   batchId: number;
-  forwarders: Forwarder[] = []
   companies: any
   k1Details: any
   driverName: string;
@@ -58,15 +58,13 @@ export class KeputusanUjianComponent implements OnInit {
   bankCode: string;
   bankCodes: any
   companyId: any;
-
   forwarderId: any;
   sampleTypes: any
   rubberTypes: any
   typeCodeId : any
-
-  // Date filter properties
   fromDate: Date | undefined;
   toDate: Date | undefined;
+  
   showCustomNo: boolean = false
   showLabRegNo: boolean = false
   showSampleId: boolean = false
@@ -83,22 +81,24 @@ export class KeputusanUjianComponent implements OnInit {
   showImportedDate: boolean = false
   showCompanyName: boolean = false
   showForwarderName: boolean = false
-
+  
   userRoleId: any;
-
+  
   roleForwarder: boolean
   roleUip: boolean
   roleImporter: boolean
   roleGtacr: boolean
   staff: Staff
-  importer: loginImporter = {} as loginImporter
   searchParams: any
   queryParams: any
   typeCodes: any
+  selectedK1DetailId: number;
 
-  importedDates: Date[] = []; // Assuming imported dates are stored in this array
-  uniqueMonths: number[] = [];
-  displayedData: any[] = [];
+  // importedDates: Date[] = []; 
+  // uniqueMonths: number[] = [];
+  // displayedData: any[] = [];
+  // rubberType: any;
+  // importedDate: string;
 
   constructor(
     private elimsService: ElimsService,
@@ -106,18 +106,21 @@ export class KeputusanUjianComponent implements OnInit {
     private router: Router,
     private keputusanUjianService: KeputusanUjianService,
     private userService: UserService,
+    private daftarSampelService: DaftarSampelService,
 
   ) { }
 
   displayedColumns: string[] = [
     'k1DetailId',
+    'labRefNo',
     'customNo',
     'importedDate',
     'quantity',
     'importerName',
     'samplePropose',
     'status',
-    'action'
+    'result',
+    'action',
   ];
 
   dataSource!: MatTableDataSource<K1Detail[]>;
@@ -164,7 +167,7 @@ export class KeputusanUjianComponent implements OnInit {
       }
     }
 
-    this.elimsService.GetElimsBankCodes().subscribe(data => {
+    this.elimsService.GetBankCodes().subscribe(data => {
       this.bankCodes = data
     });
 
@@ -460,7 +463,9 @@ export class KeputusanUjianComponent implements OnInit {
 
   viewSample(k1DetailId: number) {
     sessionStorage.setItem('searchParams', JSON.stringify(this.queryParams));
-    this.router.navigate(['/sample/view-keputusan-ujian/' + k1DetailId]);
+    // this.router.navigate(['/sample/view-keputusan-ujian/' + k1DetailId]);
+    this.daftarSampelService.setSelectedK1DetailId(k1DetailId);
+    this.router.navigate(['keputusan-ujian/view-keputusan-ujian']); 
   }
 
   changeSearchBy(e: any) {

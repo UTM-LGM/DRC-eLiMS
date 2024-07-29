@@ -24,6 +24,11 @@
                             <td mat-cell *matCellDef="let row"> {{row.rubberType}}</td>
                         </ng-container>
 
+                        <!-- <ng-container matColumnDef="result">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Keputusan Ujian</th>
+                            <td mat-cell *matCellDef="let row"> {{row.result}}</td>
+                        </ng-container> -->
+
                         <ng-container matColumnDef="isFastTrack">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Laluan Pantas </th>
                             <td mat-cell *matCellDef="let row">
@@ -49,11 +54,9 @@
 
                         <ng-container matColumnDef="expandedDetail">
                             <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
-                                <div class="example-element-detail"
-                                    [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
-
+                                <div class="example-element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
                                     <div class="example-element-description w-100">
-                                        <table class="table table-striped">
+                                        <table class="table table-striped center-table">
                                             <thead>
                                                 <tr class="tableheader">
                                                     <th class="black"></th>
@@ -64,29 +67,30 @@
                                                     <th class="black" scope="col">Jenis</th>
                                                     <th class="black" scope="col">Tarikh Terima</th>
                                                     <th class="black" scope="col">Kuantiti(kg)</th>
+                                                    <th class="black" scope="col">Keputusan Ujian</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr *ngFor="let sample of row.samples; let i = index">
                                                     <td>
-                                                        <a href="javascript:void(0)"
-                                                            (click)="sampleList(sample.k1DetailId)">Select</a>
+                                                        <a href="javascript:void(0)" (click)="sampleList(sample.k1DetailId)">Select</a>
                                                     </td>
-                                                    <td>{{sample.k1DetailId}}</td>
-                                                    <td>{{sample.labRefNo}} </td>
-                                                    <td>{{sample.customNo}} </td>
-                                                    <td>{{sample.importerName}} </td>
-                                                    <td>{{sample.typeCode}}</td>
-                                                    <td>{{sample.receivedOn | date:"dd/MM/yyy"}} </td>
-                                                    <td>{{sample.quantity}} </td>
+                                                    <td>{{ sample.k1DetailId }}</td>
+                                                    <td>{{ sample.labRefNo }}</td>
+                                                    <td>{{ sample.customNo }}</td>
+                                                    <td>{{ sample.importerName }}</td>
+                                                    <td>{{ sample.typeCode }}</td>
+                                                    <td>{{ sample.receivedOn | date: 'dd/MM/yyyy' }}</td>
+                                                    <td>{{ sample.quantity }}</td>
+                                                    <td>{{ sample.result }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
-
                                     </div>
                                 </div>
                             </td>
                         </ng-container>
+                        
 
                         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
                         <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" class="example-element-row"
@@ -119,8 +123,8 @@
 
             <div class="row align-content-center justify-content-center" *ngIf="showForm">
                 <div class="col-8 border-gray">
-                    <app-detail-keputusan [k1Detail]="k1Detail" [result]="result"
-                        [inputDisable]="inputDisable"></app-detail-keputusan>
+                    <app-detail-keputusan [k1Detail]="k1Detail" [result]="result" [estimate1]="estimate1" [estimate2]="estimate2" 
+                        [inputDisable]="inputDisable" ></app-detail-keputusan>
 
                 </div>
                 <div class="col-4 ">
@@ -198,7 +202,7 @@
                             <div class="row form-group mb-2">
                                 <div class="col">
                                     <div style="display: flex; align-items: center;">
-                                        <div class="btn btn-primary float-end" style="margin-left: 5px;" (click)="calculateAverageFirst()">Kira</div>
+                                        <div class="btn btn-primary float-end" style="margin-left: 5px;" (click)="calculateAverageFirst();enableHantarButton()">Kira</div>
                                         <span *ngIf="limitValue" style="color: red; margin-left: 5px;">{{ limitValue }}</span>
                                     </div>
                                 </div>
@@ -207,21 +211,22 @@
 
                             <div class="row form-group mb-2 mt-3">
                                 <div class="col-lg">
-                                    <input type="text" class="form-control" [value]="inputEstimate1" disabled>
+                                    <input type="text" class="form-control" [value]="inputEstimate1.toFixed(2)" disabled>
                                 </div>
                             </div>
 
                             <div class="row form-group mb-2">
                                 <div class="col-lg">
-                                    <input type="text" class="form-control" [value]="inputEstimate2" disabled>
+                                    <input type="text" class="form-control" [value]="inputEstimate2.toFixed(2)" disabled>
                                 </div>
 
                             </div>
 
                             <div class="row form-group mb-2">
                                 <div class="col-lg">
-                                    <input type="text" class="form-control" id="result" name="result"
-                                        [(ngModel)]="inputResult.result1" [value]="inputAverage" disabled="">
+                                    <input type="text" class="form-control" id="result1" name="result1"
+                                        [(ngModel)]="inputResult.result1" [value]="inputAverage.toFixed(2)" disabled="">
+
                                 </div>
 
                             </div>
@@ -260,7 +265,7 @@
                                     <button type="submit" class="btn btn-danger float-end" style="margin-left: 5px;"
                                         (click)="reject()">Tolak</button>
                                     <button type="submit" class="btn btn-primary float-end" style="margin-left: 5px;"
-                                        (click)="updateRekodKeputusan()">Hantar</button>
+                                        (click)="updateRekodKeputusan()" [disabled]="!buttonClicked">Hantar</button>
 
 
 

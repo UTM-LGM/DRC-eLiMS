@@ -154,5 +154,57 @@
     font-size: 24px; /* Adjust icon size as needed */
   }
   
+/* Add this CSS to your styles */
+.light-green-rows .mat-row,
+.light-green-rows .mat-header-row {
+  background-color: lightgreen !important;
+}
+
+/* For the nested table */
+.table.light-green-rows tbody tr {
+  background-color: lightgreen !important;
+}
+
+.table.light-green-rows thead th {
+  background-color: lightgreen !important;
+}
+
+
+.red-text {
+  color: red;
+}
+
+.center-table th,
+.center-table td {
+  text-align: center;
+}
+
+
+.center-text-table th.mat-header-cell,
+.center-text-table td.mat-cell {
+  text-align: center !important;
+}
+
+.center-header th {
+  text-align: center;
+}
+
+
+
+.green-text {
+  color: green;
+}
+
+.yellow-text {
+  color: yellow;
+}
+
+.orange-text {
+  color: orange;
+}
+
+.red-text {
+  color: red;
+}
 
 

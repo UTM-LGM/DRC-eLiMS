@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import 'jspdf-autotable';
 import jsPDF from 'jspdf';
-import { DrclimstrainingService } from '../../services/drclimstraining.service';
 import { Sample } from '../../models/sample';
-import { GetahBongkahService } from '../../services/getah-bongkah.service';
 import { ElimsService } from '../../services/elims.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { userDTO } from '../../models/userDTO';
@@ -11,7 +9,6 @@ import { K1Detail } from '../../models/k1Detail';
 import { CetakLabelService } from '../cetak-label.service';
 import { UserService } from 'src/app/User/user.service';
 import * as QRCode from 'qrcode-generator';
-import { loginImporter } from 'src/app/models/loginImporters';
 
 @Component({
   selector: 'app-ulang-cetak-label',
@@ -24,27 +21,28 @@ export class UlangCetakLabelComponent implements OnInit {
   k1Detail: K1Detail = {} as K1Detail;
   cetakSample: Sample = {} as Sample
   samples: Sample[] = [];
+  
   checkAll: boolean = false
   lepassubmit: boolean = false
-  pdfUrl: string | null = null;
   mesYaTidak: any
   loginAs: any;
-  statusCodeId = 2;
   latexSample: any
-  latex1: any
   page: number = 1;
   ip: number = 20;
   userRoleId: any;
-  sampleTypeName: string
-  importer: loginImporter = {} as loginImporter
   roleForwarder: boolean
   roleUip: boolean
   roleImporter: boolean
 
+  // pdfUrl: string | null = null;
+  // statusCodeId = 2;
+  // latex1: any
+  // sampleTypeName: string
+  // importer: loginImporter = {} as loginImporter
 
   constructor(
-    private drclimstrainingService: DrclimstrainingService,
-    private getahBongkahService: GetahBongkahService,
+    // private drclimstrainingService: DrclimstrainingService,
+    // private getahBongkahService: GetahBongkahService,
     private elimsService: ElimsService,
     private authService: AuthService,
     private cetakLabelService: CetakLabelService,
@@ -298,12 +296,6 @@ export class UlangCetakLabelComponent implements OnInit {
           const lines1 = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
           doc.text(lines1, x + boxWidth + 21, y + 29);
         }
-
-        // if (sample2.forwarderAddress) {
-        //   const lines1 = doc.splitTextToSize(sample2.forwarderAddress, 52);
-        //   doc.text(lines1, x + boxWidth + 21, y + 33);
-        // }     
-
       }
       y += boxHeight + 0; // Change the box spacing here
     }
@@ -314,6 +306,40 @@ export class UlangCetakLabelComponent implements OnInit {
   }
 
 
+// before remove
+  // onYesClick() {
+  //   this.k1Detail.labelPrintedOn = new Date();
+  //   this.k1Detail.labelPrintedBy = this.loginAs;
+  //   this.k1Detail.labelPrinted = true;
+
+  //   this.cetakSample.labelPrintedOn = new Date();
+  //   this.cetakSample.labelPrintedBy = this.loginAs;
+  //   this.cetakSample.labelPrinted = true;
+
+  //   for (const sample of this.samples) {
+  //     let id = sample.k1DetailId;
+  //     const rubberTypeId = sample.rubberTypeId
+  //     if (this.checkAll || sample.checked) {
+
+  //       this.cetakLabelService.Putk1DetailLabelTelahDicetak(id, this.k1Detail).subscribe(
+  //         res => { this.mesYaTidak = "yes" }
+  //       );
+
+  //       if (rubberTypeId == 2) {
+  //         this.getahBongkahService.PutBRLabelTelahDicetak(id, this.cetakSample).subscribe(
+  //           res => { this.mesYaTidak = "yes" }
+  //         );
+
+  //       } else if (rubberTypeId == 1) {
+  //         this.drclimstrainingService.PutLtxLabelTelahDicetak(id, this.cetakSample).subscribe(
+  //           res => { this.mesYaTidak = "yes" }
+  //         );
+  //       }
+  //     }
+  //   }
+  // }
+
+  // After remove
 
   onYesClick() {
     this.k1Detail.labelPrintedOn = new Date();
@@ -323,26 +349,14 @@ export class UlangCetakLabelComponent implements OnInit {
     this.cetakSample.labelPrintedOn = new Date();
     this.cetakSample.labelPrintedBy = this.loginAs;
     this.cetakSample.labelPrinted = true;
-
+  
     for (const sample of this.samples) {
       let id = sample.k1DetailId;
-      const rubberTypeId = sample.rubberTypeId
       if (this.checkAll || sample.checked) {
-
+  
         this.cetakLabelService.Putk1DetailLabelTelahDicetak(id, this.k1Detail).subscribe(
           res => { this.mesYaTidak = "yes" }
         );
-
-        if (rubberTypeId == 2) {
-          this.getahBongkahService.PutBRLabelTelahDicetak(id, this.cetakSample).subscribe(
-            res => { this.mesYaTidak = "yes" }
-          );
-
-        } else if (rubberTypeId == 1) {
-          this.drclimstrainingService.PutLtxLabelTelahDicetak(id, this.cetakSample).subscribe(
-            res => { this.mesYaTidak = "yes" }
-          );
-        }
       }
     }
   }

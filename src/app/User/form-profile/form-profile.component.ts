@@ -98,7 +98,7 @@ export class FormProfileComponent {
                 this.toastr.error('Profile gagal dikemaskini', 'Error');
             }
         });
-    } else if (this.role == 2) {
+    } else if (this.role == 2 || this.role == 4) {
         if (this.staff.newPassword !== this.staff.confirmPassword) {
             this.toastr.error('Kata laluan baru tidak sepadan', 'Error');
             return;
@@ -122,7 +122,7 @@ export class FormProfileComponent {
             }
         });
     }
-    
+  
     this.router.navigateByUrl('profile');
 }
 

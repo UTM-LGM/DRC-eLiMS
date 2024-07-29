@@ -40,8 +40,8 @@
                                     </ng-container>
                                     <div>
                                         <small class="instruction">* Tarikh import yang diikrar dalam perakuan kepada
-                                          Kastam</small>
-                                      </div>
+                                            Kastam</small>
+                                    </div>
                                     <div *ngIf="notes && !sample.remarks">
                                         <p class="notes">Sampel perlu sampai di makmal GTACR pada :{{ notes }}</p>
                                     </div>
@@ -55,44 +55,15 @@
                                 </div>
                                 <div class="col-sm-8">
                                     <ng-container *ngIf="showSmk">
-                                        <input type="date" class="form-control readonly-input"  id="DateSampleReceived"
-                                        [(ngModel)]="sample.dateSampleReceived"
+                                        <input type="date" class="form-control readonly-input" id="DateSampleReceived"
+                                            [(ngModel)]="sample.dateSampleReceived"
                                             [value]="sample.dateSampleReceived | date: 'yyyy-MM-dd'" disabled readonly>
                                     </ng-container>
                                     <div>
                                         <small class="instruction">* Tarikh sampel diterima di kilang</small>
-                                      </div>
-                                </div>
-                            </div><br>
-
-
-                            <!-- <div class="col-lg-12 row" *ngIf="showRemarks">
-                                <div class="col-lg-4">
-                                    <label class="label_title">Catatan</label><br>
-                                    <label class="label_bi">Remarks</label>
-                                </div>
-                                <div class="col-lg-8 mb-3">
-                                    <textarea class="form-control" id="Remarks" name="Remarks"
-                                        [(ngModel)]="sample.remarks" rows="6" cols="50"></textarea>
-                                    <small class="instruction">*Alasan jika melebihi tempoh masa yang telah
-                                        ditetapkan</small>
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <label class="label_bm">Bukti</label><br>
-                                    <label class="label_bi">Evidence</label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <input type="file" class="form-control readonly-input" id="Evidence" name="Evidence"
-                                        (change)="handleFileInput($event)">
-                                    <small class="instruction"> * Sila sertakan bukti jika melebihi tempoh masa yang telah ditetapkan</small>
-                                    <div *ngIf="sample.evidence">
-                                        <a style="color: rgb(10, 96, 189); cursor: pointer;text-decoration: underline;"
-                                            (click)="viewFile(sample.evidence)">{{sample.evidence}}</a>
-
                                     </div>
                                 </div>
-                            </div> -->
+                            </div><br>
 
                             <div class="col-lg-12 row" *ngIf="showRemarks || sample.remarks || sample.evidence">
                                 <div class="col-lg-4" *ngIf="sample.remarks">
@@ -105,7 +76,7 @@
                                     <small class="instruction">*Alasan jika melebihi tempoh masa yang telah
                                         ditetapkan</small>
                                 </div>
-                        
+
                                 <div class="col-sm-4" *ngIf="sample.evidence">
                                     <label class="label_bm">Bukti</label><br>
                                     <label class="label_bi">Evidence</label>
@@ -113,7 +84,8 @@
                                 <div class="col-sm-8" *ngIf="sample.evidence">
                                     <input type="file" class="form-control readonly-input" id="Evidence" name="Evidence"
                                         (change)="handleFileInput($event)">
-                                    <small class="instruction"> * Sila sertakan bukti jika melebihi tempoh masa yang telah ditetapkan</small>
+                                    <small class="instruction"> * Sila sertakan bukti jika melebihi tempoh masa yang
+                                        telah ditetapkan</small>
                                     <div *ngIf="sample.evidence">
                                         <a style="color: rgb(10, 96, 189); cursor: pointer;text-decoration: underline;"
                                             (click)="viewFile(sample.evidence)">{{sample.evidence}}</a>
@@ -121,19 +93,6 @@
                                 </div>
                             </div>
                         </div><br>
-
-                        <!-- <div class="row form-group">
-                            <div class="col-sm-4">
-                                <label class="label_bm">Kuantiti (kg)</label><br>
-                                <label class="label_bi">Quantity (kg)</label>
-                            </div>
-                            <div class="col-sm-8">
-                                <input type="number" class="form-control" id="Quantity" name="Quantity"
-                                    [(ngModel)]="sample.quantity">
-                                <small class="instruction">Berat basah (dalam kilogram) tanpa pembungkusan</small>
-                            </div>
-                        </div><br> -->
-
 
                         <div class="row form-group">
                             <div class="col-sm-4">
@@ -149,21 +108,6 @@
                             </div>
                         </div><br>
 
-
-                        <!-- <div class="row form-group">
-                            <div class="col-sm-4">
-                                <label class="label_bm">Kandungan Getah Kering(%)</label><br>
-                                <label class="label_bi">Dry Rubber Content(DRC)</label>
-                            </div>
-                            <div class="col-sm-8">
-                                <input type="number" class="form-control readonly-input" id="drc" name="drc"
-                                    [(ngModel)]="sample.drc" (ngModelChange)="enforceDRCLimit()">
-                                <small class="instruction">* Kandungan Getah Kering yang diikrar pada perihal barang
-                                    dalam perakuan Kastam berkaitan</small>
-                                <div *ngIf="showErrorMessage" style="color: red;">Dry weight cannot exceed the available
-                                    quantity ({{ k1Detail.quantity }})</div>
-                            </div>
-                        </div><br> -->
 
                         <div class="row form-group">
                             <div class="col-lg-4">
@@ -209,11 +153,11 @@
                             </div>
                             <div class="col-sm-8">
                                 <select class="form-select readonly-input" name="TypeCodeId" id="TypeCodeId"
-                                [(ngModel)]="sample.typeCodeId">
-                                <option value="" hidden>{{sample.typeCode}}</option>
-                                <option *ngFor="let sample of typeCodes" [value]="sample.id">
-                                    {{sample.sampleType}}</option>
-                            </select>
+                                    [(ngModel)]="sample.typeCodeId">
+                                    <option value="" hidden>{{sample.typeCode}}</option>
+                                    <option *ngFor="let sample of typeCodes" [value]="sample.id">
+                                        {{sample.sampleType}}</option>
+                                </select>
                             </div>
                         </div><br>
 
@@ -376,83 +320,11 @@
                             </div>
                         </div>
 
-                        <!-- 
-                        <span *ngIf="sample.transport == 'Pelabuhan'">
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="label_bm">Nombor Pendaftaran Lori</label><br>
-                                    <label class="label_bi">Lorry No</label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control readonly-input" [value]="sample.lorryNo"
-                                        readonly *ngIf="showSmk">
-                                        <input type="text" class="form-control readonly-input" [(ngModel)]="sample.lorryNo" [value]="sample.lorryNo"
-                                        *ngIf="!showSmk">
-                                </div>
-                            </div>
-                            <br>
-
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="label_bm">No. Trelar/ Kontena/ Tank</label><br>
-                                    <label class="label_bi">Trailer No / Contena No/ Tanker No</label>
-                                </div>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control readonly-input" [value]="sample.trailerNo"  *ngIf="!showSmk">
-                                </div>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control readonly-input" [value]="sample.trailerNo"  *ngIf="showSmk">
-                                </div>
-                            </div>
-                        </span><br>
-
-                        <span *ngIf="sample.transport == 'Darat'">
-                            <div class="row form-group">
-                                <div class="col-sm-4"> 
-                                    <label class="label_bm">Nombor Pendaftaran Lori</label><br>
-                                    <label class="label_bi">Lorry No</label>
-                                </div>
-                                <div class="col-sm-8" *ngIf="!showSmk">
-                                    <input type="text" class="form-control readonly-input" [value]="sample.lorryNo">
-                                </div>
-                                <div class="col-sm-8" *ngIf="showSmk">
-                                    <input type="text" class="form-control readonly-input" [value]="sample.lorryNo">
-                                </div>
-                            </div>
-                        </span> -->
-
-                        <!-- <div class="row form-group">
-                            <div class="col-sm-4" *ngIf="showSmk">
-                                <label class="label_bm">Nombor Pendaftaran Lori</label><br>
-                                <label class="label_bi">Lorry No</label>
-                            </div>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control readonly-input" [value]="sample.lorryNo" disabled
-                                    readonly *ngIf="showSmk">
-                            </div>
-                        </div>
-                        <br>
-
-                        <div class="row form-group">
-                            <div class="col-sm-4" *ngIf="showSmk">
-                                <label class="label_bm">No. Trelar/ Kontena/ Tank</label><br>
-                                <label class="label_bi">Trailer No / Contena No/ Tanker No</label>
-                            </div>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control readonly-input" [value]="sample.trailerNo"
-                                    disabled readonly *ngIf="showSmk">
-                            </div>
-                        </div><br> -->
-
                     </div><br>
                 </div>
 
                 <div mat-dialog-actions align="end">
-                    <!-- <label for="errorMes" *ngIf="errorMes" style="color: red;">Sila isi semua
-                                            maklumat</label><br> -->
                     <button type="submit" class="btn btn-primary mr-5">Simpan</button>
-                    <!-- <button type="button" class="btn btn-danger"
-                                            (click)="deleteSample(sample.k1HeaderId)">Delete</button> -->
                 </div>
             </form>
         </mat-card-content>

@@ -125,17 +125,21 @@
       <div class="mat-elevation-z8" *ngIf="!lepassubmit">
         <div class="list-container">
 
-          <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+          <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="center-table">
 
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef>
+              </th>
+              <td mat-cell *matCellDef="let batch">
+                <mat-checkbox (change)="toggleBatchSelection(batch, $event.checked)"></mat-checkbox>
+              </td>
+            </ng-container>
+            
 
             <ng-container matColumnDef="batchId">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch Id </th>
               <td mat-cell *matCellDef="let row"> {{row.batchId}}</td>
             </ng-container>
-
-
-
-
 
             <ng-container matColumnDef="postResultOn">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Tarikh</th>
@@ -235,7 +239,7 @@
                 <div class="example-element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
 
                   <div class="example-element-description w-100">
-                    <table class="table table-striped">
+                    <table class="table table-striped center-table">
                       <thead>
                         <tr class="tableheader">
                           <th scope="col" class="black">
@@ -281,7 +285,7 @@
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="20"></mat-paginator>
       </div><br>
 
-      <table *ngIf="lepassubmit" class="table table-striped">
+      <table *ngIf="lepassubmit" class="table table-striped center-table">
         <thead>
           <tr class="tableheader">
 

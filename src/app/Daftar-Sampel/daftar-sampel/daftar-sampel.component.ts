@@ -41,7 +41,6 @@ export class DaftarSampelComponent implements OnInit {
   formattedQuantity: string;
   //formattedDRC: string;
   numericQuantity: number
-
   companies: any
   countries: any
   latexTypes: any
@@ -257,49 +256,51 @@ export class DaftarSampelComponent implements OnInit {
 
     console.log(this.sample);
 
-    if (this.k1Detail.rubberTypeId == 1) {
-      this.daftarSampelService.PostK1HeaderSample(this.k1Header, statusCodeId).subscribe(res => {
-        this.k1Detail.k1HeaderId = res.k1HeaderId;
-        this.daftarSampelService.PostK1DetailSample(this.k1Detail, statusCodeId).subscribe(resDetail => {
-          this.sample.sampleIdNew = resDetail.k1DetailId;
+    // if (this.k1Detail.rubberTypeId == 1) {
+    //   this.daftarSampelService.PostK1HeaderSample(this.k1Header, statusCodeId).subscribe(res => {
+    //     this.k1Detail.k1HeaderId = res.k1HeaderId;
+    //     this.daftarSampelService.PostK1DetailSample(this.k1Detail, statusCodeId).subscribe(resDetail => {
+    //       this.sample.sampleIdNew = resDetail.k1DetailId;
     
-          // Combining multiple observables to wait for all of them to complete
-          forkJoin([
-            this.drclimstrainingService.PostLtxSamples(this.sample, statusCodeId),
-            this.daftarSampelService.PostFileK1Detail(resDetail.k1DetailId, this.file)
-          ]).subscribe(() => {
-            console.log('All requests completed successfully');
-            this.router.navigate(['sample']);
-          }, error => {
-            console.error('Error:', error);
-            // Handle error
-          });
-        }, err => {
-          this.toastr.warning(' Nombor Kastam telah wujud', "", { timeOut: 15000 });
-        });
-      });
-    } else if (this.k1Detail.rubberTypeId == 2) {
-      this.daftarSampelService.PostK1HeaderSample(this.k1Header, statusCodeId).subscribe(res => {
-        this.k1Detail.k1HeaderId = res.k1HeaderId;
-        this.daftarSampelService.PostK1DetailSample(this.k1Detail, statusCodeId).subscribe(resDetail => {
-          this.sample.sampleIdNew = resDetail.k1DetailId;
+    //       // Combining multiple observables to wait for all of them to complete
+    //       forkJoin([
+    //         this.drclimstrainingService.PostLtxSamples(this.sample, statusCodeId),
+    //         this.daftarSampelService.PostFileK1Detail(resDetail.k1DetailId, this.file)
+    //       ]).subscribe(() => {
+    //         console.log('All requests completed successfully');
+    //         this.router.navigate(['sample']);
+    //       }, error => {
+    //         console.error('Error:', error);
+    //         // Handle error
+    //       });
+    //     }, err => {
+    //       this.toastr.warning(' Nombor Kastam telah wujud', "", { timeOut: 15000 });
+    //     });
+    //   });
+    // } else if (this.k1Detail.rubberTypeId == 2) {
+    //   this.daftarSampelService.PostK1HeaderSample(this.k1Header, statusCodeId).subscribe(res => {
+    //     this.k1Detail.k1HeaderId = res.k1HeaderId;
+    //     this.daftarSampelService.PostK1DetailSample(this.k1Detail, statusCodeId).subscribe(resDetail => {
+    //       this.sample.sampleIdNew = resDetail.k1DetailId;
     
-          // Combining multiple observables to wait for all of them to complete
-          forkJoin([
-            this.getahBongkahService.PostBRSamples(this.sample, statusCodeId),
-            this.daftarSampelService.PostFileK1Detail(resDetail.k1DetailId, this.file)
-          ]).subscribe(() => {
-            console.log('All requests completed successfully');
-            this.router.navigate(['sample']);
-          }, error => {
-            console.error('Error:', error);
-            // Handle error
-          });
-        }, err => {
-          this.toastr.warning(' Nombor Kastam telah wujud', "", { timeOut: 15000 });
-        });
-      });
-    }
+    //       // Combining multiple observables to wait for all of them to complete
+    //       forkJoin([
+    //         this.getahBongkahService.PostBRSamples(this.sample, statusCodeId),
+    //         this.daftarSampelService.PostFileK1Detail(resDetail.k1DetailId, this.file)
+    //       ]).subscribe(() => {
+    //         console.log('All requests completed successfully');
+    //         this.router.navigate(['sample']);
+    //       }, error => {
+    //         console.error('Error:', error);
+    //         // Handle error
+    //       });
+    //     }, err => {
+    //       this.toastr.warning(' Nombor Kastam telah wujud', "", { timeOut: 15000 });
+    //     });
+    //   });
+    // }
+
+
   }
 
 

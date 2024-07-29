@@ -1,0 +1,56 @@
+.container {
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.notice-card {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.delete-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: red;
+}
+
+.add-button {
+  position: absolute;
+  top: 50px;
+  right: 350px;
+}
+
+.notice-card mat-card {
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #d4edda; /* Light green color */
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.notice-card {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.notice-card.removing {
+  animation: fadeOut 0.5s ease-out;
+}

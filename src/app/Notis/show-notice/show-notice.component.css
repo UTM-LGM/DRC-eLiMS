@@ -1,0 +1,83 @@
+/* Container styling */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Notice card styling */
+  .notice-card {
+    margin-bottom: 20px;
+    animation: fadeInUp 1s ease-out, bannerPulse 3s infinite; /* Added pulse animation */
+  }
+  
+  /* Mat-card styling to look like a banner */
+  mat-card {
+    background-color: #e0f7fa; /* Light green color */
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 20px;
+    border-left: 6px solid #00796b; /* Left border for banner effect */
+  }
+  
+  /* Hover effect for mat-card */
+  mat-card:hover {
+    background-color: #b2dfdb; /* Slightly darker green for hover effect */
+    transform: scale(1.03); /* Slightly increased scale for hover effect */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+  }
+  
+  /* Mat-card content styling */
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  /* Header styling */
+  h3 {
+    margin: 0;
+    font-size: 1.8em;
+    color: #004d40;
+    font-weight: 700;
+    transition: color 0.3s ease;
+  }
+  
+  /* Paragraph styling */
+  p {
+    margin: 10px 0 0;
+    font-size: 1.2em;
+    color: #00796b;
+  }
+  
+  /* Keyframes for fade-in-up animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Keyframes for pulse animation */
+  @keyframes bannerPulse {
+    0% {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    50% {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    }
+    100% {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+  

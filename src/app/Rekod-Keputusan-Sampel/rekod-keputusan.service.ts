@@ -41,7 +41,7 @@ export class RekodKeputusanService {
   }
 
   PutRetest(sampleId: number, k1Detail: K1Detail) {
-    return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutRetest/' + sampleId, k1Detail);
+    return this.http.put<K1Detail>(this.baseApiUrl + '/api/K1Detail/PutRetest/' + sampleId, k1Detail);
   }
 
   GetResultsByCustomNo(customNo: string, statusCodeId:number) {
@@ -64,6 +64,10 @@ export class RekodKeputusanService {
   
   PutResultbyK1DetailId(result: Result): Observable<Result> {
     return this.http.put<Result>(this.baseApiUrl + '/api/Results/PutResultbyK1DetailId/' + result.k1DetailId,  result);
+  }
+
+ ResetResult(result: Result): Observable<Result> {
+    return this.http.put<Result>(this.baseApiUrl + '/api/Results/ResetResult/' + result.k1DetailId,  result);
   }
 
 

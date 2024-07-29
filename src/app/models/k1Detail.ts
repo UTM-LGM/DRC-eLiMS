@@ -84,6 +84,7 @@ export interface K1Detail {
     dateSampleReceived: Date;
     smkimportersCode: string;
     testMethod: string;
+
     worksheetTestOn: Date;
 
 
@@ -92,10 +93,12 @@ export interface K1Detail {
     customPostcode: number;
     forwarderPostcode: number;
     importedDate: Date;
-    result: string;
+    result: number;
     chequeAmount: number;
     bankName: string;
     chequeNo: string;
+    date: string;
+    transactionNo: string;
     ikmNo: string;
     staffPosition: string;
     uipRegNo: string;
@@ -104,7 +107,12 @@ export interface K1Detail {
     prove : string;
     catatan : string;
     dateReceivedInLab : Date;
-    //  forwarderName: string;
-    //  forwarderAddress: string;
+   
+
+     forwarderName: string;
+     forwarderAddress: string;
+
+     penimbang: number;
+     oven: number;
 
 }

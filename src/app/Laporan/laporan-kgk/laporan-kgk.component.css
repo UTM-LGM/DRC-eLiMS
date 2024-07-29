@@ -153,4 +153,8 @@
     
   
   
+    .center-table th,
+  .center-table td {
+    text-align: center;
+  }
   

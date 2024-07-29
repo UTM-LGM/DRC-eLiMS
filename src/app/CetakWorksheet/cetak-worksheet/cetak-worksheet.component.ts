@@ -4,6 +4,7 @@ import { ElimsService } from '../../services/elims.service';
 import * as html2pdf from 'html2pdf.js';
 import { CetakWorksheetService } from '../cetak-worksheet.service';
 import { K1Detail } from '../../models/k1Detail';
+import { Sample } from 'src/app/models/sample';
 
 @Component({
   selector: 'app-cetak-worksheet',
@@ -18,10 +19,13 @@ export class CetakWorksheetComponent {
   rubberTypes: any
   rubberTypeId: any;
   qrData: string = "";
-
+  k1Detail: K1Detail = {} as K1Detail;
+  sample: Sample = {} as Sample;
+  
   constructor(
     private elimsService: ElimsService,
     private cetakWorksheetService: CetakWorksheetService,
+    private cetakWorksheet: CetakWorksheetService
   ) { }
 
   ngOnInit() {
@@ -29,8 +33,9 @@ export class CetakWorksheetComponent {
     this.k1DetailId.forEach(element => {
       this.cetakWorksheetService.GetElimsSample(element).subscribe(data => {
         this.k1Details.push(data);
+        this.k1Details.sort((a, b) => a.k1DetailId - b.k1DetailId);
         console.log(this.k1Details)
-       
+
 
       });
 
@@ -45,11 +50,64 @@ export class CetakWorksheetComponent {
   }
 
 
-  callGeneratePdf(){
-    // setTimeout(() => {
-      this.generatePdf();
-    // }, 1000); // Adjust the delay as needed
-  }
+
+  // ngOnInit() {
+  //   let fetchPromises = this.k1DetailId.map(id =>
+  //     this.cetakWorksheetService.GetElimsSample(id).toPromise()
+  //   );
+
+  //   Promise.all(fetchPromises).then(details => {
+  //     this.k1Details = details;
+  //     this.k1Details.sort((a, b) => a.k1DetailId - b.k1DetailId);
+  //     console.log(this.k1Details);
+  //   });
+
+
+  // }
+
+
+
+  // callGeneratePdf() {
+  //   console.log(this.k1DetailId)
+  //   this.cetakWorksheetService.PutRefPenimbang(this.k1DetailId, this.k1Detail).subscribe(
+  //     res => {
+  //       console.log('PostRefPenimbang response:', res);
+  //     },
+  //     error => {
+  //       console.error('PostRefPenimbang error:', error);
+  //     }
+  //   );
+
+  //   // this.generatePdf();
+  // }
+
+// In your component
+// k1DetailId: number[] = [];  // Initialize as an empty array or with initial values
+
+
+callGeneratePdf() {
+  console.log(this.k1Details);
+  console.log(this.k1DetailId);
+
+  this.k1Details.forEach(k1Detail => {
+    this.cetakWorksheetService.PutRefEquipment(k1Detail.k1DetailId, k1Detail).subscribe(
+      res => {
+        console.log('PutRefPenimbang response:', res);
+      },
+      error => {
+        console.error('PutRefPenimbang error:', error);
+      }
+    );
+  });
+
+  this.generatePdf();
+}
+
+
+
+
+  
+
 
 
   @ViewChild('pdfContent', { static: true }) pdfContent: ElementRef | undefined;

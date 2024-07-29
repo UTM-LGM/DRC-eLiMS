@@ -1,11 +1,9 @@
-
-
 table {
   width: 100%;
   /* height: 300px; */
   border: 1px solid #000000;
   max-height: 20px;
-  
+
 }
 
 th,
@@ -23,8 +21,10 @@ th {
 
 #pdf-content {
   padding: 20px;
-  width: 8.5in; /* A4 width */
-  height: 11in; /* A4 height */
+  width: 8.5in;
+  /* A4 width */
+  height: 11in;
+  /* A4 height */
 }
 
 
@@ -43,23 +43,25 @@ th {
 /* .sample {
   page-break-inside: avoid;
 } */
-.font{
+.font {
   /* font-size: 27px; */
   font-size: 14px;
   word-spacing: 5px;
-  line-height: 1.5; /* Adjust the line height as needed */
-  
+  line-height: 1.5;
+  /* Adjust the line height as needed */
+
 }
 
 .spacing {
-  margin-bottom: 20px; /* Adjust the margin as needed */
+  margin-bottom: 20px;
+  /* Adjust the margin as needed */
 }
 
 /* .font-size{
   font-size: 17px;
 } */
 
-.h2{
+.h2 {
   font-size: 16px;
   word-spacing: 5px;
   font-weight: bold;
@@ -67,39 +69,43 @@ th {
 
 
 h3 {
-  word-wrap: break-word; /* Allow words to wrap to the next line if they don't fit */
-  word-spacing: 2px; /* Adjust the word spacing as needed */
-  line-height: 1.5; /* Adjust the line height as needed */
-  max-width: 100%; /* Ensure the title doesn't exceed the container width */
+  word-wrap: break-word;
+  /* Allow words to wrap to the next line if they don't fit */
+  word-spacing: 2px;
+  /* Adjust the word spacing as needed */
+  line-height: 1.5;
+  /* Adjust the line height as needed */
+  max-width: 100%;
+  /* Ensure the title doesn't exceed the container width */
 }
 
 
 .header {
-background-image: url('../../assets/image/headerLetter.jpg');
-background-size: cover;
-background-position: top center;
-height: 150px;
-text-align: center;
+  background-image: url('../../assets/image/headerLetter.jpg');
+  background-size: cover;
+  background-position: top center;
+  height: 150px;
+  text-align: center;
 }
 
 .header1 {
-/* background-image: url('../../../assets/image/headerLetter.jpg'); */
-background-size: cover;
-background-position: top center;
-height: 300px;
-text-align: center;
+  /* background-image: url('../../../assets/image/headerLetter.jpg'); */
+  background-size: cover;
+  background-position: top center;
+  height: 300px;
+  text-align: center;
 }
 
 .signature {
-background-image: url('https://api02.lgm.gov.my/ApiElims/wwwroot/signature/sign_ezmy.jpg'); 
-background-size: cover;
-background-position: top center;
-height: 10px;
-text-align: center;
+  background-image: url('https://api02.lgm.gov.my/ApiElims/wwwroot/signature/sign_ezmy.jpg');
+  background-size: cover;
+  background-position: top center;
+  height: 10px;
+  text-align: center;
 }
 
 @media print {
-/* Hide the box of the mat-card */
+  /* Hide the box of the mat-card */
 
 
 
@@ -116,16 +122,20 @@ text-align: center;
 
 
 .table1 {
-background: transparent !important;
-margin: 10px;
+  background: transparent !important;
+  margin: 10px;
 }
 
 
 .custom-underline {
-  font-weight: bold; /* Make the text bold */
-  border-bottom: 2px solid black; /* Adjust the thickness and color of the underline */
-  padding-bottom: 2px; /* Adjust the spacing between text and underline as needed */
-  display: inline; /* Ensures that the underline only affects the text it's applied to */
+  font-weight: bold;
+  /* Make the text bold */
+  border-bottom: 2px solid black;
+  /* Adjust the thickness and color of the underline */
+  padding-bottom: 2px;
+  /* Adjust the spacing between text and underline as needed */
+  display: inline;
+  /* Ensures that the underline only affects the text it's applied to */
 }
 
 .small-r {

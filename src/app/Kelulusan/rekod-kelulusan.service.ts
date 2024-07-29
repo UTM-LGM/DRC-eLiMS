@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';;
 import { Observable } from 'rxjs';
 import { Result } from '../models/result';
+import { K1Detail } from '../models/k1Detail';
 
 @Injectable({
   providedIn: 'root'
@@ -43,5 +44,15 @@ uipNotificationResultLetter(staffId: number, k1DetailId: number, emailRecipients
   GetEmailForwarder(forwarderId: number) {
     return this.http.get<any>(this.baseApiUrl + '/api/Forwarders/GetEmailForwarder/' + forwarderId);
   }
+
+  // GetEmailResultLetter(forwarderId: number) {
+  //   return this.http.get<any>(this.baseApiUrl + '/api/Forwarders/GetEmailResultLetter/' + forwarderId);
+  // }
+
+
+  PutRetestApproval(sampleId: number, k1Detail: K1Detail) {
+    return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutRetestApproval/' + sampleId, k1Detail);
+  }
+
 
 }

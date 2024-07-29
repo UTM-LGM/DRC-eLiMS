@@ -31,12 +31,14 @@ export class CetakLembaranKerjaComponent {
 
   columnsToDisplay = [
 
+    'select',
     'batchId',
     'rubberType',
     'isFastTrack',
     'forwarderName',
     'sentOn',
     'sampleCount',
+    'bilHari',
   ]
 
   expandedElement: Sample | null;
@@ -62,7 +64,9 @@ export class CetakLembaranKerjaComponent {
   listk1DetailId: any[] = []
   customNo: string = '';
   customFields: { value: string }[] = [];
-
+  isAllSelected = false; // To track the state of "Select All" checkbox
+  today = new Date();
+  
   constructor(
     private elimsService: ElimsService,
     private authService: AuthService,
@@ -92,19 +96,98 @@ export class CetakLembaranKerjaComponent {
       this.loadBatches();
     }
 
+    // this.statusCodeId = 4;
+    // this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
+    //   this.batches = data;
+    //   console.log(data)
+
+
+    //   this.dataSource = new MatTableDataSource<Batch>(this.batches);
+    //   this.dataSource.paginator = this.paginator;
+    //   this.dataSource.sort = this.sort;
+
+
+    // });
+    // console.log(this.listk1DetailId)
+
+    // this.statusCodeId = 4;
+
+    // this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
+    //   data.forEach(resData => {
+    //     const receivedOn = new Date(resData.receivedOn);
+    //     const approvedOn = new Date(resData.approvedOn);
+    //     let dayssincereceived = (approvedOn.getTime() !== 0) ?
+    //       (approvedOn.getTime() - receivedOn.getTime()) / (1000 * 3600 * 24) :
+    //       (this.today.getTime() - receivedOn.getTime()) / (1000 * 3600 * 24) + 1;
+    //     dayssincereceived = Math.floor(dayssincereceived);
+    //     console.log(resData);
+    //     resData.daysSinceReceived = dayssincereceived;
+    //     this.batches.push(resData);
+    //   });
+    
+    //   this.batches.sort((a, b) => a.batchId - b.batchId);
+    
+    //   this.dataSource = new MatTableDataSource<Batch>(this.batches);
+    //   this.dataSource.paginator = this.paginator;
+    //   this.dataSource.sort = this.sort;
+    // });
     this.statusCodeId = 4;
+
+    const holidays = [
+
+
+      '2024-06-17',//raya haji
+      '2024-06-18',//raya haji
+
+    ];
+    
+    function isHoliday(date, holidays) {
+      const formattedDate = date.toISOString().split('T')[0];
+      return holidays.includes(formattedDate);
+    }
+    
+    function countWorkingDays(startDate, endDate, holidays) {
+      let count = 0;
+      let currentDate = new Date(startDate);
+    
+      // Include both start date and end date in the count
+      while (currentDate <= endDate) {
+        const day = currentDate.getDay();
+        if (day !== 5 && day !== 6 && !isHoliday(currentDate, holidays)) {
+          count++;
+        }
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    
+      return count;
+    }
+    
+    // Example usage:
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
-      this.batches = data;
-      console.log(data)
-
-
+      data.forEach(resData => {
+        const receivedOn = new Date(resData.receivedOn);
+        const approvedOn = new Date(resData.approvedOn);
+        let daysSinceReceived;
+    
+        if (approvedOn.getTime() !== 0) {
+          daysSinceReceived = countWorkingDays(receivedOn, approvedOn, holidays);
+        } else {
+          daysSinceReceived = countWorkingDays(receivedOn, this.today, holidays);
+        }
+    
+        console.log(resData);
+        resData.daysSinceReceived = daysSinceReceived;
+        this.batches.push(resData);
+      });
+    
+      this.batches.sort((a, b) => a.batchId - b.batchId);
+    
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-
-
     });
-    console.log(this.listk1DetailId)
+
+    
   }
 
 
@@ -120,6 +203,27 @@ export class CetakLembaranKerjaComponent {
   }
 
 
+
+  toggleBatchSelection(batch: Batch, isSelected: boolean) {
+    for (const sample of batch.samples) {
+      sample.checked = isSelected;
+    }
+    this.updateSelectedSamples();
+  }
+
+  updateSelectedSamples() {
+    this.selectedSamples = [];
+    for (const batch of this.batches) {
+      for (const sample of batch.samples) {
+        if (sample.checked) {
+          this.selectedSamples.push(sample);
+        }
+      }
+    }
+    console.log(this.selectedSamples);
+  }
+
+
   displaySelected() {
     this.lepassubmit = true;
     for (const batch of this.batches) {
@@ -131,6 +235,7 @@ export class CetakLembaranKerjaComponent {
   generatePDF() {
 
     for (const sample of this.selectedSamples) {
+    
       this.cetakWorksheet.PutWorksheetTestOn(sample.k1DetailId, this.k1Detail).subscribe(
         res => {
 
@@ -139,9 +244,14 @@ export class CetakLembaranKerjaComponent {
             this.listk1DetailId.push(sample.k1DetailId)
             console.log(this.listk1DetailId)
           })
-        }
-      );
+        });
+
+
     }
+
+
+
+
   }
 
 
@@ -206,7 +316,9 @@ export class CetakLembaranKerjaComponent {
         res => { this.mesYaTidak = "yes" }
       );
     }
-
+    setTimeout(() => {
+      window.location.reload();
+    },1000); // Delay in milliseconds (2000ms = 2s)
   }
 
   onNoClick() {

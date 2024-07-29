@@ -10,81 +10,81 @@ import { ElimsService } from 'src/app/services/elims.service';
 export class LaporanTahapKecekapanComponent {
 
   sampleCounts: any;
-  fromDate: Date | undefined = new Date(); // Initialize with current date
-  toDate: Date | undefined = new Date(); // Initialize with current date
+  sampleCountsLtx: any;
+  sampleCountsBlockRubber: any;
+  fromDate: Date | undefined = new Date();
+  toDate: Date | undefined = new Date();
   isSearched: boolean = false;
-// selectedCategory: string | null = null; // Variable to store the selected category
   selectedCategory: string = '';
-categories:any; 
-
+  categoriesLtx: any;
+  categoriesBlockRubber: any;
+  selectedType: string = '';
+  
   constructor(
     private laporanService: LaporanService,
     private elimsService: ElimsService,
   ) { }
 
-
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   searchSample(): void {
-    // Determine which parameters to include based on the selected criteria
     let startDate: Date | undefined;
     let endDate: Date | undefined;
 
-      startDate = this.fromDate;
-      endDate = this.toDate;
+    startDate = this.fromDate;
+    endDate = this.toDate;
 
-
-
-    this.laporanService.CountLevelEfficiency(startDate, endDate).subscribe(
+    this.laporanService.CountLevelEfficiencyLatex(startDate, endDate).subscribe(
       (data) => {
-        this.sampleCounts = data;
-        console.log(this.sampleCounts);
+        this.sampleCountsLtx = data;
+        console.log(this.sampleCountsLtx);
         this.isSearched = true;
-        this.categories = [
-            { name: 'Count5WorkingDays', description: '5 hari bekerja', count: this.sampleCounts.sampleCounts.Count5WorkingDays },
-            { name: 'Count6To10WorkingDays', description: '> 6 hari - <= 10 hari', count: this.sampleCounts.sampleCounts.Count6To10WorkingDays },
-            { name: 'Count11To14WorkingDays', description: '> 11 hari - <= 14 hari', count: this.sampleCounts.sampleCounts.Count11To14WorkingDays },
-            { name: 'CountMoreThan15WorkingDays', description: '> 15 hari', count: this.sampleCounts.sampleCounts.CountMoreThan15WorkingDays }
-        ]; 
+        this.categoriesLtx = [
+          { name: 'Count5WorkingDays', description: '5 hari bekerja', count: this.sampleCountsLtx.sampleCounts.Count5WorkingDays },
+          { name: 'Count6To10WorkingDays', description: '> 6 hari - <= 10 hari', count: this.sampleCountsLtx.sampleCounts.Count6To10WorkingDays },
+          { name: 'Count11To14WorkingDays', description: '> 11 hari - <= 14 hari', count: this.sampleCountsLtx.sampleCounts.Count11To14WorkingDays },
+          { name: 'CountMoreThan15WorkingDays', description: '> 15 hari', count: this.sampleCountsLtx.sampleCounts.CountMoreThan15WorkingDays }
+        ];
       },
       (error) => {
-        console.error('Error fetching sample counts:', error);
+        console.error('Error fetching latex sample counts:', error);
       }
     );
 
-
-    
+    this.laporanService.CountLevelEfficiencyBlockRubber(startDate, endDate).subscribe(
+      (data) => {
+        this.sampleCountsBlockRubber = data;
+        console.log(this.sampleCountsBlockRubber);
+        this.isSearched = true;
+        this.categoriesBlockRubber = [
+          { name: 'Count5WorkingDays', description: '5 hari bekerja', count: this.sampleCountsBlockRubber.sampleCounts.Count5WorkingDays },
+          { name: 'Count6To10WorkingDays', description: '> 6 hari - <= 10 hari', count: this.sampleCountsBlockRubber.sampleCounts.Count6To10WorkingDays },
+          { name: 'Count11To14WorkingDays', description: '> 11 hari - <= 14 hari', count: this.sampleCountsBlockRubber.sampleCounts.Count11To14WorkingDays },
+          { name: 'CountMoreThan15WorkingDays', description: '> 15 hari', count: this.sampleCountsBlockRubber.sampleCounts.CountMoreThan15WorkingDays }
+        ];
+      },
+      (error) => {
+        console.error('Error fetching block rubber sample counts:', error);
+      }
+    );
   }
 
-
   getRowClass(index: number): string {
-    const classes = ['green-row', 'yellow-row', 'orange-row',  'red-row'];
+    const classes = ['green-row', 'yellow-row', 'orange-row', 'red-row'];
     return classes[index % classes.length];
   }
 
-  
-  selectCategory(categoryName: string): void {
-      this.selectedCategory = categoryName;
+  selectCategory(categoryName: string, type: string): void {
+    this.selectedCategory = categoryName;
+    this.selectedType = type;
   }
-  // Count5WorkingDays(): void {
-  //   this.selectedCategory = 'Count5WorkingDays';
-  // }
 
-
-  // Count6To10WorkingDays(): void {
-  //   this.selectedCategory = 'Count6To10WorkingDays';
-  // }
-
-  // Count11To15WorkingDays(): void {
-  //   this.selectedCategory = 'Count11To15WorkingDays';
-  // }
-
-  // CountMoreThan16WorkingDays(): void {
-  //   this.selectedCategory = 'CountMoreThan16WorkingDays';
-  // }
-
+  getSelectedSamples(): any[] {
+    if (this.selectedType === 'latex') {
+      return this.sampleCountsLtx?.workingDayCounts?.[this.selectedCategory] || [];
+    } else if (this.selectedType === 'blockRubber') {
+      return this.sampleCountsBlockRubber?.workingDayCounts?.[this.selectedCategory] || [];
+    }
+    return [];
+  }
 }
-
-

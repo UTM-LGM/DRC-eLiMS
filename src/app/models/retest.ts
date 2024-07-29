@@ -2,12 +2,13 @@ export class Retest{
     id: string;
     k1DetailId: number;
     batchId: number;
-    testedOn: Date;
+    testedOn: string;
     testedBy: string;
     rejectedOn: Date;
     rejectedBy: string;
     noOfRetest: number;
-    testMethod: string;
+    testMethod: number;
+    testMethodId: number;
     wet1: number;
     wet2: number;
     dry1: number;

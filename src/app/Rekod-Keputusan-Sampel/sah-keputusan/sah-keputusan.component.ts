@@ -38,6 +38,7 @@ export class SahKeputusanComponent {
 
     'batchId',
     'rubberType',
+    // 'result',
     'isFastTrack',
     'forwarderName',
     'receivedOn',
@@ -77,7 +78,9 @@ export class SahKeputusanComponent {
   file: any | null;
   limitValue: string = '';
   formattedDate: string;
-  formattedVerifiedDate:string;
+  formattedVerifiedDate: string;
+  buttonClicked: boolean = false;
+
 
   constructor(
     private elimsService: ElimsService,
@@ -133,7 +136,9 @@ export class SahKeputusanComponent {
 
     this.statusCodeId = 7;
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
-      this.batches = data.filter((batch) => batch.inLabBy.trim() !== this.staff.username);
+      // this.batches = data.filter((batch) => batch.inLabBy.trim() !== this.staff.username);
+      this.batches = data
+
 
       console.log(this.batches)
 
@@ -170,6 +175,8 @@ export class SahKeputusanComponent {
         this.k1Detail.labRefNo = res[0].labRefNo;
         this.k1Detail.inLabBy = res[0].inLabBy;
         this.k1Detail.inLabOn = res[0].inLabOn;
+        this.k1Detail.batchId = res[0].batchId;
+        this.k1Detail.testedOn = res[0].testedOn;
         this.k1Detail.k1DetailId = res[0].k1DetailId;
         this.k1Detail.testMethod = res[0].testMethod;
         this.k1Detail.testMethodId = this.inputResult.testMethod = res[0].testMethodId;
@@ -180,8 +187,8 @@ export class SahKeputusanComponent {
         this.result.result1 = res[0].result1;
         this.result.catatan = res[0].catatan;
 
-        this.k1Detail.catatan =  res[0].catatan;
-        this.k1Detail.prove =  res[0].prove;
+        this.k1Detail.catatan = res[0].catatan;
+        this.k1Detail.prove = res[0].prove;
 
         this.inputResult.wet1 = res[0].wet1;
         this.inputResult.wet2 = res[0].wet2;
@@ -280,25 +287,25 @@ export class SahKeputusanComponent {
 
   calculateAveragebyCustomno() {
 
-    const dry1 = this.result.dry1;
-    const wet1 = this.result.wet1;
-    const dry2 = this.result.dry2;
-    const wet2 = this.result.wet2;
+    // const dry1 = this.result.dry1;
+    // const wet1 = this.result.wet1;
+    // const dry2 = this.result.dry2;
+    // const wet2 = this.result.wet2;
 
-    if (!isNaN(dry1) && !isNaN(wet1) && wet1 !== 0) {
-      this.estimate1 = (dry1 / wet1) * 100;
-      this.estimate1 = parseFloat(this.estimate1.toFixed(2)); // Round to two decimal places
-    } else {
-      this.estimate1 = 0;
-    }
+    // if (!isNaN(dry1) && !isNaN(wet1) && wet1 !== 0) {
+    //   this.estimate1 = (dry1 / wet1) * 100;
+    //   this.estimate1 = parseFloat(this.estimate1.toFixed(2)); // Round to two decimal places
+    // } else {
+    //   this.estimate1 = 0;
+    // }
 
-    if (!isNaN(dry2) && !isNaN(wet2) && wet2 !== 0) {
-      this.estimate2 = (dry2 / wet2) * 100;
-      this.estimate2 = parseFloat(this.estimate2.toFixed(2)); // Round to two decimal places
-    } else {
-      this.estimate2 = 0;
-    }
-
+    // if (!isNaN(dry2) && !isNaN(wet2) && wet2 !== 0) {
+    //   this.estimate2 = (dry2 / wet2) * 100;
+    //   this.estimate2 = parseFloat(this.estimate2.toFixed(2)); // Round to two decimal places
+    // } else {
+    //   this.estimate2 = 0;
+    // }
+    this.calculateAverage()
 
 
   }
@@ -315,6 +322,7 @@ export class SahKeputusanComponent {
 
 
   updateRekodKeputusan() {
+    this.buttonClicked = true;
 
     if (!this.limitValue.includes('Nilai purata melebihi > 0.2')) {
 
@@ -339,9 +347,15 @@ export class SahKeputusanComponent {
 
         this.rekodKeputusanService.PostProve(this.result.k1DetailId, this.file).subscribe(() => {
           console.log('File uploaded successfully');
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000); // Delay in milliseconds (2000ms = 2s)
         },
           error => {
             console.error('Error uploading file:', error);
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000); // Delay in milliseconds (2000ms = 2s)
           })
 
       })
@@ -353,9 +367,58 @@ export class SahKeputusanComponent {
   }
 
 
+  // reject() {
+
+
+  //   this.inputResult.result1 = this.average;
+  //   this.inputResult.k1DetailId = this.k1Detail.k1DetailId;
+
+  //   this.retest.result = this.inputResult.result1;
+  //   this.retest.wet1 = this.inputResult.wet1;
+  //   this.retest.wet2 = this.inputResult.wet2;
+  //   this.retest.dry1 = this.inputResult.dry1;
+  //   this.retest.dry2 = this.inputResult.dry2;
+  //   this.retest.rejectedBy = this.staff.username;
+  //   this.retest.testedBy = this.staff.username;
+  //   this.retest.k1DetailId = this.k1Detail.k1DetailId;
+  //   this.retest.testMethod = this.inputResult.testMethod;
+
+  //   this.k1Detail.batchId = this.samples.batchId;
+  //   this.k1Detail.batchId = this.retest.batchId ;
+  //   this.retest.batchId = this.k1Detail.batchId;
+
+  //   // this.k1Detail.testedOn = this.samples.testedOn;
+  //   this.k1Detail.testedOn = this.retest.testedOn ;
+  //   this.retest.testedOn= this.k1Detail.testedOn;
+
+
+  //   console.log(this.k1Detail)
+  //   console.log(this.retest)
+
+  //   this.rekodKeputusanService.PostRetest(this.retest).subscribe(res1 => {
+  //     console.log(res1)
+  //     this.toastr.success('Sampel untuk retest telah berjaya didaftarkan. Maklumat berjaya disimpan', 'Success');
+  //     this.rekodKeputusanService.PutRetest(this.k1Detail.k1DetailId, this.k1Detail).subscribe(
+  //       res2 => { 
+  //         console.log(res2) 
+  //         setTimeout(() => {
+  //           window.location.reload();
+  //         }, 2000);
+  //       }
+
+
+  //     );
+  //   })
+  // }
+
+
   reject() {
+
+    this.inputResult.repeat = true;
+    // Set values for inputResult and retest
     this.inputResult.result1 = this.average;
     this.inputResult.k1DetailId = this.k1Detail.k1DetailId;
+
     this.retest.result = this.inputResult.result1;
     this.retest.wet1 = this.inputResult.wet1;
     this.retest.wet2 = this.inputResult.wet2;
@@ -364,21 +427,68 @@ export class SahKeputusanComponent {
     this.retest.rejectedBy = this.staff.username;
     this.retest.testedBy = this.staff.username;
     this.retest.k1DetailId = this.k1Detail.k1DetailId;
+    this.retest.testMethod = this.inputResult.testMethod;
 
-    console.log(this.k1Detail)
-    console.log(this.retest)
+    // Determine batchId based on whether samples were selected or custom number was searched
+    if (this.samples && this.samples.batchId) {
+      // If a sample is selected
+      this.retest.batchId = this.samples.batchId;
+    } else if (this.k1Detail.batchId) {
+      // If a custom number was searched
+      this.retest.batchId = this.k1Detail.batchId;
+    }
 
+    // Ensure k1Detail.batchId matches retest.batchId
+    this.k1Detail.batchId = this.retest.batchId;
+
+
+
+    if (this.samples && this.samples.testedOn) {
+      // If a sample is selected
+      this.retest.testedOn = this.samples.testedOn;
+    } else if (this.k1Detail.testedOn) {
+      // If a custom number was searched
+      this.retest.testedOn = this.k1Detail.testedOn;
+    }
+
+    // Ensure k1Detail.batchId matches retest.batchId
+    this.k1Detail.testedOn = this.retest.testedOn;
+
+
+    // // Set testedOn date
+    // this.k1Detail.testedOn = this.retest.testedOn; // or any other logic for testedOn
+    // this.retest.testedOn = this.k1Detail.testedOn;
+
+    console.log(this.k1Detail);
+    console.log(this.retest);
+
+    // Post retest and handle responses
     this.rekodKeputusanService.PostRetest(this.retest).subscribe(res1 => {
+      console.log(res1);
+      this.toastr.success('Sampel untuk retest telah berjaya didaftarkan. Maklumat berjaya disimpan', 'Success');
+
+
+      // Update k1Detail if needed
+      this.rekodKeputusanService.PutRetest(this.k1Detail.k1DetailId, this.k1Detail).subscribe(res2 => {
+        console.log(res2);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      });
+    });
+
+    //reset result in table result
+    this.rekodKeputusanService.ResetResult(this.inputResult).subscribe(res1 => {
       console.log(res1)
-      this.toastr.error('Rekod Keputusan gagal disimpan', 'Gagal');
-      this.rekodKeputusanService.PutRetest(this.k1Detail.k1DetailId, this.k1Detail).subscribe(
-        res2 => { console.log(res2) }
-      );
+
     })
+
   }
 
 
   sampleList(k1DetailId: number) {
+
+    this.k1Detail.k1DetailId = k1DetailId;
 
     this.cetakWorksheetService.GetElimsSample(k1DetailId).subscribe(data => {
       this.samples = data;
@@ -402,13 +512,58 @@ export class SahKeputusanComponent {
       this.inputResult.dry1 = this.result.dry1;
       this.inputResult.dry2 = this.result.dry2;
       this.inputResult.testMethod = this.result.testMethod;
-      this.inputResult.result1 = this.result.result1;
+      //this.inputResult.result1 = this.result.result1;
       this.inputResult.catatan = this.result.catatan;
+      this.calculateAverage()
       console.log(dataResult);
     });
 
   }
 
+
+  calculateAverage() {
+
+    this.buttonClicked = false;
+
+    this.result.testMethod = this.k1Detail.testMethodId;
+
+    const dry1 = this.result.dry1;
+    const wet1 = this.result.wet1;
+    const dry2 = this.result.dry2;
+    const wet2 = this.result.wet2;
+
+    // RS-1/1
+    if (this.result.testMethod == 8) {
+      this.average = parseFloat(((wet1 + wet2) / 2).toFixed(2)); // Convert string to number
+
+    } else {
+      if (!isNaN(dry1) && !isNaN(wet1) && wet1 !== 0) {
+        this.estimate1 = (dry1 / wet1) * 100;
+        this.estimate1 = parseFloat(this.estimate1.toFixed(2)); // Round to two decimal places
+      } else {
+        this.estimate1 = 0;
+      }
+
+      if (!isNaN(dry2) && !isNaN(wet2) && wet2 !== 0) {
+        this.estimate2 = (dry2 / wet2) * 100;
+        this.estimate2 = parseFloat(this.estimate2.toFixed(2)); // Round to two decimal places
+      } else {
+        this.estimate2 = 0;
+      }
+
+      this.average = parseFloat(((this.estimate1 + this.estimate2) / 2).toFixed(2)); // Round to two decimal places
+
+      this.result.result1 = this.average;
+
+    }
+    this.getLimitValue();
+  }
+
+
+
+  enableHantarButton() {
+    this.buttonClicked = true;
+  }
 
   // getLimitValue() {
 
@@ -476,6 +631,52 @@ export class SahKeputusanComponent {
   //   }
 
   // }
+  getLimitValue1() {
+    // Calculate tolerance value
+    const tolerance = Math.abs(this.estimate1 - this.estimate2).toFixed(2);
+    const tolerance1 = Math.abs(((this.estimate1 - this.estimate2) / this.average) * 100).toFixed(2);
+
+    // Convert tolerance values to numbers for comparison purposes
+    const toleranceNum = parseFloat(tolerance);
+    const tolerance1Num = parseFloat(tolerance1);
+
+    // Reset the limit value
+    this.limitValue = '';
+
+    // Set the limit value only if tolerance exceeds the limit
+    // UPB/L/001
+    if (this.result.testMethod == 1 && toleranceNum > 0.2) {
+      this.limitValue = `Nilai purata melebihi > 0.2 (${tolerance}), sampel perlu diuji semula.`;
+    }
+    // MS 281*
+    else if (this.result.testMethod == 2 && toleranceNum > 0.1) {
+      this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
+    }
+    // ISO 126*
+    else if (this.result.testMethod == 3 && tolerance1Num > 0.1) {
+      this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance1}), sampel perlu diuji semula.`;
+    }
+    // MS 466*
+    else if (this.result.testMethod == 4 && toleranceNum > 0.2) {
+      this.limitValue = `Nilai purata melebihi > 0.2 (${tolerance}), sampel perlu diuji semula.`;
+    }
+    // UPB/R/007
+    else if (this.result.testMethod == 5 && toleranceNum > 0.1) {
+      this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
+    }
+    // MS 2531**
+    else if (this.result.testMethod == 6 && tolerance1Num < 0.001) {
+      this.limitValue = `Nilai purata melebihi < 0.001 (${tolerance1}), sampel perlu diuji semula.`;
+    }
+    // LGM/GTACR/R/01
+    else if (this.result.testMethod == 7 && toleranceNum > 0.1) {
+      this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
+    }
+    // RS 1-1**//+2/2
+    else if (this.result.testMethod == 8 && tolerance1Num > 0.1) {
+      this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance1}), sampel perlu diuji semula.`;
+    }
+  }
 
   getLimitValue() {
     // Calculate tolerance value
@@ -492,37 +693,37 @@ export class SahKeputusanComponent {
     // Set the limit value only if tolerance exceeds the limit
     // UPB/L/001
     if (this.result.testMethod == 1 && toleranceNum > 0.2) {
-        this.limitValue = `Nilai purata melebihi > 0.2 (${tolerance}), sampel perlu diuji semula.`;
+      this.limitValue = `Nilai purata melebihi > 0.2 (${tolerance}), sampel perlu diuji semula.`;
     }
     // MS 281*
     else if (this.result.testMethod == 2 && toleranceNum > 0.1) {
-        this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
+      this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
     }
     // ISO 126*
     else if (this.result.testMethod == 3 && tolerance1Num > 0.1) {
-        this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance1}), sampel perlu diuji semula.`;
+      this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance1}), sampel perlu diuji semula.`;
     }
     // MS 466*
     else if (this.result.testMethod == 4 && toleranceNum > 0.2) {
-        this.limitValue = `Nilai purata melebihi > 0.2 (${tolerance}), sampel perlu diuji semula.`;
+      this.limitValue = `Nilai purata melebihi > 0.2 (${tolerance}), sampel perlu diuji semula.`;
     }
     // UPB/R/007
     else if (this.result.testMethod == 5 && toleranceNum > 0.1) {
-        this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
+      this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
     }
     // MS 2531**
     else if (this.result.testMethod == 6 && tolerance1Num < 0.001) {
-        this.limitValue = `Nilai purata melebihi < 0.001 (${tolerance1}), sampel perlu diuji semula.`;
+      this.limitValue = `Nilai purata melebihi < 0.001 (${tolerance1}), sampel perlu diuji semula.`;
     }
     // LGM/GTACR/R/01
     else if (this.result.testMethod == 7 && toleranceNum > 0.1) {
-        this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
+      this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
     }
     // RS 1-1**
     else if (this.result.testMethod == 8 && tolerance1Num > 0.1) {
-        this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance1}), sampel perlu diuji semula.`;
+      this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance1}), sampel perlu diuji semula.`;
     }
-}
+  }
 
   handleFileInput(event: any) {
     this.file = event.target.files[0];
@@ -555,8 +756,8 @@ export class SahKeputusanComponent {
     inputValue = integerPart + '.' + decimalPart.padEnd(4, '0');
 
     if (finalize) {
-        // If finalizing (on blur), ensure the number has exactly four decimal places
-        inputValue = parseFloat(inputValue).toFixed(4);
+      // If finalizing (on blur), ensure the number has exactly four decimal places
+      inputValue = parseFloat(inputValue).toFixed(4);
     }
 
     // Update the input value
@@ -567,25 +768,25 @@ export class SahKeputusanComponent {
 
     // Restore the caret position
     if (!finalize && originalCaretPosition !== null) {
-        const newPosition = originalCaretPosition <= inputElement.value.length ? originalCaretPosition : inputElement.value.length;
-        inputElement.setSelectionRange(newPosition, newPosition);
+      const newPosition = originalCaretPosition <= inputElement.value.length ? originalCaretPosition : inputElement.value.length;
+      inputElement.setSelectionRange(newPosition, newPosition);
     }
-}
+  }
 
 
 
-formatDate() {
+  formatDate() {
 
-  if (this.k1Detail.verifiedOn) {
+    if (this.k1Detail.verifiedOn) {
       const verifiedDateObj = new Date(this.k1Detail.verifiedOn);
       const verifiedDay = verifiedDateObj.getDate().toString().padStart(2, '0');
       const verifiedMonth = (verifiedDateObj.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
       const verifiedYear = verifiedDateObj.getFullYear();
       this.formattedVerifiedDate = `${verifiedDay}-${verifiedMonth}-${verifiedYear}`;
-  } else {
+    } else {
       this.formattedVerifiedDate = ''; // Handle empty date case
+    }
   }
-}
 
 
 }

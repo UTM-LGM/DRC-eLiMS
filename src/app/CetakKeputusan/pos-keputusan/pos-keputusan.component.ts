@@ -32,7 +32,7 @@ import { CetakKeputusanService } from '../cetak-keputusan.service';
 export class PosKeputusanComponent {
 
   columnsToDisplay = [
-
+    'select',
     'batchId',
     'postResultOn',
     'postResultDelivery',
@@ -47,7 +47,6 @@ export class PosKeputusanComponent {
     'chequeAmount',
     'sentOn',
     'sampleCount',
-
   ]
 
 
@@ -139,6 +138,26 @@ export class PosKeputusanComponent {
   }
 
 
+  toggleBatchSelection(batch: Batch, isSelected: boolean) {
+    for (const sample of batch.samples) {
+      sample.checked = isSelected;
+    }
+    this.updateSelectedSamples();
+  }
+
+  updateSelectedSamples() {
+    this.selectedSamples = [];
+    for (const batch of this.batches) {
+      for (const sample of batch.samples) {
+        if (sample.checked) {
+          this.selectedSamples.push(sample);
+        }
+      }
+    }
+    console.log(this.selectedSamples);
+  }
+
+
   viewReceipt(path: string, batchId: number): void {
     window.open(environment.baseApiUrlElimsReceipt + batchId + "_" + path, "_blank");
   }
@@ -198,6 +217,11 @@ export class PosKeputusanComponent {
         res => { this.mesYaTidak = "yes" }
       );
     }
+
+    setTimeout(() => {
+      window.location.reload();
+    },1000); // Delay in milliseconds (2000ms = 2s)
+    
   }
 
 

@@ -4,16 +4,56 @@
 
             <span class="welcomeForwarder"> {{forwarder.name}}</span>
             <span class="welcomeForwarder" *ngIf="roleUip || roleGtacr"> {{staff.staffName}}</span>
-         
-            <span class="welcomeForwarder" *ngIf="roleImporter"> {{company.name}}</span>
+
+            <span class="welcomeForwarder" *ngIf="roleImporter"> {{importer.name}}</span>
             <span class="welcomeForwarder" *ngIf="roleGtacr"> {{company.name}}</span>
+
         </h3>
-
-
+        
         <p class="timestamp">{{ today | date :'dd-MMM-yy h:mm:ss a'}}</p>
-        <!-- <p>You are logged in as details below:</p>
+        <app-show-notice></app-show-notice>
 
-        <p class="user-details">{{user.username}}<br> -->
+        <div class="card" style="width: 70" *ngIf="roleImporter || roleForwarder">
 
+            <form #form="ngForm" (ngSubmit)="updateProfile()">
+
+                <p>Sila kemaskini email di bawah</p>
+                <div class="row form-group" *ngIf="roleForwarder">
+                    <div class="col-sm-2">
+                        <label class="label_title">E-mel<span class="required" style="color:red;">*</span></label><br>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="email" name="email" [(ngModel)]="forwarder.email">
+                        <small><i class="fa fa-info-circle" aria-hidden="true"></i> Syarikat perlu mengemaskini email
+                            untuk tindakan selanjutnya</small>
+                    </div>
+                </div><br>
+
+                <div class="row form-group" *ngIf="roleImporter">
+                    <div class="col-sm-2">
+                        <label class="label_title">E-mel<span class="required" style="color:red;">*</span></label><br>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="email" name="email" [(ngModel)]="importer.email">
+                        <small><i class="fa fa-info-circle" aria-hidden="true"></i> Syarikat perlu mengemaskini email
+                            untuk tindakan selanjutnya</small>
+                    </div>
+                </div><br>
+
+                <div mat-dialog-actions align="center" *ngIf="roleImporter || roleForwarder">
+                    <button type="submit" class="btn btn-primary mr-5">Simpan</button>
+                </div>
+            </form>
+
+            <div class="row form-group" *ngIf="isEmailVisible">
+                <div class="col-sm-3">
+                    <label class="label_title">E-mel</label><br>
+                    <label class="label_bi">Email</label>
+                </div>
+                <div class="col-sm-6">
+                    <h3>{{forwarder.email}}</h3>
+                </div>
+            </div><br>
+        </div>
     </div>
 </div>
