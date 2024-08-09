@@ -75,12 +75,13 @@
                         </div>
                         <div class="col-sm-4">
                             <select class="form-select" name="statusCodeId" id="statusCodeId"
-                                (input)="filterByStatus($event)" [(ngModel)]="statusCodeId" required>
-                                <option class="pilih" value="0" [defaultSelected]="">--Pilih--</option>
-                                <option *ngFor="let statusCode of statusCodes" [value]="statusCode.statusCodeId">
-                                    {{statusCode.status}}
-                                </option>
-                            </select>
+                            (change)="filterByStatus($event)" [(ngModel)]="statusCodeId" required>
+                            <option class="pilih" value="0" [defaultSelected]="">--Pilih--</option>
+                            <option *ngFor="let statusCode of statusCodes" [value]="statusCode.statusCodeId">
+                                {{statusCode.status}}
+                            </option>
+                        </select>
+                        
                         </div>
                     </div><br>
                 </span>
@@ -126,6 +127,19 @@
                     </div><br>
                 </span>
 
+
+                <!-- <span *ngIf="showCountDays">
+                    <div class="row form-group">
+                        <div class="col-sm-2">
+                            <label class="label_bm">Tarikh Terima</label><br>
+                            <label class="label_bi">Received On</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="date" class="form-control" id="receivedOn" name="receivedOn"
+                                (change)="filterByReceivedOn($event)">
+                        </div>
+                    </div><br>
+                </span> -->
 
                 <div class="mat-elevation-z8">
                     <div class="list-container">

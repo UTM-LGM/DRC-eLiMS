@@ -84,7 +84,7 @@ export class UlangCetakLembaranKerjaComponent {
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        console.log(res)
+        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res
         this.roleGtacr = true
@@ -94,9 +94,9 @@ export class UlangCetakLembaranKerjaComponent {
     }
 
     this.statusCodeId = 4;
-    this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
+    this.elimsService.GetElimsAllBatch1(this.statusCodeId).subscribe(data => {
       this.batches = data;
-      console.log(data)
+      // console.log(data)
 
 
       this.dataSource = new MatTableDataSource<Batch>(this.batches);

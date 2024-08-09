@@ -28,7 +28,6 @@ import { UjiSampelComponent } from './Rekod-Keputusan-Sampel/uji-sampel/uji-samp
 import { RekodKeputusanComponent } from './Rekod-Keputusan-Sampel/rekod-keputusan/rekod-keputusan.component';
 import { SahKeputusanComponent } from './Rekod-Keputusan-Sampel/sah-keputusan/sah-keputusan.component';
 import { CetakKeputusanComponent } from './CetakKeputusan/cetak-keputusan/cetak-keputusan.component';
-import { CetakSuratKeputusanComponent } from './CetakKeputusan/cetak-surat-keputusan/cetak-surat-keputusan.component';
 import { PosKeputusanComponent } from './CetakKeputusan/pos-keputusan/pos-keputusan.component';
 import { RekodKelulusanComponent } from './Kelulusan/rekod-kelulusan/rekod-kelulusan.component';
 import { PdfCetakKeputusanComponent } from './CetakKeputusan/pdf-cetak-keputusan/pdf-cetak-keputusan.component';
@@ -250,10 +249,6 @@ const routes: Routes = [
     component: CetakKeputusanComponent, canActivate: [AuthGuardService], data: { roles: ['4'] }
   },
 
-  {
-    path: 'cetak-surat-keputusan',
-    component: CetakSuratKeputusanComponent, canActivate: [AuthGuardService], data: { roles: ['4'] }
-  },
 
   {
     path: 'pos-keputusan',

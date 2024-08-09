@@ -5,19 +5,6 @@
       <h1 class="attractive-title">Laporan Bil. Sampel</h1>
       <div class="mat-card-container">
 
-        <!-- <span>
-            <div class="row form-group">
-              <div class="col-sm-2">
-                <label>Tarikh</label><br>
-              </div>
-              <div class="col-sm-4">
-                <input type="date" class="form-control" [(ngModel)]="selectedDate" (change)="fetchSampleCounts()">
-              </div>
-            </div><br>
-          </span> -->
-
-
-
         <div class="row form-group">
           <div class="col-sm-2">
             <label>Carian berdasarkan</label><br>
@@ -111,7 +98,7 @@
                     </td>
                   </tr>
 
-                    <!-- tgk balik -->
+                  <!-- tgk balik -->
                   <tr>
                     <td>Bil sampel yang belum diuji</td>
                     <td>
@@ -125,7 +112,6 @@
                       : {{sampleCounts.countInLabOn}}
                     </td>
                   </tr>
-
 
                   <!-- tgk balik -->
                   <tr>
@@ -149,27 +135,21 @@
                     </td>
                   </tr>
 
-
                 </table>
-
               </div>
-
             </div>
           </div>
+
           <div *ngIf="sampleCounts.length === 0">
             No results found.
           </div>
+
         </div>
-
-
-
       </div>
-
 
       <div class="col-lg-2">
         <button type="submit" class="btn btn-primary" style="margin-left: 5px;" (click)="searchSample()">Cari</button>
       </div>
-
 
     </mat-card-content>
   </mat-card>

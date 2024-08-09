@@ -84,7 +84,7 @@ export class UlangKeputusanUjianComponent {
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        console.log(res)
+        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res
         this.roleGtacr = true

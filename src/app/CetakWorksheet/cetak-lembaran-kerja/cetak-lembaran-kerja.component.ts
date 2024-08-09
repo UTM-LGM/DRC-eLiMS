@@ -87,7 +87,7 @@ export class CetakLembaranKerjaComponent {
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        console.log(res)
+        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res
         this.roleGtacr = true
@@ -95,42 +95,6 @@ export class CetakLembaranKerjaComponent {
       })
       this.loadBatches();
     }
-
-    // this.statusCodeId = 4;
-    // this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
-    //   this.batches = data;
-    //   console.log(data)
-
-
-    //   this.dataSource = new MatTableDataSource<Batch>(this.batches);
-    //   this.dataSource.paginator = this.paginator;
-    //   this.dataSource.sort = this.sort;
-
-
-    // });
-    // console.log(this.listk1DetailId)
-
-    // this.statusCodeId = 4;
-
-    // this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
-    //   data.forEach(resData => {
-    //     const receivedOn = new Date(resData.receivedOn);
-    //     const approvedOn = new Date(resData.approvedOn);
-    //     let dayssincereceived = (approvedOn.getTime() !== 0) ?
-    //       (approvedOn.getTime() - receivedOn.getTime()) / (1000 * 3600 * 24) :
-    //       (this.today.getTime() - receivedOn.getTime()) / (1000 * 3600 * 24) + 1;
-    //     dayssincereceived = Math.floor(dayssincereceived);
-    //     console.log(resData);
-    //     resData.daysSinceReceived = dayssincereceived;
-    //     this.batches.push(resData);
-    //   });
-    
-    //   this.batches.sort((a, b) => a.batchId - b.batchId);
-    
-    //   this.dataSource = new MatTableDataSource<Batch>(this.batches);
-    //   this.dataSource.paginator = this.paginator;
-    //   this.dataSource.sort = this.sort;
-    // });
     this.statusCodeId = 4;
 
     const holidays = [
@@ -163,7 +127,7 @@ export class CetakLembaranKerjaComponent {
     }
     
     // Example usage:
-    this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
+    this.elimsService.GetElimsAllBatch1(this.statusCodeId).subscribe(data => {
       data.forEach(resData => {
         const receivedOn = new Date(resData.receivedOn);
         const approvedOn = new Date(resData.approvedOn);
@@ -175,7 +139,7 @@ export class CetakLembaranKerjaComponent {
           daysSinceReceived = countWorkingDays(receivedOn, this.today, holidays);
         }
     
-        console.log(resData);
+        // console.log(resData);
         resData.daysSinceReceived = daysSinceReceived;
         this.batches.push(resData);
       });
@@ -191,6 +155,21 @@ export class CetakLembaranKerjaComponent {
   }
 
 
+  // getTextColorClass(days: number): string {
+  //   if (days <= 5) {
+  //     return 'green-text';
+  //   } else if (days > 5 && days <= 10) {
+  //     return 'yellow-text';
+  //   } else if (days > 10 && days <= 14) {
+  //     return 'orange-text';
+  //   } else {5
+  //     return 'red-text';
+  //   }
+  // }
+  
+  
+
+  
   checkSingleChanged() {
     this.selectedSamples = [];
     for (const row of this.batches) {
@@ -245,14 +224,10 @@ export class CetakLembaranKerjaComponent {
             console.log(this.listk1DetailId)
           })
         });
-
-
     }
 
-
-
-
   }
+
 
 
   searchByCustomNos() {
@@ -294,9 +269,8 @@ export class CetakLembaranKerjaComponent {
     } else {
       this.loadBatches();
     }
-
-    
   }
+
 
   addField() {
     this.customFields.push({ value: '' });
@@ -331,7 +305,7 @@ export class CetakLembaranKerjaComponent {
 
   }
 
-  // Add a method to check if the button should be enabled
+
   isButtonEnabled(): boolean {
     // Enable if at least one checkbox is selected or No. Borang Kastam field is filled
     return this.isAnyCheckboxSelected() || this.customNo.trim() !== '';

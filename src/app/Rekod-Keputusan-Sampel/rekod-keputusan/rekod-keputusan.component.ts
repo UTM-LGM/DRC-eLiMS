@@ -86,14 +86,14 @@ export class RekodKeputusanComponent {
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        console.log(res)
+        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res
         this.roleGtacr = true
         this.staffRole = res.staffRole
         // this.getStaffElimsSamples(this.staff)
         this.staffRole.forEach(element => {
-          console.log(element)
+          // console.log(element)
           this.rekodKeputusanService.GetStaffIdbyStaffRole(element).subscribe(data => {
             this.roles = data.filter(data => data.staffName != null);
             // console.log(data)
@@ -119,7 +119,7 @@ export class RekodKeputusanComponent {
     this.statusCodeId = 6;
     this.elimsService.GetBatchByInLabBy(this.statusCodeId, this.loginAs).subscribe(data => {
       this.batches = data;
-      console.log(data)
+      // console.log(data)
 
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;

@@ -6,8 +6,6 @@ import { Staff } from 'src/app/models/staff';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ElimsService } from 'src/app/services/elims.service';
 import { CetakWorksheetService } from '../cetak-worksheet.service';
-import { OvenLtx } from 'src/app/models/ovenLtx';
-import { PenimbangLtx } from 'src/app/models/penimbangLtx';
 import { Penimbang } from 'src/app/models/penimbang';
 import { Oven } from 'src/app/models/oven';
 
@@ -30,8 +28,6 @@ export class PdfWorksheetLtxComponent {
   selectedOven: string = 'default';
   penimbangs: Penimbang[];
   ovens: any;
-  refLtxPenimbang: PenimbangLtx = {} as PenimbangLtx;
-  refLtxOven: OvenLtx = {} as OvenLtx;
 
   refPenimbang: Penimbang = {} as Penimbang;
   refOven: Oven = {} as Oven;

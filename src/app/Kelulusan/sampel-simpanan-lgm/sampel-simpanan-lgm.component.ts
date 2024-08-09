@@ -80,7 +80,7 @@ export class SampelSimpananLgmComponent {
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        console.log(res)
+        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res
         this.roleGtacr = true
@@ -135,7 +135,7 @@ export class SampelSimpananLgmComponent {
           }
     
           dayssincereceived = Math.floor(dayssincereceived);
-          console.log(resData);
+          // console.log(resData);
           resData.daysSinceReceived = dayssincereceived;
           this.batches.push(resData);
         });
@@ -176,7 +176,7 @@ export class SampelSimpananLgmComponent {
     })
 
 
-    this.searchBy = ['Jenis Getah', 'Batch Id', 'Syarikat Penghantar', 'Status', 'Tarikh Import', 'Tarikh Hantar', 'Tarikh Terima', 'Tempoh Simpanan'];
+    this.searchBy = ['Jenis Getah', 'Batch Id', 'Syarikat Penghantar', 'Status', 'Tarikh Import', 'Tarikh Hantar', 'Tarikh Terima'];
 
 
     this.elimsService.GetForwarders().subscribe(data => {
@@ -227,7 +227,7 @@ export class SampelSimpananLgmComponent {
     e.target.value == "Tarikh Import" ? this.showImportedDate = true : this.showImportedDate = false;
     e.target.value == "Tarikh Hantar" ? this.showSentOn = true : this.showSentOn = false;
     e.target.value == "Tarikh Terima" ? this.showReceivedOn = true : this.showReceivedOn = false;
-    e.target.value == "Tempoh Simpanan" ? this.showCountDays = true : this.showCountDays = false;
+    //e.target.value == "Tempoh Simpanan" ? this.showCountDays = true : this.showCountDays = false;
     e.target.value == "Status" ? this.showStatus = true : this.showStatus = false;
   }
 

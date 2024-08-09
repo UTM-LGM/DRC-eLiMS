@@ -76,12 +76,10 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { PdfWorksheetBRComponent } from './CetakWorksheet/pdf-worksheet-br/pdf-worksheet-br.component';
 import { PdfWorksheetLtxComponent } from './CetakWorksheet/pdf-worksheet-ltx/pdf-worksheet-ltx.component';
 import { CetakKeputusanComponent } from './CetakKeputusan/cetak-keputusan/cetak-keputusan.component';
-import { CetakSuratKeputusanComponent } from './CetakKeputusan/cetak-surat-keputusan/cetak-surat-keputusan.component';
 import { PosKeputusanComponent } from './CetakKeputusan/pos-keputusan/pos-keputusan.component';
 import { RekodKelulusanComponent } from './Kelulusan/rekod-kelulusan/rekod-kelulusan.component';
 import { DetailKeputusanComponent } from './Rekod-Keputusan-Sampel/detail-keputusan/detail-keputusan.component';
 import { PdfCetakKeputusanComponent } from './CetakKeputusan/pdf-cetak-keputusan/pdf-cetak-keputusan.component';
-import { PdfCetakSuratKeputusanComponent } from './CetakKeputusan/pdf-cetak-surat-keputusan/pdf-cetak-surat-keputusan.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { DialogCheckoutComponent } from './dialogbox/dialog-checkout/dialog-checkout.component';
 import { SampelSimpananLgmComponent } from './Kelulusan/sampel-simpanan-lgm/sampel-simpanan-lgm.component';
@@ -94,8 +92,6 @@ import { LaporanStatistikComponent } from './Laporan/laporan-statistik/laporan-s
 import { LaporanKuantitiComponent } from './Laporan/laporan-kuantiti/laporan-kuantiti.component';
 import { LaporanTahapKecekapanComponent } from './Laporan/laporan-tahap-kecekapan/laporan-tahap-kecekapan.component';
 import { LaporanKgkComponent } from './Laporan/laporan-kgk/laporan-kgk.component';
-import { DeliveryDateNotUpdatedComponent } from './CetakKeputusan/delivery-date-not-updated/delivery-date-not-updated.component';
-import { DeliveryUpdatedComponent } from './CetakKeputusan/delivery-updated/delivery-updated.component';
 import { TarikhTerimaSampelComponent } from './Daftar Terima Sampel/tarikh-terima-sampel/tarikh-terima-sampel.component';
 import { LaporanBilHariComponent } from './Laporan/laporan-bil-hari/laporan-bil-hari.component';
 import { SajarahPenghantaranComponent } from './Hantar-Sampel/sajarah-penghantaran/sajarah-penghantaran.component';
@@ -103,7 +99,11 @@ import { NoticeComponent } from './Notis/notice/notice.component';
 import { ViewNoticeComponent } from './Notis/view-notice/view-notice.component';
 import { ShowNoticeComponent } from './Notis/show-notice/show-notice.component';
 import { EditNoticeComponent } from './Notis/edit-notice/edit-notice.component';
+import { register } from 'swiper/element/bundle';
 // import { QRCodeModule } from 'angularx-qrcode';
+
+register()
+
 
 @NgModule({
   declarations: [
@@ -150,12 +150,10 @@ import { EditNoticeComponent } from './Notis/edit-notice/edit-notice.component';
     PdfWorksheetBRComponent,
     PdfWorksheetLtxComponent,
     CetakKeputusanComponent,
-    CetakSuratKeputusanComponent,
     PosKeputusanComponent,
     RekodKelulusanComponent,
     DetailKeputusanComponent,
     PdfCetakKeputusanComponent,
-    PdfCetakSuratKeputusanComponent,
     DialogCheckoutComponent,
     SampelSimpananLgmComponent,
     PdfCetakKeputusanUipComponent,
@@ -167,9 +165,7 @@ import { EditNoticeComponent } from './Notis/edit-notice/edit-notice.component';
     LaporanKuantitiComponent,
     LaporanTahapKecekapanComponent,
     LaporanKgkComponent,
-    DeliveryDateNotUpdatedComponent,
-    DeliveryUpdatedComponent,
-    TarikhTerimaSampelComponent,
+     TarikhTerimaSampelComponent,
     LaporanBilHariComponent,
     NoticeComponent,
     ViewNoticeComponent,

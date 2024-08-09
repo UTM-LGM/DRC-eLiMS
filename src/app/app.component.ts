@@ -40,7 +40,8 @@ export class AppComponent {
 
       
       // this.isPrintMemoRoute = event.url.includes('print-memo');
-      console.log(event)
+
+      // console.log(event)
       if (event.url.includes('print-memo')){
         this.isPrintMemoRoute = true
       }
@@ -59,7 +60,7 @@ export class AppComponent {
     if (this.authService.isloggedin()) {
       this.isLoggin = true
       this.staffrole  = this.authService.getSessionRole()
-      console.log(this.staffrole)
+      // console.log(this.staffrole)
       //panggil api stafrole listkan stafrole utk stafid
 
 

@@ -42,7 +42,7 @@ export class TarikhTerimaSampelComponent {
     'sentOn',
     'sampleCount',
     'testMethod',
-    'dateReceivedInLab'
+    //'dateReceivedInLab'
 
   ]
 
@@ -101,7 +101,7 @@ export class TarikhTerimaSampelComponent {
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        console.log(res)
+        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res
         this.roleGtacr = true
@@ -111,9 +111,9 @@ export class TarikhTerimaSampelComponent {
     }
 
     this.statusCodeId = 3;
-    this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
+    this.elimsService.GetElimsAllBatch1(this.statusCodeId).subscribe(data => {
       this.batches = data;
-      console.log(this.batches)
+      // console.log(this.batches)
 
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;

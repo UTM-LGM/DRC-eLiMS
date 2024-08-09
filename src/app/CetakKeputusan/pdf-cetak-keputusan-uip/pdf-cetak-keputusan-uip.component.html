@@ -19,10 +19,10 @@
                 <div>
                   No Laporan : LGM/BKPT/G-TACR/7.8/{{ generateReportNo(k1Details)}}<br>
                   Rujukan Tuan : -
-                  <!-- {{k1Details[0].uipRegNo}} -->
+                  {{k1Details[0].uipRegNo}}
                 </div>
                 <div class="date-info">
-                  TARIKH : {{ today | date :'dd MMM yyyy'}}<br><br>
+                  TARIKH : {{ today | date :'dd MMMM yyyy'}}<br><br>
                 </div>
 
               </div>
@@ -50,17 +50,10 @@
             <td class="report-content-cell">
               <div class="main">
                 <!-- <h3>LAPORAN UJIAN</h3> -->
-
                 <mat-card-content>
                   <div>
                     <div>
                       <table>
-                        <!-- <tr>
-                                    <td class="space"> Alamat</td>
-                                    <td class="space">:{{ companyGroup.key }}<br>
-                                      {{ companyGroup.items[0].importerAddress }} <br>
-                                    </td>
-                                  </tr><br> -->
                         <tr>
                           <td class="space"> Alamat</td>
                           <td class="space">:Unit Inspektorat dan Penguatkuasaan (UIP),<br> Pejabat LGM Blok E,<br> Aras
@@ -70,7 +63,7 @@
                         </tr><br>
                         <tr>
                           <td class="space"> Tarikh Laporan</td>
-                          <td class="space">: {{ today | date :'dd MMM yyyy'}}</td>
+                          <td class="space">: {{ today | date :'dd MMMM yyyy'}}</td>
                         </tr>
                         <tr>
                           <td> Tarikh Surat Tuan</td>
@@ -97,9 +90,6 @@
                         </tr>
                       </table><br><br><br>
                     </div>
-
-
-
                     <div>
                       <div>
                         <p class="title-spacing">
@@ -115,9 +105,11 @@
                       </div>
                     </div>
 
+
+                    <!-- page 2 -->
                     <ng-container *ngFor="let companyGroup of groupedSamples; let isFirst = first">
                       <div class="company-group" [class.first-group]="isFirst" [class.non-first-group]="!isFirst">
-                        <!-- page 2 -->
+
                         <div class="container px-4 py-2" style="page-break-before: always;">
                           <p>KEPUTUSAN INI TELAH DIPEROLEHI PADA SAMPEL YANG DISERAHKAN KEPADA G-TACR DAN JENIS-JENIS
                             UJIAN ADALAH MENGIKUT KEPERLUAN PELANGGAN.</p>
@@ -128,15 +120,18 @@
                                 <h4>NO RUJUKAN SURAT TUAN</h4>
                                 <!-- <p> {{k1Details[0].uipRegNo}}</p> -->
                               </div>
+
+
                               <div>
                                 <h4>TARIKH SAMPEL DITERIMA</h4>
                                 <p>{{k1Details[0].receivedOn | date: 'dd MMMM yyyy'}}</p>
                               </div>
                             </div>
 
+
                             <h4>MAKLUMAT SYARIKAT PENGIMPORT</h4>
                             <div class="col-8">
-                              <table>
+                              <!-- <table>
                                 <tr>
                                   <td class="col1"> Nama Syarikat</td>
                                   <td>: :{{ companyGroup.key }}</td>
@@ -145,8 +140,20 @@
                                   <td> Alamat</td>
                                   <td>: {{ companyGroup.items[0].importerAddress }}</td>
                                 </tr>
+                              </table><br> -->
+                              <table>
+                                <tr>
+                                  <td class="col1"> Nama Syarikat</td>
+                                  <td>: {{ companyGroup.items[0].importerName | uppercase }}</td>
+                                </tr>
+                                <tr>
+                                  <td> Alamat</td>
+                                  <td>:  {{ companyGroup.key | uppercase }}</td>
+                                </tr>
                               </table><br>
                             </div>
+
+
                             <h4>MAKLUMAT SYARIKAT PENGHANTAR</h4>
                             <div class="col-8">
                               <table>
@@ -160,6 +167,8 @@
                                 </tr>
                               </table><br>
                             </div>
+
+
                             <h4>PENERANGAN SAMPEL</h4>
                             <div class="col-8">
                               <table>
@@ -196,10 +205,10 @@
                                     </div>
                                   </td>
                                 </tr>
-
-
                               </table><br>
                             </div>
+
+
                             <p><b>Bayaran : </b></p>
                             <div class="col-8">
                               <table>
@@ -211,18 +220,11 @@
                                   <td> Jumlah (RM)</td>
                                   <td>: {{k1Details[0].chequeAmount}}</td>
                                 </tr>
-                                <!-- <tr>
-                                    <td> No. Transaksi/cek</td>
-                                    <td>: {{k1Details[0].chequeNo}}{{k1Details[0].transactionNo}}</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Tarikh Transaksi/cek</td>
-                                    <td>: {{k1Details[0].date | date: 'dd MMMM yyyy'}}</td>
-                                  </tr> -->
                               </table><br>
                             </div>
                           </div>
                         </div>
+
 
                         <!-- <page 3 -->
                         <div class="container px-4 py-2" style="page-break-before: always;">

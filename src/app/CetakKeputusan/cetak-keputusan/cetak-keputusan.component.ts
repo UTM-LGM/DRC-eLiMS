@@ -14,7 +14,6 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { UserService } from 'src/app/User/user.service';
 import { CetakKeputusanService } from '../cetak-keputusan.service';
 import { RekodKeputusanService } from 'src/app/Rekod-Keputusan-Sampel/rekod-keputusan.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cetak-keputusan',
@@ -38,7 +37,6 @@ export class CetakKeputusanComponent {
     'isFastTrack',
     'forwarderName',
     'bankCode',
-    // 'receipt',
     'chequeNo',
     'chequeAmount',
     'receivedOn',
@@ -75,7 +73,7 @@ export class CetakKeputusanComponent {
   customFields: { value: string }[] = [];
   checkboxClicked: boolean = false;
 
-  batchId : number
+  batchId: number
 
   constructor(
     private elimsService: ElimsService,
@@ -83,8 +81,6 @@ export class CetakKeputusanComponent {
     private userService: UserService,
     private cetakKeputusanService: CetakKeputusanService,
     private rekodKeputusanService: RekodKeputusanService,
-    private router: Router,
-
   ) { }
 
   ngOnInit() {
@@ -104,7 +100,7 @@ export class CetakKeputusanComponent {
         this.staff = res;
         this.roleGtacr = true;
         this.staffRole = res.staffRole;
-        console.log(this.staffRole);
+        // console.log(this.staffRole);
 
         this.rekodKeputusanService.GetStaffIdbyStaffRoleIkmNo(3).subscribe(data => {
 
@@ -158,7 +154,6 @@ export class CetakKeputusanComponent {
   }
 
 
-
   pilih() {
     this.lepassubmit = true;
     for (const batch of this.batches) {
@@ -167,13 +162,13 @@ export class CetakKeputusanComponent {
   }
 
 
-
   toggleBatchSelection(batch: Batch, isSelected: boolean) {
     for (const sample of batch.samples) {
       sample.checked = isSelected;
     }
     this.updateSelectedSamples();
   }
+
 
   updateSelectedSamples() {
     this.selectedSamples = [];
@@ -204,41 +199,8 @@ export class CetakKeputusanComponent {
         }
       );
     }
-
     //this.router.navigate(['cetak-keputusan/cetak']);
-
-
   }
-
-
-
-
-  // generatePDF(k1DetailId: number) {
-  //   const listk1DetailId: number[] = [];  // Explicitly type the array as number[]
-  
-  //   for (const sample of this.selectedSamples) {
-  //     const id = sample.k1DetailId;
-  //     this.creatorRoleId = sample.creatorRoleId;
-  //     console.log(sample);
-      
-  //     // Collect the ID to list and call the service
-  //     this.cetakKeputusanService.PutResultLetterApprovedBy(id, this.k1Detail).subscribe(
-  //       res => {
-  //         this.isPrint = true;
-  //         listk1DetailId.push(id);  // Collecting IDs
-  //       },
-  //       err => {
-  //         console.error('Error in PutResultLetterApprovedBy:', err);
-  //       },
-  //       () => {
-  //         // Once all samples are processed, navigate to the other page with collected IDs
-  //         if (listk1DetailId.length === this.selectedSamples.length) {
-  //           this.router.navigate(['cetak-keputusan/cetak'], { queryParams: { ids: listk1DetailId.join(',') } });
-  //         }
-  //       }
-  //     );
-  //   }
-  // }
 
 
   onYesClick() {
@@ -254,8 +216,8 @@ export class CetakKeputusanComponent {
 
     setTimeout(() => {
       window.location.reload();
-    },2000); // Delay in milliseconds (2000ms = 2s)
-    
+    }, 2000); 
+
   }
 
 
@@ -269,8 +231,7 @@ export class CetakKeputusanComponent {
       }
     } this.updateCheckoutButtonVisibility();
 
-     console.log(this.selectedSamples)
-
+    console.log(this.selectedSamples)
   }
 
 
@@ -337,7 +298,7 @@ export class CetakKeputusanComponent {
     }
   }
 
-  
+
 }
 
 

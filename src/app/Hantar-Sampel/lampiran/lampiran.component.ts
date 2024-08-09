@@ -195,15 +195,15 @@ export class LampiranComponent {
 
   groupSamplesByCompany() {
     const groupedCollection = this.samples.reduce((accumulator, currentValue) => {
-      const key = currentValue.importerName || currentValue.companyName;
-      (accumulator[key] = accumulator[key] || []).push(currentValue);
+      const address = currentValue.importerAddress || currentValue.companyAddress;
+      (accumulator[address] = accumulator[address] || []).push(currentValue);
       return accumulator;
     }, {});
-
-    this.groupedSamples = Object.keys(groupedCollection).map(key => ({ key, items: groupedCollection[key], count: groupedCollection[key].length }));
+  
+    this.groupedSamples = Object.keys(groupedCollection).map(key => ({ key, items: groupedCollection[key] }));
     console.log(this.groupedSamples);
   }
-
+  
 
 
 }

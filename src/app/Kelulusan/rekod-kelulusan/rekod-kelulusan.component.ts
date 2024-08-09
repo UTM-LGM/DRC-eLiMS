@@ -131,14 +131,14 @@ export class RekodKelulusanComponent {
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        console.log(res)
+        // console.log(res)
         this.authService.changeUser(res);
         // (email staff)
         // this.emailRecipient.push(res.emailLgm);
         this.staff = res;
         this.roleGtacr = true;
         this.staffRole = res.staffRole;
-        console.log(this.staffRole);
+        // console.log(this.staffRole);
 
         this.rekodKeputusanService.GetStaffIdbyStaffRole(4).subscribe(data => {
 
@@ -163,7 +163,7 @@ export class RekodKelulusanComponent {
     this.statusCodeId = 8;
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       this.batches = data;
-      console.log(this.batches[0].samples);
+      // console.log(this.batches[0].samples);
 
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;

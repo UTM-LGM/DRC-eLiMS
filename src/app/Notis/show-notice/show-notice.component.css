@@ -81,3 +81,24 @@
     }
   }
   
+
+
+  .custom-link {
+    color: #0A5EBD; /* Same as rgb(10, 94, 189) */
+    cursor: pointer;
+    text-decoration: none;
+    padding: 10px 15px;
+    border: 1px solid #0A5EBD;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+.custom-link:hover {
+    background-color: #0A5EBD;
+    color: #fff;
+    text-decoration: none;
+}
+

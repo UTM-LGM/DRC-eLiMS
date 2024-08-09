@@ -4,8 +4,6 @@
       <h1 class="attractive-title">Pos Keputusan</h1>
 
 
-
-
       <div class="box-container" *ngIf="!lepassubmit">
         <div class="mat-card-container">
 
@@ -39,6 +37,7 @@
             </div>
             <br>
 
+
             <div class="row form-group">
               <div class="col-sm-2">
                 <label class="label_title"> Penghantaran<span class="required" style="color:red;">*</span></label><br>
@@ -56,6 +55,7 @@
             </div>
             <br>
 
+            
             <div class="row form-group" *ngIf="showDelivery">
               <div class="col-sm-2">
                 <label class="label_bm">Syarikat Penghantar</label>
@@ -66,6 +66,7 @@
                   [(ngModel)]="batch.postResultCourierServices" required>
               </div>
             </div> <br>
+
 
             <div class="row form-group" *ngIf="showDelivery">
               <div class="col-sm-2">
@@ -89,7 +90,6 @@
 
 
 
-
       <p *ngIf="!lepassubmit">Sila pilih sampel untuk dicetak </p>
 
       <div class="row form-group" *ngIf="!lepassubmit">
@@ -100,20 +100,6 @@
           <input type="text" class="form-control" id="batchId" name="batchId" (input)="filterByBatchId($event)">
         </div>
       </div><br>
-
-
-
-      <!-- <mat-tab-group class="mb-2" *ngIf="!lepassubmit">
-        <mat-tab label="Batch Id yang belum dikemaskini">
-          <app-delivery-date-not-updated></app-delivery-date-not-updated>
-        </mat-tab>
-
-        <mat-tab label="Batch Id yang telah dikemaskini">
-          <app-delivery-updated></app-delivery-updated>
-        </mat-tab>
-      </mat-tab-group> -->
-
-
 
 
 
@@ -134,7 +120,7 @@
                 <mat-checkbox (change)="toggleBatchSelection(batch, $event.checked)"></mat-checkbox>
               </td>
             </ng-container>
-            
+
 
             <ng-container matColumnDef="batchId">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch Id </th>
@@ -165,9 +151,6 @@
                 {{row.postResultTrackingNo}}</td>
             </ng-container>
 
-
-
-
             <ng-container matColumnDef="sampleCount">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Bil. Sampel</th>
               <td mat-cell *matCellDef="let row">{{row.sampleCount}}</td>
@@ -185,26 +168,16 @@
               </td>
             </ng-container>
 
-
             <ng-container matColumnDef="forwarderName">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Syarikat Penghantar </th>
               <td mat-cell *matCellDef="let row"> {{row.forwarderName}}</td>
             </ng-container>
-
 
             <ng-container matColumnDef="bankCode">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Bank</th>
               <td mat-cell *matCellDef="let row">
                 {{row.bankCode}}</td>
             </ng-container>
-
-
-            <!-- <ng-container matColumnDef="receipt">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Resit</th>
-              <td mat-cell *matCellDef="let row"><a
-                  style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
-                  (click)="viewReceipt(row.receipt,row.batchId)">{{row.receipt}}</a></td>
-            </ng-container> -->
 
             <ng-container matColumnDef="chequeNo">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>No.Cek/Resit/Memo</th>
@@ -216,18 +189,15 @@
                 <a *ngIf="row.creatorRoleId == 2"
                   style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
                   (click)="viewMemo(row.batchId)">memo</a>
-                  {{row.chequeNo}}
-
+                {{row.chequeNo}}
               </td>
             </ng-container>
-
 
             <ng-container matColumnDef="chequeAmount">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Amaun</th>
               <td mat-cell *matCellDef="let row">
                 {{row.chequeAmount}}</td>
             </ng-container>
-
 
             <ng-container matColumnDef="sentOn">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarikh Hantar</th>
@@ -285,6 +255,8 @@
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="20"></mat-paginator>
       </div><br>
 
+      
+      <!-- Senarai sampel yg dipilih -->
       <table *ngIf="lepassubmit" class="table table-striped center-table">
         <thead>
           <tr class="tableheader">
@@ -314,10 +286,13 @@
         </tbody>
       </table>
 
+
+      <!-- Pengesahan Cetakan Keputusan -->
       <div *ngIf="lepassubmit" class="card">
         <h4 class="card-header">Pengesahan Cetakan Keputusan</h4>
         <div class="card-body">
-          <p class="card-text"><b><i>**Sila pastikan pengesahan cetakan keputusan dibuat selepas mencetak Keputusan.</i></b>
+          <p class="card-text"><b><i>**Sila pastikan pengesahan cetakan keputusan dibuat selepas mencetak
+                Keputusan.</i></b>
           </p>
           <p class="card-text">Adakah Keputusan telah berjaya dicetak?</p>
 

@@ -34,15 +34,8 @@ export class UlangCetakLabelComponent implements OnInit {
   roleUip: boolean
   roleImporter: boolean
 
-  // pdfUrl: string | null = null;
-  // statusCodeId = 2;
-  // latex1: any
-  // sampleTypeName: string
-  // importer: loginImporter = {} as loginImporter
 
   constructor(
-    // private drclimstrainingService: DrclimstrainingService,
-    // private getahBongkahService: GetahBongkahService,
     private elimsService: ElimsService,
     private authService: AuthService,
     private cetakLabelService: CetakLabelService,
@@ -305,39 +298,6 @@ export class UlangCetakLabelComponent implements OnInit {
     window.open(pdfUrl, '_blank');
   }
 
-
-// before remove
-  // onYesClick() {
-  //   this.k1Detail.labelPrintedOn = new Date();
-  //   this.k1Detail.labelPrintedBy = this.loginAs;
-  //   this.k1Detail.labelPrinted = true;
-
-  //   this.cetakSample.labelPrintedOn = new Date();
-  //   this.cetakSample.labelPrintedBy = this.loginAs;
-  //   this.cetakSample.labelPrinted = true;
-
-  //   for (const sample of this.samples) {
-  //     let id = sample.k1DetailId;
-  //     const rubberTypeId = sample.rubberTypeId
-  //     if (this.checkAll || sample.checked) {
-
-  //       this.cetakLabelService.Putk1DetailLabelTelahDicetak(id, this.k1Detail).subscribe(
-  //         res => { this.mesYaTidak = "yes" }
-  //       );
-
-  //       if (rubberTypeId == 2) {
-  //         this.getahBongkahService.PutBRLabelTelahDicetak(id, this.cetakSample).subscribe(
-  //           res => { this.mesYaTidak = "yes" }
-  //         );
-
-  //       } else if (rubberTypeId == 1) {
-  //         this.drclimstrainingService.PutLtxLabelTelahDicetak(id, this.cetakSample).subscribe(
-  //           res => { this.mesYaTidak = "yes" }
-  //         );
-  //       }
-  //     }
-  //   }
-  // }
 
   // After remove
 

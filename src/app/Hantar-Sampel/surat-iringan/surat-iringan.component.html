@@ -69,12 +69,20 @@
                                 <b>Lampiran A</b> yang disertakan.
                             </p>
 
-                            <p *ngIf="roleForwarder || roleUip">
+                            <!-- <p *ngIf="roleForwarder || roleUip">
                                 Nama syarikat pengimport : <b>{{ companyGroup.key }}</b><br>
                                 Alamat syarikat pengimport : <b>{{ companyGroup.items[0].importerAddress ||
                                     companyGroup.items[0].companyAddress }}</b><br>
                                 Jumlah Sampel: <b>{{ companyGroup.items.length }}</b><br>
-                            </p>
+                            </p> -->
+
+                            <p *ngIf="roleForwarder || roleUip">
+                                Nama syarikat pengimport : <b>{{ companyGroup.items[0].importerName }}</b><br>
+                                Alamat syarikat pengimport : <b>{{ companyGroup.key }}</b><br>
+                                Jumlah Sampel: <b>{{ companyGroup.items.length }}</b><br>
+                              </p>
+
+
 
                             <p *ngIf="roleImporter">
                                 Nama syarikat penghantar : <b>{{ samples[0].agentName }}</b><br>

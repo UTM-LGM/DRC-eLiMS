@@ -1,56 +1,52 @@
-<!-- <div class="container">
-  <h2>Notis Pengumuman</h2>
-  <div *ngFor="let notice of notisList" class="notice-card">
-    <div class="card-content">
-      <h3>{{ notice.title }}</h3>
-      <p>{{ notice.message }}</p>
-    </div>
-  </div>
-</div> -->
-
-
-
 <div class="container mb-3">
   <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
     <mat-card-content>
 
-<!-- <div class="container"> -->
-  <h2 style="text-align: center;">Senarai Notis</h2>
+      <h2 style="text-align: center;">Senarai Pengumuman</h2>
 
-  <div *ngIf="notisList.length > 0">
-  <p>Sila pilih notis yang ingin dipaparkan di dashboard pengguna.</p>
-  <button mat-icon-button class="add-button" (click)="navigateToShowNotice()">
-    <i class="fa-solid fa-square-plus" style="color: #15b300;"></i>
-  </button>
-</div>
+      <div *ngIf="notisList.length > 0">
+        <p>Sila pilih notis yang ingin dipaparkan di dashboard pengguna.</p>
+        <button mat-icon-button class="add-button" (click)="navigateToShowNotice()">
+          <i class="fa-solid fa-square-plus" style="color: #15b300;"></i>
+        </button>
+      </div>
 
-  <form (ngSubmit)="onSubmit()">
-    <div *ngFor="let notice of notisList" class="notice-card">
-      <mat-card>
-        <mat-card-content>
-          <button mat-icon-button class="delete-button" (click)="onDelete(notice)">
-            <mat-icon>delete</mat-icon>
-          </button>
-          <!-- <button mat-icon-button class="edit-button" (click)="onEdit(notice)">
-            <mat-icon>edit</mat-icon>
-          </button> -->
-
-          <mat-checkbox [(ngModel)]="notice.isShow" [ngModelOptions]="{standalone: true}"
-            (change)="onCheckboxChange(notice)"><h3>{{ notice.title }}</h3>
-          </mat-checkbox>
-
-          
-          <p *ngIf="notice.isShow">{{ notice.message }}</p>
-
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <button type="submit" *ngIf="notisList.length > 0" class="btn btn-primary">Papar</button>
-  </form>
-<!-- </div> -->
+      <form>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th class="no-column">No</th>
+              <th class="title-column">Tajuk</th>
+              <th class="message-column">Mesej</th>
+              <th class="document-column">Dokumen</th>
+              <th class="status-column">Status</th>
+              <th class="action-column">Tindakan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let notice of notisList; let i = index">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td class="text-center">{{ notice.title }}</td>
+              <td class="text-center">{{ notice.message }}</td>
+              <td class="text-center">
+                <a class="custom-link" (click)="viewFile(notice, notice.announcement)">{{ notice.announcement }}</a>
+              </td>
+              <td class="text-center">
+                <button (click)="toggleNotice(notice)" 
+                        [ngClass]="{'active-button': notice.isShow, 'inactive-button': !notice.isShow}">
+                  {{ notice.isShow ? 'Aktif' : 'Tidak Aktif' }}
+                </button>
+              </td>
+              <td class="text-center">
+                <button mat-icon-button class="delete-button" (click)="onDelete(notice)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
 
     </mat-card-content>
   </mat-card>
 </div>
-
-

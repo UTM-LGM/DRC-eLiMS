@@ -61,20 +61,30 @@
                 <td mat-cell *matCellDef="let row"> {{row.sampleCount}}</td>
               </ng-container>
 
-              <ng-container matColumnDef="bilHari">
+              <!-- <ng-container matColumnDef="bilHari">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header > Tempoh Simpanan(Bil Hari)</th>
                 <td mat-cell *matCellDef="let row"> {{row.daysSinceReceived}}</td>
-              </ng-container>
+              </ng-container> -->
 
-              <!-- <ng-container matColumnDef="bilHari">
+              <ng-container matColumnDef="bilHari">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Tempoh Simpanan(Bil Hari)</th>
-                <td mat-cell *matCellDef="let row" [ngClass]="{'red-text': row.daysSinceReceived > 7}">
-                  {{row.daysSinceReceived}}
+                <td mat-cell *matCellDef="let row">
+                  <span [ngClass]="{
+                    'text-box': true,
+                    'green-text': row.daysSinceReceived <= 5,
+                    'yellow-text': row.daysSinceReceived > 5 && row.daysSinceReceived <= 10,
+                    'orange-text': row.daysSinceReceived > 10 && row.daysSinceReceived <= 14,
+                    'red-text': row.daysSinceReceived > 15
+                  }">
+                    {{row.daysSinceReceived}}
+                  </span>
                 </td>
               </ng-container>
-               -->
-            
-
+              
+              
+              
+              
+              
 
               <ng-container matColumnDef="expandedDetail">
                 <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
@@ -165,29 +175,6 @@
         </div>
       </div>
 
-      <!-- <div class="row form-group" *ngIf="!lepassubmit">
-        <div class="col-sm-2">
-          <label>No. Borang Kastam:</label><br>
-        </div>
-        <div class="col-sm-2">
-          <input type="text" class="form-control readonly-input" id="k1DetailId" name="k1DetailId"
-            [(ngModel)]="customNo">
-          <ng-container *ngFor="let field of customFields; let i = index">
-            <br>
-            <input type="text" class="form-control readonly-input" name="customField{{i}}" [(ngModel)]="field.value">
-          </ng-container>
-        </div>
-        <div class="col-sm-8">
-          <button type="button" class="btn-circle-shadow" (click)="addField()">
-            <i class="fa-solid fa-add"></i>
-          </button>
-          <span style="margin-left: 10px;"></span>
-          <button type="button" class="btn btn-primary search-button" (click)="searchByCustomNos()">
-            Cari
-          </button>
-        </div>
-      </div><br> -->
-
 
       <!-- list sample at second page -->
       <div class="table-responsive">
@@ -219,7 +206,6 @@
         </table>
 
       </div>
-
 
 
       <!-- list sample at first page below -->
@@ -265,11 +251,8 @@
       </form><br>
 
 
-      <!-- <button *ngIf="!lepassubmit" type="submit" (click)="displaySelected()" class="btn btn-primary" >Pilih</button> -->
-      <!-- Add [disabled] attribute to disable the button based on a condition -->
       <button *ngIf="!lepassubmit" type="submit" (click)="displaySelected()" class="btn btn-primary"
         [disabled]="!isButtonEnabled()">Pilih</button>
-
 
 
       <!-- third page  -->
@@ -311,9 +294,6 @@
         <button id="download-pdf" (click)="generatePDF()" type="submit" class="btn btn-primary mr-5"
           [disabled]="!k1Detail.worksheetTestOn">Cetak</button>
       </div><br>
-
-
-
 
 
       <!-- pdf worksheet page -->

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { K1Detail } from '../models/k1Detail';
 import { throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
@@ -73,9 +72,6 @@ CountSamplesByInLabOn(startDate: Date | undefined, endDate: Date | undefined, te
 
   return this.http.get<any>(`${this.baseApiUrl +'/api/K1Detail/CountSamplesByInLabOn' }?${queryString}`);
 }
-
-
-
 
 
   CountLevelEfficiency(startDate: Date | undefined, endDate: Date | undefined): Observable<any> {

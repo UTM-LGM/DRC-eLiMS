@@ -190,21 +190,51 @@
 }
 
 
+/* For bold text */
+.bold-text {
+  font-weight: bold;
+}
+
+
+
+.text-box {
+  /* display: inline-block; */
+  font-size: 13px;
+  padding: 4px 18px;
+  border-radius: 4px;
+  /* border: 2px solid #000; */
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  
+  /* cursor: pointer; */
+  /* transition: background-color 0.3s, color 0.3s; */
+}
 
 .green-text {
-  color: green;
+  color: #fff;
+  background-color: green;
 }
 
 .yellow-text {
-  color: yellow;
+  color: #000;
+  background-color: yellow;
 }
 
 .orange-text {
-  color: orange;
+  color: #fff;
+  background-color: orange;
 }
 
 .red-text {
-  color: red;
+  color: #fff;
+  background-color: red;
 }
+
+.text-box:hover {
+  background-color: #333; /* Darken background on hover */
+  color: #fff; /* Change text color to white on hover */
+}
+
+
 
 

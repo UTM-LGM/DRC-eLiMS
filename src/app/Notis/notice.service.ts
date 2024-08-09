@@ -11,7 +11,9 @@ import { Observable } from 'rxjs';
 export class NoticeService {
 
   baseApiUrl: string = environment.baseApiUrlElims;
-  
+  baseApiUrlLocal: string = environment.baseApiUrlElimsLocal;
+  private selectedId: number;
+
   constructor(private http: HttpClient) { }
 
   GetNotices() {
@@ -60,6 +62,20 @@ export class NoticeService {
 
   GetSelectedNotices(){
     return this.http.get<any>(this.baseApiUrl + '/api/Notices/GetSelectedNotices');
+  }
+
+  PostFileAnnouncement(file: any) {
+    const formData = new FormData();
+    formData.append("file", file);
+    console.log(file)
+    return this.http.post(this.baseApiUrl + '/api/Notices/UploadAnnouncement' , formData);
+  }
+
+  PostFile(id: any, file: any) {
+    const formData = new FormData();
+    formData.append("file", file);
+    console.log(file)
+    return this.http.post(this.baseApiUrl + '/api/Notices/UploadFile/' + id , formData);
   }
 
 

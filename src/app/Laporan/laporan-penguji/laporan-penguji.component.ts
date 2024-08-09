@@ -45,12 +45,12 @@ export class LaporanPengujiComponent {
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        console.log(res)
+        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res;
         this.roleGtacr = true;
         this.staffRole = res.staffRole;
-        console.log(this.staffRole);
+        // console.log(this.staffRole);
 
         this.rekodKeputusanService.GetStaffIdbyStaffRole(4).subscribe(data => {
 
@@ -107,7 +107,7 @@ export class LaporanPengujiComponent {
     this.laporanService.CountSamplesByInLabOn(startDate, endDate, tester).subscribe(
       (data) => {
         this.sampleCounts = data;
-        console.log(this.sampleCounts);
+        // console.log(this.sampleCounts);
         this.isSearched = true; 
       },
       (error) => {

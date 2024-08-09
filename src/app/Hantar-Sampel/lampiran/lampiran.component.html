@@ -1,40 +1,46 @@
 <div class="container mb-3">
   <div align="end">
     <button class="btn-print button" (click)="generatePdf()" style="margin-right: 10px;"> <i class="fa-solid fa-print"
-            style="color: #ffffff;"></i> Cetak</button>
-        </div>
-    <br>
-  
-    <div id="page1-div" id="pdfContent2" style="position: relative; width: auto; height: auto;">
-      <mat-card class="shadow p-3 mb-5 ml-0 pl-1 rounded">
-        
-        <mat-card-content>
-          <div class="container mb-3">
-            
-            <p>
-              <b>Lampiran A</b><br> 
-            </p>
-  
-            
-            <ng-container *ngFor="let companyGroup of groupedSamples;  let isFirst = first">
-              <div class="company-group" [class.first-group]="isFirst">
-                
-              <p *ngIf="!roleImporter">
+        style="color: #ffffff;"></i> Cetak</button>
+  </div>
+  <br>
+
+  <div id="page1-div" id="pdfContent2" style="position: relative; width: auto; height: auto;">
+    <mat-card class="shadow p-3 mb-5 ml-0 pl-1 rounded">
+
+      <mat-card-content>
+        <div class="container mb-3">
+
+          <p>
+            <b>Lampiran A</b><br>
+          </p>
+
+
+          <ng-container *ngFor="let companyGroup of groupedSamples;  let isFirst = first">
+            <div class="company-group" [class.first-group]="isFirst">
+
+              <!-- <p *ngIf="!roleImporter">
                 <b>NAMA SYARIKAT PENGIMPORT</b> : {{ companyGroup.key }}<br>
                 <b>ALAMAT SYARIKAT PENGIMPORT</b> : {{ companyGroup.items[0].importerAddress }}<br>
+            </p> -->
+
+              <p *ngIf="roleForwarder || roleUip">
+                <b>NAMA SYARIKAT PENGIMPORT :</b> {{ companyGroup.items[0].importerName }}<br>
+                <b>ALAMAT SYARIKAT PENGIMPORT :</b> {{ companyGroup.key }}<br>
+              </p>
+
+
+              <p *ngIf="roleImporter">
+                <b>NAMA SYARIKAT PENGHANTAR</b> : {{ samples[0].agentName}}<br>
+                <b>ALAMAT SYARIKAT PENGHANTAR</b> : {{ samples[0].companyAddress}}<br>
                 <!-- {{ companyGroup.items[0].companyAddress }} -->
                 <!-- <b>JUMLAH BILANGAN SAMPEL</b>: {{ companyGroup.count }}<br> -->
-            </p>
+              </p>
 
-            <p *ngIf="roleImporter">
-              <b>NAMA SYARIKAT PENGHANTAR</b> : {{ samples[0].agentName}}<br>
-              <b>ALAMAT SYARIKAT PENGHANTAR</b> : {{ samples[0].companyAddress}}<br>
-              <!-- {{ companyGroup.items[0].companyAddress }} -->
-              <!-- <b>JUMLAH BILANGAN SAMPEL</b>: {{ companyGroup.count }}<br> -->
-          </p>
-  
-              <p><b>PINTU SEMPADAN</b>: {{kodStesen}} -  {{namaStesen}}<br></p>
-              <div class="table-responsive">
+              <p><b>PINTU SEMPADAN</b>: {{kodStesen}} - {{namaStesen}}<br></p>
+
+
+              <!-- <div class="table-responsive">
                 <table class="table table-striped" style="width: 100%; table-layout: fixed;">
                   <thead>
                     <tr class="tableheader">
@@ -45,33 +51,61 @@
                       <th scope="col">Kuantiti</th>
                       <th scope="col">No. Lori</th>
                       <th scope="col">No. Kontena</th>
-                      <!-- <th scope="col">companyName</th> -->
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let sample of companyGroup.items let i = index" style="word-wrap: break-word;" >
+                    <tr *ngFor="let sample of companyGroup.items let i = index" style="word-wrap: break-word;">
                       <td>{{i + 1}}</td>
                       <td>{{sample.importedDate | date:"dd/MM/yyyy"}} </td>
                       <td>{{sample.customNo}} </td>
-                      <!-- <td>{{sample.sampleType}}</td> -->
                       <td>{{sample.typeCode}}</td>
                       <td>{{sample.quantity}} </td>
                       <td>{{sample.lorryNo}}</td>
                       <td>{{sample.trailerNo}}</td>
-                      <!-- <td>{{sample.importerName}}</td> -->
                     </tr>
                   </tbody>
                 </table>
-                <p>   <b>JUMLAH BILANGAN SAMPEL</b>: {{ companyGroup.count }}<br></p>
-              </div><br><br>
-              </div>
-            </ng-container>
-  
-            <br>
-            <!-- <p> JUMLAH BILANGAN SAMPEL : {{ selectedCheckboxCount}} </p> -->
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+                <p> <b>JUMLAH BILANGAN SAMPEL</b>: {{ companyGroup.items.length }}<br></p>
+              </div><br><br> -->
+
+
+              <div class="table-responsive">
+                <table class="centered-table" style="width:100%; table-layout: fixed;">
+                    <thead>
+                        <tr class="tableheader">
+                            <th scope="col" style="width: 5%;">Bil</th>
+                            <th scope="col" style="width: 15%;">Tarikh Import</th>
+                            <th scope="col" style="width: 21%;">No. Borang Kastam</th>
+                            <th scope="col" style="width: 21%;">Jenis Getah</th>
+                            <th scope="col" style="width: 10%;">Kuantiti</th>
+                            <th scope="col" style="width: 14%;">No. Lori</th>
+                            <th scope="col" style="width: 14%;">No. Kontena</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let sample of companyGroup.items; let i = index" style="word-wrap: break-word;">
+                            <td>{{i + 1}}</td>
+                            <td>{{sample.importedDate | date:"dd/MM/yyyy"}}</td>
+                            <td>{{sample.customNo}}</td>
+                            <td>{{sample.typeCode}}</td>
+                            <td>{{sample.quantity}}</td>
+                            <td>{{sample.lorryNo}}</td>
+                            <td>{{sample.trailerNo}}</td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <p><b>JUMLAH BILANGAN SAMPEL</b>: {{ companyGroup.items.length }}<br></p>
+            </div>
+            <br><br>
+
+
+            </div>
+          </ng-container>
+
+          <br>
+          <!-- <p> JUMLAH BILANGAN SAMPEL : {{ selectedCheckboxCount}} </p> -->
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
-  
+</div>

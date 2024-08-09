@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NoticeService } from '../notice.service';
 import { Notice } from '../../models/notice';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { environment } from 'src/app/environments/environment';
 
 @Component({
   selector: 'app-view-notice',
@@ -19,16 +20,16 @@ import { animate, style, transition, trigger } from '@angular/animations';
       ])
     ])
   ]
-  
 })
 export class ViewNoticeComponent implements OnInit {
   notisList: Notice[] = [];
-  selectedNotices: Notice[] = []; // Array to track selected notices
+  selectedNotices: Notice[] = [];
+  baseApiUrlElimsAnnouncement = environment.baseApiUrlElimsAnnouncement;
 
   constructor(
     private noticeService: NoticeService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.noticeService.GetNotices().subscribe(notis => {
@@ -37,60 +38,31 @@ export class ViewNoticeComponent implements OnInit {
     });
   }
 
-  onCheckboxChange(notice: Notice): void {
-    // Update the selectedNotices array based on checkbox changes
-    if (notice.isShow) {
-      this.selectedNotices = this.notisList.filter(n => n.isShow);
-    } else {
-      this.selectedNotices = this.notisList.filter(n => n.isShow);
-    }
+  toggleNotice(notice: Notice): void {
+    notice.isShow = !notice.isShow;
+    this.updateNotices();
   }
 
-  // onSubmit(): void {
-  //   const updatedNotices = this.notisList.map(notice => ({
-  //     id: notice.id,
-  //     isShow: notice.isShow
-  //   }));
-  
-  //   this.noticeService.PutNotice(updatedNotices).subscribe({
-  //     next: () => {
-  //       // Navigate to /show-notice route upon successful update
-  //       this.router.navigate(['/show-notice']);
-  //     },
-  //     error: (error) => {
-  //       console.error('Error updating notices', error);
-  //     }
-  //   });
-  // }
-
-  onSubmit(): void {
+  updateNotices(): void {
     const updatedNotices = this.notisList.map(notice => ({
       id: notice.id,
       isShow: notice.isShow
     }));
-    
+
     this.noticeService.PutNotice(updatedNotices).subscribe({
       next: () => {
-        // Store selected notices in local storage
         const selectedNotices = this.notisList.filter(notice => notice.isShow);
         localStorage.setItem('selectedNotices', JSON.stringify(selectedNotices));
-        
-        // Navigate to /show-notice route upon successful update
-        this.router.navigate(['/home']);
       },
       error: (error) => {
         console.error('Error updating notices', error);
       }
     });
   }
-  
-
 
   onDelete(notice: Notice): void {
-    // Remove the notice from the list
     this.notisList = this.notisList.filter(n => n !== notice);
-    
-    // Optionally, send a request to delete the notice from the backend
+
     this.noticeService.DeleteNotice(notice.id).subscribe({
       next: () => {
         console.log('Notice deleted successfully');
@@ -101,15 +73,16 @@ export class ViewNoticeComponent implements OnInit {
     });
   }
 
-  onEdit(notice: Notice): void {
-    // Logic to handle editing the notice
-    
-    console.log('Edit notice', notice);
-  }
-
-
   navigateToShowNotice(): void {
     this.router.navigate(['/notice']);
   }
 
+  viewFile(notice: Notice, path: string): void {
+    if (notice.id) {
+      const url = this.baseApiUrlElimsAnnouncement + notice.id + "_" + path;
+      window.open(url, "_blank");
+    } else {
+      console.error('Notice ID is undefined');
+    }
+  }
 }

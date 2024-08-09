@@ -10,7 +10,8 @@
 
         </h3>
         
-        <p class="timestamp">{{ today | date :'dd-MMM-yy h:mm:ss a'}}</p>
+        <p class="timestamp">{{ today | date :'dd-MMMM-yy h:mm:ss a'}}</p>
+        
         <app-show-notice></app-show-notice>
 
         <div class="card" style="width: 70" *ngIf="roleImporter || roleForwarder">

@@ -1,4 +1,4 @@
-.tableheader {
+/* .tableheader {
     background-color: #3e4141;
     color: rgb(234, 223, 223);
   }
@@ -12,7 +12,17 @@
     font-weight: 300;
     background-color: #3e4141;
   }
-  
+   */
+   .centered-table th,
+   .centered-table td {
+       text-align: center;
+   }
+   
+   table, th, td {
+    border:1px solid black;
+    border-collapse: collapse;
+  }
+
   .mat-icon {
   
     height: 15px;

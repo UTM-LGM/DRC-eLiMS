@@ -5,7 +5,6 @@ import { K1Detail } from '../../models/k1Detail';
 import { AuthService } from '../../services/auth/auth.service';
 import { UserService } from '../../User/user.service';
 import { Staff } from '../../models/staff';
-import { Sample } from '../../models/sample';
 import * as html2pdf from 'html2pdf.js';
 @Component({
   selector: 'app-pdf-cetak-keputusan-uip',
@@ -49,14 +48,7 @@ export class PdfCetakKeputusanUipComponent {
         this.roleGtacr = true;
       });
     }
-    // Fetch k1Details based on k1DetailId
-    // const fetchDetails = this.k1DetailId.map(id =>
-    //   this.cetakWorksheetService.GetElimsSample(id).toPromise()
-    // );
-    
-    // Promise.all(fetchDetails).then(details => {
-    //   this.k1Details = details.sort((a, b) => a.k1DetailId - b.k1DetailId);
-    // });
+
 
     this.k1DetailId.forEach(element => {
       this.cetakWorksheetService.GetElimsSample(element).subscribe(data => {
@@ -272,7 +264,7 @@ export class PdfCetakKeputusanUipComponent {
   
     // Group by company name
     const groupedCollection = this.k1Details.reduce((accumulator, currentValue) => {
-      const key = currentValue.importerName;
+      const key = currentValue.importerAddress;
       (accumulator[key] = accumulator[key] || []).push(currentValue);
       return accumulator;
     }, {});

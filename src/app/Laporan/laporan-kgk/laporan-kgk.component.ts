@@ -13,17 +13,13 @@ export class LaporanKgkComponent {
   toDate: Date | undefined;
   reportKgk: any;
   isSearched: boolean = false;
-
-  
+ 
 constructor(
   private laporanService: LaporanService,
   private decimalPipe: DecimalPipe
   ) { }
 
-
   ngOnInit() {}
-
-
 
   searchSample(): void {
     // Determine which parameters to include based on the selected criteria
@@ -33,21 +29,15 @@ constructor(
     this.laporanService.CountReportKgkSamples(startDate, endDate).subscribe(
       (data) => {
         this.reportKgk = data;
-        console.log(this.reportKgk);
+        // console.log(this.reportKgk);
         this.isSearched = true; 
       },
       (error) => {
         console.error('Error fetching sample counts:', error);
       }
     );
-
 }
 
-
-// calculateFormattedDifference(result: number, drc: number): string {
-//   const difference = Math.abs(result - drc);
-//   return this.decimalPipe.transform(difference, '1.2-2') || ''; // Format to two decimal places
-// }
 
 calculateFormattedDifference(result: number, drc: number): string {
   const difference = result - drc; // Calculate the difference without taking the absolute value

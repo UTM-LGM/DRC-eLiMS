@@ -5,7 +5,6 @@
         <h1 class="attractive-title">Laporan Penguji</h1>
         <div class="mat-card-container">
 
-
             <span><br>
                 <div class="row form-group">
                     <div class="col-sm-2">
@@ -41,8 +40,6 @@
                 </div>
             </div><br>
             
-          
-
 
             <div *ngIf="isSearched"> <!-- Ensure isSearched is true to display the counts -->
                 <p>Statistik : </p>
@@ -51,8 +48,7 @@
                   <div class="row">
                     <div class="col-6">
                       <table>
-      
-      
+          
                         <tr>
                           <td>Bil sampel Daftar Terima</td>
                           <td>
@@ -87,22 +83,18 @@
                           <td>
                             : {{sampleCounts.countResultSentOn}}
                           </td>
-                        </tr>
-      
-      
+                        </tr>     
                       </table>
       
-                    </div>
-      
+                    </div>      
                   </div>
                 </div>
+
                 <div *ngIf="sampleCounts.length === 0">
                   No results found.
                 </div>
               </div>
-              
-
-            
+                        
         </div>
       </mat-card-content>
     </mat-card>

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { LaporanService } from '../laporan.service';
-import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-laporan-bil-hari',

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { LaporanService } from '../laporan.service';
 import { RubberType } from 'src/app/models/rubberType';
 import { ElimsService } from 'src/app/services/elims.service';
-import { catchError } from 'rxjs';
 
 @Component({
   selector: 'app-laporan-bil-sampel',
@@ -58,7 +57,6 @@ export class LaporanBilSampelComponent {
       }
     );
 
-  
   }
   
 
@@ -83,7 +81,6 @@ export class LaporanBilSampelComponent {
     }
   }
 
-
   searchSample(): void {
     // Determine which parameters to include based on the selected criteria
     let startDate: Date | undefined;
@@ -101,8 +98,7 @@ export class LaporanBilSampelComponent {
       typeCodeId = this.typeCodeId;
     }
   
-  
-    // Call the API with the selected parameters
+      // Call the API with the selected parameters
     this.laporanService.GetSampleCount(startDate, endDate, rubberTypeId, typeCodeId).subscribe(
       (data) => {
         this.sampleCounts = data;
@@ -114,12 +110,7 @@ export class LaporanBilSampelComponent {
       }
     );
 
-
-
-
-
   }
-  
   
 
 }

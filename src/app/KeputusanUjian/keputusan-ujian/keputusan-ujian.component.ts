@@ -338,7 +338,7 @@ export class KeputusanUjianComponent implements OnInit {
       searchedby: this.searchedby
     };
 
-    console.log(this.queryParams)
+    // console.log(this.queryParams)
 
     if (this.rubberTypeId == "1" || this.rubberTypeId == "2") {
 

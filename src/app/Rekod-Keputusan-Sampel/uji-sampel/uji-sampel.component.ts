@@ -84,12 +84,12 @@ export class UjiSampelComponent {
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        console.log(res)
+        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res;
         this.roleGtacr = true;
         this.staffRole = res.staffRole;
-        console.log(this.staffRole);
+        // console.log(this.staffRole);
 
         this.rekodKeputusanService.GetStaffIdbyStaffRole(4).subscribe(data => {
 
@@ -114,7 +114,7 @@ export class UjiSampelComponent {
     this.statusCodeId = 5;
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       this.batches = data;
-      console.log(data)
+      // console.log(data)
 
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;

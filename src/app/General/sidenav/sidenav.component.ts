@@ -65,7 +65,7 @@ export class SidenavComponent implements OnInit {
       this.roleUip = true
     } else if (this.userRoleId === '4') {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        console.log(res);
+        // console.log(res);
         this.authService.changeUser(res);
         this.staff = res;
         this.roleGtacr = true;

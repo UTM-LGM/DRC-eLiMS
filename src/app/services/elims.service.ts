@@ -139,6 +139,10 @@ GetRefTestMethodByRubberType(rubberTypeId: number): Observable<TestMethod> {
     return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetElimsAllBatch/'+ statusCodeId);
   }
 
+  GetElimsAllBatch1(statusCodeId:number) {
+    return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetElimsAllBatch1/'+ statusCodeId);
+  }
+
   GetDateReceivedInLab(statusCodeId:number) {
     return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetDateReceivedInLab/'+ statusCodeId);
   }

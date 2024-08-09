@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { LaporanService } from '../laporan.service';
-import { ElimsService } from 'src/app/services/elims.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { UserService } from 'src/app/User/user.service';
 import { RekodKeputusanService } from 'src/app/Rekod-Keputusan-Sampel/rekod-keputusan.service';
@@ -28,7 +27,7 @@ export class LaporanStatistikComponent {
   roles: any;
   staffRole: number[];
   staff: Staff = {} as Staff
-  
+
   constructor(
     private laporanService: LaporanService,
     private authService: AuthService,
@@ -47,16 +46,15 @@ export class LaporanStatistikComponent {
       this.loginAs = '';
     }
 
-  
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        console.log(res)
+        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res;
         this.roleGtacr = true;
         this.staffRole = res.staffRole;
-        console.log(this.staffRole);
+        // console.log(this.staffRole);
 
         this.rekodKeputusanService.GetStaffIdbyStaffRole(4).subscribe(data => {
 
@@ -81,20 +79,19 @@ export class LaporanStatistikComponent {
   }
 
 
-
   searchSample(): void {
     // Determine which parameters to include based on the selected criteria
     let startDate: Date | undefined;
     let endDate: Date | undefined;
 
-      startDate = this.fromDate;
-      endDate = this.toDate;
+    startDate = this.fromDate;
+    endDate = this.toDate;
 
     // Call the API with the selected parameters
     this.laporanService.CountSamplesByTesterName(startDate, endDate).subscribe(
       (data) => {
         this.sampleCounts = data;
-        console.log(this.sampleCounts);
+        // console.log(this.sampleCounts);
       },
       (error) => {
         console.error('Error fetching sample counts:', error);
@@ -107,8 +104,8 @@ export class LaporanStatistikComponent {
       (data) => {
         this.forwarders = data.forwarderCounts; // Assign forwarder counts
         this.totalCounts = data.totalCounts; // Assign total counts
-        console.log(this.forwarders);
-        console.log(this.totalCounts); // Check if total counts are received properly
+        // console.log(this.forwarders);
+        // console.log(this.totalCounts); // Check if total counts are received properly
       },
       (error) => {
         console.error('Error fetching sample counts:', error);
@@ -120,7 +117,7 @@ export class LaporanStatistikComponent {
     this.laporanService.CountSamplesByCustomOffice(startDate, endDate).subscribe(
       (data) => {
         this.customOffices = data;
-        console.log(this.customOffices);
+        // console.log(this.customOffices);
       },
       (error) => {
         console.error('Error fetching sample counts:', error);
@@ -128,20 +125,17 @@ export class LaporanStatistikComponent {
     );
 
 
-      // Call the API with the selected parameters
-      this.laporanService.CountSamplesByApproval(startDate, endDate).subscribe(
-        (data) => {
-          this.sampleApproval = data;
-          console.log(this.sampleApproval);
-        },
-        (error) => {
-          console.error('Error fetching sample counts:', error);
-        }
-      );
-
-
+    // Call the API with the selected parameters
+    this.laporanService.CountSamplesByApproval(startDate, endDate).subscribe(
+      (data) => {
+        this.sampleApproval = data;
+        // console.log(this.sampleApproval);
+      },
+      (error) => {
+        console.error('Error fetching sample counts:', error);
+      }
+    );
   }
-
 
 
 }

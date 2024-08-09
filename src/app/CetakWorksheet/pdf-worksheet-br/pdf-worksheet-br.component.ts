@@ -6,8 +6,6 @@ import { Staff } from 'src/app/models/staff';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ElimsService } from 'src/app/services/elims.service';
 import { CetakWorksheetService } from '../cetak-worksheet.service';
-import { PenimbangBr } from 'src/app/models/penimbangBr';
-import { OvenBr } from 'src/app/models/ovenBr';
 
 @Component({
   selector: 'app-pdf-worksheet-br',
@@ -25,12 +23,6 @@ export class PdfWorksheetBRComponent {
   batches: Batch[] = [];
   penimbangs: any ;
   ovens: any;
-  refBrPenimbang: PenimbangBr = {} as PenimbangBr;
-  refBrOven: OvenBr = {} as OvenBr;
-
-  // refBrPenimbang: PenimbangBr = {} as PenimbangBr;
-  // refBrOven: OvenBr = {} as OvenBr;
-
 
   selectedPenimbang: string = 'default';
   selectedOven: string = 'default';
@@ -38,7 +30,6 @@ export class PdfWorksheetBRComponent {
   @Input() k1Detail: any;
 
   constructor(
-    private elimsService: ElimsService,
     private authService: AuthService,
     private userService: UserService,
     private cetakWorksheetService: CetakWorksheetService

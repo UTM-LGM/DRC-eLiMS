@@ -28,7 +28,9 @@ export class PdfCetakKeputusanComponent {
   groupedSamples: any[]; // Add this variable
   samples: any;
   printing: boolean = false;
+
   @ViewChild('pdfContent') pdfContent!: ElementRef;
+
   constructor(
     private elimsService: ElimsService,
     private cetakWorksheetService: CetakWorksheetService,
@@ -105,27 +107,27 @@ export class PdfCetakKeputusanComponent {
   groupSamplesByCompany() {
     // First, sort the k1Details array by k1DetailId
     this.k1Details.sort((a, b) => a.k1DetailId - b.k1DetailId);
-  
+
     // Group by company name
     const groupedCollection = this.k1Details.reduce((accumulator, currentValue) => {
-      const key = currentValue.importerName;
+      const key = currentValue.importerAddress;
       (accumulator[key] = accumulator[key] || []).push(currentValue);
       return accumulator;
     }, {});
-  
+
     // Prepare the grouped samples
     this.groupedSamples = Object.keys(groupedCollection).map(key => ({
       key,
       items: groupedCollection[key],
       count: groupedCollection[key].length
     }));
-  
+
     // Ensure that each group is sorted by k1DetailId as well
     // this.groupedSamples.forEach(group => {
     //   group.items.sort((a, b) => a.k1DetailId - b.k1DetailId);
-      
+
     // });
-  
+
     // Log the groupedSamples for debugging
     console.log('Grouped Samples:', this.groupedSamples);
 
@@ -133,17 +135,17 @@ export class PdfCetakKeputusanComponent {
       // First, sort the items by k1DetailId
 
       group.items.sort((a, b) => a.k1DetailId - b.k1DetailId);
-    
+
       // Then sort the items by testedOn date
       // const sortedByTestedOn = group.items.sort((a, b) => new Date(a.testedOn).getTime() - new Date(b.testedOn).getTime());
-    
+
       // // Set the first and last testedOn dates
       // group.firstTestedOnDate = sortedByTestedOn[0].testedOn;
       // group.lastTestedOnDate = sortedByTestedOn[sortedByTestedOn.length - 1].testedOn;
     });
-    
+
   }
-  
+
 
 
   generatePdf(): void {
@@ -383,7 +385,7 @@ export class PdfCetakKeputusanComponent {
       printWindow.onload = () => {
         const totalPages = printWindow.document.body.getElementsByTagName('div').length; // Adjust as needed
         const pageNumberDivs = printWindow.document.getElementsByClassName('page-number');
-  
+
         for (let i = 0; i < pageNumberDivs.length; i++) {
           const pageNumberDiv = pageNumberDivs[i] as HTMLElement; // Cast to HTMLElement
           pageNumberDiv.innerText = `Page ${i + 1} of ${totalPages}`;
@@ -394,25 +396,8 @@ export class PdfCetakKeputusanComponent {
       alert('Unable to open print preview. Please check your browser settings or popup blockers.');
     }
   }
-  
-  
-  
+
 
 }
-  //   print() {
-  //     const printContents = this.pdfContent?.nativeElement.innerHTML;
-  //     const popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
-  //     popupWin?.document.open();
-  //     popupWin?.document.write(`
-  //       <html>
-  //         <head>
-  //           <title>Print</title>
-  //         </head>
-  //         <body>${printContents}</body>
-  //       </html>
-  //     `);
-  //     popupWin?.document.close();
-  //     popupWin?.focus();
-  //     popupWin?.print();
-  //     popupWin?.close();
-  // }
+
+
