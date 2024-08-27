@@ -12,7 +12,14 @@
           <input matInput (keyup)="applyFilter($event)" placeholder="keyword" #input>
         </mat-form-field>
 
+        
         <div *ngIf="!lepassubmit">
+          
+          <div style="text-align: right;">
+            <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to
+                Excel</button>
+        </div><br>
+
           <div class="mat-elevation-z8">
             <div class="list-container">
 
@@ -60,7 +67,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="chequeNo">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>No.Cek/Resit</th>
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>No.Cek/Resit/Memo</th>
                   <td mat-cell *matCellDef="let row">
                     <a *ngIf="row.creatorRoleId != 2 "
                       style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
@@ -74,7 +81,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="chequeAmount">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Amaun</th>
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Amaun(RM)</th>
                   <td mat-cell *matCellDef="let row">
                     {{row.chequeAmount}}</td>
                 </ng-container>
@@ -259,11 +266,20 @@
           <br>
         </form><br>
         
+        <!-- no laporan tuan -->
+        <div class="row form-group" *ngIf="!lepassubmit">
+          <div class="col-lg-2">
+            <label>No.Laporan Tuan :</label><br>
+          </div>
+            <div class="col-lg-5">
+              <input type="text" class="form-control readonly-input" [(ngModel)]="k1Detail.noLaporanTuan" name="noLaporanTuan" id="noLaporanTuan" >
+          </div>
+        </div><br>
 
         <!-- Penandatangan -->
         <div class="row form-group" *ngIf="!lepassubmit">
           <div class="col-lg-2">
-            <label>Penandatangan<span class="required" style="color:red;">*</span></label><br>
+            <label>Penandatangan : <span class="required" style="color:red;">*</span></label><br>
           </div>
           <div class="col-lg-5">
             <select class="form-select" name="resultLetterApprovedBy" id="resultLetterApprovedBy"
@@ -275,6 +291,9 @@
             </select>
           </div>
         </div><br>
+
+
+
 
         <button *ngIf="!lepassubmit" type="submit" [disabled]="!updateCheckoutButtonVisibility()" (click)="pilih()"
           class="btn btn-primary">Pilih</button>

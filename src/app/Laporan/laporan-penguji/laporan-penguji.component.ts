@@ -73,31 +73,6 @@ export class LaporanPengujiComponent {
     }
   }
 
-
-  // searchSample(): void {
-  //   // Determine which parameters to include based on the selected criteria
-  //   let startDate: Date | undefined;
-  //   let endDate: Date | undefined;
-  //   let rubberTypeId: number | undefined;
-  //   let typeCodeId: number | undefined;
-  
-  //     startDate = this.fromDate;
-  //     endDate = this.toDate;
-  
-
-  
-  //   // Call the API with the selected parameters
-  //   this.laporanService.GetSampleCount(startDate, endDate, rubberTypeId, typeCodeId).subscribe(
-  //     (data) => {
-  //       this.sampleCounts = data;
-  //       console.log(this.sampleCounts);
-  //       this.isSearched = true; 
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching sample counts:', error);
-  //     }
-  //   );
-  // }
   
   searchSample(): void {
     let startDate: Date | undefined = this.fromDate;
@@ -107,7 +82,8 @@ export class LaporanPengujiComponent {
     this.laporanService.CountSamplesByInLabOn(startDate, endDate, tester).subscribe(
       (data) => {
         this.sampleCounts = data;
-        // console.log(this.sampleCounts);
+        console.log(data)
+        console.log(this.sampleCounts);
         this.isSearched = true; 
       },
       (error) => {
@@ -115,7 +91,5 @@ export class LaporanPengujiComponent {
       }
     );
   }
-
-
 
 }

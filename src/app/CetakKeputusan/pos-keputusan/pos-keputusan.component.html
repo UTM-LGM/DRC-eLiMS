@@ -106,7 +106,11 @@
       <!-- <p *ngIf="!lepassubmit"> Sila masukkan data</p> -->
 
 
-
+      
+      <div *ngIf="!lepassubmit" style="text-align: right;">
+        <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to
+            Excel</button>
+    </div><br>
 
       <div class="mat-elevation-z8" *ngIf="!lepassubmit">
         <div class="list-container">
@@ -194,7 +198,7 @@
             </ng-container>
 
             <ng-container matColumnDef="chequeAmount">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Amaun</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Amaun(RM)</th>
               <td mat-cell *matCellDef="let row">
                 {{row.chequeAmount}}</td>
             </ng-container>

@@ -36,6 +36,7 @@ export class LampiranComponent {
   roleForwarder: boolean = false
   roleUip: boolean = false
   roleImporter: boolean = false
+  roleGtacr: boolean = false
   staff: Staff = {} as Staff
   importer: loginImporter = {} as loginImporter
 
@@ -82,6 +83,16 @@ export class LampiranComponent {
         this.roleImporter = true
       })
     }
+
+    if (this.userRoleId == 4) {
+      this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
+        // console.log(res)
+        this.authService.changeUser(res);
+        this.staff = res
+        this.roleGtacr = true
+      })
+    }
+
 
       this.route.params.subscribe(param => {
         if (param['batchId'] != null) { this.batchId = param['batchId']; }

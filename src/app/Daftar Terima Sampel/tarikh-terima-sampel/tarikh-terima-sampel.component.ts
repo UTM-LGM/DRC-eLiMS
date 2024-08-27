@@ -29,9 +29,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 })
 export class TarikhTerimaSampelComponent {
 
-
   columnsToDisplay = [
-
     'batchId',
     'rubberType',
     'isFastTrack',
@@ -42,8 +40,6 @@ export class TarikhTerimaSampelComponent {
     'sentOn',
     'sampleCount',
     'testMethod',
-    //'dateReceivedInLab'
-
   ]
 
   expandedElement: Sample | null;
@@ -75,11 +71,9 @@ export class TarikhTerimaSampelComponent {
   customFields: { value: string }[] = [];
   isDateSelected: boolean = false;
   rubberTypeId: any;
-
-  isButtonClicked: boolean = false
   daftarClicked = false;
 
-  // selectedSamples: Sample[] = [];
+  formattedDate: string;
 
   constructor(
     private elimsService: ElimsService,
@@ -90,7 +84,9 @@ export class TarikhTerimaSampelComponent {
   ) { }
 
   ngOnInit() {
-
+    if (!this.k1Detail.dateReceivedInLab) {
+      this.k1Detail.dateReceivedInLab = new Date();  // Store as Date object
+    }
     if (this.authService.isloggedin()) {
       this.loginAs = this.authService.getSessionUsername()
       this.userRoleId = this.authService.getSessionRole()
@@ -99,6 +95,7 @@ export class TarikhTerimaSampelComponent {
       this.loginAs = '';
     }
 
+    // userRoleId == 4  is role GTACR
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         // console.log(res)
@@ -114,7 +111,6 @@ export class TarikhTerimaSampelComponent {
     this.elimsService.GetElimsAllBatch1(this.statusCodeId).subscribe(data => {
       this.batches = data;
       // console.log(this.batches)
-
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -126,8 +122,26 @@ export class TarikhTerimaSampelComponent {
     })
 
     this.searchBy = ['Batch Id', 'Jenis Getah', 'Laluan Pantas'];
+  }
 
-    
+
+  changeSearchBy(e: any) {
+    e.target.value == "Jenis Getah" ? this.showRubberType = true : this.showRubberType = false;
+    e.target.value == "Laluan Pantas" ? this.showFastTrack = true : this.showFastTrack = false;
+    e.target.value == "Batch Id" ? this.showBatchId = true : this.showBatchId = false;
+  }
+
+
+  onDateChange(selectedDate: string) {
+    // Convert the selected date string to a Date object and update k1Detail.dateReceivedInLab
+    this.k1Detail.dateReceivedInLab = new Date(selectedDate);
+  }
+
+
+  loadBatches() {
+    this.dataSource = new MatTableDataSource<Batch>(this.batches);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
 
@@ -135,41 +149,29 @@ export class TarikhTerimaSampelComponent {
 
     this.daftarClicked = true;
 
-
     console.log(this.k1Detail);
     let successCount = 0;
     const totalCount = this.samples.length;
-  
+
     this.samples.forEach(sample => {
       this.daftarSampelService.PutDateReceivedInLab(sample.k1DetailId, this.k1Detail).subscribe(
         res => {
           console.log(`Updated k1detailid: ${sample.k1DetailId} for batchid: ${this.batchId}`, res);
           successCount++;
-  
+
           // Check if all samples have been successfully processed
           if (successCount === totalCount) {
             this.toastr.success('Sampel berjaya diterima!', 'Berjaya ');
 
             setTimeout(() => {
               window.location.reload();
-            }, 1000); // Delay in milliseconds (2000ms = 2s)
-
+            }, 1000);
           }
         },
         error => {
           // Handle error if needed
         }
       );
-    });
-  }
-
-
-
-  sampleList(batchId: number) {
-    this.selectedBatchId = batchId;
-    this.elimsService.GetElimsSamplesByBatchId(batchId).subscribe(res => {
-      console.log(res)
-      this.samples = res;
     });
   }
 
@@ -207,13 +209,6 @@ export class TarikhTerimaSampelComponent {
   }
 
 
-  loadBatches() {
-    this.dataSource = new MatTableDataSource<Batch>(this.batches);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-
   // Method to trigger the fast track filtering process
   searchFastTrack() {
     // Get the selected value from the dropdown
@@ -246,62 +241,5 @@ export class TarikhTerimaSampelComponent {
       this.loadBatches();
     }
   }
-
-
-  changeSearchBy(e: any) {
-    e.target.value == "Jenis Getah" ? this.showRubberType = true : this.showRubberType = false;
-    e.target.value == "Laluan Pantas" ? this.showFastTrack = true : this.showFastTrack = false;
-    e.target.value == "Batch Id" ? this.showBatchId = true : this.showBatchId = false;
-  }
-
-
-  addField() {
-    this.customFields.push({ value: '' });
-  }
-
-
-  searchByCustomNos() {
-    // Concatenate the current customNo with customFields values
-    const customNos = [this.customNo, ...this.customFields.map(field => field.value)];
-    // Remove duplicates by converting to Set and then back to array
-    const uniqueCustomNos = [...new Set(customNos)];
-
-    // Clear previous results
-    this.samples = [];
-
-    // Perform search for each unique custom number
-    uniqueCustomNos.forEach(customNo => {
-      this.elimsService.GetElimsSamplesByCustomNo(customNo).subscribe(res => {
-        console.log(res);
-        this.samples.push(...res.filter(sample => sample.statusCodeId === 5));
-      });
-    });
-  }
-
-
-  // Inside DaftarTerimaSampelComponent class
-  addFieldIfEmpty(index: number = -1) {
-    if (index === -1) {
-      // Check if the first field is empty
-      if (this.customNo.trim() !== '' && this.customFields.length === 0) {
-        // Add a new field
-        this.customFields.push({ value: '' });
-      }
-    } else {
-      // Check if the current field is not the last field and is not empty
-      if (index === this.customFields.length - 1 && this.customFields[index].value.trim() !== '') {
-        // Add a new field if the last field is not empty
-        this.customFields.push({ value: '' });
-      }
-    }
-  }
-
-
-  
-  onDateChange(event: any) {
-    this.isDateSelected = !!event.target.value; // Check if the date is selected
-  }
-
-  
 
 }

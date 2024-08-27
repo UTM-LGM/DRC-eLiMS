@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LaporanService } from '../laporan.service';
 import { RubberType } from 'src/app/models/rubberType';
 import { ElimsService } from 'src/app/services/elims.service';
@@ -8,26 +8,25 @@ import { ElimsService } from 'src/app/services/elims.service';
   templateUrl: './laporan-bil-sampel.component.html',
   styleUrls: ['./laporan-bil-sampel.component.css']
 })
-export class LaporanBilSampelComponent {
+export class LaporanBilSampelComponent implements OnInit {
+  fromDate: Date | undefined;
+  toDate: Date | undefined;
+  rubberTypeId: number | undefined;
+  typeCodeId: number | undefined;
 
-  selectedDate: string;
+  rubberTypes: RubberType[] = [];
+  typeCodes: any[] = [];
+
+  searchByOptions: string[] = ['Tempoh Masa', 'Jenis Getah'];
+  showDateFilter: boolean = false;
+  showRubberTypeFilter: boolean = false;
+
   sampleCounts: any;
-  fromDate: Date | undefined = new Date(); // Initialize with current date
-  toDate: Date | undefined = new Date(); // Initialize with current date
-  
-  rubberTypes: RubberType[];
-  rubberTypeId: any;
-  typeCodes: any
-  typeCodeId : any
-
-  searchBy: string[] = []
-  showRubberType: boolean = false
-  showDate: boolean = false
-  showSampleType: boolean = false
   isSearched: boolean = false;
 
-  sampleCount6: number;
-  sampleCount7And8: number;
+  sampleCount4: number;
+  sampleCount5And6: number;
+  searchBy: string[] = []
 
   constructor(
     private laporanService: LaporanService,
@@ -36,81 +35,80 @@ export class LaporanBilSampelComponent {
 
   ngOnInit() {
 
-
     this.elimsService.GetRefRubberTypes().subscribe(data => {
       this.rubberTypes = data
     })
 
-    this.searchBy = ['Tempoh Masa','Jenis Getah'];
-
-
-
+    this.searchBy = ['Tempoh Masa', 'Jenis Getah'];
     this.laporanService.GetSampleCountByStatusCode()
-    .subscribe(
-      (data) => {
-        this.sampleCount6 = data.statusCode6;
-        this.sampleCount7And8 = data.statusCode7And8;
-        console.log(this.sampleCount6);
-      },
-      (error) => {
-        // Handle error here if needed
-      }
-    );
+      .subscribe(
+        (data) => {
+          console.log(data)
+          this.sampleCount4 = data.statusCode4;
+          this.sampleCount5And6 = data.statusCode5And6;
+          console.log(this.sampleCount4);
+        },
+        (error) => {
+          // Handle error here if needed
+        }
+      );
+  }
 
+  changeSearchBy(event: any) {
+    const selectedSearchBy = event.target.value;
+    this.resetFilters();
+  
+    this.showDateFilter = selectedSearchBy === 'Tempoh Masa';
+    this.showRubberTypeFilter = selectedSearchBy === 'Jenis Getah';
   }
   
 
-
-  changeSearchBy(e: any) {
-    e.target.value == "Jenis Getah" ? this.showRubberType = true : this.showRubberType = false;
-    e.target.value == "Tempoh Masa" ? this.showDate = true : this.showDate = false;
-  }
-
-
-  changeJenisGetah(e: any) {
-
-    if (e.target.value == 1) {
-      this.elimsService.GetRefSampleTypeByRubberType(1).subscribe(data => {
-        this.typeCodes = data
-      })
-    }
-    else if (e.target.value == 2) {
-      this.elimsService.GetRefSampleTypeByRubberType(2).subscribe(data => {
-        this.typeCodes = data
-      })
+  changeJenisGetah(event: any) {
+    const selectedRubberTypeId = event.target.value;
+  
+    if (selectedRubberTypeId) {
+      this.elimsService.GetRefSampleTypeByRubberType(selectedRubberTypeId).subscribe(data => {
+        this.typeCodes = data;
+        // Reset typeCodeId when rubberType is changed
+        this.typeCodeId = undefined;
+      });
+    } else {
+      // If no rubberType is selected, clear the typeCodes and typeCodeId
+      this.typeCodes = [];
+      this.typeCodeId = undefined;
     }
   }
+  
 
   searchSample(): void {
-    // Determine which parameters to include based on the selected criteria
-    let startDate: Date | undefined;
-    let endDate: Date | undefined;
-    let rubberTypeId: number | undefined;
-    let typeCodeId: number | undefined;
-  
-    if (this.showDate) {
-      startDate = this.fromDate;
-      endDate = this.toDate;
+    if (!this.fromDate || !this.toDate) {
+      console.log("Please select a valid date range.");
+      return;
     }
-  
-    if (this.showRubberType) {
-      rubberTypeId = this.rubberTypeId;
-      typeCodeId = this.typeCodeId;
-    }
-  
-      // Call the API with the selected parameters
-    this.laporanService.GetSampleCount(startDate, endDate, rubberTypeId, typeCodeId).subscribe(
-      (data) => {
-        this.sampleCounts = data;
-        console.log(this.sampleCounts);
-        this.isSearched = true; 
-      },
-      (error) => {
-        console.error('Error fetching sample counts:', error);
-      }
-    );
 
+    const startDate = this.fromDate;
+    const endDate = this.toDate;
+
+    this.laporanService.GetSampleCount(startDate, endDate, this.rubberTypeId, this.typeCodeId)
+      .subscribe(
+        (data) => {
+          this.sampleCounts = data;
+          console.log(data)
+          this.isSearched = true;
+        },
+        (error) => {
+          console.error('Error searching samples:', error);
+          this.isSearched = false;
+        }
+      );
   }
-  
 
+  resetFilters(): void {
+    this.fromDate = undefined;
+    this.toDate = undefined;
+    this.rubberTypeId = undefined;
+    this.typeCodeId = undefined;
+    this.isSearched = false;
+    this.sampleCounts = null;
+  }
 }

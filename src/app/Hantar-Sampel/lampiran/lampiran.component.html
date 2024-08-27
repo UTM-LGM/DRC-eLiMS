@@ -24,7 +24,7 @@
                 <b>ALAMAT SYARIKAT PENGIMPORT</b> : {{ companyGroup.items[0].importerAddress }}<br>
             </p> -->
 
-              <p *ngIf="roleForwarder || roleUip">
+              <p *ngIf="roleForwarder || roleUip || roleGtacr">
                 <b>NAMA SYARIKAT PENGIMPORT :</b> {{ companyGroup.items[0].importerName }}<br>
                 <b>ALAMAT SYARIKAT PENGIMPORT :</b> {{ companyGroup.key }}<br>
               </p>

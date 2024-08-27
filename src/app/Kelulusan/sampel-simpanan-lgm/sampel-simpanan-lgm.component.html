@@ -100,6 +100,7 @@
                     </div><br>
                 </span>
 
+
                 <span *ngIf="showSentOn">
                     <div class="row form-group">
                         <div class="col-sm-2">
@@ -141,11 +142,12 @@
                     </div><br>
                 </span> -->
 
+                
+                <!-- List sample by batch -->
                 <div class="mat-elevation-z8">
                     <div class="list-container">
 
                         <table mat-table [dataSource]="dataSource" matSort class="center-table">
-
 
                             <ng-container matColumnDef="batchId">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch Id </th>

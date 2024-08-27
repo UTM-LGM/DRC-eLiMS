@@ -20,11 +20,11 @@
                 <div>
                   <div *ngIf="k1Details[0].rubberTypeId == 1">
                     NO LAPORAN : LGM/BKPT/G-TACR/7.8/CL-SP/{{k1Details[0].batchId}}<br>
-                    RUJUKAN TUAN : -
+                    RUJUKAN TUAN : {{k1Details[0].noLaporanTuan}}
                   </div>
                   <div *ngIf="k1Details[0].rubberTypeId == 2">
                     NO LAPORAN : LGM/BKPT/G-TACR/7.8/CR-MB/{{k1Details[0].batchId}}<br>
-                    RUJUKAN TUAN : -
+                    RUJUKAN TUAN : {{k1Details[0].noLaporanTuan}}
                   </div>
                 </div>
                 <div class="date-info">
@@ -128,6 +128,7 @@
                             <div style="display: flex; justify-content: space-between;">
                               <div>
                                 <h4>NO RUJUKAN SURAT TUAN</h4>
+                                {{k1Details[0].noLaporanTuan}}
                                 <!-- <div *ngIf="k1Details[0].rubberTypeId == 1">
                                     LGM/BKPT/G-TACR/7.8/CL-SP/{{k1Details[0].batchId}}<br>
                                   </div>
@@ -160,7 +161,7 @@
                                 </tr>
                                 <tr>
                                   <td> Alamat</td>
-                                  <td>:  {{ companyGroup.key | uppercase }}</td>
+                                  <td>: {{ companyGroup.key | uppercase }}</td>
                                 </tr>
                               </table><br>
                             </div>

@@ -15,6 +15,8 @@ import { RubberType } from 'src/app/models/rubberType';
 import { CetakWorksheetService } from 'src/app/CetakWorksheet/cetak-worksheet.service';
 import { ToastrService } from 'ngx-toastr';
 import { CetakKeputusanService } from '../cetak-keputusan.service';
+import * as XLSX from 'xlsx';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-pos-keputusan',
@@ -48,9 +50,6 @@ export class PosKeputusanComponent {
     'sentOn',
     'sampleCount',
   ]
-
-
-
 
 
   expandedElement: Sample | null;
@@ -297,6 +296,58 @@ export class PosKeputusanComponent {
   viewMemo(batchId: number): void {
     console.log(this.batchId)
     window.open("memo/" + batchId);
+  }
+
+
+  exportToExcel(): void {
+    const columnMappings = {
+      batchId: 'Batch Id',
+      postResultOn :'Tarikh',
+      postResultDelivery: 'Penghantaran',
+      postResultCourierServices: 'Syarikat Penghantar',
+      postResultTrackingNo: 'No.Pengesanan',
+      rubberType: 'Jenis Getah',
+      isFastTrack: 'Laluan Pantas',
+      bankCode: 'Bank',
+      forwarderName: 'Syarikat ',
+      receipt: 'No. Cek/Resit/Memo', // Consolidated column name
+      chequeAmount: 'Amaun',
+      sentOn: 'Tarikh Hantar',
+      sampleCount: 'Bil. Sampel',
+    };
+  
+    const columnsToExport = Object.keys(columnMappings);
+    const allData = this.dataSource.data;
+  
+    const filteredData = allData.map(row => {
+      const filteredRow = {};
+      columnsToExport.forEach(column => {
+        let value;
+  
+        if (column === 'receipt') {
+          value = row.creatorRoleId === 2 ? 'memo' : row.receipt || row.chequeNo;
+        } else if (column === 'isFastTrack') {
+          value = row.isFastTrack ? 'YA' : 'TIDAK';
+        } else if (column === 'sentOn' || column === 'postResultOn') {
+          // Format date values
+          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); // Customize the date format here
+        } else {
+          value = row[column];
+        }
+  
+        if (value !== undefined) {
+          const customColumnName = columnMappings[column];
+          filteredRow[customColumnName] = value;
+        }
+      });
+      return filteredRow;
+    });
+  
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Pos Keputusan');
+  
+    XLSX.writeFile(wb, 'senarai_sampel.xlsx');
   }
 
 }

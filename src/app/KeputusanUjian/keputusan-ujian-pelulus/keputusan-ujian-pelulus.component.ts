@@ -31,7 +31,6 @@ export class KeputusanUjianPelulusComponent {
     'batchId',
     'rubberType',
     'forwarderName',
-    // 'importerName',
     'chequeNo',
     'chequeAmount',
     'importedDate',
@@ -47,9 +46,9 @@ export class KeputusanUjianPelulusComponent {
 
   showYear: boolean = false
   showMonth: boolean = false
-  selectedMonth: number ; 
+  selectedMonth: number;
   yearRange: number[] = [];
-  selectedYear: number; 
+  selectedYear: number;
   months: any[] = [];
   batches: any;
   loginAs: any;
@@ -75,9 +74,8 @@ export class KeputusanUjianPelulusComponent {
 
     for (let month = 0; month < 12; month++) {
       const monthName = new Date(2000, month).toLocaleString('ms', { month: 'long' });
-      this.months.push({ name: monthName, value: month+1 });
+      this.months.push({ name: monthName, value: month + 1 });
     }
-    
   }
 
 
@@ -100,7 +98,7 @@ export class KeputusanUjianPelulusComponent {
     this.statusCodeId = 11;
     this.elimsService.GetKeputusanUjian(this.statusCodeId).subscribe(data => {
       this.batches = data;
-console.log(data)
+      console.log(data)
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -111,10 +109,12 @@ console.log(data)
     })
   }
 
+
   viewReceipt(path: string, batchId: number): void {
     window.open(environment.baseApiUrlElimsReceipt + batchId + "_" + path, "_blank");
   }
-  
+
+
   changeSearchBy(e: any) {
     e.target.value == "Jenis Getah" ? this.showYear = true : this.showYear = false;
     e.target.value == "Batch Id" ? this.showMonth = true : this.showMonth = false;
@@ -125,7 +125,7 @@ console.log(data)
     // Convert selectedYear and selectedMonth to numbers
     const year = +this.selectedYear;
     const month = +this.selectedMonth;
-    
+
     // Check if both year and month are selected
     if (year && month) {
       console.log("test")
@@ -135,11 +135,11 @@ console.log(data)
         const batchSentOn = new Date(batch.sentOn);
         const batchYear = batchSentOn.getFullYear();
         const batchMonth = batchSentOn.getMonth() + 1; // Month is zero-indexed
-        
+
         // Check if the batch's year and month match the selected year and month
         return batchYear === year && batchMonth === month;
       });
-  
+
       // Update dataSource with filtered batches
       this.dataSource = new MatTableDataSource<Batch>(filteredBatches);
       this.dataSource.paginator = this.paginator;
@@ -151,12 +151,11 @@ console.log(data)
       this.dataSource.sort = this.sort;
     }
   }
-  
+
 
   viewMemo(batchId: number): void {
     console.log(this.batchId)
     window.open("memo/" + batchId);
   }
-
 
 }

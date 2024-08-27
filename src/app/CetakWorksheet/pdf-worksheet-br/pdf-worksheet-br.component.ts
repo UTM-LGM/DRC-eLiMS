@@ -4,8 +4,9 @@ import { UserService } from 'src/app/User/user.service';
 import { Batch } from 'src/app/models/batch';
 import { Staff } from 'src/app/models/staff';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { ElimsService } from 'src/app/services/elims.service';
 import { CetakWorksheetService } from '../cetak-worksheet.service';
+import { Penimbang } from 'src/app/models/penimbang';
+import { Oven } from 'src/app/models/oven';
 
 @Component({
   selector: 'app-pdf-worksheet-br',
@@ -21,11 +22,13 @@ export class PdfWorksheetBRComponent {
   qrCodeDataUrl: string = ''; // Store QR code data URL
   statusCodeId: number = 0;
   batches: Batch[] = [];
-  penimbangs: any ;
-  ovens: any;
-
   selectedPenimbang: string = 'default';
   selectedOven: string = 'default';
+  penimbangs: Penimbang[];
+  ovens: any;
+
+  refPenimbang: Penimbang = {} as Penimbang;
+  refOven: Oven = {} as Oven;
 
   @Input() k1Detail: any;
 
@@ -44,36 +47,34 @@ export class PdfWorksheetBRComponent {
     }
 
     if (this.userRoleId == 4) {
-      this.userService.GetStaffInfo(this.loginAs).subscribe((res) => {
+      this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         console.log(res);
         this.authService.changeUser(res);
         this.staff = res;
         this.roleGtacr = true;
       });
     }
-    
 
     console.log(this.k1Detail);
     this.generateQRCodeImage(this.k1Detail.customNo);
 
-    this.cetakWorksheetService.GetRefBrPenimbangs().subscribe((data) => {
+    this.cetakWorksheetService.GetRefPenimbangs().subscribe((data) => {
       this.penimbangs = data;
       console.log(this.penimbangs);
     });
 
-    this.cetakWorksheetService.GetBrOvens().subscribe((data) => {
+    this.cetakWorksheetService.GetRefOvens().subscribe((data) => {
       this.ovens = data;
       console.log(this.ovens);
     });
 
-     // Initialize default values for select elements
-     if (!this.k1Detail.penimbang) {
+    // Initialize default values for select elements
+    if (!this.k1Detail.penimbang) {
       this.k1Detail.penimbang = 'default';
     }
     if (!this.k1Detail.oven) {
       this.k1Detail.oven = 'default';
     }
-    
   }
 
   generateQRCodeImage(data: string): void {
@@ -87,13 +88,5 @@ export class PdfWorksheetBRComponent {
       });
   }
 
-  onPenimbangChange(event: any): void {
-    // The selected value is already bound to selectedPenimbang
-    // No need to update the value here
-  }
 
-  onOvenChange(event: any): void {
-    // The selected value is already bound to selectedOven
-    // No need to update the value here
-  }
 }

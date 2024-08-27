@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
+import { StatusCode } from 'src/app/models/statusCode';
 
 @Injectable({
   providedIn: 'root'
@@ -57,5 +58,9 @@ export class KeputusanUjianService {
   }
   
   
+  GetStatusCode(): Observable<StatusCode[]> {
+    return this.http.get<StatusCode[]>(this.baseApiUrl + '/api/StatusCodes/GetStatusCodes');
+  }
+
   
 }

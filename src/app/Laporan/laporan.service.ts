@@ -17,22 +17,18 @@ export class LaporanService {
   // }
 
   GetSampleCount(startDate: Date | undefined, endDate: Date | undefined, rubberTypeId: number | undefined, typeCodeId: number | undefined): Observable<any> {
-    // Create the query string based on provided parameters
     let queryString = '';
+  
     if (startDate && endDate) {
-      // Ensure startDate and endDate are Date objects
       const start = new Date(startDate);
       const end = new Date(endDate);
       
-      // Check if the parsed dates are valid Date objects
       if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
-          // Construct the query string using the parsed dates
-          queryString += `startDate=${start.toISOString()}&endDate=${end.toISOString()}&`;
+        queryString += `startDate=${start.toISOString()}&endDate=${end.toISOString()}&`;
       } else {
-          // Handle invalid dates if necessary
-          console.error('Invalid start or end date.');
+        console.error('Invalid start or end date.');
       }
-  }
+    }
   
     if (rubberTypeId) {
       queryString += `rubberTypeId=${rubberTypeId}&`;
@@ -40,13 +36,12 @@ export class LaporanService {
     if (typeCodeId) {
       queryString += `typeCodeId=${typeCodeId}&`;
     }
-
-    // Remove the trailing '&' if present
+  
     queryString = queryString.replace(/&$/, '');
-
-    // Call the API with the constructed query string
-    return this.http.get<any>(`${this.baseApiUrl +'/api/K1Detail/CountSamples' }?${queryString}`);
+  
+    return this.http.get<any>(`${this.baseApiUrl + '/api/K1Detail/CountSamples'}?${queryString}`);
   }
+  
 
 
 

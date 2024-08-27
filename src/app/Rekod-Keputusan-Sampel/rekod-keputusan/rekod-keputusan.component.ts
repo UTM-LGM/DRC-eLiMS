@@ -14,6 +14,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { RekodKelulusanService } from 'src/app/Kelulusan/rekod-kelulusan.service';
 import { CetakWorksheetService } from 'src/app/CetakWorksheet/cetak-worksheet.service';
+import { formatDate } from '@angular/common';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-rekod-keputusan',
@@ -179,50 +181,6 @@ export class RekodKeputusanComponent {
   }
 
 
-  // addRekodKeputusan() {
-  //   this.result.result1 = this.average;
-
-  //   this.k1Detail.testedBy = this.staff.username;
-  //   this.result.k1DetailId = this.k1Detail.k1DetailId;
-  //   console.log(this.k1Detail)
-  //   console.log(this.result)
-
-  //   this.rekodKeputusanService.PostResult(this.result).subscribe(res1 => {
-  //     this.toastr.success('Rekod Keputusan added successfully', 'Success');
-  //     console.log(res1)
-  //     this.rekodKeputusanService.PutResult(this.k1Detail.k1DetailId, this.k1Detail).subscribe(
-  //       res2 => { console.log(res2) }
-  //     );
-  //   })
-  // }
-
-
-  // calculateAverage() {
-
-  //   const dry1 = this.result.dry1;
-  //   const wet1 = this.result.wet1;
-  //   const dry2 = this.result.dry2;
-  //   const wet2 = this.result.wet2;
-
-
-  //   if (!isNaN(dry1) && !isNaN(wet1) && wet1 !== 0) {
-  //     this.estimate1 = (dry1 / wet1) * 100;
-  //     this.estimate1 = parseFloat(this.estimate1.toFixed(2)); // Round to two decimal places
-  //   } else {
-  //     this.estimate1 = 0;
-  //   }
-
-  //   if (!isNaN(dry2) && !isNaN(wet2) && wet2 !== 0) {
-  //     this.estimate2 = (dry2 / wet2) * 100;
-  //     this.estimate2 = parseFloat(this.estimate2.toFixed(2)); // Round to two decimal places
-  //   } else {
-  //     this.estimate2 = 0;
-  //   }
-
-  //   this.average = (this.estimate1 + this.estimate2) / 2;
-  // }
-
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -294,5 +252,52 @@ export class RekodKeputusanComponent {
     console.log(value)
 
   }
+
+
+  exportToExcel(): void {
+    const columnMappings = {
+      batchId: 'Batch Id',
+      rubberType: 'Jenis Getah',
+      isFastTrack: 'Laluan Pantas',
+      forwarderName: 'Syarikat Penghantar',
+      receivedOn: 'Tarikh Terima',
+      sampleCount: 'Bil. Sampel',
+    };
+  
+    const columnsToExport = Object.keys(columnMappings);
+    const allData = this.dataSource.data;
+  
+    const filteredData = allData.map(row => {
+      const filteredRow = {};
+      columnsToExport.forEach(column => {
+        let value;
+  
+        if (column === 'receipt') {
+          value = row.creatorRoleId === 2 ? 'memo' : row.receipt || row.chequeNo;
+        } else if (column === 'isFastTrack') {
+          value = row.isFastTrack ? 'YA' : 'TIDAK';
+        } else if (column === 'receivedOn') {
+          // Format date values
+          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); // Customize the date format here
+        } else {
+          value = row[column];
+        }
+  
+        if (value !== undefined) {
+          const customColumnName = columnMappings[column];
+          filteredRow[customColumnName] = value;
+        }
+      });
+      return filteredRow;
+    });
+  
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Rekod Keputusan');
+  
+    XLSX.writeFile(wb, 'senarai_sampel.xlsx');
+  }
+
+
 
 }

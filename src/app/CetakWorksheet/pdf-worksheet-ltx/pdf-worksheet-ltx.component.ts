@@ -88,13 +88,5 @@ export class PdfWorksheetLtxComponent {
     });
   }
 
-  onPenimbangChange(event: any): void {
-    // The selected value is already bound to k1Detail.penimbang
-    // No need to update the value here
-  }
 
-  onOvenChange(event: any): void {
-    // The selected value is already bound to k1Detail.oven
-    // No need to update the value here
-  }
 }

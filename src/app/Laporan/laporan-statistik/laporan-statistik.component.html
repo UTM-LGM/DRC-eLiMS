@@ -10,53 +10,62 @@
             </div>
             <div class="col-sm-2">
               <label for="startDate" class="label_bm">Dari:</label>
-              <input type="date" id="startDate" class="form-control" [(ngModel)]="fromDate">
+              <input type="date" id="startDate" class="form-control" [(ngModel)]="fromDate" (change)="validateDates()">
             </div>
             <div class="col-sm-2">
               <label for="endDate" class="label_bm">Hingga:</label>
-              <input type="date" id="endDate" class="form-control" [(ngModel)]="toDate">
+              <input type="date" id="endDate" class="form-control" [(ngModel)]="toDate" (change)="validateDates()">
             </div>
           </div>
           <br>
         </span>
 
         <div class="col-lg-2">
-          <button type="submit" class="btn btn-primary" style="margin-left: 5px;" (click)="searchSample()">Cari</button>
+          <button type="submit" class="btn btn-primary" style="margin-left: 5px;" 
+                  [disabled]="isSearchDisabled" 
+                  (click)="searchSample()">Cari</button>
         </div>
       </div>
 
+      <!-- Statistik Penguji/Pengesah -->
       <mat-tab-group><br>
-          <mat-tab label="PENGUJI/PENGESAH">
-            <div>
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Bil</th>
-                    <th>Penguji</th>
-                    <th>Terima</th>
-                    <th>Sedang Uji</th>
-                    <th>Telah Uji</th>
-                    <th>Telah Disah</th>
-                    <th>Ulangan</th>     
-                    <th>Jumlah</th>            
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let sampleCounts of sampleCounts; let i=index">
-                    <td>{{ i + 1}}</td>
-                    <td>{{ sampleCounts.staffName }}</td>
-                    <td>{{ sampleCounts.countReceivedBy }}</td>
-                    <td>{{ sampleCounts.countInLabBy }}</td>
-                    <td>{{ sampleCounts.countTestedBy }}</td>
-                    <td>{{ sampleCounts.countVerifiedBy }}</td>
-                    <td>{{ sampleCounts.countRetest }}</td>
-                    <td>{{ sampleCounts.totalSamples }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </mat-tab>
+        <mat-tab label="PENGUJI/PENGESAH">
+          <div>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Bil</th>
+                  <th>Penguji</th>
+                  <th>Terima</th>
+                  <th>Sedang Uji</th>
+                  <th>Telah Uji</th>
+                  <th>Telah Disah</th>
+                  <th>Telah Dicetak</th>
+                  <th>Telah Dipos</th>
+                  <th>Ulangan</th>
+                  <th>Jumlah</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let sampleCounts of sampleCounts; let i=index">
+                  <td>{{ i + 1}}</td>
+                  <td>{{ sampleCounts.staffName }}</td>
+                  <td>{{ sampleCounts.countReceivedBy }}</td>
+                  <td>{{ sampleCounts.countInLabBy }}</td>
+                  <td>{{ sampleCounts.countTestedBy }}</td>
+                  <td>{{ sampleCounts.countVerifiedBy }}</td>
+                  <td>{{ sampleCounts.countPrintedBy }}</td>
+                  <td>{{ sampleCounts.countResultSentBy }}</td>
+                  <td>{{ sampleCounts.countRetest }}</td>
+                  <td>{{ sampleCounts.totalSamples }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-tab>
 
+
+        <!-- statistik kastam -->
         <mat-tab label="KASTAM"><br>
           <div>
             <table class="table table-striped">
@@ -74,7 +83,7 @@
                   <th>Getah Krip</th>
                   <th>Getah Asap Berbunga (RSS)</th>
                   <th>BlockRubber/TSR</th>
-                  <th>Jumlah</th>            
+                  <th>Jumlah</th>
                 </tr>
               </thead>
               <tbody>
@@ -90,7 +99,7 @@
                   <td>{{ customOffice.getahTidakBerasap }}</td>
                   <td>{{ customOffice.getahKrip }}</td>
                   <td>{{ customOffice.getahAsapBerbunga }}</td>
-                  <td>{{ customOffice.tsr }}</td>                 
+                  <td>{{ customOffice.tsr }}</td>
                   <td>{{ customOffice.totalSamples }}</td>
                 </tr>
               </tbody>
@@ -99,7 +108,7 @@
         </mat-tab>
 
 
-
+        <!-- statistik syarikat penghantar -->
         <mat-tab label="SYARIKAT PENGHANTAR"><br>
           <div>
             <table class="table table-striped">
@@ -145,13 +154,13 @@
                   <td>{{ totalCounts.totalApprovedOn }}</td>
                   <td>{{ totalCounts.totalSamples }}</td>
                 </tr>
-                
               </tbody>
             </table>
           </div>
         </mat-tab>
 
 
+        <!-- statistik pelulus/penandatangan -->
         <mat-tab label="PELULUS/PENANDATANGAN"><br>
           <div>
             <table class="table table-striped">
@@ -160,8 +169,6 @@
                   <th>Bil</th>
                   <th>Pelulus</th>
                   <th>Di Lulus</th>
-                  <!-- <th>Cetak Keputusan</th>
-                  <th>Jumlah</th> -->
                 </tr>
               </thead>
               <tbody>
@@ -169,9 +176,6 @@
                   <td>{{ i + 1}}</td>
                   <td>{{ sampleApp.staffName }}</td>
                   <td>{{ sampleApp.countApprovedBy }}</td>
-                  <!-- <td>{{ sampleApp.countResultLetterApprovedBy }}</td>
-                  <td>{{ sampleApp.totalSamples }}</td>
-                </tr> -->
               </tbody>
             </table>
           </div>

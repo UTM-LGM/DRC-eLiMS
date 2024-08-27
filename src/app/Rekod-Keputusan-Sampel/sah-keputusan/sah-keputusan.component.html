@@ -8,7 +8,12 @@
                 <input matInput (keyup)="applyFilter($event)" placeholder="keyword" #input>
             </mat-form-field>
 
-
+            <div style="text-align: right;">
+                <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to
+                    Excel</button>
+            </div><br>
+            
+            <!-- List sample by batch -->
             <div class="mat-elevation-z8">
                 <div class="list-container">
 
@@ -23,11 +28,6 @@
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Jenis Getah</th>
                             <td mat-cell *matCellDef="let row"> {{row.rubberType}}</td>
                         </ng-container>
-
-                        <!-- <ng-container matColumnDef="result">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Keputusan Ujian</th>
-                            <td mat-cell *matCellDef="let row"> {{row.result}}</td>
-                        </ng-container> -->
 
                         <ng-container matColumnDef="isFastTrack">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Laluan Pantas </th>
@@ -54,7 +54,8 @@
 
                         <ng-container matColumnDef="expandedDetail">
                             <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
-                                <div class="example-element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+                                <div class="example-element-detail"
+                                    [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
                                     <div class="example-element-description w-100">
                                         <table class="table table-striped center-table">
                                             <thead>
@@ -73,7 +74,8 @@
                                             <tbody>
                                                 <tr *ngFor="let sample of row.samples; let i = index">
                                                     <td>
-                                                        <a href="javascript:void(0)" (click)="sampleList(sample.k1DetailId)">Select</a>
+                                                        <a href="javascript:void(0)"
+                                                            (click)="sampleList(sample.k1DetailId)">Select</a>
                                                     </td>
                                                     <td>{{ sample.k1DetailId }}</td>
                                                     <td>{{ sample.labRefNo }}</td>
@@ -82,7 +84,7 @@
                                                     <td>{{ sample.typeCode }}</td>
                                                     <td>{{ sample.receivedOn | date: 'dd/MM/yyyy' }}</td>
                                                     <td>{{ sample.quantity }}</td>
-                                                    <td>{{ sample.result }}</td>
+                                                    <td>{{ sample.result | number:'1.2-2' }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -90,7 +92,7 @@
                                 </div>
                             </td>
                         </ng-container>
-                        
+
 
                         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
                         <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" class="example-element-row"
@@ -106,6 +108,7 @@
             </div><br><br>
 
 
+            <!-- search by customno -->
             <div class="row form-group">
                 <div class="col-sm-2">
                     <label>Nombor borang kastam:</label><br>
@@ -121,18 +124,17 @@
 
             <hr>
 
+            <!-- rekod keputusan -->
             <div class="row align-content-center justify-content-center" *ngIf="showForm">
                 <div class="col-8 border-gray">
-                    <app-detail-keputusan [k1Detail]="k1Detail" [result]="result" [estimate1]="estimate1" [estimate2]="estimate2" 
-                        [inputDisable]="inputDisable" ></app-detail-keputusan>
-
+                    <app-detail-keputusan [k1Detail]="k1Detail" [result]="result" [estimate1]="estimate1"
+                        [estimate2]="estimate2" [inputDisable]="inputDisable"></app-detail-keputusan>
                 </div>
                 <div class="col-4 ">
 
-                    <!-- <div class="col-200 border border-gray"> -->
+                    <!-- sah keputusan -->
                     <div class="mat-card-container">
                         <form>
-
                             <div class="row form-group mb-2">
                                 <div class="col-lg">
                                     <input type="text" class="form-control" id="labRefNo" name="labRefNo"
@@ -140,13 +142,11 @@
                                 </div>
                             </div>
 
-
                             <div class="row form-group mb-2">
                                 <div class="col-lg">
                                     <input type="text" class="form-control" id="testMethodId" name="testMethodId"
                                         [(ngModel)]="k1Detail.testMethod" disabled>
                                 </div>
-
                             </div>
 
                             <div class="row form-group mb-2">
@@ -154,16 +154,13 @@
                                     <input type="number" class="form-control" id="wet1" name="wet1"
                                         [(ngModel)]="inputResult.wet1">
                                 </div>
-
                             </div>
-
 
                             <div class="row form-group mb-5">
                                 <div class="col-lg">
                                     <input type="number" class="form-control" id="wet2" name="wet2"
                                         [(ngModel)]="inputResult.wet2">
                                 </div>
-
                             </div>
 
                             <!-- <p><b>TIMBANGAN PERTAMA</b></p> -->
@@ -198,26 +195,28 @@
                                 <!-- <span *ngIf="limitValue" style="color: red;">{{ limitValue }}</span> -->
                             </div>
 
-
                             <div class="row form-group mb-2">
                                 <div class="col">
                                     <div style="display: flex; align-items: center;">
-                                        <div class="btn btn-primary float-end" style="margin-left: 5px;" (click)="calculateAverageFirst();enableHantarButton()">Kira</div>
-                                        <span *ngIf="limitValue" style="color: red; margin-left: 5px;">{{ limitValue }}</span>
+                                        <div class="btn btn-primary float-end" style="margin-left: 5px;"
+                                            (click)="calculateAverageFirst();enableHantarButton()">Kira</div>
+                                        <span *ngIf="limitValue" style="color: red; margin-left: 5px;">{{ limitValue
+                                            }}</span>
                                     </div>
                                 </div>
                             </div>
-                            
 
                             <div class="row form-group mb-2 mt-3">
                                 <div class="col-lg">
-                                    <input type="text" class="form-control" [value]="inputEstimate1.toFixed(2)" disabled>
+                                    <input type="text" class="form-control" [value]="inputEstimate1.toFixed(2)"
+                                        disabled>
                                 </div>
                             </div>
 
                             <div class="row form-group mb-2">
                                 <div class="col-lg">
-                                    <input type="text" class="form-control" [value]="inputEstimate2.toFixed(2)" disabled>
+                                    <input type="text" class="form-control" [value]="inputEstimate2.toFixed(2)"
+                                        disabled>
                                 </div>
 
                             </div>
@@ -226,9 +225,7 @@
                                 <div class="col-lg">
                                     <input type="text" class="form-control" id="result1" name="result1"
                                         [(ngModel)]="inputResult.result1" [value]="inputAverage.toFixed(2)" disabled="">
-
                                 </div>
-
                             </div>
 
                             <div class="row form-group mb-2">
@@ -236,17 +233,14 @@
                                     <textarea type="text" class="form-control" id="catatan" name="catatan"
                                         [(ngModel)]="inputResult.catatan" disabled></textarea>
                                 </div>
-
                             </div>
 
                             <div class="row form-group mb-2">
-                          
-                                        <a style="color: rgb(10, 96, 189); cursor: pointer;text-decoration: underline;"
-                                            (click)="viewFile(result.prove)">{{result.prove}}</a>
-                                    </div>
+                                <a style="color: rgb(10, 96, 189); cursor: pointer;text-decoration: underline;"
+                                    (click)="viewFile(result.prove)">{{result.prove}}</a>
+                            </div>
 
-
-                             <!-- <div class="row form-group mb-2">
+                            <!-- <div class="row form-group mb-2">
                                 <div class="col-lg">
                                     <input type="text" class="form-control" id="verifiedBy" name="verifiedBy"[(ngModel)]="k1Detail.verifiedBy" disabled>
                                 </div>
@@ -258,7 +252,7 @@
                                     <input type="text" class="form-control" id="verifiedOn" name="verifiedOn" [ngModel]="formattedVerifiedDate" disabled>
                                 </div>
                             </div> -->
-                    
+
 
                             <div class="row form-group mb-4">
                                 <div class="col">
@@ -266,8 +260,6 @@
                                         (click)="reject()">Tolak</button>
                                     <button type="submit" class="btn btn-primary float-end" style="margin-left: 5px;"
                                         (click)="updateRekodKeputusan()" [disabled]="!buttonClicked">Hantar</button>
-
-
 
                                 </div>
 

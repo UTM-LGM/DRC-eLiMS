@@ -1,7 +1,7 @@
 <div class="container mb-3">
     <mat-card>
         <mat-card-content>
-            <h1 class="attractive-title">Ulang Cetak Keputusan Ujian</h1>
+            <h1 class="attractive-title">Ulang Cetak Keputusan</h1>
 
             <h3 *ngIf="!lepassubmit">Cetak Keputusan</h3>
             <h3 *ngIf="lepassubmit">Berikut adalah senarai sampel yang dipilih untuk ulang cetak keputusan.</h3>
@@ -61,7 +61,7 @@
 
 
                             <ng-container matColumnDef="chequeNo">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>No.Cek/Resit</th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>No.Cek/Resit/Memo</th>
                                 <td mat-cell *matCellDef="let row">
                                   <a *ngIf="row.creatorRoleId != 2 "
                                     style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
@@ -95,7 +95,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="chequeAmount">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Amaun</th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Amaun (RM)</th>
                                 <td mat-cell *matCellDef="let row">
                                     {{row.chequeAmount}}</td>
                             </ng-container>
@@ -108,7 +108,7 @@
 
                                         <div class="example-element-description w-100">
                                             <!-- {{element.id}} -->
-                                            <table class="table table-striped">
+                                            <table class="table table-striped center-table">
                                                 <thead>
                                                     <tr class="tableheader">
                                                         <th scope="col" class="black">
@@ -170,7 +170,7 @@
 
 
 
-            <table *ngIf="lepassubmit" class="table table-striped">
+            <table *ngIf="lepassubmit" class="table table-striped center-table">
                 <thead>
                   <tr class="tableheader">
                     <th class="black" scope="col">Sampel Id</th>
@@ -203,7 +203,7 @@
 
 
               <div *ngIf="lepassubmit" align="center">
-                <button type="submit" class="btn btn-primary mr-5" (click)="ulangCetakKeputusan()">Ulang Cetak Keputusan</button>
+                <button type="submit" class="btn btn-primary mr-5" (click)="ulangCetakKeputusan()">Hantar</button>
               </div><br>
 
 

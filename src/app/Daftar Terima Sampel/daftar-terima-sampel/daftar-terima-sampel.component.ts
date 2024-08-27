@@ -14,6 +14,8 @@ import { HantarSampelService } from '../../Hantar-Sampel/hantar-sampel.service';
 import { RubberType } from '../../models/rubberType';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ToastrService } from 'ngx-toastr';
+import * as XLSX from 'xlsx';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-daftar-terima-sampel',
@@ -38,7 +40,6 @@ export class DaftarTerimaSampelComponent {
     'forwarderName',
     'bankCode',
     'receipt',
-    // 'chequeNo',
     'chequeAmount',
     'sentOn',
     'sampleCount',
@@ -73,7 +74,7 @@ export class DaftarTerimaSampelComponent {
   showFastTrack: boolean = false
   showBatchId: boolean = false
   customFields: { value: string }[] = [];
-  isSubmitting: boolean = false; 
+  isSubmitting: boolean = false;
   daftarClicked = false;
 
   constructor(
@@ -109,7 +110,6 @@ export class DaftarTerimaSampelComponent {
     this.elimsService.GetDateReceivedInLab(this.statusCodeId).subscribe(data => {
       this.batches = data;
       // console.log(this.batches)
-
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -122,6 +122,13 @@ export class DaftarTerimaSampelComponent {
     })
 
     this.searchBy = ['Batch Id', 'Jenis Getah', 'Laluan Pantas'];
+  }
+
+
+  changeSearchBy(e: any) {
+    e.target.value == "Jenis Getah" ? this.showRubberType = true : this.showRubberType = false;
+    e.target.value == "Laluan Pantas" ? this.showFastTrack = true : this.showFastTrack = false;
+    e.target.value == "Batch Id" ? this.showBatchId = true : this.showBatchId = false;
   }
 
 
@@ -140,48 +147,48 @@ export class DaftarTerimaSampelComponent {
 
     // Helper function to process each sample
     const processSample = async (sample) => {
-        return new Promise<void>((resolve, reject) => {
-            const rubberTypeId = sample.rubberTypeId;
-            if (sample.customNo) {
-                this.k1Detail.receivedBy = this.staff.username;
+      return new Promise<void>((resolve, reject) => {
+        const rubberTypeId = sample.rubberTypeId;
+        if (sample.customNo) {
+          this.k1Detail.receivedBy = this.staff.username;
 
-                let labRefPrefix = rubberTypeId == 1 ? "CL-SP/" : "CR-MB/";
+          let labRefPrefix = rubberTypeId == 1 ? "CL-SP/" : "CR-MB/";
 
-                this.hantarSampelService.PutLabRefNo(monthyear, sample)
-                    .subscribe(
-                        resLabRefNo => {
-                            const labRefNo = labRefPrefix + resLabRefNo.monthyear + "/" + resLabRefNo.runningno;
-                            this.k1Detail.labRefNo = labRefNo;
-                            console.log(this.k1Detail);
-                            this.elimsService.PutDaftarTerimaSampel(sample.customNo, this.k1Detail).subscribe(
-                                res => {
-                                    resolve(); // Resolve the promise
-                                },
-                                error => {
-                                    reject(error); // Reject the promise
-                                }
-                            );
-                        },
-                        error => {
-                            reject(error); // Reject the promise if PutLabRefNo fails
-                        }
-                    );
-            } else {
-                resolve(); // Resolve the promise if customNo is not available
-            }
-        });
+          this.hantarSampelService.PutLabRefNo(monthyear, sample)
+            .subscribe(
+              resLabRefNo => {
+                const labRefNo = labRefPrefix + resLabRefNo.monthyear + "/" + resLabRefNo.runningno;
+                this.k1Detail.labRefNo = labRefNo;
+                console.log(this.k1Detail);
+                this.elimsService.PutDaftarTerimaSampel(sample.customNo, this.k1Detail).subscribe(
+                  res => {
+                    resolve(); // Resolve the promise
+                  },
+                  error => {
+                    reject(error); // Reject the promise
+                  }
+                );
+              },
+              error => {
+                reject(error); // Reject the promise if PutLabRefNo fails
+              }
+            );
+        } else {
+          resolve(); // Resolve the promise if customNo is not available
+        }
+      });
     };
 
     // Process samples sequentially
     for (const sample of this.samples) {
-        try {
-            await processSample(sample);
-        } catch (error) {
-            console.error('An error occurred:', error);
-            this.toastr.error('Some samples failed to register', 'Error');
-            this.isSubmitting = false; // Re-enable the button after processing
-            return; // Exit on the first error
-        }
+      try {
+        await processSample(sample);
+      } catch (error) {
+        console.error('An error occurred:', error);
+        this.toastr.error('Some samples failed to register', 'Error');
+        this.isSubmitting = false; // Re-enable the button after processing
+        return; // Exit on the first error
+      }
     }
 
     this.toastr.success('Sampel Berjaya Didaftar Terima', 'Berjaya');
@@ -189,17 +196,8 @@ export class DaftarTerimaSampelComponent {
       window.location.reload();
     }, 1000); // Delay in milliseconds (2000ms = 2s)
     this.isSubmitting = false; // Re-enable the button after processing
-}
-
-
-
-  sampleList(batchId: number) {
-    this.selectedBatchId = batchId;
-    this.elimsService.GetElimsSamplesByBatchId(batchId).subscribe(res => {
-      console.log(res)
-      this.samples = res;
-    });
   }
+
 
 
   searchSampleByBatch(batchId: number) {
@@ -276,18 +274,6 @@ export class DaftarTerimaSampelComponent {
   }
 
 
-  changeSearchBy(e: any) {
-    e.target.value == "Jenis Getah" ? this.showRubberType = true : this.showRubberType = false;
-    e.target.value == "Laluan Pantas" ? this.showFastTrack = true : this.showFastTrack = false;
-    e.target.value == "Batch Id" ? this.showBatchId = true : this.showBatchId = false;
-  }
-
-
-  addField() {
-    this.customFields.push({ value: '' });
-  }
-
-
   searchByCustomNos() {
     // Concatenate the current customNo with customFields values
     const customNos = [this.customNo, ...this.customFields.map(field => field.value)];
@@ -307,7 +293,6 @@ export class DaftarTerimaSampelComponent {
   }
 
 
-  // Inside DaftarTerimaSampelComponent class
   addFieldIfEmpty(index: number = -1) {
     if (index === -1) {
       // Check if the first field is empty
@@ -323,5 +308,60 @@ export class DaftarTerimaSampelComponent {
       }
     }
   }
+
+
+ 
+
+  exportToExcel(): void {
+    const columnMappings = {
+      batchId: 'Batch Id',
+      rubberType: 'Jenis Getah',
+      isFastTrack: 'Laluan Pantas',
+      forwarderName: 'Syarikat Penghantar',
+      bankCode: 'Bank',
+      receipt: 'No. Cek/Resit/Memo', // Consolidated column name
+      chequeAmount: 'Amaun',
+      sentOn: 'Tarikh Hantar',
+      sampleCount: 'Bil. Sampel',
+      dateReceivedInLab: 'Tarikh Terima',
+    };
+  
+    const columnsToExport = Object.keys(columnMappings);
+    const allData = this.dataSource.data;
+  
+    const filteredData = allData.map(row => {
+      const filteredRow = {};
+      columnsToExport.forEach(column => {
+        let value;
+  
+        if (column === 'receipt') {
+          value = row.creatorRoleId === 2 ? 'memo' : row.receipt || row.chequeNo;
+        } else if (column === 'isFastTrack') {
+          value = row.isFastTrack ? 'YA' : 'TIDAK';
+        } else if (column === 'sentOn' || column === 'dateReceivedInLab') {
+          // Format date values
+          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); // Customize the date format here
+        } else {
+          value = row[column];
+        }
+  
+        if (value !== undefined) {
+          const customColumnName = columnMappings[column];
+          filteredRow[customColumnName] = value;
+        }
+      });
+      return filteredRow;
+    });
+  
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Daftar Terima Sampel');
+  
+    XLSX.writeFile(wb, 'senarai_sampel.xlsx');
+  }
+  
+  
+  
+  
 
 }

@@ -27,7 +27,7 @@ export class LaporanStatistikComponent {
   roles: any;
   staffRole: number[];
   staff: Staff = {} as Staff
-
+  isSearchDisabled: boolean = true;
   constructor(
     private laporanService: LaporanService,
     private authService: AuthService,
@@ -78,6 +78,12 @@ export class LaporanStatistikComponent {
 
   }
 
+
+  validateDates() {
+    // Enable the button only if both dates are selected
+    this.isSearchDisabled = !(this.fromDate && this.toDate);
+  }
+  
 
   searchSample(): void {
     // Determine which parameters to include based on the selected criteria
@@ -136,6 +142,5 @@ export class LaporanStatistikComponent {
       }
     );
   }
-
 
 }

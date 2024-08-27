@@ -1,24 +1,28 @@
 <div class="container mb-3">
   <mat-card class="shadow p-3 mb-5 ml-0 pl-1 bg-white rounded">
     <mat-card-content>
+
       <h1 class="attractive-title">Cetak Lembaran Kerja</h1>
       <h3 *ngIf="!lepassubmit">Senarai Batch</h3>
       <h3 *ngIf="lepassubmit && !isPrint">Berikut adalah senarai sampel yang dipilih untuk cetak worksheet.</h3>
 
       <!-- first page -->
-
       <mat-form-field *ngIf="!lepassubmit">
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="keyword" #input>
       </mat-form-field>
 
-
+      
+      <!-- List sample by batch -->
       <div *ngIf="!lepassubmit">
+        <div style="text-align: right;">
+          <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to
+              Excel</button>
+      </div><br>
         <div class="mat-elevation-z8">
           <div class="list-container">
 
             <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="table table-striped center-table">
-
 
               <ng-container matColumnDef="select">
                 <th mat-header-cell *matHeaderCellDef>
@@ -27,7 +31,6 @@
                   <mat-checkbox (change)="toggleBatchSelection(batch, $event.checked)"></mat-checkbox>
                 </td>
               </ng-container>
-
 
               <ng-container matColumnDef="batchId">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch Id </th>
@@ -61,11 +64,6 @@
                 <td mat-cell *matCellDef="let row"> {{row.sampleCount}}</td>
               </ng-container>
 
-              <!-- <ng-container matColumnDef="bilHari">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header > Tempoh Simpanan(Bil Hari)</th>
-                <td mat-cell *matCellDef="let row"> {{row.daysSinceReceived}}</td>
-              </ng-container> -->
-
               <ng-container matColumnDef="bilHari">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Tempoh Simpanan(Bil Hari)</th>
                 <td mat-cell *matCellDef="let row">
@@ -74,18 +72,12 @@
                     'green-text': row.daysSinceReceived <= 5,
                     'yellow-text': row.daysSinceReceived > 5 && row.daysSinceReceived <= 10,
                     'orange-text': row.daysSinceReceived > 10 && row.daysSinceReceived <= 14,
-                    'red-text': row.daysSinceReceived > 15
-                  }">
+                    'red-text': row.daysSinceReceived > 15}">
                     {{row.daysSinceReceived}}
                   </span>
                 </td>
               </ng-container>
               
-              
-              
-              
-              
-
               <ng-container matColumnDef="expandedDetail">
                 <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
                   <div class="example-element-detail"
@@ -96,12 +88,7 @@
                         <thead>
                           <tr class="tableheader">
                             <th scope="col" class="black">
-                              <!-- <input type="checkbox" [(ngModel)]="checkAll" (change)="checkAllChanged()"> -->
                             </th>
-
-                            <!-- <th scope="col" class="black">
-                              <input type="checkbox" [(ngModel)]="isAllSelected" (change)="toggleAllSelection()">
-                            </th> -->
                             <th class="black" scope="col">Sampel Id</th>
                             <th class="black" scope="col">Batch Id</th>
                             <th class="black" scope="col">Ruj. Makmal</th>
@@ -113,7 +100,6 @@
                           </tr>
                         </thead>
                         <tbody>
-
                           <tr *ngFor="let sample of row.samples; let i = index">
                             <td scope="row">
                               <input type="checkbox" [(ngModel)]="sample.checked" (change)="checkSingleChanged()"
@@ -150,9 +136,8 @@
         </div><br><br>
       </div>
 
+
       <!-- search  by customno -->
-
-
       <div class="col-sm-8" *ngIf="!lepassubmit">
         <div class="row form-group">
           <div class="col-sm-3">
@@ -176,7 +161,7 @@
       </div>
 
 
-      <!-- list sample at second page -->
+      <!-- list sample at second page after click button pilih-->
       <div class="table-responsive">
         <table *ngIf="!isPrint && lepassubmit" class="table table-striped text-wrap center-table">
           <thead>
@@ -209,7 +194,6 @@
 
 
       <!-- list sample at first page below -->
-
       <form *ngIf="selectedSamples.length > 0 && !lepassubmit">
         <div>
           <h2>Senarai Sampel</h2>
@@ -240,10 +224,8 @@
                     <td>{{sample.importedDate | date:"dd/MM/yyy"}} </td>
                     <td>{{sample.receivedOn | date:"dd/MM/yyy"}} </td>
                   </tr>
-  
                 </tbody>
               </table>
-
             </div>
           </div>
         </div>
@@ -255,7 +237,7 @@
         [disabled]="!isButtonEnabled()">Pilih</button>
 
 
-      <!-- third page  -->
+      <!-- third page pengesahan  -->
       <div *ngIf="isPrint" class="card">
         <h4 class="card-header">Pengesahan Cetakan Worksheet</h4>
         <div class="card-body">
@@ -278,7 +260,8 @@
         </div>
       </div>
 
-      <!-- second page  -->
+
+      <!-- second page tarikh menguji  -->
       <div class="row form-group" *ngIf="!isPrint && lepassubmit">
         <div class="col-lg-2">
           <label>Tarikh Untuk Menguji<span class="required" style="color:red;">*</span></label><br>
@@ -297,7 +280,6 @@
 
 
       <!-- pdf worksheet page -->
-
       <div *ngIf="isPrint">
         <app-cetak-worksheet [k1DetailId]="listk1DetailId"></app-cetak-worksheet>
       </div>

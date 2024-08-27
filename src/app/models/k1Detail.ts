@@ -107,7 +107,7 @@ export interface K1Detail {
     prove : string;
     catatan : string;
     dateReceivedInLab : Date;
-   
+    noLaporanTuan : string;
 
      forwarderName: string;
      forwarderAddress: string;

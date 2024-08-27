@@ -184,6 +184,9 @@
                         </div><br>
                     </span>
 
+              
+
+
                     <span *ngIf=" showStatus"><br>
                         <div class="row form-group">
                             <div class="col-sm-2">
@@ -194,16 +197,14 @@
                                 <select class="form-select" name="statusCodeId" id="statusCodeId"
                                     [(ngModel)]="statusCodeId" required>
                                     <option class="pilih" value="default">--Pilih--</option>
-                                    <option value="1">Telah didaftar</option>
-                                    <option value="2">Label Telah Dicetak</option>
-                                    <!-- <option value="3">Hantar ke LGM</option> -->
-                                    <option value="5">Hantar ke GTACR</option>
+                          <option *ngFor="let statusCode of statusCodes" [value]="statusCode.statusCodeId">{{ statusCode.status }}
+                          </option>
                                 </select>
                             </div>
                         </div><br>
                     </span>
 
-                    <span *ngIf=" showSampleType"><br>
+                    <span *ngIf="showSampleType"><br>
                         <div class="row form-group">
                             <div class="col-lg-2">
                                 <label class="label_title">Jenis Sampel<span class="required"
@@ -223,7 +224,7 @@
                     </span>
 
 
-                    <span *ngIf=" showDRC"><br>
+                    <span *ngIf="showDRC"><br>
                         <div class="row form-group">
                             <div class="col-sm-2">
                                 <label class="label_bm">Kandungan Getah Kering (KGK) </label><br>
@@ -235,7 +236,7 @@
                         </div><br>
                     </span>
 
-                    <span *ngIf=" showQuantity"><br>
+                    <span *ngIf="showQuantity"><br>
                         <div class="row form-group">
                             <div class="col-sm-2">
                                 <label class="label_bm">Kuantiti </label><br>
@@ -248,7 +249,7 @@
                         </div><br>
                     </span>
 
-                    <span *ngIf=" showNamaBank"><br>
+                    <span *ngIf="showNamaBank"><br>
                         <div class="row form-group">
                             <div class="col-sm-2">
                                 <label class="label_bm">Nama bank </label><br>
@@ -265,7 +266,7 @@
                     </span>
 
 
-                    <span *ngIf=" showCompanyName || showForwarderName ">
+                    <span *ngIf="showCompanyName || showForwarderName ">
                         <div class="row form-group">
                             <div class="col-sm-2">
                                 <label class="label_bm">Tujuan Sampel Dihantar</label><br>
@@ -321,12 +322,24 @@
                     </span> -->
 
 
+                    <span *ngIf=" showNoLaporanTuan"><br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label class="label_bm">No. Laporan Tuan </label><br>
+                                <label class="label_bi">Report No. </label><br>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" [(ngModel)]="noLaporanTuan" class="form-control" id="noLaporanTuan"
+                                    name="noLaporanTuan">
+                            </div>
+                        </div><br>
+                    </span>
 
 
 
 
 
-                    <span *ngIf=" showSamplePropose &&  userRoleId == '2'"><br>
+                    <span *ngIf="showSamplePropose &&  userRoleId == '2'"><br>
                         <div class="row form-group">
                             <div class="col-sm-2">
                                 <label class="label_bm">Tujuan Sampel Dihantar</label><br>

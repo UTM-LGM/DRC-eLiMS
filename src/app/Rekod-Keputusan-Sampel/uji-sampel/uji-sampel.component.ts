@@ -13,6 +13,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { DialogCheckoutComponent } from 'src/app/dialogbox/dialog-checkout/dialog-checkout.component';
 import { MatDialog } from '@angular/material/dialog';
+import { formatDate } from '@angular/common';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-uji-sampel',
@@ -115,7 +117,6 @@ export class UjiSampelComponent {
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       this.batches = data;
       // console.log(data)
-
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -168,6 +169,7 @@ export class UjiSampelComponent {
     this.updateSelectedSamples();
   }
 
+
   updateSelectedSamples() {
     this.selectedSamples = [];
     for (const batch of this.batches) {
@@ -179,7 +181,8 @@ export class UjiSampelComponent {
     }
     console.log(this.selectedSamples);
   }
-  
+
+
   updateCheckoutButtonVisibility() {
     if (this.checkboxClicked || this.selectedSamples.length > 0) {
       return true; // Display the Checkout button
@@ -195,72 +198,33 @@ export class UjiSampelComponent {
   }
 
 
-
   checkout() {
 
     this.k1Detail.inLabBy = this.loginAs;
-  
 
     const dialogRef = this.dialog.open(DialogCheckoutComponent, {
-        width: '400px',
-        data: {}
+      width: '400px',
+      data: {}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-        if (result === 'ok') {
-            for (const sample of this.selectedSamples) {
-                const id = sample.k1DetailId;
-                this.rekodKeputusanService.PutCheckout(id, this.k1Detail).subscribe(
-                    res => { window.location.reload(); }
-                );
-            }
-        } else if (result === 'cancel') {
-            console.log('Cancel clicked');
+      if (result === 'ok') {
+        for (const sample of this.selectedSamples) {
+          const id = sample.k1DetailId;
+          this.rekodKeputusanService.PutCheckout(id, this.k1Detail).subscribe(
+            res => { window.location.reload(); }
+          );
         }
+      } else if (result === 'cancel') {
+        console.log('Cancel clicked');
+      }
     });
-}
-
-
-
-//   checkout() {
-
-//     this.k1Detail.inLabBy = this.loginAs;
-//     // Check if Nama Penguji is selected
-//     if (!this.k1Detail.inLabBy || this.k1Detail.inLabBy === 'default') {
-//         alert('Please select Nama Penguji before proceeding with checkout.');
-//         return; // Prevent further execution
-//     }
-
-//     const dialogRef = this.dialog.open(DialogCheckoutComponent, {
-//         width: '400px',
-//         data: {}
-//     });
-
-//     dialogRef.afterClosed().subscribe(result => {
-//         if (result === 'ok') {
-//             for (const sample of this.selectedSamples) {
-//                 const id = sample.k1DetailId;
-//                 this.rekodKeputusanService.PutCheckout(id, this.k1Detail).subscribe(
-//                     res => { window.location.reload(); }
-//                 );
-//             }
-//         } else if (result === 'cancel') {
-//             console.log('Cancel clicked');
-//         }
-//     });
-// }
-
-
-
-  addField() {
-    this.customFields.push({ value: '' });
   }
 
 
   searchByCustomNos() {
 
     this.updateCheckoutButtonVisibility();
-
     // Concatenate the current customNo with customFields values
     const customNos = [this.customNo, ...this.customFields.map(field => field.value)];
     // Remove duplicates by converting to Set and then back to array
@@ -278,7 +242,7 @@ export class UjiSampelComponent {
     });
   }
 
-  
+
   addFieldIfEmpty(index: number = -1) {
     if (index === -1) {
       // Check if the first field is empty
@@ -294,6 +258,52 @@ export class UjiSampelComponent {
       }
     }
   }
+
+
+  exportToExcel(): void {
+    const columnMappings = {
+      batchId: 'Batch Id',
+      rubberType: 'Jenis Getah',
+      isFastTrack: 'Laluan Pantas',
+      forwarderName: 'Syarikat Penghantar',
+      receivedOn: 'Tarikh Terima',
+      sampleCount: 'Bil. Sampel',
+    };
+  
+    const columnsToExport = Object.keys(columnMappings);
+    const allData = this.dataSource.data;
+  
+    const filteredData = allData.map(row => {
+      const filteredRow = {};
+      columnsToExport.forEach(column => {
+        let value;
+  
+        if (column === 'receipt') {
+          value = row.creatorRoleId === 2 ? 'memo' : row.receipt || row.chequeNo;
+        } else if (column === 'isFastTrack') {
+          value = row.isFastTrack ? 'YA' : 'TIDAK';
+        } else if (column === 'receivedOn') {
+          // Format date values
+          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); // Customize the date format here
+        } else {
+          value = row[column];
+        }
+  
+        if (value !== undefined) {
+          const customColumnName = columnMappings[column];
+          filteredRow[customColumnName] = value;
+        }
+      });
+      return filteredRow;
+    });
+  
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Uji Sampel');
+  
+    XLSX.writeFile(wb, 'senarai_sampel.xlsx');
+  }
+
 
 }
 

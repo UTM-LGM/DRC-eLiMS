@@ -13,6 +13,8 @@ import { ElimsService } from 'src/app/services/elims.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { UserService } from 'src/app/User/user.service';
 import { CetakWorksheetService } from '../cetak-worksheet.service';
+import * as XLSX from 'xlsx';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-cetak-lembaran-kerja',
@@ -30,7 +32,6 @@ import { CetakWorksheetService } from '../cetak-worksheet.service';
 export class CetakLembaranKerjaComponent {
 
   columnsToDisplay = [
-
     'select',
     'batchId',
     'rubberType',
@@ -60,13 +61,11 @@ export class CetakLembaranKerjaComponent {
   statusCodeId: number = 0;
   selectedSamples: Sample[] = [];
   mesYaTidak: any
-  batch: any;
   listk1DetailId: any[] = []
   customNo: string = '';
   customFields: { value: string }[] = [];
-  isAllSelected = false; // To track the state of "Select All" checkbox
   today = new Date();
-  
+
   constructor(
     private elimsService: ElimsService,
     private authService: AuthService,
@@ -85,9 +84,9 @@ export class CetakLembaranKerjaComponent {
       this.loginAs = '';
     }
 
+    // role GTACR = 4
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res
         this.roleGtacr = true
@@ -97,23 +96,23 @@ export class CetakLembaranKerjaComponent {
     }
     this.statusCodeId = 4;
 
+    // list holiday
     const holidays = [
-
-
       '2024-06-17',//raya haji
       '2024-06-18',//raya haji
 
     ];
-    
+
     function isHoliday(date, holidays) {
       const formattedDate = date.toISOString().split('T')[0];
       return holidays.includes(formattedDate);
     }
-    
+
+
     function countWorkingDays(startDate, endDate, holidays) {
       let count = 0;
       let currentDate = new Date(startDate);
-    
+
       // Include both start date and end date in the count
       while (currentDate <= endDate) {
         const day = currentDate.getDay();
@@ -122,54 +121,38 @@ export class CetakLembaranKerjaComponent {
         }
         currentDate.setDate(currentDate.getDate() + 1);
       }
-    
+
       return count;
     }
-    
+
+
     // Example usage:
     this.elimsService.GetElimsAllBatch1(this.statusCodeId).subscribe(data => {
       data.forEach(resData => {
         const receivedOn = new Date(resData.receivedOn);
         const approvedOn = new Date(resData.approvedOn);
         let daysSinceReceived;
-    
+
         if (approvedOn.getTime() !== 0) {
           daysSinceReceived = countWorkingDays(receivedOn, approvedOn, holidays);
         } else {
           daysSinceReceived = countWorkingDays(receivedOn, this.today, holidays);
         }
-    
+
         // console.log(resData);
         resData.daysSinceReceived = daysSinceReceived;
         this.batches.push(resData);
       });
-    
+
       this.batches.sort((a, b) => a.batchId - b.batchId);
-    
+
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
-
-    
   }
 
 
-  // getTextColorClass(days: number): string {
-  //   if (days <= 5) {
-  //     return 'green-text';
-  //   } else if (days > 5 && days <= 10) {
-  //     return 'yellow-text';
-  //   } else if (days > 10 && days <= 14) {
-  //     return 'orange-text';
-  //   } else {5
-  //     return 'red-text';
-  //   }
-  // }
-  
-  
-
-  
   checkSingleChanged() {
     this.selectedSamples = [];
     for (const row of this.batches) {
@@ -182,13 +165,13 @@ export class CetakLembaranKerjaComponent {
   }
 
 
-
   toggleBatchSelection(batch: Batch, isSelected: boolean) {
     for (const sample of batch.samples) {
       sample.checked = isSelected;
     }
     this.updateSelectedSamples();
   }
+
 
   updateSelectedSamples() {
     this.selectedSamples = [];
@@ -212,9 +195,7 @@ export class CetakLembaranKerjaComponent {
 
 
   generatePDF() {
-
     for (const sample of this.selectedSamples) {
-    
       this.cetakWorksheet.PutWorksheetTestOn(sample.k1DetailId, this.k1Detail).subscribe(
         res => {
 
@@ -225,9 +206,7 @@ export class CetakLembaranKerjaComponent {
           })
         });
     }
-
   }
-
 
 
   searchByCustomNos() {
@@ -272,10 +251,6 @@ export class CetakLembaranKerjaComponent {
   }
 
 
-  addField() {
-    this.customFields.push({ value: '' });
-  }
-
   loadBatches() {
     this.dataSource = new MatTableDataSource<Batch>(this.batches);
     this.dataSource.paginator = this.paginator;
@@ -292,7 +267,7 @@ export class CetakLembaranKerjaComponent {
     }
     setTimeout(() => {
       window.location.reload();
-    },1000); // Delay in milliseconds (2000ms = 2s)
+    }, 1000); 
   }
 
   onNoClick() {
@@ -302,7 +277,6 @@ export class CetakLembaranKerjaComponent {
 
   isAnyCheckboxSelected(): boolean {
     return this.selectedSamples.some(sample => sample.checked);
-
   }
 
 
@@ -310,7 +284,6 @@ export class CetakLembaranKerjaComponent {
     // Enable if at least one checkbox is selected or No. Borang Kastam field is filled
     return this.isAnyCheckboxSelected() || this.customNo.trim() !== '';
   }
-
 
 
   addFieldIfEmpty(index: number = -1) {
@@ -328,6 +301,7 @@ export class CetakLembaranKerjaComponent {
       }
     }
   }
+
 
   generatePDF1() {
 
@@ -495,11 +469,6 @@ export class CetakLembaranKerjaComponent {
           doc.text(lines1, x + boxWidth + 21, y + 29);
         }
 
-        // if (sample2.forwarderAddress) {
-        //   const lines1 = doc.splitTextToSize(sample2.forwarderAddress, 52);
-        //   doc.text(lines1, x + boxWidth + 21, y + 33);
-        // }     
-
       }
       y += boxHeight + 0; // Change the box spacing here
     }
@@ -509,6 +478,51 @@ export class CetakLembaranKerjaComponent {
     window.open(pdfUrl, '_blank');
   }
 
+
+  exportToExcel(): void {
+    const columnMappings = {
+      batchId: 'Batch Id',
+      rubberType: 'Jenis Getah',
+      isFastTrack: 'Laluan Pantas',
+      forwarderName: 'Syarikat Penghantar',
+      sentOn: 'Tarikh Hantar',
+      sampleCount: 'Bil. Sampel',
+      daysSinceReceived: 'Tempoh Simpanan (Bil Hari)',
+    };
+  
+    const columnsToExport = Object.keys(columnMappings);
+    const allData = this.dataSource.data;
+  
+    const filteredData = allData.map(row => {
+      const filteredRow = {};
+      columnsToExport.forEach(column => {
+        let value;
+  
+        if (column === 'receipt') {
+          value = row.creatorRoleId === 2 ? 'memo' : row.receipt || row.chequeNo;
+        } else if (column === 'isFastTrack') {
+          value = row.isFastTrack ? 'YA' : 'TIDAK';
+        } else if (column === 'sentOn') {
+          // Format date values
+          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); // Customize the date format here
+        } else {
+          value = row[column];
+        }
+  
+        if (value !== undefined) {
+          const customColumnName = columnMappings[column];
+          filteredRow[customColumnName] = value;
+        }
+      });
+      return filteredRow;
+    });
+  
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Cetak Lembaran Kerja');
+  
+    XLSX.writeFile(wb, 'senarai_sampel.xlsx');
+  }
 
 }
 

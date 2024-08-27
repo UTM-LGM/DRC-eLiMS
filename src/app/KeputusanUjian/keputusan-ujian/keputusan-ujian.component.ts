@@ -15,6 +15,7 @@ import { UserService } from '../../User/user.service';
 import { loginImporter } from '../../models/loginImporters';
 import * as XLSX from 'xlsx';
 import { DaftarSampelService } from 'src/app/Daftar-Sampel/daftar-sampel.service';
+import { StatusCode } from 'src/app/models/statusCode';
 
 @Component({
   selector: 'app-keputusan-ujian',
@@ -23,12 +24,7 @@ import { DaftarSampelService } from 'src/app/Daftar-Sampel/daftar-sampel.service
 })
 export class KeputusanUjianComponent implements OnInit {
 
-  statusCodes: any = [
-    'Telah didaftar',
-    'Label Telah Dicetak',
-    'Hantar ke LGM',
-    'Hantar ke GTACR'
-  ]
+  statusCodes: any
   
   importer: loginImporter = {} as loginImporter
   user: userDTO = {} as userDTO
@@ -52,6 +48,7 @@ export class KeputusanUjianComponent implements OnInit {
   driverName: string;
   icDriver: string;
   hsCode: string;
+  noLaporanTuan: string;
   statusCode: any;
   drc: any;
   quantity: any;
@@ -73,6 +70,7 @@ export class KeputusanUjianComponent implements OnInit {
   showSamplePropose: boolean = false
   showIdentificationDriver: boolean = false
   showHsCode: boolean = false
+  showNoLaporanTuan: boolean = false
   showStatus: boolean = false
   showSampleType: boolean = false
   showDRC: boolean = false
@@ -153,6 +151,7 @@ export class KeputusanUjianComponent implements OnInit {
           this.driverName = this.searchParams.driverName,
           this.icDriver = this.searchParams.icDriver,
           this.hsCode = this.searchParams.hsCode,
+          this.noLaporanTuan = this.searchParams.noLaporanTuan,
           this.statusCodeId = this.searchParams.statusCodeId,
           this.typeCodeId = this.searchParams.typeCodeId,
           this.quantity = this.searchParams.quantity,
@@ -306,11 +305,20 @@ export class KeputusanUjianComponent implements OnInit {
       this.searchBy.push('Syarikat Penghantar');
       this.searchBy.push('Jenis Sampel');
       this.searchBy.push('Tujuan Sampel Dihantar');
+      this.searchBy.push('No Laporan Tuan');
+
     }
 
     else if (this.userRoleId == 3) {
       this.searchBy.push('Syarikat Penghantar');
     }
+
+    this.keputusanUjianService.GetStatusCode().subscribe(data => {
+      this.statusCodes = data
+      console.log(data)
+    })
+
+
 
   }
 
@@ -326,6 +334,7 @@ export class KeputusanUjianComponent implements OnInit {
       driverName: this.driverName,
       icDriver: this.icDriver,
       hsCode: this.hsCode,
+      noLaporanTuan: this.noLaporanTuan,
       statusCodeId: this.statusCodeId,
       typeCodeId: this.typeCodeId,
       quantity: this.quantity,
@@ -475,6 +484,7 @@ export class KeputusanUjianComponent implements OnInit {
     this.driverName = ""
     this.icDriver = ""
     this.hsCode = ""
+    this.noLaporanTuan = ""
     this.bankCode = ""
     this.samplePropose = ""
     this.typeCodeId = ""
@@ -497,6 +507,7 @@ export class KeputusanUjianComponent implements OnInit {
     e.target.value == "Tujuan Sampel Dihantar" ? this.showSamplePropose = true : this.showSamplePropose = false;
     e.target.value == "Mykad/ Pasport Pemandu" ? this.showIdentificationDriver = true : this.showIdentificationDriver = false;
     e.target.value == "HS Code" ? this.showHsCode = true : this.showHsCode = false;
+    e.target.value == "No Laporan Tuan" ? this.showNoLaporanTuan = true : this.showNoLaporanTuan = false;
     e.target.value == "Status Sampel" ? this.showStatus = true : this.showStatus = false;
     e.target.value == "Jenis Sampel" ? this.showSampleType = true : this.showSampleType = false;
     e.target.value == "Kandungan Getah Kering (KGK)" ? this.showDRC = true : this.showDRC = false;
@@ -518,6 +529,7 @@ export class KeputusanUjianComponent implements OnInit {
     e == "Tujuan Sampel Dihantar" ? this.showSamplePropose = true : this.showSamplePropose = false;
     e == "Mykad/ Pasport Pemandu" ? this.showIdentificationDriver = true : this.showIdentificationDriver = false;
     e == "HS Code" ? this.showHsCode = true : this.showHsCode = false;
+    e == "No Laporan Tuan" ? this.showNoLaporanTuan = true : this.showNoLaporanTuan = false;
     e == "Status Sampel" ? this.showStatus = true : this.showStatus = false;
     e == "Jenis Sampel" ? this.showSampleType = true : this.showSampleType = false;
     e == "Kandungan Getah Kering (KGK)" ? this.showDRC = true : this.showDRC = false;

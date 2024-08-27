@@ -19,6 +19,9 @@ import { RekodKelulusanService } from '../rekod-kelulusan.service';
 import { ToastrService } from 'ngx-toastr';
 import { RekodKeputusanService } from 'src/app/Rekod-Keputusan-Sampel/rekod-keputusan.service';
 import { Retest } from 'src/app/models/retest';
+import { formatDate } from '@angular/common';
+import * as XLSX from 'xlsx';
+
 
 @Component({
   selector: 'app-rekod-kelulusan',
@@ -34,14 +37,12 @@ import { Retest } from 'src/app/models/retest';
 })
 export class RekodKelulusanComponent {
   columnsToDisplay = [
-    // 'select',
     'batchId',
     'rubberType',
     'isFastTrack',
     'forwarderName',
     'bankCode',
     'receipt',
-    // 'chequeNo',
     'chequeAmount',
     'sentOn',
     'sampleCount',
@@ -189,8 +190,6 @@ export class RekodKelulusanComponent {
       this.k1Detail.verifiedOn = this.samples.verifiedOn;
       this.k1Detail.verifiedBy = this.samples.verifiedBy;
       this.k1Detail.result = this.result.result1;
-      // this.inputResult.testMethod = this.result.testMethod;
-      // Update the result object
 
       this.rekodKelulusanService.GetEmailForwarder(this.samples.forwarderId).subscribe(emelRes => {
         console.log(emelRes)
@@ -205,41 +204,13 @@ export class RekodKelulusanComponent {
       console.log(dataResult);
       this.calculateAverage()
     });
-
-
   }
-
-
-  //   sampleList(k1DetailId: number) {
-  //     this.k1Detail.k1DetailId = k1DetailId; // Ensure this is set correctly
-  //     this.cetakWorksheetService.GetElimsSample(k1DetailId).subscribe(data => {
-  //         this.samples = data;
-  //         console.log(data);
-  //         this.showForm = true;
-  //         this.k1Detail.labRefNo = this.samples.labRefNo;
-  //         this.k1Detail.testMethod = this.samples.testMethod;
-  //         this.k1Detail.inLabOn = this.samples.inLabOn;
-  //         this.k1Detail.inLabBy = this.samples.inLabBy;
-  //         this.k1Detail.verifiedOn = this.samples.verifiedOn;
-  //         this.k1Detail.verifiedBy = this.samples.verifiedBy;
-  //     });
-
-  //     this.rekodKelulusanService.GetResultbySampleId(k1DetailId).subscribe(dataResult => {
-  //         this.result = dataResult;
-  //         console.log(dataResult);
-  //         this.calculateAverage();
-  //     });
-  // }
-
-
-
 
 
   viewMemo(batchId: number): void {
     console.log(this.batchId);
     window.open("memo/" + batchId);
   }
-
 
 
   calculateAverage() {
@@ -251,7 +222,6 @@ export class RekodKelulusanComponent {
     const dry2 = this.result.dry2;
     const wet2 = this.result.wet2;
     
-
     // RS-1/1
     if (this.result.testMethod == 8) {
       this.average = parseFloat(((wet1 + wet2) / 2).toFixed(2)); // Convert string to number
@@ -278,8 +248,6 @@ export class RekodKelulusanComponent {
     }
     this.getLimitValue();
   }
-
-
 
 
   getLimitValue() {
@@ -386,9 +354,7 @@ export class RekodKelulusanComponent {
     this.rekodKeputusanService.ResetResult(this.inputResult).subscribe(res1 => {
       console.log(res1)
     })
-
   }
-
 
 
   putApproved() {
@@ -413,9 +379,7 @@ export class RekodKelulusanComponent {
       }
     );
 
-
     //this.emailRecipient = ["nurizzatul@lgm.gov.my"];
-
 
     if (this.k1Detail.creatorRoleId == 1) {
       this.rekodKelulusanService.notificationResultLetter(this.staff.staffId, id, this.emailRecipient).subscribe(
@@ -442,15 +406,13 @@ export class RekodKelulusanComponent {
       );
     }
 
-
   }
-
-
 
 
   viewReceipt(path: string, batchId: number): void {
     window.open(environment.baseApiUrlElimsReceipt + batchId + "_" + path, "_blank");
   }
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -460,4 +422,53 @@ export class RekodKelulusanComponent {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  exportToExcel(): void {
+    const columnMappings = {
+      batchId: 'Batch Id',
+      rubberType: 'Jenis Getah',
+      isFastTrack: 'Laluan Pantas',
+      forwarderName: 'Syarikat Penghantar',
+      bankCode: 'Bank',
+      receipt: 'No. Cek/Resit/Memo', // Consolidated column name
+      chequeAmount: 'Amaun',
+      sentOn: 'Tarikh Hantar',
+      sampleCount: 'Bil. Sampel',
+    };
+  
+    const columnsToExport = Object.keys(columnMappings);
+    const allData = this.dataSource.data;
+  
+    const filteredData = allData.map(row => {
+      const filteredRow = {};
+      columnsToExport.forEach(column => {
+        let value;
+  
+        if (column === 'receipt') {
+          value = row.creatorRoleId === 2 ? 'memo' : row.receipt || row.chequeNo;
+        } else if (column === 'isFastTrack') {
+          value = row.isFastTrack ? 'YA' : 'TIDAK';
+        } else if (column === 'sentOn') {
+          // Format date values
+          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); // Customize the date format here
+        } else {
+          value = row[column];
+        }
+  
+        if (value !== undefined) {
+          const customColumnName = columnMappings[column];
+          filteredRow[customColumnName] = value;
+        }
+      });
+      return filteredRow;
+    });
+  
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Rekod Kelulusan');
+  
+    XLSX.writeFile(wb, 'senarai_sampel.xlsx');
+  }
+
+
 }

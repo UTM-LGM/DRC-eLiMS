@@ -1,15 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { UserService } from 'src/app/User/user.service';
-import { environment } from 'src/app/environments/environment';
 import { Batch } from 'src/app/models/batch';
 import { Forwarder } from 'src/app/models/forwarder';
-import { K1Detail } from 'src/app/models/k1Detail';
 import { RubberType } from 'src/app/models/rubberType';
-import { Sample } from 'src/app/models/sample';
 import { Staff } from 'src/app/models/staff';
 import { StatusCode } from 'src/app/models/statusCode';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -23,7 +19,6 @@ import { ElimsService } from 'src/app/services/elims.service';
 export class SampelSimpananLgmComponent {
 
   columnsToDisplay = [
-
     'batchId',
     'rubberType',
     'forwarderName',
@@ -115,10 +110,10 @@ export class SampelSimpananLgmComponent {
 
     
     this.codeId = [4, 5, 6, 7, 8, 9];
+    // list date holidays
     const holidays = [
       '2024-06-17',//raya haji
       '2024-06-18',//raya haji
-      // Add more holidays as needed
     ];
     
     this.codeId.forEach(element => {
@@ -167,9 +162,6 @@ export class SampelSimpananLgmComponent {
       return count;
     }
     
-  
-  
-
 
     this.elimsService.GetRefRubberTypes().subscribe(data => {
       this.rubberTypes = data
@@ -318,7 +310,6 @@ export class SampelSimpananLgmComponent {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
 
 }
 

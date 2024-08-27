@@ -17,7 +17,8 @@ import { ToastrService } from 'ngx-toastr';
 import { CetakWorksheetService } from 'src/app/CetakWorksheet/cetak-worksheet.service';
 import { RekodKelulusanService } from 'src/app/Kelulusan/rekod-kelulusan.service';
 import { environment } from 'src/app/environments/environment';
-
+import { formatDate } from '@angular/common';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-sah-keputusan',
@@ -38,7 +39,6 @@ export class SahKeputusanComponent {
 
     'batchId',
     'rubberType',
-    // 'result',
     'isFastTrack',
     'forwarderName',
     'receivedOn',
@@ -138,10 +138,7 @@ export class SahKeputusanComponent {
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       // this.batches = data.filter((batch) => batch.inLabBy.trim() !== this.staff.username);
       this.batches = data
-
-
       // console.log(this.batches)
-
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -218,32 +215,7 @@ export class SahKeputusanComponent {
   }
 
 
-  // formatDate(date: string): string {
-  //   if (date) {
-  //     // Split the date and time parts, if present
-  //     const parts = date.split('T');
-
-  //     // Extract the date part and split it by '-'
-  //     const datePart = parts[0];
-  //     const datePartsArray = datePart.split('-');
-
-  //     // Extract year, month, and day
-  //     const year = datePartsArray[0];
-  //     const month = datePartsArray[1];
-  //     const day = datePartsArray[2];
-
-  //     // Join them with '-' to form the desired format
-  //     return `${day}-${month}-${year}`;
-  //   }
-  //   return date;
-  // }
-
-
-
-
   calculateAverageFirst() {
-
-
     const dry1 = this.inputResult.dry1;
     const wet1 = this.inputResult.wet1;
     const dry2 = this.inputResult.dry2;
@@ -267,12 +239,8 @@ export class SahKeputusanComponent {
       this.inputEstimate2 = 0;
     }
 
-    // console.log(this.inputEstimate1)
-    // console.log(this.inputEstimate2)
     this.inputAverage = (this.inputEstimate1 + this.inputEstimate2) / 2;
     this.inputAverage = parseFloat(this.inputAverage.toFixed(2));
-    // console.log(this.inputAverage)
-
 
     this.rekodKelulusanService.GetResultbySampleId(this.k1Detail.k1DetailId).subscribe(dataResult => {
       this.result = dataResult;
@@ -286,28 +254,7 @@ export class SahKeputusanComponent {
 
 
   calculateAveragebyCustomno() {
-
-    // const dry1 = this.result.dry1;
-    // const wet1 = this.result.wet1;
-    // const dry2 = this.result.dry2;
-    // const wet2 = this.result.wet2;
-
-    // if (!isNaN(dry1) && !isNaN(wet1) && wet1 !== 0) {
-    //   this.estimate1 = (dry1 / wet1) * 100;
-    //   this.estimate1 = parseFloat(this.estimate1.toFixed(2)); // Round to two decimal places
-    // } else {
-    //   this.estimate1 = 0;
-    // }
-
-    // if (!isNaN(dry2) && !isNaN(wet2) && wet2 !== 0) {
-    //   this.estimate2 = (dry2 / wet2) * 100;
-    //   this.estimate2 = parseFloat(this.estimate2.toFixed(2)); // Round to two decimal places
-    // } else {
-    //   this.estimate2 = 0;
-    // }
     this.calculateAverage()
-
-
   }
 
 
@@ -363,53 +310,7 @@ export class SahKeputusanComponent {
     } else {
       this.toastr.error('Cannot save, limit value exceeded.');
     }
-
   }
-
-
-  // reject() {
-
-
-  //   this.inputResult.result1 = this.average;
-  //   this.inputResult.k1DetailId = this.k1Detail.k1DetailId;
-
-  //   this.retest.result = this.inputResult.result1;
-  //   this.retest.wet1 = this.inputResult.wet1;
-  //   this.retest.wet2 = this.inputResult.wet2;
-  //   this.retest.dry1 = this.inputResult.dry1;
-  //   this.retest.dry2 = this.inputResult.dry2;
-  //   this.retest.rejectedBy = this.staff.username;
-  //   this.retest.testedBy = this.staff.username;
-  //   this.retest.k1DetailId = this.k1Detail.k1DetailId;
-  //   this.retest.testMethod = this.inputResult.testMethod;
-
-  //   this.k1Detail.batchId = this.samples.batchId;
-  //   this.k1Detail.batchId = this.retest.batchId ;
-  //   this.retest.batchId = this.k1Detail.batchId;
-
-  //   // this.k1Detail.testedOn = this.samples.testedOn;
-  //   this.k1Detail.testedOn = this.retest.testedOn ;
-  //   this.retest.testedOn= this.k1Detail.testedOn;
-
-
-  //   console.log(this.k1Detail)
-  //   console.log(this.retest)
-
-  //   this.rekodKeputusanService.PostRetest(this.retest).subscribe(res1 => {
-  //     console.log(res1)
-  //     this.toastr.success('Sampel untuk retest telah berjaya didaftarkan. Maklumat berjaya disimpan', 'Success');
-  //     this.rekodKeputusanService.PutRetest(this.k1Detail.k1DetailId, this.k1Detail).subscribe(
-  //       res2 => { 
-  //         console.log(res2) 
-  //         setTimeout(() => {
-  //           window.location.reload();
-  //         }, 2000);
-  //       }
-
-
-  //     );
-  //   })
-  // }
 
 
   reject() {
@@ -453,11 +354,6 @@ export class SahKeputusanComponent {
 
     // Ensure k1Detail.batchId matches retest.batchId
     this.k1Detail.testedOn = this.retest.testedOn;
-
-
-    // // Set testedOn date
-    // this.k1Detail.testedOn = this.retest.testedOn; // or any other logic for testedOn
-    // this.retest.testedOn = this.k1Detail.testedOn;
 
     console.log(this.k1Detail);
     console.log(this.retest);
@@ -560,7 +456,6 @@ export class SahKeputusanComponent {
   }
 
 
-
   enableHantarButton() {
     this.buttonClicked = true;
   }
@@ -661,8 +556,8 @@ export class SahKeputusanComponent {
       this.limitValue = `Nilai purata melebihi > 0.2 (${tolerance}), sampel perlu diuji semula.`;
     }
     // UPB/R/007
-    else if (this.result.testMethod == 5 && toleranceNum > 0.1) {
-      this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
+    else if (this.result.testMethod == 5 && toleranceNum > 0.08) {
+      this.limitValue = `Nilai purata melebihi > 0.08 (${tolerance}), sampel perlu diuji semula.`;
     }
     // MS 2531**
     else if (this.result.testMethod == 6 && tolerance1Num < 0.001) {
@@ -708,8 +603,8 @@ export class SahKeputusanComponent {
       this.limitValue = `Nilai purata melebihi > 0.2 (${tolerance}), sampel perlu diuji semula.`;
     }
     // UPB/R/007
-    else if (this.result.testMethod == 5 && toleranceNum > 0.1) {
-      this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
+    else if (this.result.testMethod == 5 && toleranceNum > 0.08) {
+      this.limitValue = `Nilai purata melebihi > 0.08 (${tolerance}), sampel perlu diuji semula.`;
     }
     // MS 2531**
     else if (this.result.testMethod == 6 && tolerance1Num < 0.001) {
@@ -786,6 +681,52 @@ export class SahKeputusanComponent {
     } else {
       this.formattedVerifiedDate = ''; // Handle empty date case
     }
+  }
+
+
+  
+  exportToExcel(): void {
+    const columnMappings = {
+      batchId: 'Batch Id',
+      rubberType: 'Jenis Getah',
+      isFastTrack: 'Laluan Pantas',
+      forwarderName: 'Syarikat Penghantar',
+      receivedOn: 'Tarikh Terima',
+      sampleCount: 'Bil. Sampel',
+    };
+  
+    const columnsToExport = Object.keys(columnMappings);
+    const allData = this.dataSource.data;
+  
+    const filteredData = allData.map(row => {
+      const filteredRow = {};
+      columnsToExport.forEach(column => {
+        let value;
+  
+        if (column === 'receipt') {
+          value = row.creatorRoleId === 2 ? 'memo' : row.receipt || row.chequeNo;
+        } else if (column === 'isFastTrack') {
+          value = row.isFastTrack ? 'YA' : 'TIDAK';
+        } else if (column === 'receivedOn') {
+          // Format date values
+          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); // Customize the date format here
+        } else {
+          value = row[column];
+        }
+  
+        if (value !== undefined) {
+          const customColumnName = columnMappings[column];
+          filteredRow[customColumnName] = value;
+        }
+      });
+      return filteredRow;
+    });
+  
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sah Keputusan');
+  
+    XLSX.writeFile(wb, 'senarai_sampel.xlsx');
   }
 
 

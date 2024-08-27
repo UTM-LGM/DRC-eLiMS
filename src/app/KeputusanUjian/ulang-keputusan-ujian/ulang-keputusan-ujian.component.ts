@@ -92,7 +92,7 @@ export class UlangKeputusanUjianComponent {
       })
 
     }
-    this.statusCodeId = 11;
+    this.statusCodeId = 10;
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       this.batches = data;
 
@@ -173,26 +173,42 @@ export class UlangKeputusanUjianComponent {
 
 
   ulangCetakKeputusan() {
+    let processedCount = 0;
+  
     for (const sample of this.selectedSamples) {
       const id = sample.k1DetailId;
       this.keputusanUjianService.PutUlangCetakKeputusanUjian(id, this.k1Detail).subscribe(
         res => {
-          // Display toastr notification when the request is successful
-          this.toastr.success('Keputusan ulang cetak berhasil!', 'Berjaya');
-          setTimeout(() => {
-            window.location.reload();
-          },2000); 
+          // Increment the processed count
+          processedCount++;
+  
+          // Check if all samples have been processed
+          if (processedCount === this.selectedSamples.length) {
+            // Display Toastr notification once when all requests are successful
+            this.toastr.success('Keputusan ulang cetak berhasil!', 'Berjaya');
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }
         },
         error => {
+          // Increment the processed count even on error
+          processedCount++;
+  
           // Handle error if needed
           console.error('Error:', error);
-          setTimeout(() => {
-            window.location.reload();
-          },2000); 
+  
+          // Display Toastr and reload page when all requests are complete
+          if (processedCount === this.selectedSamples.length) {
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }
         }
       );
     }
   }
+  
 
   viewReceipt(path: string, batchId: number): void {
     window.open(environment.baseApiUrlElimsReceipt + batchId + "_" + path, "_blank");

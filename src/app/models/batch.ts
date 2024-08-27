@@ -61,4 +61,5 @@ export interface Batch {
     postResultCourierServices : string;
     postResultTrackingNo : string;
     inLabBy : string;
+    creatorRoleId: number;
 }

@@ -6,9 +6,6 @@ import { UserService } from '../../User/user.service';
 import { Staff } from '../../models/staff';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../environments/environment';
-import { RekodKelulusanService } from '../../Kelulusan/rekod-kelulusan.service';
-import { Directive, HostListener, ElementRef } from '@angular/core';
-import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-detail-keputusan',
@@ -36,12 +33,8 @@ export class DetailKeputusanComponent {
   @Input() inputEstimate2: any;
 
 
-  // estimate1: number = 0;
-  // estimate2: number = 0;
   average: number = 0;
   showForm: boolean = false;
-  // k1Detail: K1Detail = {} as K1Detail;
-  // result: Result = {} as Result;
   loginAs: any;
   userRoleId: any;
   roleGtacr: boolean
@@ -49,8 +42,6 @@ export class DetailKeputusanComponent {
   staffRole: number[];
   staff: Staff = {} as Staff
   inputResult: Result = {} as Result;
-  // inputEstimate1: number = 0;
-  // inputEstimate2: number = 0;
   inputAverage: number = 0;
   file: any | null;
   buttonClicked: boolean = false;
@@ -60,6 +51,12 @@ export class DetailKeputusanComponent {
   formattedInLabDate: string;
   formattedVerifiedDate: string;
   daftarClicked = false;
+  // estimate1: number = 0;
+  // estimate2: number = 0;
+  // k1Detail: K1Detail = {} as K1Detail;
+  // result: Result = {} as Result;
+  // inputEstimate1: number = 0;
+  // inputEstimate2: number = 0;
 
   ngOnInit() {
     console.log(this.inputDisable)
@@ -80,17 +77,14 @@ export class DetailKeputusanComponent {
         this.staff = res
         this.roleGtacr = true
         this.staffRole = res.staffRole
-        // this.getStaffElimsSamples(this.staff)
+
         this.staffRole.forEach(element => {
           // console.log(element)
           this.rekodKeputusanService.GetStaffIdbyStaffRole(element).subscribe(data => {
             this.roles = data.filter(data => data.staffName != null);
-            // console.log(data)
-            // Sort the stationCodes by kodstesen
             this.roles.sort((a: { staffName: any; }, b: { staffName: any; }) => {
               const roleA = a.staffName;
               const roleB = b.staffName;
-              // Compare the kodStesen values
               if (roleA < roleB) {
                 return -1;
               } else if (roleA > roleB) {
@@ -110,14 +104,11 @@ export class DetailKeputusanComponent {
 
 
   addRekodKeputusan() {
-
     // if (this.checkRequired()) {
-
     this.daftarClicked = true;
     this.buttonClicked = true;
 
     this.result.result1 = this.average.toFixed(2);
-    // this.result.result1 = this.average;
     this.result.estimate1 = this.estimate1;
     this.result.estimate2 = this.estimate2;
     this.k1Detail.testedBy = this.staff.username;
@@ -139,18 +130,16 @@ export class DetailKeputusanComponent {
         console.log('File uploaded successfully');
         setTimeout(() => {
           window.location.reload();
-        }, 2000); // Delay in milliseconds (2000ms = 2s)
+        }, 2000);
       },
         error => {
           console.error('Error uploading file:', error);
           setTimeout(() => {
             window.location.reload();
-          }, 1000); // Delay in milliseconds (2000ms = 2s)
+          }, 1000);
         })
-
     })
 
-    // }
   }
 
 
@@ -166,62 +155,6 @@ export class DetailKeputusanComponent {
     }
     return true;
   }
-
-
-  // calculateAverageFirst() {
-
-  //   const dry1 = this.inputResult.dry1;
-  //   const wet1 = this.inputResult.wet1;
-  //   const dry2 = this.inputResult.dry2;
-  //   const wet2 = this.inputResult.wet2;
-
-
-  //   if (!isNaN(dry1) && !isNaN(wet1) && wet1 !== 0) {
-  //     this.inputEstimate1 = (dry1 / wet1) * 100;
-  //     this.inputEstimate1 = parseFloat(this.inputEstimate1.toFixed(2)); // Round to two decimal places
-  //   } else {
-  //     this.inputEstimate1 = 0;
-  //   }
-
-  //   if (!isNaN(dry2) && !isNaN(wet2) && wet2 !== 0) {
-  //     this.inputEstimate2 = (dry2 / wet2) * 100;
-  //     this.inputEstimate2 = parseFloat(this.inputEstimate2.toFixed(2)); // Round to two decimal places
-  //   } else {
-  //     this.inputEstimate2 = 0;
-  //   }
-
-  //   this.inputAverage = (this.inputEstimate1 + this.inputEstimate2) / 2;
-  // }
-
-
-
-  // calculateAverageFirst() {
-
-  //   const dry1 = this.result.dry1;
-  //   const wet1 = this.result.wet1;
-  //   const dry2 = this.result.dry2;
-  //   const wet2 = this.result.wet2;
-
-
-  //   if (!isNaN(dry1) && !isNaN(wet1) && wet1 !== 0) {
-  //     this.estimate1 = (dry1 / wet1) * 100;
-  //     this.estimate1 = parseFloat(this.estimate1.toFixed(2)); // Round to two decimal places
-  //   } else {
-  //     this.estimate1 = 0;
-  //   }
-
-  //   if (!isNaN(dry2) && !isNaN(wet2) && wet2 !== 0) {
-  //     this.estimate2 = (dry2 / wet2) * 100;
-  //     this.estimate2 = parseFloat(this.estimate2.toFixed(2)); // Round to two decimal places
-  //   } else {
-  //     this.inputEstimate2 = 0;
-  //   }
-
-  //   this.average = (this.estimate1 + this.estimate2) / 2;
-
-  //   this.getLimitValue();
-
-  // }
 
 
   formatDate() {
@@ -389,8 +322,8 @@ export class DetailKeputusanComponent {
       this.limitValue = `Nilai purata melebihi > 0.2 (${tolerance}), sampel perlu diuji semula.`;
     }
     // UPB/R/007
-    else if (this.result.testMethod == 5 && toleranceNum > 0.1) {
-      this.limitValue = `Nilai purata melebihi > 0.1 (${tolerance}), sampel perlu diuji semula.`;
+    else if (this.result.testMethod == 5 && toleranceNum > 0.08) {
+      this.limitValue = `Nilai purata melebihi > 0.08 (${tolerance}), sampel perlu diuji semula.`;
     }
     // MS 2531**
     else if (this.result.testMethod == 6 && tolerance1Num < 0.001) {
@@ -412,17 +345,16 @@ export class DetailKeputusanComponent {
   }
 
 
-
   handleFileInput(event: any) {
     this.file = event.target.files[0];
     this.result.prove = event.target.files[0].name;
     console.log(this.result.prove);
   }
 
+
   viewFile(path: string): void {
     window.open(environment.baseApiUrlElimsProve + this.result.k1DetailId + "_" + path, "_blank");
   }
-
 
 
   formatDecimal(field: string, event: any, finalize: boolean = false) {
@@ -467,13 +399,11 @@ export class DetailKeputusanComponent {
   }
 
 
-
   formatDecimalResult(event: any, property: string) {
     let value = parseFloat(event.target.value);
     if (!isNaN(value)) {
       this[property] = value.toFixed(2);
     }
   }
-
 
 }

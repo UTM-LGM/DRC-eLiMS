@@ -27,35 +27,41 @@
                 </div><br>
 
 
+                <!-- Senarai sampel -->
                 <div *ngIf="isSearched && reportKgk">
-
-                    <h3>Senarai sampel </h3>         
-                    <p>Jumlah Sampel: {{ reportKgk.totalSamples }}</p>
-
-                    <table class="table table-striped center-table">
-                      <thead>
-                        <tr class="tableheader">
-                          <th class="black" scope="col">Sampel Id</th>
-                          <th class="black" scope="col">Batch Id</th>
-                          <th class="black" scope="col">No Kastam</th> 
-                          <th class="black" scope="col">KGK K1</th>              
-                          <th class="black" scope="col">KGK Sebenar</th> 
-                          <th class="black" scope="col">Perbezaan </th>
-                        </tr>            
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let sample of reportKgk.k1Details">
-          
-                          <td>{{sample.k1DetailId}}</td>
-                          <td>{{sample.batchId}}</td>
-                          <td>{{sample.customNo}} </td>
-                          <td>{{sample.drc}} </td>
-                          <td>{{sample.result}}</td>
-                          <td>{{calculateFormattedDifference(sample.result, sample.drc)}}</td> 
-                        </tr>      
-                      </tbody>
-                    </table>
-                  </div>
+                  <h3>Senarai sampel</h3>
+                  <p>Jumlah Sampel: {{ reportKgk.totalSamples }}</p>
+                
+                  <table class="table table-striped center-table">
+                    <thead>
+                      <tr class="tableheader">
+                        <th class="black" scope="col">Bil</th> <!-- Added "Bil" column -->
+                        <th class="black" scope="col">Sampel Id</th>
+                        <th class="black" scope="col">Tarikh Terima</th>
+                        <th class="black" scope="col">Cetak Keputusan</th> 
+                        <th class="black" scope="col">Batch Id</th>
+                        <th class="black" scope="col">No Kastam</th> 
+                        <th class="black" scope="col">KGK K1</th>              
+                        <th class="black" scope="col">KGK Sebenar</th> 
+                        <th class="black" scope="col">Perbezaan</th>
+                      </tr>            
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let sample of reportKgk.k1Details; let i = index">     
+                        <td>{{ i + 1 }}</td> <!-- Serial number column -->
+                        <td>{{ sample.k1DetailId }}</td>
+                        <td>{{ sample.receivedOn | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{ sample.printedOn | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{ sample.batchId }}</td>
+                        <td>{{ sample.customNo }}</td>
+                        <td>{{ sample.drc }}</td>
+                        <td>{{ sample.result }}</td>
+                        <td>{{ calculateFormattedDifference(sample.result, sample.drc) }}</td> 
+                      </tr>      
+                    </tbody>
+                  </table>
+                </div>
+                
             </div>
         </mat-card-content>
     </mat-card>

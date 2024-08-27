@@ -52,11 +52,6 @@ calculateFormattedDifference(result: number, drc: number): string {
 }
 
 
-
-
-
-
-
 }
 
 

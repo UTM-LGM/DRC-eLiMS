@@ -33,31 +33,11 @@
   <p style="position:absolute;top:355px;left:135px;white-space:nowrap" class="ft12">Masa Sampel Masuk Ketuhar</p>
   <p style="position:absolute;top:375px;left:135px;white-space:nowrap" class="ft12">Masa Sampel Keluar Ketuhar</p>
   
-  <!-- <div style="position:absolute;top:285px;left:450px;white-space:nowrap" class="ft12"> 
-    <div>
-      <select class="form-select small-select" name="refLtxPenimbang" id="refLtxPenimbang" [(ngModel)]="selectedPenimbang" (change)="onPenimbangChange($event)">
-        <option class="pilih" value="default">--Pilih--</option>
-        <option *ngFor="let penimbang of penimbangs" [value]="penimbang.id">
-          {{penimbang.balance}} -  {{penimbang.iD1}}
-        </option>
-      </select>
-    </div>
-  </div>
 
-  <div style="position:absolute;top:307px;left:450px;white-space:nowrap" class="ft12"> 
-      <select class="form-select small-select" name="refLtxOven" id="refLtxOven" [(ngModel)]="selectedOven" (change)="onOvenChange($event)">
-        <option class="pilih" value="default">--Pilih--</option>
-        <option *ngFor="let oven of ovens" [value]="oven.id">
-          {{oven.oven}} -  {{oven.iD1}}
-        </option>
-      </select>
-    </div> -->
-  
-
-
+    <!-- Penimbang -->
     <div style="position:absolute;top:285px;left:450px;white-space:nowrap" class="ft12"> 
       <div>
-        <select class="form-select small-select" name="Penimbang" id="Penimbprekodang" [(ngModel)]="k1Detail.penimbang" (change)="onPenimbangChange($event)">
+        <select class="form-select small-select" name="Penimbang" id="Penimbang" [(ngModel)]="k1Detail.penimbang">
           <option class="pilih" value="default">--Pilih--</option>
           <option *ngFor="let penimbang of penimbangs" [value]="penimbang.id">
             {{penimbang.balance}} -  {{penimbang.iD1}}
@@ -66,8 +46,9 @@
       </div>
     </div>
   
+  <!-- Oven -->
    <div style="position:absolute;top:307px;left:450px;white-space:nowrap" class="ft12"> 
-      <select class="form-select small-select" name="Oven" id="Oven"  [(ngModel)]="k1Detail.oven"  (change)="onOvenChange($event)">
+      <select class="form-select small-select" name="Oven" id="Oven"  [(ngModel)]="k1Detail.oven">
         <option class="pilih" value="default">--Pilih--</option>
         <option *ngFor="let oven of ovens" [value]="oven.id">
           {{oven.oven}} -  {{oven.iD1}}

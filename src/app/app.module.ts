@@ -1,11 +1,7 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeMs from '@angular/common/locales/ms';
-
-
-
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -100,7 +96,6 @@ import { ViewNoticeComponent } from './Notis/view-notice/view-notice.component';
 import { ShowNoticeComponent } from './Notis/show-notice/show-notice.component';
 import { EditNoticeComponent } from './Notis/edit-notice/edit-notice.component';
 import { register } from 'swiper/element/bundle';
-// import { QRCodeModule } from 'angularx-qrcode';
 
 register()
 

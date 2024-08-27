@@ -23,38 +23,10 @@ export class NoticeService {
   PostNotice(notice: Notice): Observable<Notice> {
     return this.http.post<Notice>(this.baseApiUrl + '/api/Notices/PostNotice', notice);
   }
-
-  // updateNotices(notices: Notice[]): Observable<void> {
-  //   return this.http.put<void>(`${this.apiUrl}/notices`, notices);
-  // }
-
-  // PutNotice(ids: number[], notices: { id: number, isShow: boolean }[]): Observable<void> {
-  //   return this.http.put<void>(`${this.baseApiUrl}/api/Notices/PutNotices`, notices, {
-  //     params: {
-  //       ids: ids.join(',')  // Convert the list of IDs to a comma-separated string
-  //     }
-  //   });
-  // }
   
   PutNotice(notices: { id: number, isShow: boolean }[]): Observable<void> {
     return this.http.put<void>(`${this.baseApiUrl}/api/Notices/PutNotices`, notices);
   }
-  
-  
-
-  // PutNotice(notice: Notice): Observable<void> {
-  //   return this.http.put<void>(`${this.baseApiUrl}/api/Notices/${notice.id}`, notice);
-  // }
-
-  // PutNotice(notice: Notice): Observable<void> {
-  //   return this.http.put<any>(`${this.baseApiUrl}/api/Notices/PutNotices/${notice.id}`, notice);
-  // }
-
-
-  // DeleteNotice(id: number): Observable<void> {
-  //   return this.http.delete<void>(`${this.baseApiUrl}/api/Notices/DeleteNotice/${id}`);
-  // }
-
 
   DeleteNotice(id: number): Observable<Notice> {
     return this.http.delete<Notice>(this.baseApiUrl + '/api/Notices/DeleteNotice/' + id);
@@ -77,7 +49,5 @@ export class NoticeService {
     console.log(file)
     return this.http.post(this.baseApiUrl + '/api/Notices/UploadFile/' + id , formData);
   }
-
-
 
 }

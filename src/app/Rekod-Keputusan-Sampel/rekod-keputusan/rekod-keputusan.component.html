@@ -7,6 +7,12 @@
                 <input matInput (keyup)="applyFilter($event)" placeholder="keyword" #input>
             </mat-form-field>
 
+            <div style="text-align: right;">
+                <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to
+                    Excel</button>
+            </div><br>
+                  
+            <!-- List sample by batch -->
             <div class="mat-elevation-z8">
                 <div class="list-container">
 
@@ -50,7 +56,6 @@
                                     [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
 
                                     <div class="example-element-description w-100">
-                                        <!-- {{element.id}} -->
                                         <table class="table table-striped center-table">
                                             <thead>
                                                 <tr class="tableheader">
@@ -92,10 +97,11 @@
 
                     </table>
                 </div>
-
                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="20"></mat-paginator>
             </div><br><br>
 
+
+            <!-- search custom no -->
             <div class="row form-group">
                 <div class="col-sm-2">
                     <label>No. borang kastam:</label><br>

@@ -117,5 +117,5 @@ export interface Sample {
     prove : string;
     totalDaysFromImportToReceived : number;
     dateReceivedInLab : Date;
-
+    noLaporanTuan : string;
 }

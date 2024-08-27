@@ -14,6 +14,8 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { UserService } from 'src/app/User/user.service';
 import { CetakKeputusanService } from '../cetak-keputusan.service';
 import { RekodKeputusanService } from 'src/app/Rekod-Keputusan-Sampel/rekod-keputusan.service';
+import { formatDate } from '@angular/common';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-cetak-keputusan',
@@ -188,6 +190,7 @@ export class CetakKeputusanComponent {
     for (const sample of this.selectedSamples) {
       const id = sample.k1DetailId;
       this.creatorRoleId = this.sample.creatorRoleId
+      
       console.log(sample)
       this.cetakKeputusanService.PutResultLetterApprovedBy(id, this.k1Detail).subscribe(
         res => {
@@ -296,6 +299,57 @@ export class CetakKeputusanComponent {
         this.customFields.push({ value: '' });
       }
     }
+  }
+
+
+  exportToExcel(): void {
+    const columnMappings = {
+      batchId: 'Batch Id',
+      rubberType: 'Jenis Getah',
+      isFastTrack: 'Laluan Pantas',
+      forwarderName: 'Syarikat Penghantar',
+      bankCode: 'Bank',
+      receipt: 'No. Cek/Resit/Memo', // Consolidated column name
+      chequeAmount: 'Amaun',
+      receivedOn: 'Tarikh Terima',
+      sentOn: 'Tarikh Hantar',
+      countSampleBasedSameBatchId: 'Bil. Sampel Sebenar',
+      sampleCount: 'Bil. Sampel Diluluskan',
+
+    };
+  
+    const columnsToExport = Object.keys(columnMappings);
+    const allData = this.dataSource.data;
+  
+    const filteredData = allData.map(row => {
+      const filteredRow = {};
+      columnsToExport.forEach(column => {
+        let value;
+  
+        if (column === 'receipt') {
+          value = row.creatorRoleId === 2 ? 'memo' : row.receipt || row.chequeNo;
+        } else if (column === 'isFastTrack') {
+          value = row.isFastTrack ? 'YA' : 'TIDAK';
+        } else if (column === 'sentOn' || column === 'receivedOn') {
+          // Format date values
+          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); // Customize the date format here
+        } else {
+          value = row[column];
+        }
+  
+        if (value !== undefined) {
+          const customColumnName = columnMappings[column];
+          filteredRow[customColumnName] = value;
+        }
+      });
+      return filteredRow;
+    });
+  
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Cetak Keputusan');
+  
+    XLSX.writeFile(wb, 'senarai_sampel.xlsx');
   }
 
 

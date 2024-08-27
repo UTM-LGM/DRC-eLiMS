@@ -12,21 +12,21 @@ p {margin: 0; padding: 0;}
         font-size: 12px; /* Adjust font size */
     }
 
-    .hidden-select {
-        display: none;
-      }
+.hidden-select {
+  display: none;
+}
 
-      .form-select {
-        /* Visually hide the select box but keep the value displayed */
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background: transparent;
-        border: none;
-        font-size: 12px;
-        color: black;
-      }
-    
-      .form-select.small-select {
-        width: 310px;
-      }
+.form-select {
+  /* Visually hide the select box but keep the value displayed */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  color: black;
+}
+
+.form-select.small-select {
+  width: 310px;
+}
