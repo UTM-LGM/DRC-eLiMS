@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "Hash": "0PQPF5dlleC/0bCM/kUWTk2iQuQV2F8HWIHkeoCfzLA=",
+  "Source": "elims",
+  "BasePath": "_content/elims",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "elims\\wwwroot",
+      "Source": "elims",
+      "ContentRoot": "C:\\Users\\nurizzatul\\Desktop\\API_ELIMS\\elims\\elims\\wwwroot\\",
+      "BasePath": "_content/elims",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\nurizzatul\\Desktop\\API_ELIMS\\elims\\elims\\wwwroot\\evidence\\Notis Pelanggan GTACR berkaitan penghantaran sampel_2023 (1).pdf",
+      "SourceId": "elims",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\nurizzatul\\Desktop\\API_ELIMS\\elims\\elims\\wwwroot\\",
+      "BasePath": "_content/elims",
+      "RelativePath": "evidence/Notis Pelanggan GTACR berkaitan penghantaran sampel_2023 (1).pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\evidence\\Notis Pelanggan GTACR berkaitan penghantaran sampel_2023 (1).pdf"
+    }
+  ]
+}
