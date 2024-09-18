@@ -1,0 +1,65 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\nurizzatul\\Desktop\\DRC-eLiMS\\api_elims\\elims\\elims\\wwwroot\\announcement\\24_",
+      "PackagePath": "staticwebassets\\announcement"
+    },
+    {
+      "Id": "C:\\Users\\nurizzatul\\Desktop\\DRC-eLiMS\\api_elims\\elims\\elims\\wwwroot\\announcement\\32_",
+      "PackagePath": "staticwebassets\\announcement"
+    },
+    {
+      "Id": "C:\\Users\\nurizzatul\\Desktop\\DRC-eLiMS\\api_elims\\elims\\elims\\wwwroot\\announcement\\39_.pdf",
+      "PackagePath": "staticwebassets\\announcement\\39_.pdf"
+    },
+    {
+      "Id": "C:\\Users\\nurizzatul\\Desktop\\DRC-eLiMS\\api_elims\\elims\\elims\\wwwroot\\announcement\\48_",
+      "PackagePath": "staticwebassets\\announcement"
+    },
+    {
+      "Id": "C:\\Users\\nurizzatul\\Desktop\\DRC-eLiMS\\api_elims\\elims\\elims\\wwwroot\\announcement\\4_",
+      "PackagePath": "staticwebassets\\announcement"
+    },
+    {
+      "Id": "C:\\Users\\nurizzatul\\Desktop\\DRC-eLiMS\\api_elims\\elims\\elims\\wwwroot\\announcement\\5_",
+      "PackagePath": "staticwebassets\\announcement"
+    },
+    {
+      "Id": "C:\\Users\\nurizzatul\\Desktop\\DRC-eLiMS\\api_elims\\elims\\elims\\wwwroot\\evidence\\144_memo sampel lateks HQ DAN UIP BKH deleted thread 2.pdf",
+      "PackagePath": "staticwebassets\\evidence\\144_memo sampel lateks HQ DAN UIP BKH deleted thread 2.pdf"
+    },
+    {
+      "Id": "C:\\Users\\nurizzatul\\Desktop\\DRC-eLiMS\\api_elims\\elims\\elims\\wwwroot\\evidence\\Notis Pelanggan GTACR berkaitan penghantaran sampel_2023 (1).pdf",
+      "PackagePath": "staticwebassets\\evidence\\Notis Pelanggan GTACR berkaitan penghantaran sampel_2023 (1).pdf"
+    },
+    {
+      "Id": "C:\\Users\\nurizzatul\\Desktop\\DRC-eLiMS\\api_elims\\elims\\elims\\wwwroot\\receipt\\102_",
+      "PackagePath": "staticwebassets\\receipt"
+    },
+    {
+      "Id": "C:\\Users\\nurizzatul\\Desktop\\DRC-eLiMS\\api_elims\\elims\\elims\\wwwroot\\suratIringan\\102_",
+      "PackagePath": "staticwebassets\\suratIringan"
+    },
+    {
+      "Id": "C:\\Users\\nurizzatul\\Desktop\\DRC-eLiMS\\api_elims\\elims\\elims\\wwwroot\\suratIringan\\107_",
+      "PackagePath": "staticwebassets\\suratIringan"
+    },
+    {
+      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.build.elims.props",
+      "PackagePath": "build\\elims.props"
+    },
+    {
+      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.elims.props",
+      "PackagePath": "buildMultiTargeting\\elims.props"
+    },
+    {
+      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.buildTransitive.elims.props",
+      "PackagePath": "buildTransitive\\elims.props"
+    },
+    {
+      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.elims.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
