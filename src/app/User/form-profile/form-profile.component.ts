@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Forwarder } from 'src/app/models/forwarder';
 import { UserService } from '../user.service';
+import { loginImporter } from 'src/app/models/loginImporters';
 
 @Component({
   selector: 'app-form-profile',
@@ -17,6 +18,7 @@ import { UserService } from '../user.service';
 export class FormProfileComponent {
 
   staff: Staff
+  importer: loginImporter = {} as loginImporter
   user: userDTO
   username: any
   staffId: any
@@ -25,7 +27,10 @@ export class FormProfileComponent {
   forwarder: Forwarder = {} as Forwarder
   unitList: any = ['UIP', 'UIPBKH']
   file: any | null
-
+  roleForwarder: boolean;
+  roleUip: boolean;
+  roleImporter: boolean;
+  
   constructor(
     private authService: AuthService,
     private elimsService: ElimsService,
@@ -46,7 +51,6 @@ export class FormProfileComponent {
     this.role = this.authService.getSessionRole()
 
 
-
     if (this.role == 1) {
       this.userService.GetUserInfo(this.username).subscribe(x => {
         this.user = x
@@ -54,61 +58,111 @@ export class FormProfileComponent {
           this.authService.changeUser(x);
           this.authService.changeIsLoggedIn(true);
           this.forwarder = x
+          this.roleForwarder = true
 
         });
       });
 
 
     }
-    else if (this.role == 2) {
+    else if (this.role == 2 || this.role == 4) {
       this.userService.GetStaffInfo(this.username).subscribe(x => {
         this.authService.changeUser(x);
         this.authService.changeIsLoggedIn(true);
         this.staff = x
+        this.roleUip = true
+
+      });
+    }
+
+    else if (this.role == 3) {
+      this.userService.GetImporterInfo(this.username).subscribe(x => {
+        this.authService.changeUser(x);
+        this.authService.changeIsLoggedIn(true);
+        this.importer = x
+        this.roleImporter = true
       });
 
-      // this.userService.GetStaffInfo(this.staff.staffId).subscribe(x => {
-      //   this.authService.changeUser(x);
-      //   this.authService.changeIsLoggedIn(true);
-      // });
-
-
     }
+
   }
+
 
   updateProfile() {
     if (this.role == 1) {
-      this.elimsService.PutForwarderProfile(this.forwarder.forwarderId, this.forwarder).subscribe(response => {
-        if (response) {
-          this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
-          window.location.reload();
-        } else {
-          this.toastr.error('Profile gagal dikemaskini', 'Error');
+        this.elimsService.PutForwarderProfile(this.forwarder.forwarderId, this.forwarder).subscribe(response => {
+            if (response) {
+                this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
+                window.location.reload();
+            } else {
+                this.toastr.error('Profile gagal dikemaskini', 'Error');
+            }
+        });
+    } else if (this.role == 2 || this.role == 4) {
+        if (this.staff.newPassword !== this.staff.confirmPassword) {
+            this.toastr.error('Kata laluan baru tidak sepadan', 'Error');
+            return;
         }
-      });
+        
+        this.elimsService.updateStaffProfile(this.staff.staffId, this.staff).subscribe(response => {
+            if (response) {
+                this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
+                window.location.reload();
+            } else {
+                this.toastr.error('Profile gagal dikemaskini', 'Error');
+            }
+        });
+    } else if (this.role == 3) {
+        this.elimsService.PutCompanyProfile(this.importer.companyId, this.importer).subscribe(response => {
+            if (response) {
+                this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
+                window.location.reload();
+            } else {
+                this.toastr.error('Profile gagal dikemaskini', 'Error');
+            }
+        });
     }
-
-    else if (this.role == 2) {
-      this.elimsService.updateStaffProfile(this.staff.staffId, this.staff).subscribe(response => {
-        if (response) {
-          this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
-          window.location.reload();
-        } else {
-          this.toastr.error('Profile gagal dikemaskini', 'Error');
-        }
-      });
-    }
+  
     this.router.navigateByUrl('profile');
+}
 
-    // this.userService.UploadSignature(this.staffId, this.file).subscribe(() => {
-    //   console.log('File uploaded successfully');
-    // },
-    //   error => {
-    //     console.error('Error uploading file:', error);
-    //   });
-    // this.router.navigate(['/form-profile']);
 
-  }
+  // updateProfile() {
+  //   if (this.role == 1) {
+  //     this.elimsService.PutForwarderProfile(this.forwarder.forwarderId, this.forwarder).subscribe(response => {
+  //       if (response) {
+  //         this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
+  //         window.location.reload();
+  //       } else {
+  //         this.toastr.error('Profile gagal dikemaskini', 'Error');
+  //       }
+  //     });
+  //   }
+
+  //   else if (this.role == 2) {
+  //     this.elimsService.updateStaffProfile(this.staff.staffId, this.staff).subscribe(response => {
+  //       if (response) {
+  //         this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
+  //         window.location.reload();
+  //       } else {
+  //         this.toastr.error('Profile gagal dikemaskini', 'Error');
+  //       }
+  //     });
+  //   } 
+  //    else if (this.role == 3) {
+  //     this.elimsService.PutCompanyProfile(this.importer.companyId, this.importer).subscribe(response => {
+  //       if (response) {
+  //         this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
+  //         window.location.reload();
+  //       } else {
+  //         this.toastr.error('Profile gagal dikemaskini', 'Error');
+  //       }
+  //     });
+  //   }
+    
+  //   this.router.navigateByUrl('profile');
+
+  // }
 
   // images
   handleFileInput(event: any) {

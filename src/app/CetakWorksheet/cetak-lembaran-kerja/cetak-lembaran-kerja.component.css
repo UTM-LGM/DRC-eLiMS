@@ -1,0 +1,70 @@
+.black {
+  color: white;
+  font-weight: 300;
+  background-color: #3e4141;
+}
+
+.attractive-title {
+  font-family: "Your Chosen Font", 'Helvetica,';
+  font-size: 36px;
+  color: #08864b;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+td,
+th :hover {
+  cursor: pointer;
+}
+
+
+tr.example-detail-row {
+  height: 0;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.center-table th,
+.center-table td {
+  text-align: center;
+}
+
+.text-box {
+  font-size: 13px;
+  padding: 4px 18px;
+  border-radius: 4px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.green-text {
+  color: #fff;
+  background-color: green;
+}
+
+.yellow-text {
+  color: #000;
+  background-color: yellow;
+}
+
+.orange-text {
+  color: #fff;
+  background-color: orange;
+}
+
+.red-text {
+  color: #fff;
+  background-color: red;
+}
+
+.buttonExcel {
+  background-color: #1d7a2e; 
+  color: #fff; 
+  padding: 10px 20px; /* Adjust padding for the button size */
+  border: none; /* Remove default button border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Add a pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth background color transition on hover */
+}

@@ -1,0 +1,236 @@
+.tableheader {
+    color: white;
+    font-weight: 300;
+    background-color: #3e4141;
+  }
+  
+  .black{
+    color: white;
+    font-weight: 300;
+    background-color: #3e4141;
+  }
+  
+  
+  .list-container {
+    max-height: 100%;
+    overflow: auto;
+  }
+  
+  .attractive-title {
+    font-family: "Your Chosen Font", 'Helvetica,';
+    font-size: 36px;
+    color: #08864b;
+    /* Or any color that fits your design */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    /* Add a subtle shadow effect */
+  }
+  
+  
+  .formContent {
+    /* border: 0px; */
+    box-shadow: 5px 10px 18px #888888;
+    /* padding: 2px; */
+    margin: 0px !important;
+    /* padding: 0px; */
+  }
+  
+  .add {
+      font-size: 18px !important;
+    }
+    #body {
+      white-space: wrap;
+    }
+    
+    .view {
+      color: rgb(56, 108, 185);
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    .delete {
+      color: rgb(191, 29, 29);
+      cursor: pointer;
+    }
+    
+    h5 {
+      padding-top: 0px !important;
+    }
+    
+    table {
+      width: 100%;
+    }
+    
+    .mat-form-field {
+      font-size: 14px;
+      width: 100%;
+    }
+    td.mat-cell,
+    th {
+      padding-right: 5px;
+      padding-left: 5px;
+    }
+    
+    td,
+    th {
+      /* width: 25%; */
+      font-size: 14px !important;
+      white-space: normal;
+      word-wrap: break-word;
+      max-width: 200px;
+    }
+  
+    td,th :hover{
+      cursor: pointer;
+    }
+    
+    .list-container {
+      max-height: 100%;
+      overflow: auto;
+    }
+    
+    .mat-paginator-sticky {
+      bottom: 0px;
+      position: sticky;
+      z-index: 10;
+    }
+    
+    .app-row:hover {
+      background-color: rgb(216, 216, 216);
+      cursor: pointer;
+    }
+  
+  
+    tr.example-detail-row {
+      height: 0;
+    }
+    
+    tr.example-element-row:not(.example-expanded-row):hover {
+      background: whitesmoke;
+    }
+    
+    tr.example-element-row:not(.example-expanded-row):active {
+      background: #efefef;
+    }
+    
+    .example-element-row td {
+      border-bottom-width: 0;
+    }
+    
+    .example-element-detail {
+      overflow: hidden;
+      display: flex;
+    }
+    
+    .example-element-description {
+      padding: 16px;
+    }
+    
+    .example-element-description-attribution {
+      opacity: 0.5;
+    }
+    
+  
+    .btn-circle-shadow {
+      background-color: white;
+      color: blue;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust shadow as needed */
+      /* display: flex; */
+      justify-content: center;
+      align-items: center;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .btn-circle-shadow:hover {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Adjust shadow on hover */
+    }
+    
+    .btn-circle-shadow i {
+      font-size: 24px; /* Adjust icon size as needed */
+    }
+    
+  
+  
+
+
+    /* view icon*/
+
+    .table-container {
+      overflow-x: auto;
+  }
+  
+  .icon-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .icon-table th,
+  .icon-table td {
+      padding: 15px;
+      text-align: left;
+  }
+  
+  .icon-table th {
+      background-color: #f7f7f7;
+  }
+  
+  .odd-row {
+      background-color: #f2f2f2;
+  }
+  
+  .even-row {
+      background-color: #e0e0e0;
+  }
+  
+  .icon-table .description {
+      font-weight: bold;
+  }
+  
+  .icon-table .icon-cell {
+      text-align: center;
+  }
+  
+  .icon-table button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      outline: none;
+  }
+  
+  .icon-table button i {
+      color: #337ab7; /* Adjust the color as needed */
+      font-size: 1.2rem;
+  }
+  
+  .icon-table button:hover i {
+      color: #23527c; /* Adjust the hover color as needed */
+  }
+  
+
+
+
+
+
+  .green-row {
+    background-color: #a8e6cf; /* Light green */
+  }
+  .yellow-row {
+    background-color: #fff9c4; /* Light yellow */
+  }
+  .red-row {
+    background-color: #ff8b94; /* Light red */
+  }
+  .orange-row {
+    background-color: #ffd3b6; /* Light orange */
+  }
+
+  .center-table th,
+  .center-table td {
+    text-align: center;
+  }
+  

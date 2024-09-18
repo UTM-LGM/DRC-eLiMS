@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import jsPDF from 'jspdf';
 import { Sample } from '../../models/sample';
-import { DrclimstrainingService } from '../../services/drclimstraining.service';
-import { GetahBongkahService } from '../../services/getah-bongkah.service';
 import { ElimsService } from '../../services/elims.service';
 import { K1Detail } from '../../models/k1Detail';
-import { K1Header } from '../../models/k1Header';
 import { AuthService } from '../../services/auth/auth.service';
 import { userDTO } from '../../models/userDTO';
 import { CetakLabelService } from '../cetak-label.service';
 import { UserService } from 'src/app/User/user.service';
 import { Staff } from 'src/app/models/staff';
 import * as QRCode from 'qrcode-generator';
+import { loginImporter } from 'src/app/models/loginImporters';
 
 @Component({
   selector: 'app-cetak-label',
@@ -21,38 +19,24 @@ import * as QRCode from 'qrcode-generator';
 export class CetakLabelComponent implements OnInit {
 
   samples: Sample[] = [];
-  k1Details: K1Detail[] = [];
-  selectedSamples: number[] = [];
-
   k1Detail: K1Detail = {} as K1Detail;
-  k1Header: K1Header = {} as K1Header;
   cetakSample: Sample = {} as Sample
-  sample: Sample = {} as Sample
   user: userDTO = {} as userDTO
   staff: Staff = {} as Staff
-
+  importer: loginImporter = {} as loginImporter
   checkAll: boolean = false
   lepassubmit: boolean = false
-
   mesYaTidak: any
-  sampleCode2: any
-  pdfUrl: string | null = null;
-  statusCode: number;
-  statusCode2: number;
-  sample1: any
   loginAs: any;
   latexSample: any
-  latex1: any
-  page: number = 1;
-  ip: number = 20;
-  roleId: any;
+  userRoleId: any;
   roleForwarder: boolean
   roleUip: boolean
-  username: string;
+  roleImporter: boolean
+  page: number = 1;
+  ip: number = 20;
 
   constructor(
-    private drclimstrainingService: DrclimstrainingService,
-    private getahBongkahService: GetahBongkahService,
     private elimsService: ElimsService,
     private authService: AuthService,
     private cetakLabelService: CetakLabelService,
@@ -64,14 +48,14 @@ export class CetakLabelComponent implements OnInit {
 
     if (this.authService.isloggedin()) {
       this.loginAs = this.authService.getSessionUsername()
-      this.roleId = this.authService.getSessionRole()
+      this.userRoleId = this.authService.getSessionRole()
       // console.log(this.loginAs)
     }
     else {
       this.loginAs = '';
     }
 
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       this.userService.GetUserInfo(this.loginAs).subscribe(res => {
         this.authService.changeUser(res);
         this.user = res
@@ -80,7 +64,19 @@ export class CetakLabelComponent implements OnInit {
         this.getUserElimsSamples(this.user)
       })
     }
-    else if (this.roleId == 2) {
+    else if (this.userRoleId == 3) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        console.log(res)
+        this.authService.changeUser(res);
+        this.importer = res
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleImporter = true
+        this.getImporterElimsSamples(this.importer)
+      })
+    }
+
+    else if (this.userRoleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         console.log(res)
         this.authService.changeUser(res);
@@ -102,6 +98,17 @@ export class CetakLabelComponent implements OnInit {
     },
     )
   }
+
+  getImporterElimsSamples(importer: loginImporter) {
+    console.log(importer.username)
+    this.elimsService.GetElimsSamplesByUsername(importer.username, 1).subscribe(data => {
+      this.samples = data;
+      this.latexSample = data
+      console.log(this.samples)
+    },
+    )
+  }
+
   getStaffElimsSamples(staff: Staff) {
     console.log(staff.username)
     this.elimsService.GetElimsSamplesByUsername(staff.username, 1).subscribe(data => {
@@ -127,7 +134,7 @@ export class CetakLabelComponent implements OnInit {
 
 
   checkSingleChanged() {
-    const selectedSamples = [];
+    const selectedSamples: Sample[] = [];
     for (const sample of this.samples) {
       if (sample.checked) {
         selectedSamples.push(sample);
@@ -144,7 +151,6 @@ export class CetakLabelComponent implements OnInit {
 
 
   generatePDFWithQRCode() {
-
     const selectedSamples = this.samples.filter(sample => sample.checked);
     if (selectedSamples.length === 0) {
       alert('Please select at least one sample.');
@@ -152,12 +158,12 @@ export class CetakLabelComponent implements OnInit {
     }
     const doc = new jsPDF();
     const pageHeight = doc.internal.pageSize.height;
-    const boxHeight = 35;
+    const boxHeight = 37;
     const boxWidth = 78;
     const qrCodeSize = 20;
-    const fontSize = 7;
-    let y = 12;
-    let x = 27;
+    const fontSize = 7.5;
+    let y = 15;
+    let x = 20;
 
     // Set font to Courier Monospace
     doc.setFont('courier', 'normal');
@@ -165,9 +171,6 @@ export class CetakLabelComponent implements OnInit {
     for (let i = 0; i < selectedSamples.length; i += 2) {
       const sample1 = selectedSamples[i];
       const sample2 = selectedSamples[i + 1];
-
-      // const latex1 = selectedLatex[i];
-      // const latex2 = selectedLatex[i + 1];
 
       // Check if boxes fit on the current page
       if (y + boxHeight > pageHeight - 20) {
@@ -186,11 +189,11 @@ export class CetakLabelComponent implements OnInit {
       // Create QR codes
       const qrCode1 = QRCode(0, 'L');
 
-      if (this.roleId == 1) {
+      if (this.userRoleId == 1 || this.userRoleId == 3) {
         qrCode1.addData(sample1.customNo);
       }
-      else if (this.roleId == 2) {
-        qrCode1.addData(sample1.customNo + "- UIP");
+      else if (this.userRoleId == 2) {
+        qrCode1.addData(sample1.customNo);
       }
 
       qrCode1.make();
@@ -200,10 +203,10 @@ export class CetakLabelComponent implements OnInit {
       if (sample2) {
         const qrCode2 = QRCode(0, 'L');
 
-        if (this.roleId == 1) {
+        if (this.userRoleId == 1 || this.userRoleId == 3) {
           qrCode2.addData(sample2.customNo);
-        } else if (this.roleId == '2') {
-          qrCode2.addData(sample2.customNo + "- UIP");
+        } else if (this.userRoleId == '2') {
+          qrCode2.addData(sample2.customNo);
         }
 
         qrCode2.make();
@@ -211,30 +214,31 @@ export class CetakLabelComponent implements OnInit {
       }
 
       // Add QR code images to PDF
-      doc.addImage(qrCodeImgData1, 'PNG', x + 1, y + 5, qrCodeSize, qrCodeSize);
+      doc.addImage(qrCodeImgData1, 'PNG', x + 1, y + 7, qrCodeSize, qrCodeSize);
       if (qrCodeImgData2) {
-        doc.addImage(qrCodeImgData2, 'PNG', x + boxWidth + 1, y + 5, qrCodeSize, qrCodeSize);
+        doc.addImage(qrCodeImgData2, 'PNG', x + boxWidth + 1, y + 7, qrCodeSize, qrCodeSize);
       }
 
       // Add text to PDF
       doc.setFontSize(fontSize);
 
 
-      if (this.roleId == 1) {
+      if (this.userRoleId == 1 || this.userRoleId == 3) {
         if (sample1.customNo) {
-          doc.text(`${sample1.customNo}`, x + 21, y + 5);
+          doc.text("*" + `${sample1.customNo} ` + "*", x + 21, y + 5);
         }
-      } else if (this.roleId == 2) {
+      } else if (this.userRoleId == 2) {
         if (sample1.customNo) {
           doc.text(`${sample1.customNo} - UIP`, x + 21, y + 5);
         }
       }
 
       if (sample1.samplePropose) {
-        doc.text(`${sample1.samplePropose}`, x + 21, y + 11);
+        doc.text(`${sample1.samplePropose}`, x + 21, y + 10);
       }
-      if (sample1.sampleType) {
-        doc.text(`${sample1.sampleType}`, x + 21, y + 17);
+
+      if (sample1.typeCode) {
+        doc.text(`${sample1.typeCode}`, x + 21, y + 14);
       }
 
       if (sample1.importedDate) {
@@ -244,32 +248,43 @@ export class CetakLabelComponent implements OnInit {
           month: '2-digit',
           year: 'numeric',
         });
-        doc.text(`${formattedDate1}`, x + 21, y + 23);
+        doc.text(`${formattedDate1}`, x + 21, y + 18);
       }
 
-      if (sample1.companyName || sample1.importerName) {
-        const lines = doc.splitTextToSize(sample1.companyName || sample1.importerName, 52);
-        doc.text(lines, x + 21, y + 28);
+
+      if (sample1.importerName) {
+        const lines = doc.splitTextToSize(sample1.importerName, 52);
+        doc.text(lines, x + 21, y + 22);
       }
 
+
+      if (this.userRoleId == 1 || this.userRoleId == 3) {
+        if (sample1.forwarderName) {
+          const lines = doc.splitTextToSize('FA : ' + sample1.forwarderName, 53);
+          doc.text(lines, x + 21, y + 29);
+        }
+      } else if (this.userRoleId == 2) {
+        const lines = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
+        doc.text(lines, x + 21, y + 29);
+      }
 
       if (sample2) {
 
-        if (this.roleId == 1) {
+        if (this.userRoleId == 1 || this.userRoleId == 3) {
           if (sample2.customNo) {
-            doc.text(`${sample2.customNo}`, x + boxWidth + 21, y + 5);
+            doc.text("*" + `${sample2.customNo}` + "*", x + boxWidth + 21, y + 5);
           }
-        } else if (this.roleId == 2) {
+        } else if (this.userRoleId == 2) {
           if (sample2.customNo) {
             doc.text(`${sample2.customNo} - UIP`, x + boxWidth + 21, y + 5);
           }
         }
         if (sample2.samplePropose) {
-          doc.text(`${sample2.samplePropose}`, x + boxWidth + 21, y + 11);
+          doc.text(`${sample2.samplePropose}`, x + boxWidth + 21, y + 10);
         }
 
-        if (sample2.sampleType) {
-          doc.text(`${sample2.sampleType}`, x + boxWidth + 21, y + 17);
+        if (sample2.typeCode) {
+          doc.text(`${sample2.typeCode}`, x + boxWidth + 21, y + 14);
         }
 
         if (sample2.importedDate) {
@@ -279,12 +294,24 @@ export class CetakLabelComponent implements OnInit {
             month: '2-digit',
             year: 'numeric',
           });
-          doc.text(`${formattedDate2}`, x + boxWidth + 21, y + 23);
+          doc.text(`${formattedDate2}`, x + boxWidth + 21, y + 18);
         }
 
-        if (sample2.companyName || sample2.importerName) {
-          const lines1 = doc.splitTextToSize(sample2.companyName || sample2.importerName, 52);
-          doc.text(lines1, x + boxWidth + 21, y + 28);
+        if (sample2.importerName) {
+          const lines1 = doc.splitTextToSize(sample2.importerName, 52);
+          doc.text(lines1, x + boxWidth + 21, y + 22);
+        }
+
+
+        if (this.userRoleId == 1 || this.userRoleId == 3) {
+          if (sample2.forwarderName) {
+            const lines1 = doc.splitTextToSize('FA : ' + sample2.forwarderName, 53);
+            doc.text(lines1, x + boxWidth + 21, y + 29);
+          }
+        }
+        if (this.userRoleId == 2) {
+          const lines1 = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
+          doc.text(lines1, x + boxWidth + 21, y + 29);
         }
 
       }
@@ -297,6 +324,7 @@ export class CetakLabelComponent implements OnInit {
   }
 
 
+  // after remove
   onYesClick() {
     this.k1Detail.labelPrintedOn = new Date();
     this.k1Detail.labelPrintedBy = this.loginAs;
@@ -304,33 +332,23 @@ export class CetakLabelComponent implements OnInit {
 
     this.cetakSample.labelPrintedOn = new Date();
     this.cetakSample.labelPrintedBy = this.loginAs;
-    this.cetakSample.labelPrinted = true;
 
     for (const sample of this.samples) {
       let id = sample.k1DetailId;
-      const rubberTypeId = sample.rubberTypeId
       if (this.checkAll || sample.checked) {
 
         this.cetakLabelService.Putk1DetailLabelTelahDicetak(id, this.k1Detail).subscribe(
           res => { this.mesYaTidak = "yes" }
         );
-
-        if (rubberTypeId == 2) {
-          this.getahBongkahService.PutBRLabelTelahDicetak(id, this.cetakSample).subscribe(
-            res => { this.mesYaTidak = "yes" }
-          );
-
-        } else if (rubberTypeId == 1) {
-          this.drclimstrainingService.PutLtxLabelTelahDicetak(id, this.cetakSample).subscribe(
-            res => { this.mesYaTidak = "yes" }
-          );
-        }
       }
     }
   }
 
+
+
   onNoClick() {
     this.mesYaTidak = "tidak"
   }
+
 
 }

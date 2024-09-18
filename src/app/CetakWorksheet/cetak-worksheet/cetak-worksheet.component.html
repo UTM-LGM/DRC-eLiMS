@@ -1,0 +1,21 @@
+<hr><br>
+<div align="end">
+    <button class="btn btn-primary" (click)="callGeneratePdf()" style="margin-right: 10px;"> <i
+            class="fa-solid fa-print" style="color: #ffffff;"></i> Cetak</button>
+</div><br>
+
+<div id="pdfContent">
+
+    <div *ngIf="k1Details[0].rubberTypeId == 2">
+        <div *ngFor="let k1Detail of k1Details">
+            <app-pdf-worksheet-br [k1Detail]="k1Detail"></app-pdf-worksheet-br>
+        </div>
+    </div>
+
+    <div *ngIf="k1Details[0].rubberTypeId == 1">
+        <div *ngFor="let k1Detail of k1Details">
+            <app-pdf-worksheet-ltx [k1Detail]="k1Detail"></app-pdf-worksheet-ltx>
+        </div>
+    </div>
+
+</div>

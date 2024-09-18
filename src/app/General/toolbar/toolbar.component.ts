@@ -25,7 +25,7 @@ export class ToolbarComponent {
       console.log("keluar");
       sessionStorage.removeItem('username');
       sessionStorage.removeItem('role');
-      sessionStorage.removeItem('roleId');
+      sessionStorage.removeItem('userRoleId');
       sessionStorage.removeItem('roleName');
       location.reload();
     }

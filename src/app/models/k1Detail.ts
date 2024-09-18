@@ -1,4 +1,5 @@
 export interface K1Detail {
+    details: any;
     find(arg0: (detail: { itemDescription: any; }) => boolean): unknown;
     showRemarks: any;
 
@@ -14,6 +15,7 @@ export interface K1Detail {
     sampleTypeId: number;
     rubberType: string;
     sampleType: string;
+    typeCode: string;
     labRefNo: string;
     customNo: string;
     quantity: number;
@@ -25,7 +27,7 @@ export interface K1Detail {
     createdBy: string;
     sentOn: Date;
     sentBy: string;
-    receivedOn: string;
+    receivedOn: Date;
     receivedBy: string;
     inLabOn: string;
     inLabBy: string;
@@ -35,6 +37,8 @@ export interface K1Detail {
     verifiedBy: string;
     printedOn: string;
     printedBy: string;
+    labelTestedOn: Date;
+    labelTestedBy: string;
     resultSentOn: string;
     resultSentBy: string;
     labelPrinted: boolean;
@@ -66,14 +70,49 @@ export interface K1Detail {
     itemDescription: string;
     tariffCode: string;
     tariffCodeNew: string;
-    statusCodeId:number;
-    sampleIdNew:number;
-    isSMK:boolean;
+    statusCodeId: number;
+    sampleIdNew: number;
+    isSMK: boolean;
     importerName: string;
     importerAddress: string;
     registrationSeqNo: string;
     sampleRunNo: string;
     creatorRoleId: number;
-    
+    grossWeight: number;
+    agentName: string;
+
+    dateSampleReceived: Date;
+    smkimportersCode: string;
+    testMethod: string;
+
+    worksheetTestOn: Date;
+
+
+    customOffice: string;
+    customAddress: string;
+    customPostcode: number;
+    forwarderPostcode: number;
+    importedDate: Date;
+    result: number;
+    chequeAmount: number;
+    bankName: string;
+    chequeNo: string;
+    date: string;
+    transactionNo: string;
+    ikmNo: string;
+    staffPosition: string;
+    uipRegNo: string;
+    staffName: string;
+    testMethodId: number;
+    prove : string;
+    catatan : string;
+    dateReceivedInLab : Date;
+    noLaporanTuan : string;
+
+     forwarderName: string;
+     forwarderAddress: string;
+
+     penimbang: number;
+     oven: number;
 
 }

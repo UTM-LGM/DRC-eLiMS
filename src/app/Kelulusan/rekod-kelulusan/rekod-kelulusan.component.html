@@ -1,0 +1,169 @@
+<div class="container mb-3">
+    <mat-card>
+        <mat-card-content>
+            <h1 class="attractive-title">Rekod Kelulusan</h1>
+            <div class="mat-card-container">
+
+                <!-- search by batchId -->
+                <div class="row form-group">
+                    <div class="col-sm-2">
+                        <label class="label_title">Batch ID:</label><br>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control readonly-input" id="batchId" [(ngModel)]="batchId">
+                    </div>
+                </div><br>
+
+                <mat-form-field>
+                    <mat-label>Filter</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="keyword" #input>
+                </mat-form-field>
+
+                <div style="text-align: right;">
+                    <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to Excel</button>
+                </div><br>
+                
+                <!-- List sample by batch -->
+                <div class="mat-elevation-z8">
+                    <div class="list-container">
+
+                        <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="center-table">
+
+                            <ng-container matColumnDef="batchId">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch Id </th>
+                                <td mat-cell *matCellDef="let row"> {{row.batchId}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="sampleCount">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Bil. Sampel</th>
+                                <td mat-cell *matCellDef="let row">{{row.sampleCount}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="rubberType">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Jenis Getah</th>
+                                <td mat-cell *matCellDef="let row"> {{row.rubberType}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="isFastTrack">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Laluan Pantas </th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{ row.isFastTrack ? 'YA' : 'TIDAK' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="forwarderName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Syarikat Penghantar </th>
+                                <td mat-cell *matCellDef="let row"> {{row.forwarderName}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="bankCode">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Bank</th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{row.bankCode}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="receipt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>No.Cek/Resit/Memo</th>
+                                <td mat-cell *matCellDef="let row">
+                                  <a *ngIf="row.creatorRoleId != 2 "
+                                    style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
+                                    (click)="viewReceipt(row.receipt,row.batchId)">{{row.receipt}}</a>
+                
+                                  <a *ngIf="row.creatorRoleId == 2"
+                                    style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
+                                    (click)="viewMemo(row.batchId)">memo</a>
+                                    {{row.chequeNo}}               
+                                </td>
+                              </ng-container>
+
+                            <ng-container matColumnDef="chequeAmount">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Amaun(RM)</th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{row.chequeAmount}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="sentOn">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarikh Hantar</th>
+                                <td mat-cell *matCellDef="let row">{{row.sentOn | date:"dd/MM/yyy"}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="expandedDetail">
+                                <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
+                                    <div class="example-element-detail"
+                                        [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+
+                                        <div class="example-element-description w-100">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr class="tableheader">
+                                                        <th class="black" scope="col">Select</th>
+                                                        <th class="black" scope="col">Sampel Id</th>
+                                                        <th class="black" scope="col">Ruj. Makmal</th>
+                                                        <th class="black" scope="col">No Kastam</th>
+                                                        <th class="black" scope="col">Syarikat</th>
+                                                        <th class="black" scope="col">Jenis</th>
+                                                        <th class="black" scope="col">Tarikh Import </th>
+                                                        <th class="black" scope="col">Tarikh Terima</th>
+                                                        <th class="black" scope="col">Kuantiti(kg)</th>
+                                                        <th class="black" scope="col">Keputusan Ujian</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let sample of row.samples; let i = index">
+                                                        <td>
+                                                            <a href="javascript:void(0)"
+                                                                (click)="sampleList(sample.k1DetailId)">Select</a>
+                                                        </td>
+                                                        <td>{{sample.k1DetailId}}</td>
+                                                        <td>{{sample.labRefNo}}</td>
+                                                        <td>{{sample.customNo}} </td>
+                                                        <td>{{sample.importerName}} </td>
+                                                        <td>{{sample.typeCode}}</td>
+                                                        <td>{{sample.importedDate | date:"dd/MM/yyy"}} </td>
+                                                        <td>{{sample.receivedOn | date:"dd/MM/yyy"}} </td>
+                                                        <td>{{sample.quantity}} </td>
+                                                        <td>{{ sample.result | number:'1.2-2' }}</td>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                            <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" class="example-element-row"
+                                [class.example-expanded-row]="expandedElement === row"
+                                (click)="expandedElement = expandedElement === row ? null : row">
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row">
+                            </tr>
+
+                        </table>
+                    </div>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="20"></mat-paginator>
+                </div><br>
+
+            </div>
+
+
+            <!--call detail keputusan -->
+            <app-detail-keputusan [k1Detail]="k1Detail" [result]="result"  [estimate1]="estimate1" [estimate2]="estimate2"  *ngIf="showForm"
+                [inputDisable]="!inputDisable" [inputKelulusan]="inputKelulusan"></app-detail-keputusan>
+
+                
+            <div class="col" *ngIf="showForm">
+                <button type="submit" class="btn btn-danger float-end" style="margin-left: 5px;" (click)="reject()">Reject</button>
+            </div>
+
+
+            <div class="col" *ngIf="showForm">
+                <button type="submit" class="btn btn-primary float-end" style="margin-left: 5px;"
+                    (click)="putApproved()">Lulus</button>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+</div>

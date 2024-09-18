@@ -92,7 +92,7 @@
                 </nav>
             </div> -->
 
-            <div *ngIf="roleForwarder || roleUip">
+            <div *ngIf="roleForwarder || roleUip || roleImporter">
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
                     aria-expanded="false" aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-file-circle-plus"></i></div>
@@ -154,6 +154,54 @@
                         <a class="nav-link" routerLink="/keputusan-ujian">Keputusan Ujian</a>
                     </nav>
                 </div>
+
+
+                <div *ngIf="roleUip">
+
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapse8"
+                        aria-expanded="false" aria-controls="collapse8">
+                        <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical"
+                                style="color: #f5f5f5;"></i></div>
+                        Laporan
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+
+
+                    <div>
+                        <div class="collapse" id="collapse8" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" routerLink="/laporan-bil-sampel">Jumlah Sampel</a>
+                            </nav>
+                        </div>
+                        <div class="collapse" id="collapse8" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" routerLink="/laporan-penguji">Laporan Penguji</a>
+                            </nav>
+                        </div>
+                        <div class="collapse" id="collapse8" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" routerLink="/laporan-statistik">Laporan Statistik</a>
+                            </nav>
+                        </div>
+                        <div class="collapse" id="collapse8" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" routerLink="/laporan-tahap-kecekapan">Tahap Kecekapan</a>
+                            </nav>
+                        </div>
+
+                        <div class="collapse" id="collapse8" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" routerLink="/laporan-kgk">Laporan KGK</a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <!-- <div *ngIf="roleUip">
@@ -172,12 +220,19 @@
             </div> -->
 
             <div *ngIf="roleGtacr">
+
+
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapse4"
                     aria-expanded="false" aria-controls="collapse4">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-horizontal"></i></div>
                     Daftar Terima Sampel
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
+                <div class="collapse" id="collapse4" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" routerLink="/tarikh-terima-sampel">Tarikh Terima Sampel</a>
+                    </nav>
+                </div>
                 <div class="collapse" id="collapse4" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" routerLink="/daftar-terima-sampel">Daftar Terima Sampel</a>
@@ -195,7 +250,7 @@
                     <nav class="sb-sidenav-menu-nested nav">
 
                         <a class="nav-link" routerLink="/cetak-lembaran-kerja">Cetak Lembaran Kerja</a>
-                        <a class="nav-link" routerLink="/">Ulang Cetak Lembaran Kerja</a>
+                        <a class="nav-link" routerLink="/ulang-cetak-lembaran-kerja">Ulang Cetak Lembaran Kerja</a>
                     </nav>
                 </div>
 
@@ -203,18 +258,50 @@
 
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapse6"
                     aria-expanded="false" aria-controls="collapse6">
-                    <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-horizontal" style="color: #f2f2f2;"></i></div>
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-horizontal"
+                            style="color: #f2f2f2;"></i></div>
                     Rekod Keputusan
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
                 <div class="collapse" id="collapse6" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
 
-                        <a class="nav-link" routerLink="/">Uji Sampel</a>
-                        <a class="nav-link" routerLink="/">Rekod Keputusan</a>
-                        <a class="nav-link" routerLink="/">Sah Keputusan</a>
+                        <a class="nav-link" routerLink="/uji-sampel">Uji Sampel</a>
+                        <a class="nav-link" routerLink="/rekod-keputusan">Rekod Keputusan</a>
+                        <a class="nav-link" routerLink="/sah-keputusan">Sah Keputusan</a>
                     </nav>
                 </div>
+
+
+
+
+
+
+
+
+                <div *ngIf="roleApprove">
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapse9"
+                        aria-expanded="false" aria-controls="collapse9">
+                        <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-horizontal"></i></div>
+                        Kelulusan
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapse9" aria-labelledby="headingOne"
+                        data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" routerLink="/rekod-kelulusan">Rekod Kelulusan</a>
+                        </nav>
+                    </div>
+                    <div class="collapse" id="collapse9" aria-labelledby="headingOne"
+                        data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" routerLink="/sampel-simpanan-lgm">Sampel Simpanan LGM</a>
+                        </nav>
+                    </div>
+
+                </div>
+
+
 
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapse7"
                     aria-expanded="false" aria-controls="collapse7">
@@ -225,27 +312,132 @@
                 <div class="collapse" id="collapse7" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
 
-                        <a class="nav-link" routerLink="/">Cetak Keputusan</a>
-                        <a class="nav-link" routerLink="/">Cetak Surat Keputusan</a>
-                        <a class="nav-link" routerLink="/">Pos Keputusan</a>
+                        <a class="nav-link" routerLink="/cetak-keputusan">Cetak Keputusan</a>
+                        <!-- <a class="nav-link" routerLink="/cetak-surat-keputusan">Cetak Surat Keputusan</a> -->
+                        <a class="nav-link" routerLink="/pos-keputusan">Pos Keputusan</a>
                     </nav>
                 </div>
+
+
+
+                <div *ngIf="roleApprove">
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapse10"
+                        aria-expanded="false" aria-controls="collapse10">
+                        <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-column"></i></div>
+                        Keputusan Ujian
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapse10" aria-labelledby="headingOne"
+                        data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" routerLink="/keputusan-ujian-pelulus">Keputusan Ujian</a>
+                        </nav>
+                    </div>
+                    <div class="collapse" id="collapse10" aria-labelledby="headingOne"
+                        data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" routerLink="/ulang-keputusan-ujian">Ulang Cetak Keputusan Ujian</a>
+                        </nav>
+                    </div>
+
+
+                </div>
+
+
 
 
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapse8"
                     aria-expanded="false" aria-controls="collapse8">
-                    <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical" style="color: #f5f5f5;"></i></div>
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-square-poll-vertical"
+                            style="color: #f5f5f5;"></i></div>
                     Laporan
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
+
+
+                <div *ngIf="roleApprove">
+                    <div class="collapse" id="collapse8" aria-labelledby="headingOne"
+                        data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" routerLink="/laporan-bil-sampel">Jumlah Sampel</a>
+                        </nav>
+                    </div>
+                    <div class="collapse" id="collapse8" aria-labelledby="headingOne"
+                        data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" routerLink="/laporan-penguji">Laporan Penguji</a>
+                        </nav>
+                    </div>
+                    <div class="collapse" id="collapse8" aria-labelledby="headingOne"
+                        data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" routerLink="/laporan-statistik">Laporan Statistik</a>
+                        </nav>
+                    </div>
+                    <!-- <div class="collapse" id="collapse8" aria-labelledby="headingOne"
+                        data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" routerLink="/laporan-kuantiti">Laporan Kuantiti</a>
+                        </nav>
+                    </div> -->
+                    <div class="collapse" id="collapse8" aria-labelledby="headingOne"
+                        data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" routerLink="/laporan-tahap-kecekapan">Tahap Kecekapan</a>
+                        </nav>
+                    </div>
+
+                    <div class="collapse" id="collapse8" aria-labelledby="headingOne"
+                        data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" routerLink="/laporan-kgk">Laporan KGK</a>
+                        </nav>
+                    </div>
+
+
+
+                </div>
+
+
                 <div class="collapse" id="collapse8" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-
-                        <a class="nav-link" routerLink="/">Keputusan Ujian</a>
+                        <a class="nav-link" routerLink="/keputusan-ujian">Carian</a>
                     </nav>
                 </div>
 
+
+
+
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapse11"
+                    aria-expanded="false" aria-controls="collapse9">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+                    Notis
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapse11" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+
+                        <a class="nav-link" routerLink="/notice">Tambah</a>
+                        <a class="nav-link" routerLink="/view-notice">Senarai</a>
+                        <!-- <a class="nav-link" routerLink="/show-notice">Papar</a> -->
+
+                    </nav>
+                </div>
+
+
+
+                <!-- <div class="collapse" id="collapse8" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" routerLink="/keputusan-ujian">laporan</a>
+                    </nav>
+                </div> -->
+
+
             </div>
+
+
+
+
 
             <!-- <div class="sb-sidenav-menu-heading">Addons</div>
             <a class="nav-link" href="charts.html">

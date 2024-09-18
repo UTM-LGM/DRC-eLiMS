@@ -1,0 +1,114 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #f2f2f2;
+  text-align: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.no-column {
+  width: 5%;
+}
+
+.title-column {
+  width: 20%;
+}
+
+.message-column {
+  width: 30%;
+}
+
+.document-column {
+  width: 25%;
+}
+
+.status-column {
+  width: 10%;
+}
+
+.action-column {
+  width: 10%;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.active-button {
+  background-color: green;
+  color: white;
+}
+
+.active-button:hover {
+  background-color: darkgreen;
+}
+
+.inactive-button {
+  background-color: red;
+  color: white;
+}
+
+.inactive-button:hover {
+  background-color: darkred;
+}
+
+.delete-button {
+  color: red;
+}
+
+.add-button {
+  position: absolute;
+  top: 50px;
+  right: 350px;
+}
+
+.custom-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.custom-link:hover {
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.notice-card {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.notice-card.removing {
+  animation: fadeOut 0.5s ease-out;
+}

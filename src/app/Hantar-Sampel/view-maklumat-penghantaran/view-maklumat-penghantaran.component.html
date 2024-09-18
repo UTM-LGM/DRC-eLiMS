@@ -1,0 +1,24 @@
+<div class="content-header  d-flex">
+</div><br>
+
+<p  *ngIf="!lepassubmit">Sila pilih batch Id untuk cetak </p>
+
+<mat-tab-group class="mb-2" *ngIf="!lepassubmit">
+  <mat-tab label="Batch Id yang belum dikemaskini">
+
+    <app-sajarah-penghantaran></app-sajarah-penghantaran>
+
+  </mat-tab>
+  <mat-tab label="Batch Id yang telah dikemaskini">
+
+    <app-maklumat-penghantaran (selectedSampleToSend)="receiveData($event)"></app-maklumat-penghantaran>
+
+  </mat-tab>
+</mat-tab-group>
+
+
+
+
+
+
+

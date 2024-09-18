@@ -2,16 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Sample } from '../../models/sample';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { ElimsService } from '../../services/elims.service';
-import { K1Detail } from '../../models/k1Detail';
 import { environment } from '../../environments/environment';
-import { K1Header } from '../../models/k1Header';
 import { AuthService } from '../../services/auth/auth.service';
-import { HttpClient } from '@angular/common/http';
 import { userDTO } from '../../models/userDTO';
 import { DaftarSampelService } from '../daftar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
 import { Staff } from 'src/app/models/staff';
+import { loginImporter } from 'src/app/models/loginImporters';
 
 @Component({
   selector: 'app-view-sample',
@@ -22,38 +19,25 @@ export class ViewSampleComponent implements OnInit {
 
 
   sample: Sample = {} as Sample;
-  k1Detail: K1Detail = {} as K1Detail;
-  k1Header: K1Header = {} as K1Header;
   user: userDTO = {} as userDTO
+  staff: Staff = {} as Staff
+  importer: loginImporter = {} as loginImporter
 
-  samplePropose: any = ['Pengecualian Ses (CE)', 'Lain-lain']
-  transportType: any = ['Pelabuhan', 'Darat']
-
-  companies: any
-  latexTypes: any
-  blockRubberTypes: any
   showLatexTypes: boolean = false
   showBlockRubberTypes: boolean = false
   showSmk: boolean = false
+  
   showRemarks: boolean;
-
-  quantity: number;
-  formattedQuantity: string;
-  formattedDRC: string;
-  numericQuantity: number
+  roleForwarder: boolean
+  roleUip: boolean
+  roleImporter: boolean
   loginAs: any;
-  username: any
-  selectedDate: string;
   notes: string;
   selectedDateSum: Date;
   customOffice: any
-
-  roleId: any;
-  roleForwarder: boolean
-  roleUip: boolean
-  staff: Staff = {} as Staff
-  batchId2: number
-
+  userRoleId: any;
+  creatorRoleId: any;
+  selectedK1DetailId: number;
 
   baseApiUrl = environment.baseApiUrl;
   baseApiUrlElimsEvidence = environment.baseApiUrlElimsEvidence;
@@ -76,29 +60,29 @@ export class ViewSampleComponent implements OnInit {
     }
   }
 
-  constructor
-    (private route: ActivatedRoute,
-      private elimsService: ElimsService,
+  constructor(
+      private route: ActivatedRoute,
       private location: Location,
       private authservice: AuthService,
-      private httpclient: HttpClient,
       private daftarSampelService: DaftarSampelService,
-      private authService: AuthService,
       private userService: UserService,
-
     ) { }
 
 
   ngOnInit() {
+
+    this.selectedK1DetailId = this.daftarSampelService.getSelectedK1DetailId();
+    console.log("select k1 detail id : ", this.selectedK1DetailId);
+
     if (this.authservice.isloggedin()) {
       this.loginAs = this.authservice.getSessionUsername()
-      this.roleId = this.authservice.getSessionRole()
+      this.userRoleId = this.authservice.getSessionRole()
       console.log(this.loginAs)
     }
     else {
       this.loginAs = '';
     }
-    if (this.roleId == 1) {
+    if (this.userRoleId == 1) {
       this.userService.GetUserInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.user = res
@@ -107,7 +91,7 @@ export class ViewSampleComponent implements OnInit {
 
       })
     }
-    else if (this.roleId == 2) {
+    else if (this.userRoleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.staff = res
@@ -116,16 +100,29 @@ export class ViewSampleComponent implements OnInit {
       })
     }
 
-    this.route.paramMap.subscribe({
-      next: (params) => {
-        const k1DetailId = params.get('k1DetailId');
+    else if (this.userRoleId == 3) {
+      this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
+        this.authservice.changeUser(res);
+        this.importer = res
+        console.log(res)
+        this.roleForwarder = false
+        this.roleUip = false
+        this.roleImporter = true
+      })
+    }
 
-        if (k1DetailId) {
-          this.daftarSampelService.GetElimsSample(parseInt(k1DetailId))
+
+    // this.route.paramMap.subscribe({
+    //   next: (params) => {
+    //     const k1DetailId = params.get('k1DetailId');
+
+        if (this.selectedK1DetailId) {
+          this.daftarSampelService.GetElimsSample(this.selectedK1DetailId)
             .subscribe(response => {
               this.sample = response;
               console.log(response);
-              this.onDate(this.sample.importedDate)
+              this.creatorRoleId = this.sample.creatorRoleId;
+              this.onDate(this.sample.importedDate);
               if (this.sample.isSMK) {
                 this.showSmk = true
               } else {
@@ -137,15 +134,11 @@ export class ViewSampleComponent implements OnInit {
               }
             });
         }
-      }
-    })
+      // }
+    // })
 
   }
 
-  isValidDate(dateStr: string): boolean {
-    const date = new Date(dateStr);
-    return date.toString() !== 'Invalid Date';
-  }
 
   goBack() {
     this.location.back();

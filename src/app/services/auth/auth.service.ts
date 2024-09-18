@@ -3,15 +3,21 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/app/environments/environment';
 import { Forwarder } from 'src/app/models/forwarder';
+import { loginForwarder } from 'src/app/models/loginForwarder';
+import { loginImporter } from 'src/app/models/loginImporters';
 import { register } from 'src/app/models/register';
 import { Role } from 'src/app/models/role';
 import { staffRole } from 'src/app/models/staffRole';
 import { userDTO } from 'src/app/models/userDTO';
+import { userRole } from 'src/app/models/userRole';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  getImporterInfo() {
+    throw new Error('Method not implemented.');
+  }
   setRedirectUrl(url: any) {
     throw new Error('Method not implemented.');
   }
@@ -46,15 +52,32 @@ export class AuthService {
       const requestBody = { username: username, password: password };
       return this.httpclient.post(url, requestBody);
     }
+    
+    else if (selectedRole == 3){
 
-    else if (selectedRole == 2 || 3) {
+      const url = `${this.baseApiUrl}/api/LoginImporters/Post/Login`;
+      const requestBody = { username: username, password: password };
+      return this.httpclient.post(url, requestBody);
+      
+    }
+
+    else if (selectedRole == 2 || 4) {
       const url = `${this.baseApiUrl}/api/Staffs/Post/Login`;
       const requestBody = { username: username, password: password };
       return this.httpclient.post(url, requestBody);
-    } else {
+    } 
+      
+    else {
       // Handle other cases or throw an error
       throw new Error('Invalid selectedRole');
     }
+
+  }
+
+
+  logout(): void {
+
+    window.location.href = '/login';
   }
 
 
@@ -66,13 +89,28 @@ export class AuthService {
         this.changeIsLoggedIn(true);
       });
     }
-    else if (selectedRole == 2 || 3) {
+
+
+        else if (selectedRole == 3){
+
+      this.httpclient.get<userDTO>(this.baseApiUrl + '/api/LoginImporters/GetLoginImporterByUsername/' + username).subscribe(x => {
+        console.log(x);
+        this.changeUser(x);
+        this.changeIsLoggedIn(true);
+      });
+
+    }
+
+    else if (selectedRole == 2 || selectedRole == 3) {
       this.httpclient.get<userDTO>(this.baseApiUrl + '/api/Staffs/GetStaffByUsername/' + username).subscribe(x => {
         console.log(x);
         this.changeUser(x);
         this.changeIsLoggedIn(true);
       });
     }
+    
+
+
   }
 
 
@@ -146,6 +184,10 @@ export class AuthService {
     return this.httpclient.get<any>(this.baseApiUrl + '/api/LoginForwarders/GetLoginForwarderByUsername/' + username)
   }
 
+  getImporter(username: string) {
+    return this.httpclient.get<any>(this.baseApiUrl + '/api/LoginImporters/GetLoginImporterByUsername/' + username)
+  }
+
   GetForwarderId(forwarderId: number) {
     return this.httpclient.get<any>(this.baseApiUrl + '/api/Forwarders/GetForwarderId/' + forwarderId)
   }
@@ -159,23 +201,33 @@ export class AuthService {
   }
 
   getSessionRole() {
-    return sessionStorage.getItem('role')
+    return sessionStorage.getItem('userRoleId')
   }
 
   GetForwarder(): Observable<Forwarder> {
     return this.httpclient.get<Forwarder>(this.baseApiUrl + '/api/Forwarders/GetForwarders');
   }
 
-  GetRoleById(roleId: number): Observable<Role> {
-    return this.httpclient.get<Role>(this.baseApiUrl + '/api/Roles/GetRoleById/' + roleId);
+  // GetRoleById(roleId: number): Observable<Role> {
+  //   return this.httpclient.get<Role>(this.baseApiUrl + '/api/Roles/GetRoleById/' + roleId);
+  // }
+
+  GetRoleById(roleId: number): Observable<userRole> {
+    return this.httpclient.get<userRole>(this.baseApiUrl + '/api/UserRoles/GetRoleById/' + roleId);
   }
 
-  GetRolesForLogin(): Observable<Role> {
-    return this.httpclient.get<Role>(this.baseApiUrl + '/api/Roles/GetRolesForLogin');
+
+  GetRolesForLogin(): Observable<userRole> {
+    return this.httpclient.get<userRole>(this.baseApiUrl + '/api/UserRoles/GetRolesForLogin');
   }
 
   GetStaffRolebyStaffId(staffId: number): Observable<staffRole[]> {
     return this.httpclient.get<staffRole[]>(this.baseApiUrl + '/api/StaffRoles/GetStaffRolebyStaffId/' + staffId);
+  }
+
+
+  GetImporterRole(username: string): Observable<loginImporter> {
+    return this.httpclient.get<loginImporter>(this.baseApiUrl + '/api/LoginImporter/GetLoginImporterByUsername/' + username);
   }
 
 }

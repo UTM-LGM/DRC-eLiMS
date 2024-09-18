@@ -15,6 +15,7 @@ import { Staff } from '../../models/staff';
 import { DaftarSampelService } from '../daftar-sampel.service';
 import { UserService } from 'src/app/User/user.service';
 import { StationCode } from 'src/app/models/stationCode';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-daftar-sampel',
@@ -33,18 +34,18 @@ export class DaftarSampelComponent implements OnInit {
   samplePropose: any = ['Pengecualian Ses (CE)', 'Lain-lain']
 
   showSampleTypes: boolean = false
+  showTypeCodes: boolean = false
   showDarat: boolean = false
   showPelabuhan: boolean = false
 
   formattedQuantity: string;
   //formattedDRC: string;
   numericQuantity: number
-
   companies: any
   countries: any
   latexTypes: any
   blockRubberTypes: any
-  sampleTypes: any
+  typeCodes: any
   rubberTypes: any
   file: any | null
   sampleForm: FormGroup;
@@ -89,8 +90,9 @@ export class DaftarSampelComponent implements OnInit {
       quantity: ['', Validators.required],
       hsCode: ['', Validators.required],
       rubberType: ['', Validators.required],
-      sampleType: ['', Validators.required],
-      companyId: ['', Validators.required],
+      // sampleType: ['', Validators.required],
+      typeCode: ['', Validators.required],
+      //companyId: ['', Validators.required],
       samplePropose: ['', Validators.required],
       transport: ['', Validators.required],
       lorryNo: ['', Validators.required],
@@ -128,7 +130,24 @@ export class DaftarSampelComponent implements OnInit {
         this.roleUip = false
 
         this.elimsService.GetCompanies(this.user.forwarderId).subscribe(data => {
-          this.companies = data
+          // this.companies = data
+          console.log(this.companies)
+          this.companies = data.filter(data => data.importerName != null);
+          console.log(this.companies)
+
+          this.companies.sort((a: { importerName: any; }, b: { importerName: any; }) => {
+            const companiesA = a.importerName;
+            const companiesB = b.importerName;
+    
+            // Compare the kodStesen values
+            if (companiesA < companiesB) {
+              return -1;
+            } else if (companiesA > companiesB) {
+              return 1;
+            } else {
+              return 0; // Kodstesen values are equal
+            }
+          });
         })
       })
 
@@ -186,6 +205,7 @@ export class DaftarSampelComponent implements OnInit {
     if (this.sampleForm.invalid) {
       this.toastr.warning('Sila isi semua ruangan yang diperlukan');
       return;
+      
     }
 
     const formData = new FormData();
@@ -199,7 +219,6 @@ export class DaftarSampelComponent implements OnInit {
 
     this.k1Detail.createdBy = this.loginAs;
 
-
     this.k1Detail.creatorRoleId = this.role
     this.k1Detail.customNo = customNo;
     this.k1Detail.drc = this.sample.drc;
@@ -209,9 +228,6 @@ export class DaftarSampelComponent implements OnInit {
     this.k1Detail.forwarderId = this.user.forwarderId;
     this.k1Detail.importerAddress = this.companies.address;
     this.k1Detail.createdOn = new Date();
-
-    // this.k1Detail.importerAddress = this.sample.importerAddress;
-
 
     this.sample.forwarderId = this.user.forwarderId;
     this.sample.createdOn = new Date();
@@ -233,54 +249,58 @@ export class DaftarSampelComponent implements OnInit {
     this.sample.driverName = this.k1Header.driverName;
     this.sample.icDriver = this.k1Header.icDriver;
     this.sample.rubberTypeId = this.k1Detail.rubberTypeId;
-    this.sample.sampleTypeId = this.k1Detail.sampleTypeId;
+    this.sample.typeCodeId = this.k1Detail.typeCodeId;
     this.sample.creatorRoleId = this.k1Detail.creatorRoleId;
     this.k1Header.companyId = this.sample.companyId;
 
 
     console.log(this.sample);
 
-    if (this.k1Detail.rubberTypeId == 1) {
-      this.daftarSampelService.PostK1HeaderSample(this.k1Header, statusCodeId).subscribe(res => {
-        this.k1Detail.k1HeaderId = res.k1HeaderId;
-        this.daftarSampelService.PostK1DetailSample(this.k1Detail, statusCodeId).subscribe(resDetail => {
-          this.sample.sampleIdNew = resDetail.k1DetailId;
-          this.drclimstrainingService.PostLtxSamples(this.sample, statusCodeId).subscribe(() => { });
-          this.daftarSampelService.PostFileK1Detail(resDetail.k1DetailId, this.file).subscribe(() => {
-            console.log('File uploaded successfully');
-          },
-            error => {
-              console.error('Error uploading file:', error);
-            })
+    // if (this.k1Detail.rubberTypeId == 1) {
+    //   this.daftarSampelService.PostK1HeaderSample(this.k1Header, statusCodeId).subscribe(res => {
+    //     this.k1Detail.k1HeaderId = res.k1HeaderId;
+    //     this.daftarSampelService.PostK1DetailSample(this.k1Detail, statusCodeId).subscribe(resDetail => {
+    //       this.sample.sampleIdNew = resDetail.k1DetailId;
+    
+    //       // Combining multiple observables to wait for all of them to complete
+    //       forkJoin([
+    //         this.drclimstrainingService.PostLtxSamples(this.sample, statusCodeId),
+    //         this.daftarSampelService.PostFileK1Detail(resDetail.k1DetailId, this.file)
+    //       ]).subscribe(() => {
+    //         console.log('All requests completed successfully');
+    //         this.router.navigate(['sample']);
+    //       }, error => {
+    //         console.error('Error:', error);
+    //         // Handle error
+    //       });
+    //     }, err => {
+    //       this.toastr.warning(' Nombor Kastam telah wujud', "", { timeOut: 15000 });
+    //     });
+    //   });
+    // } else if (this.k1Detail.rubberTypeId == 2) {
+    //   this.daftarSampelService.PostK1HeaderSample(this.k1Header, statusCodeId).subscribe(res => {
+    //     this.k1Detail.k1HeaderId = res.k1HeaderId;
+    //     this.daftarSampelService.PostK1DetailSample(this.k1Detail, statusCodeId).subscribe(resDetail => {
+    //       this.sample.sampleIdNew = resDetail.k1DetailId;
+    
+    //       // Combining multiple observables to wait for all of them to complete
+    //       forkJoin([
+    //         this.getahBongkahService.PostBRSamples(this.sample, statusCodeId),
+    //         this.daftarSampelService.PostFileK1Detail(resDetail.k1DetailId, this.file)
+    //       ]).subscribe(() => {
+    //         console.log('All requests completed successfully');
+    //         this.router.navigate(['sample']);
+    //       }, error => {
+    //         console.error('Error:', error);
+    //         // Handle error
+    //       });
+    //     }, err => {
+    //       this.toastr.warning(' Nombor Kastam telah wujud', "", { timeOut: 15000 });
+    //     });
+    //   });
+    // }
 
-          this.router.navigate(['sample']);
-        });
-      },
-        err => {
-          this.toastr.warning(' Nombor Kastam telah wujud', "", { timeOut: 15000 });
-        });
 
-
-    } else if (this.k1Detail.rubberTypeId == 2) {
-      this.daftarSampelService.PostK1HeaderSample(this.k1Header, statusCodeId).subscribe(res => {
-        this.k1Detail.k1HeaderId = res.k1HeaderId;
-        this.daftarSampelService.PostK1DetailSample(this.k1Detail, statusCodeId).subscribe(resDetail => {
-          this.sample.sampleIdNew = resDetail.k1DetailId;
-          this.getahBongkahService.PostBRSamples(this.sample, statusCodeId).subscribe(() => { });
-          this.daftarSampelService.PostFileK1Detail(resDetail.k1DetailId, this.file).subscribe(() => {
-            console.log('File uploaded successfully');
-          },
-            error => {
-              console.error('Error uploading file:', error);
-            })
-
-          this.router.navigate(['sample']);
-        });
-      },
-        err => {
-          this.toastr.warning(' Nombor Kastam telah wujud', "", { timeOut: 15000 });
-        });
-    }
   }
 
 
@@ -297,17 +317,17 @@ export class DaftarSampelComponent implements OnInit {
 
     if (e.target.value == 1) {
       this.elimsService.GetRefSampleTypeByRubberType(1).subscribe(data => {
-        this.sampleTypes = data
+        this.typeCodes = data
       })
 
     }
     else if (e.target.value == 2) {
       this.elimsService.GetRefSampleTypeByRubberType(2).subscribe(data => {
-        this.sampleTypes = data
+        this.typeCodes = data
       })
 
     }
-    this.showSampleTypes = true
+    this.showTypeCodes = true
 
   }
 

@@ -5,13 +5,11 @@
 
             <form #form="ngForm" (ngSubmit)="updateProfile()">
 
-                <div *ngIf="user" class="mat-card-container">
+                <div *ngIf="roleForwarder" class="mat-card-container">
 
                     <div class="row form-group">
                         <div class="col-sm-3">
-                            <label class="label_title">Nama pengguna<span class="required" style="color:red;">
-                                    *
-                                </span></label><br>
+                            <label class="label_title">Nama pengguna</label><br>
                             <label class="label_bi">Name</label>
                         </div>
                         <div class="col-sm-6">
@@ -110,23 +108,171 @@
                         </div>
                     </div><br>
 
-                </div>
-
-                <div *ngIf="staff" class="mat-card-container">
-
-                    <!-- <div class="row form-group">
+                    <div class="row form-group">
                         <div class="col-sm-3">
-                            <label class="label_title">Id Staff<span class="required" style="color:red;">
+                            <label class="label_title">Kod Agent<span class="required" style="color:red;">
                                     *
                                 </span></label><br>
-                            <label class="label_bi">Staff Id</label>
+                            <label class="label_bi">Agent Code</label>
                         </div>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="staffId" name="staffId"
-                                [(ngModel)]="staff.staffId" readonly>
+                            <input type="text" class="form-control" id="code" name="code"
+                                [(ngModel)]="forwarder.code">
                         </div>
+                    </div><br>
 
-                    </div><br> -->
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">No Lesen<span class="required" style="color:red;">
+                                    *
+                                </span></label><br>
+                            <label class="label_bi">License No</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="licenseNo" name="licenseNo"
+                                [(ngModel)]="forwarder.licenseNo">
+                        </div>
+                    </div><br>
+
+
+                </div>
+
+
+
+                <div *ngIf="roleImporter" class="mat-card-container">
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Nama pengguna</label><br>
+                            <label class="label_bi">Name</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="username" name="username"
+                                [(ngModel)]="importer.username" disabled>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Syarikat Pengimport<span class="required" style="color:red;">
+                                    *
+                                </span></label><br>
+                            <label class="label_bi">Importer Company</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="importer.name"
+                                readonly>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Alamat<span class="required" style="color:red;">
+                                    *
+                                </span></label><br>
+                            <label class="label_bi">Address</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="address" name="address"
+                                [(ngModel)]="importer.address">
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Poskod<span class="required" style="color:red;">
+                                    *
+                                </span></label><br>
+                            <label class="label_bi">Postcode</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="postcode" name="postcode"
+                                [(ngModel)]="importer.postcode">
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Faks<span class="required" style="color:red;">
+                                    *
+                                </span></label><br>
+                            <label class="label_bi">Fax</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="fax" name="fax" [(ngModel)]="importer.fax">
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">No. Telefon<span class="required" style="color:red;">
+                                    *
+                                </span></label><br>
+                            <label class="label_bi">Telephone No.</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="tel" name="tel" [(ngModel)]="importer.tel">
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Orang yang boleh Dihubungi<span class="required"
+                                    style="color:red;">
+                                    *
+                                </span></label><br>
+                            <label class="label_bi">Contact Person</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="contactPerson" name="contactPerson"
+                                [(ngModel)]="importer.contactPerson">
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">E-mel<span class="required" style="color:red;">
+                                    *
+                                </span></label><br>
+                            <label class="label_bi">Email</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="email" name="email"
+                                [(ngModel)]="importer.email">
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Kod Pengimport<span class="required" style="color:red;">
+                                    *
+                                </span></label><br>
+                            <label class="label_bi">Importer Code</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="SmkimportersCode" name="SmkimportersCode"
+                                [(ngModel)]="importer.smkimportersCode">
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">No Lesen<span class="required" style="color:red;">
+                                    *
+                                </span></label><br>
+                            <label class="label_bi">License No</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="licenseNo" name="licenseNo"
+                                [(ngModel)]="importer.licenseNo">
+                        </div>
+                    </div><br>
+
+
+                </div>
+
+                <div *ngIf="roleUip" class="mat-card-container">
 
                     <div class="row form-group">
                         <div class="col-sm-3">
@@ -223,14 +369,39 @@
                     </div><br>
 
                     <!-- <div class="row form-group">
-                        <div class="col-md-3 ">
-                          <label class="label_title">Signature</label>
+                        <div class="col-sm-3">
+                            <label class="label_bm">Kata Laluan Lama</label><br>
+                            <label class="label_bi">Old Password</label>
                         </div>
-                        <div class="col-md-6 ">
-                          <input type="file" class="form-control" id="Receipt" name="Receipt"
-                            (change)="handleFileInput($event)">
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" id="oldPassword" name="oldPassword" [(ngModel)]="staff.oldPassword">
                         </div>
-                      </div><br> -->
+                    </div><br>
+
+                    
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_bm">Kata Laluan Baru</label><br>
+                            <label class="label_bi">New Password</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" [(ngModel)]="staff.newPassword">
+                        </div>
+                    </div><br>
+                    
+                    
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_bm">Sahkan Kata Laluan Baru</label><br>
+                            <label class="label_bi">Confirm New Password</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" [(ngModel)]="staff.confirmPassword">
+                        </div>
+                    </div><br> -->
+                    
+
+
 
 
                     <div *ngIf="user" class="mat-card-container">

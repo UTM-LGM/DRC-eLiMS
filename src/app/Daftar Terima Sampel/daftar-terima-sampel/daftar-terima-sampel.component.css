@@ -1,0 +1,196 @@
+.tableheader {
+  color: white;
+  font-weight: 300;
+  background-color: #3e4141;
+}
+
+.black{
+  color: white;
+  font-weight: 300;
+  background-color: #3e4141;
+}
+
+
+.list-container {
+  max-height: 100%;
+  overflow: auto;
+}
+
+.attractive-title {
+  font-family: "Your Chosen Font", 'Helvetica,';
+  font-size: 36px;
+  color: #08864b;
+  /* Or any color that fits your design */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  /* Add a subtle shadow effect */
+}
+
+
+.formContent {
+  /* border: 0px; */
+  box-shadow: 5px 10px 18px #888888;
+  /* padding: 2px; */
+  margin: 0px !important;
+  /* padding: 0px; */
+}
+
+.add {
+    font-size: 18px !important;
+  }
+  #body {
+    white-space: wrap;
+  }
+  
+  .view {
+    color: rgb(56, 108, 185);
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  .delete {
+    color: rgb(191, 29, 29);
+    cursor: pointer;
+  }
+  
+  h5 {
+    padding-top: 0px !important;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  td.mat-cell,
+  th {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+  
+  td,
+  th {
+    /* width: 25%; */
+    font-size: 14px !important;
+    white-space: normal;
+    word-wrap: break-word;
+    max-width: 200px;
+  }
+
+  td,th :hover{
+    cursor: pointer;
+  }
+  
+  .list-container {
+    max-height: 100%;
+    overflow: auto;
+  }
+  
+  .mat-paginator-sticky {
+    bottom: 0px;
+    position: sticky;
+    z-index: 10;
+  }
+  
+  .app-row:hover {
+    background-color: rgb(216, 216, 216);
+    cursor: pointer;
+  }
+
+
+  tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  
+  .example-element-description {
+    padding: 16px;
+  }
+  
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }
+  
+
+  .btn-circle-shadow {
+    background-color: white;
+    color: blue;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust shadow as needed */
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn-circle-shadow:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Adjust shadow on hover */
+  }
+  
+  .btn-circle-shadow i {
+    font-size: 24px; /* Adjust icon size as needed */
+  }
+  
+
+
+
+  .center-table th,
+  .center-table td {
+    text-align: center;
+  }
+  
+
+
+  .striped-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .striped-table tr:nth-child(even):not(.detail-row) {
+    background-color: #df3f3f80;
+  }
+  
+  .striped-table th, .striped-table td {
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .detail-row {
+    background-color: #ff0808;
+  }
+  
+  .element-detail {
+    padding: 16px;
+    background-color: #dd0c0c;
+  }
+  
+  .buttonExcel {
+    background-color: #1d7a2e; 
+    color: #fff; 
+    padding: 10px 20px; /* Adjust padding for the button size */
+    border: none; /* Remove default button border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth background color transition on hover */
+  }
+  

@@ -1,0 +1,11 @@
+<div *ngFor="let notice of selectedNotice" class="notice-card">
+  <mat-card>
+    <mat-card-content>
+      <h3>{{ notice.title }}</h3>
+      <p>{{ notice.message }}</p><br>
+      <a *ngIf="notice.announcement" class="custom-link" (click)="viewFile(notice, notice.announcement)">
+        {{ notice.announcement }}
+      </a>
+    </mat-card-content>
+  </mat-card>
+</div>

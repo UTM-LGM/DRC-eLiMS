@@ -7,8 +7,10 @@ export class userDTO {
     customOfficeId: number;
     staffId: string;
     role: staffRole[];
-
+    code: string;
     name : string;
     address : string;
     importerAddress : string;
+    smkimporterCode : string;
+   companyId: number;
 }

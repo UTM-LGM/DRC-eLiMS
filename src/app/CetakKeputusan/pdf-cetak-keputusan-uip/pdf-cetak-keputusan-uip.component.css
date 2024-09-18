@@ -1,0 +1,91 @@
+body, p, th, td {
+    font-family: Arial, sans-serif;
+    font-size: 14pt;
+  }
+  
+  td, th, p {
+    font-size: 17px !important;
+    white-space: normal;
+  }
+  
+  .listTable td, .listTable th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 7px;
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 90%;
+  }
+  
+  .report-number {
+    position: fixed;
+    top: 20px; /* Adjust as needed */
+    left: 10px; /* Adjust as needed */
+    font-family: Arial, sans-serif;
+    font-size: 17px;
+  }
+  
+  .page-wrapper {
+    position: relative;
+    padding-top: 100px; /* Adjust this value to set space at the top of each page */
+    min-height: 100vh;
+  }
+  
+  .company-group {
+    page-break-before: always;
+    margin-top: 20px; /* Adjust to create space at the top of each page */
+  }
+  
+  .company-group.first-group {
+    page-break-before: auto;
+    margin-top: 0;
+  }
+  
+  .sample {
+    page-break-inside: avoid;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+    padding-left: 20px;
+  }
+  
+  .title-spacing {
+    margin-bottom: 20px;
+  }
+  
+  .signature {
+    margin-top: 100px; /* Adjust as needed */
+  }
+  
+  @media print {
+    .report-number {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: white;
+      padding: 10px 0;
+      border-bottom: 1px solid black;
+    }
+  
+    .page-wrapper {
+      padding-top: 120px; /* Adjust this value to set space at the top of each printed page */
+    }
+  
+    .company-group {
+      page-break-before: always;
+      margin-top: 20px; /* Adjust to create space at the top of each printed page */
+    }
+  
+    .company-group.first-group {
+      page-break-before: auto;
+      margin-top: 0;
+    }
+  
+    .signature {
+      margin-top: 50px; /* Adjust as needed for signature position */
+    }
+  }
+  

@@ -83,20 +83,141 @@
                             <h3>{{forwarder.email}}</h3>
                         </div>
                     </div><br>
-                </div>
 
-                <div *ngIf="staff" class="mat-card-container">
-                    <!-- <form #form="ngForm" (ngSubmit)="updateProfile()"> -->
-
-                    <!-- <div class="row form-group">
+                    <div class="row form-group">
                         <div class="col-sm-3">
-                            <label class="label_bm">Id Staff</label><br>
-                            <label class="label_bi">Staff Id</label>
+                            <label class="label_title">Kod Agent</label><br>
+                            <label class="label_bi">Agent Code</label>
                         </div>
                         <div class="col-sm-6">
-                            <h3>{{staff.staffId}}</h3>
+                            <h3>{{forwarder.code}}</h3>
                         </div>
-                    </div><br> -->
+                    </div><br>
+
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">No.Lesen</label><br>
+                            <label class="label_bi">License No</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{forwarder.licenseNo}}</h3>
+                        </div>
+                    </div><br>
+
+                </div>
+
+
+
+
+                <div *ngIf="importer" class="mat-card-container">
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Nama Pengguna</label><br>
+                            <label class="label_bi">Username</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{importer.username}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Syarikat Pengimport</label><br>
+                            <label class="label_bi">Agent forwarder</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{importer.name}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Alamat</label><br>
+                            <label class="label_bi">Address</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{importer.address}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Poskod</label><br>
+                            <label class="label_bi">Postcode</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{importer.postcode}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Faks</label><br>
+                            <label class="label_bi">Fax</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{importer.fax}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">No. Telefon</label><br>
+                            <label class="label_bi">Telephone No.</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{importer.tel}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Orang yang boleh Dihubungi </label><br>
+                            <label class="label_bi">Contact Person</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{importer.contactPerson}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">E-mel</label><br>
+                            <label class="label_bi">Email</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{importer.email}}</h3>
+                        </div>
+                    </div><br>
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Kod Pengimport</label><br>
+                            <label class="label_bi">Importer Code</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{importer.smkimportersCode}}</h3>
+                        </div>
+                    </div><br>
+
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">No.Lesen</label><br>
+                            <label class="label_bi">License No</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{importer.licenseNo}}</h3>
+                        </div>
+                    </div><br>
+
+                </div>
+
+
+
+
+                <div *ngIf="staff" class="mat-card-container">
 
                     <div class="row form-group">
                         <div class="col-sm-3">
@@ -162,7 +283,7 @@
                     <div class="row form-group">
                         <div class="col-sm-3">
                             <label class="label_title">Unit</label><br>
-                            <label class="label_bi">Unit.</label>
+                            <label class="label_bi">Unit</label>
                         </div>
                         <div class="col-sm-6">
                             <h3>{{staff.unit}}</h3>
@@ -171,14 +292,59 @@
 
                     <!-- <div class="row form-group">
                         <div class="col-sm-3">
+                            <label class="label_title">Kata Laluan Lama</label><br>
+                            <label class="label_bi">Old Password</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{staff.unit}}</h3>
+                        </div>
+                    </div><br>
+
+
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Kata Laluan Baru</label><br>
+                            <label class="label_bi">New Password</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{staff.unit}}</h3>
+                        </div>
+                    </div><br>
+
+                    
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_title">Kata Laluan Baru</label><br>
+                            <label class="label_bi">Confirm New password</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>{{staff.unit}}</h3>
+                        </div>
+                    </div><br> -->
+
+
+                    <!-- <div class="row form-group">
+                        <div class="col-sm-3">
                             <label class="label_bm">Tandatangan</label><br>
                             <label class="label_bi">Signature</label>
                         </div>
                         <div class="col-sm-8">
-                            <a style="color: rgb(10, 94, 189); cursor: pointer; text-decoration: underline;"
-                              (click)="viewSign(staff.signature)">{{staff.signature}}</a>
-                          </div>
-                    </div><br> -->
+                            <a style="color: rgb(10, 96, 189); cursor: pointer;text-decoration: underline;"(click)="viewSign(staff.signature)">{{staff.signature}}</a>
+                        </div>
+                    </div> -->
+                    
+                    
+
+                    <!-- <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label class="label_bm">Tandatangan</label><br>
+                            <label class="label_bi">Signature</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <img src="https://api02.lgm.gov.my/ApiElims/wwwroot/signature/sign_ezmy.jpg" alt="sign_ezmy" style="width: 100px; height: auto;">
+                        </div>
+                    </div> -->
+                    
 
 
                 </div>

@@ -1,0 +1,109 @@
+<div class="container mb-3">
+  <mat-card>
+    <mat-card-content>
+
+      <h1 class="attractive-title">Laporan Penguji</h1>
+      <div class="mat-card-container">
+
+        <span><br>
+          <div class="row form-group">
+            <div class="col-sm-2">
+              <label>Tarikh</label><br>
+            </div>
+            <div class="col-sm-2">
+              <label for="startDate" class="label_bm">Dari:</label>
+              <input type="date" id="startDate" class="form-control" [(ngModel)]="fromDate">
+            </div>
+            <div class="col-sm-2">
+              <label for="endDate" class="label_bm">Hingga:</label>
+              <input type="date" id="endDate" class="form-control" [(ngModel)]="toDate">
+            </div>
+          </div>
+          <br>
+        </span>
+
+        <div class="row form-group">
+          <div class="col-lg-2">
+            <label>Nama Penguji :</label><br>
+          </div>
+          <div class="col-lg-4">
+            <select class="form-select" name="inLabBy" id="inLabBy" [(ngModel)]="k1Detail.inLabBy">
+              <option class="pilih" value="default">--Pilih--</option>
+              <option *ngFor="let role of roles" [value]="role.username">
+                {{role.staffName}}
+              </option>
+            </select>
+          </div>
+          <div class="col-lg-2">
+            <button type="submit" class="btn btn-primary" style="margin-left: 5px;"
+              (click)="searchSample()">Cari</button>
+          </div>
+        </div><br>
+
+
+        <!-- List statistics table -->
+        <div *ngIf="isSearched">
+          <p>Statistik : </p>
+          <div *ngIf="sampleCounts">
+
+            <div class="row">
+              <div class="col-6">
+                <table>
+
+                  <tr>
+                    <td>Bil sampel Daftar Terima</td>
+                    <td>
+                      : {{sampleCounts.countReceivedOn}}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Bil sampel yang sedang diuji</td>
+                    <td>
+                      : {{sampleCounts.countInLabOn}}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Bil sampel yang telah diuji</td>
+                    <td>
+                      : {{sampleCounts.countTestedOn}}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Bil sampel yang telah disahkan</td>
+                    <td>
+                      : {{sampleCounts.countVerifiedOn}}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Bil sampel yang dipos</td>
+                    <td>
+                      : {{sampleCounts.countResultSentOn}}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Bil sampel yang dicetak</td>
+                    <td>
+                      : {{sampleCounts.countPrintedOn}}
+                    </td>
+                  </tr>
+
+                </table>
+
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="sampleCounts.length === 0">
+            No results found.
+          </div>
+        </div>
+
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

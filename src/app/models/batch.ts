@@ -1,4 +1,8 @@
 export interface Batch {
+    checked: boolean;
+
+    samples: any;
+
     staffId(staffId: any): unknown;
     runNo: string;
 
@@ -36,6 +40,26 @@ export interface Batch {
     quantity: number;
 
     forwarderName: string;
-    unitName:string;
+    unitName: string;
+    suratIringan: string;
+    testMethodId: number;
+    testMethod: string;
+    isFastTrack: boolean;
+    memoPrinted: boolean;
+    statusCodeId: number;
+    position: string;
+    rubberTypeId: number;
+    k1DetailId: number;
 
+    receivedOn: string;
+    batchPrinted: boolean;
+    daysSinceReceived : number;
+    approvedOn : Date;
+
+    postResultOn : Date;
+    postResultDelivery : string;
+    postResultCourierServices : string;
+    postResultTrackingNo : string;
+    inLabBy : string;
+    creatorRoleId: number;
 }

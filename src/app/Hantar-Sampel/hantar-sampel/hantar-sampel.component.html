@@ -3,6 +3,7 @@
     <h1 class="attractive-title">Hantar Sampel</h1>
     <mat-card-content>
 
+      <!-- maklumat unit pemohon uip  -->
       <div *ngIf="roleUip">
         <h2>Maklumat Unit Pemohon</h2>
 
@@ -30,28 +31,103 @@
         <h4 class="card-header">Sila pilih sampel untuk Dihantar</h4>
 
         <div class="card-body">
-          <p class="card-text"><b><i>**Hanya sampel yang telah berjaya dive cetak labelnya akan dipapar
+          <p class="card-text"><b><i>**Hanya sampel yang telah berjaya dicetak labelnya akan dipapar
                 disini.</i><br></b><br>
 
-          <div *ngIf="roleUip">
+
+            <!-- jenis getah -->
+          <div>
             <div class="row form-group">
               <div class="col-md-2">
-                <label class="label_title">Jenis Getah</label>
+                <label class="label_title">Jenis Getah<span class="required" style="color:red;">*</span></label><br>
+                <label class="label_bi">Rubber Type</label>
               </div>
               <div class="col-md-4">
 
                 <label class="radio-label">
                   <input type="radio" name="rubberType" [(ngModel)]="selectedRubberType" value="Lateks"
-                    [disabled]="checkboxSelected" (change)="filterSamplesByRubberType()"> Lateks
+                    [disabled]="checkboxSelected" (change)="filterSamplesByRubberType($event)"
+                    (change)="setDefaultTestMethod()"> Lateks
                 </label>
                 <label class="radio-label">
                   <input type="radio" name="rubberType" [(ngModel)]="selectedRubberType" value="Getah Bongkah"
-                    [disabled]="checkboxSelected" (change)="filterSamplesByRubberType()"> Getah Bongkah
+                    [disabled]="checkboxSelected" (change)="filterSamplesByRubberType($event)"
+                    (change)="setDefaultTestMethod()"> Getah Bongkah
                 </label>
               </div>
             </div>
+          </div><br>
+
+          <div *ngIf="roleForwarder || roleImporter">
+
+            <!-- laluan pantas -->
+            <div>
+              <div class="row form-group">
+                <div class="col-md-2">
+                  <label class="label_title">Laluan Pantas<span class="required" style="color:red;">*</span></label><br>
+                  <label class="label_bi">Fast Track</label>
+                </div>
+                <div class="col-md-4">
+                  <div class="radio-label">
+                    <label class="radio-label">
+                      <input type="radio" name="isFastTrack" [value]="true" [(ngModel)]="batch.isFastTrack"
+                        (change)="calculateAmount()"> Ya
+                    </label>
+
+                    <label class="radio-label">
+                      <input type="radio" name="isFastTrack" [value]="false" [(ngModel)]="batch.isFastTrack"
+                        (change)="calculateAmount()"> Tidak
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div><br>
+
+
+            <div *ngIf="batch.isFastTrack">
+              <div class="alert alert-info" role="alert">
+                Bayaran ujian Dua Kali Ganda dan keputusan ujian disediakan dalam tempoh 5-7 hari bekerja.
+              </div>
+            </div>
+
+            <!-- syarikat Pengimport -->
+            <div class="row form-group">
+              <div class="col-md-2">
+                <label class="label_title">Syarikat Pengimport</label><br>
+                <label class="label_bi">Importer Company</label>
+              </div>
+              <div class="col-md-4">
+                <select (change)="filterSamplesByCompany($event)" class="form-select" name="importerName"
+                  id="importerName" [(ngModel)]="selectedCompanyName">
+                  <option class="pilih" value="default">--Pilih--</option>
+                  <option *ngFor="let company of companies">
+                    {{company}}
+                  </option>
+                </select>
+              </div>
+            </div><br>
+
+
+            <!-- Kaedah Ujian -->
+            <div class="row form-group">
+              <div class="col-lg-2">
+                <label class="label_title">Kaedah Ujian <span class="required" style="color:red;">*</span></label><br>
+                <label class="label_bi">Test Method</label>
+              </div>
+              <div class="col-lg-4">
+                <select class="form-select readonly-input" name="TestMethodId" id="TestMethodId"
+                  [(ngModel)]="batch.testMethodId" (change)="calculateAmount()" required>
+                  <option class="pilih" value="default" disabled>--Pilih--</option>
+                  <option *ngFor="let testMethod of testMethods" [value]="testMethod.id">
+                    {{testMethod.testMethod}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
           </div>
         </div>
+
 
         <!-- Checkbox table -->
         <div class="card-body table-responsive p-4">
@@ -69,11 +145,12 @@
                   <th scope="col">Tarikh Import</th>
                   <th scope="col">Jenis Getah</th>
                   <th scope="col">Kuantiti(kg)</th>
-                  <th scope="col">Syarikat Pengimport</th>
+                  <th *ngIf="roleForwarder || roleUip" scope="col">Syarikat Pengimport</th>
+                  <th scope="col" *ngIf="roleImporter">Syarikat Penghantar</th>
                 </tr>
               </thead>
 
-              <tbody *ngIf="roleUip">
+              <tbody>
                 <tr *ngFor="let sample of filteredSamples, let i = index">
                   <th scope="row">
                     <input type="checkbox" [(ngModel)]="sample.checked" [value]="sample.k1HeaderId"
@@ -82,27 +159,12 @@
                   <td>{{i + 1}}</td>
                   <td>{{sample.customNo}}</td>
                   <td>{{sample.importedDate | date: 'dd-MM-yyyy' }}</td>
-                  <td>{{sample.sampleType}}</td>
+                  <td>{{sample.typeCode}}</td>
                   <td>{{sample.quantity}}</td>
-                  <td>{{sample.importerName }}{{ sample.companyName }}</td>
+                  <td *ngIf="roleForwarder || roleUip">{{ sample.importerName }}</td>
+                  <td *ngIf="roleImporter">{{ sample.agentName }}</td>
                 </tr>
               </tbody>
-
-              <tbody *ngIf="roleForwarder">
-                <tr *ngFor="let latex of latexSample, let sample of samples; let i = index">
-                  <th scope="row">
-                    <input type="checkbox" [(ngModel)]="sample.checked" [value]="sample.k1HeaderId"
-                      (change)="checkSingleChanged();updateSelectedCheckboxCount();">
-                  </th>
-                  <td>{{i+1}}</td>
-                  <td>{{sample.customNo}}</td>
-                  <td>{{sample.importedDate | date: 'dd-MM-yyyy' }}</td>
-                  <td>{{sample.sampleType}}</td>
-                  <td>{{sample.quantity}}</td>
-                  <td>{{ sample.importerName }}{{ sample.companyName }}</td>
-                </tr>
-              </tbody>
-
             </table>
           </div>
         </div>
@@ -110,7 +172,7 @@
       </div><br>
 
       <!-- Maklumat Penghantaran Batch Based on CEK or EFT -->
-      <div class="d-flex justify-content-center" *ngIf="roleForwarder">
+      <div class="d-flex justify-content-center" *ngIf="roleForwarder || roleImporter">
 
         <div *ngIf="!hantarSampel" class="card col-lg-8 shadow-sm">
           <h4 class="card-header">Maklumat Penghantaran Batch</h4>
@@ -118,8 +180,7 @@
 
             <div class="row form-group">
               <div class="col-md-4 ">
-                <label class="label_title">Cara Pembayaran <span class="required"
-                  style="color:red;">*</span></label>
+                <label class="label_title">Cara Pembayaran <span class="required" style="color:red;">*</span></label>
               </div>
               <div class="col-md-8  ">
                 <label class="radio-label">
@@ -137,8 +198,7 @@
               <div>
                 <div class="row form-group">
                   <div class="col-md-4 ">
-                    <label class="label_title">Kod Bank <span class="required"
-                      style="color:red;">*</span></label>
+                    <label class="label_title">Kod Bank <span class="required" style="color:red;">*</span></label>
                   </div>
                   <div class="col-md-8  ">
                     <select class="form-control" name="bankCode" id="bankCode" [(ngModel)]="batch.bankCode">
@@ -151,8 +211,7 @@
 
                 <div class="row form-group">
                   <div class="col-md-4 ">
-                    <label class="label_title">No Cek <span class="required"
-                      style="color:red;">*</span></label>
+                    <label class="label_title">No Cek <span class="required" style="color:red;">*</span></label>
                   </div>
                   <div class="col-md-8 ">
                     <input type="string" class="form-control" id="chequeNo" name="chequeNo"
@@ -163,7 +222,7 @@
                 <div *ngIf="selectedSamples.length > 0" class="row form-group">
                   <div class="col-md-4 ">
                     <label class="label_title">Jumlah (RM)</label><br>
-                    <label class="label_bi">Termasuk sst 6%</label>
+                    <label class="label_bi">Termasuk sst 8%</label>
                   </div>
                   <div class="col-md-8 ">
                     <span><input type="text" class="form-control" id="chequeAmount" name="chequeAmount"
@@ -176,8 +235,7 @@
               <div>
                 <div class="row form-group">
                   <div class="col-md-4 ">
-                    <label class="label_title">Kod Bank <span class="required"
-                      style="color:red;">*</span></label>
+                    <label class="label_title">Kod Bank <span class="required" style="color:red;">*</span></label>
                   </div>
                   <div class="col-md-8  ">
                     <select class="form-control" name="bankCode" id="bankCode" [(ngModel)]="batch.bankCode">
@@ -190,8 +248,7 @@
 
                 <div class="row form-group">
                   <div class="col-md-4 ">
-                    <label class="label_title">No. Transaksi <span class="required"
-                      style="color:red;">*</span></label>
+                    <label class="label_title">No. Transaksi <span class="required" style="color:red;">*</span></label>
                   </div>
                   <div class="col-md-8 ">
                     <input type="string" class="form-control" id="TransactionNo" name="TransactionNo"
@@ -201,8 +258,7 @@
 
                 <div class="row form-group">
                   <div class="col-md-4 ">
-                    <label class="label_title">Tarikh <span class="required"
-                      style="color:red;">*</span></label>
+                    <label class="label_title">Tarikh <span class="required" style="color:red;">*</span></label>
                   </div>
                   <div class="col-md-8 ">
                     <input type="date" class="form-control" id="date" name="date" [(ngModel)]="batch.date" />
@@ -212,8 +268,7 @@
 
               <div class="row form-group">
                 <div class="col-md-4 ">
-                  <label class="label_title">Resit <span class="required"
-                    style="color:red;">*</span></label>
+                  <label class="label_title">Resit <span class="required" style="color:red;">*</span></label>
                 </div>
                 <div class="col-md-8 ">
                   <input type="file" class="form-control" id="Receipt" name="Receipt"
@@ -223,6 +278,17 @@
               </div>
               <br>
 
+
+              <div *ngIf="selectedSamples.length > 0" class="row form-group">
+                <div class="col-md-4 ">
+                  <label class="label_title">Jumlah (RM)</label><br>
+                  <label class="label_bi">Termasuk sst 6%</label>
+                </div>
+                <div class="col-md-8 ">
+                  <span><input type="text" class="form-control" id="chequeAmount" name="chequeAmount"
+                      [(ngModel)]="batch.chequeAmount" [placeholder]="chequeAmount" readonly disabled></span>
+                </div>
+              </div>
             </div><br>
 
             <div class="col-md-8  d-flex flex-row-reverse">
@@ -235,6 +301,7 @@
         </div>
       </div>
 
+
       <!-- Next page when choose cek -->
       <div *ngIf="hantarSampel && selectedOption == 'CEK'">
         <div class="card">
@@ -244,7 +311,7 @@
             <div>
               Bank: {{batch.bankCode}}<br>
               No Cek : {{batch.chequeNo}}<br>
-              Amaun(RM) : RM {{batch.chequeAmount}}.00<br>
+              Amaun(RM) : RM {{batch.chequeAmount}}<br>
             </div>
           </div>
         </div><br>
@@ -260,6 +327,7 @@
               Bank: {{batch.bankCode}}<br>
               Transaksi No : {{batch.transactionNo}}<br>
               Tarikh : {{batch.date}}<br>
+              Amaun(RM) : RM {{batch.chequeAmount}}<br>
               Receipt : <a style="color: rgb(10, 94, 189); cursor: pointer;text-decoration: underline;"
                 (click)="viewFile(batch.receipt)">{{batch.receipt}}</a><br>
 
@@ -268,6 +336,7 @@
         </div><br>
       </div>
 
+      <!-- senarai Sampel -->
       <div *ngIf="hantarSampel">
         <table>
           <tr>
@@ -276,23 +345,25 @@
             <th scope="col">Tarikh Import</th>
             <th scope="col">Jenis Getah</th>
             <th scope="col">Kuantiti(kg)</th>
-            <th scope="col">Syarikat Pengimport</th>
+            <th *ngIf="roleForwarder || roleUip" scope="col">Syarikat Pengimport</th>
+            <th scope="col" *ngIf="roleImporter">Syarikat Penghantar</th>
 
           </tr>
           <tr *ngFor="let sample of samples; let i = index">
             <td>{{ i + 1 }}</td>
             <td>{{sample.customNo}}</td>
             <td>{{sample.importedDate | date: 'dd-MM-yyyy' }}</td>
-            <td>{{sample.sampleType}}</td>
+            <td>{{sample.typeCode}}</td>
             <td>{{sample.quantity}}</td>
-            <td>{{ sample.importerName }}{{ sample.companyName }}</td>
+            <td *ngIf="roleForwarder || roleUip">{{ sample.importerName }}</td>
+            <td *ngIf="roleImporter">{{ sample.agentName }}</td>
           </tr>
         </table>
         <br>
-
-
       </div>
 
+
+      <!-- Maklumat Barangan/Perkhidmatan Diperlukan UIP -->
       <div *ngIf="roleUip">
         <h2>Maklumat Barangan/Perkhidmatan Diperlukan</h2>
 
@@ -323,15 +394,15 @@
 
       </div>
 
+      <!-- Button Sah Penghantaran -->
       <div *ngIf="hantarSampel">
-        <button type="submit" class="btn btn-primary btn-block"  [disabled]="sahPenghantaranClicked" (click)="sahPenghantaran(batchData)" color="red"
-          style="margin-left: 5px;">Sah
+        <button type="submit" class="btn btn-primary btn-block" [disabled]="sahPenghantaranClicked"
+          (click)="sahPenghantaran(batchData)" color="red" style="margin-left: 5px;">Sah
           Penghantaran</button>
         <button type="submit" class="btn btn-primary btn-block" (click)="back()" color="red"
           style="margin-left: 5px;">Kembali ke Pilihan
           Sampel Getah</button>
       </div>
-
 
 
       <div *ngIf="mesYaTidak=='yes'">
@@ -351,25 +422,35 @@
 
 
 
-
       <div class="card" *ngIf="hantarSampel">
 
-
+        <!-- surat iringan dan lampiran -->
         <h4 class="card-header">Cetakan Surat</h4>
 
-        <div class="card-body" *ngIf="roleForwarder">
-          <button type="submit" class="btn btn-primary btn-block" [disabled]="!sahPenghantaranClicked" (click)="suratIringan(batchData)" color="red"
-            style="margin-left: 5px;">Surat
+        <div class="card-body" *ngIf="roleForwarder || roleImporter">
+          <button type="submit" class="btn btn-primary btn-block" [disabled]="!sahPenghantaranClicked"
+            (click)="suratIringan(batchData)" color="red" style="margin-left: 5px;">Surat
             Iringan</button>
-          <button type="submit" class="btn btn-primary btn-block" [disabled]="!sahPenghantaranClicked" color="red" (click)="lampiran(batchData)"
-            style="margin-left: 5px;">Lampiran</button>
+          <button type="submit" class="btn btn-primary btn-block" [disabled]="!sahPenghantaranClicked" color="red"
+            (click)="lampiran(batchData)" style="margin-left: 5px;">Lampiran</button>
         </div>
 
+
+        <div id="pdfLampiran" *ngIf="isLampiran && !isSuratIringan">
+          <app-lampiran [sendBatchId]="batchId2"></app-lampiran>
+        </div>
+
+
+        <div id="pdfSuratIringan" *ngIf="isSuratIringan && !isLampiran">
+          <app-surat-iringan [sendBatchId]="batchId2"></app-surat-iringan>
+        </div>
+
+
+        <!-- button Memo -->
         <div class="card-body" *ngIf="roleUip">
-          <button type="submit" class="btn btn-primary btn-block" [disabled]="!sahPenghantaranClicked" (click)="memo(batchData)" color="red"
+          <button type="submit" class="btn btn-primary btn-block" [disabled]="daftarClicked"
+            [disabled]="!sahPenghantaranClicked" (click)="memo(batchData)" color="red"
             style="margin-left: 5px;">Memo</button>
-          <!-- <button type="submit" class="btn btn-primary btn-block" color="red" [disabled]="!sahPenghantaranClicked" (click)="lampiran(batchData)"
-            style="margin-left: 5px;">Lampiran</button> -->
         </div>
 
       </div><br><br>

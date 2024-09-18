@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+<title></title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+ 
+</head>
+
+<body bgcolor="#A0A0A0" vlink="blue" link="blue">
+  <div id="page1-div" style="position:relative;width:892px;height:1123px;">
+  <img width="892" height="1123" src="assets/image/target0.jpg" alt="background image"/>
+
+  <p style="position:absolute;top:90px;left:54px;white-space:nowrap" class="ft12">TFORM 1 Ammd.2 (2024)<br/>
+  <p style="position:absolute;top:200px;left:54px;white-space:nowrap" class="ft12">No. rujukan sampel : {{ k1Detail.labRefNo}} <br/>
+  <p style="position:absolute;top:230px;left:54px;white-space:nowrap" class="ft12"><b>PERINGATAN! Pastikan suhu oven 70 deg C sebelum masukkan sampel.</b><br/></p>
+  <p style="position:absolute;top:127px;left:53px;white-space:nowrap" class="ft10">{{ k1Detail.testMethod }}</p>
+  <b><p style="position:absolute;top:91px;left:286px;white-space:nowrap" class="ft10">LEMBAGA GETAH MALAYSIA</p>
+    <p style="position:absolute;top:118px;left:360px;white-space:nowrap" class="ft10">G-TACR</p>
+    <p style="position:absolute;top:145px;left:259px;white-space:nowrap" class="ft10">UNIT KANDUNGAN GETAH KERING</p>
+    <p style="position:absolute;top:172px;left:365px;white-space:nowrap" class="ft10">(DRC)</p></b>
+    
+    <p style="position:absolute;top:200px;left:700px;white-space:nowrap" class="ft10">({{ k1Detail.batchId }})</p>
+  <p style="position:absolute;top:80px;left:655px;white-space:nowrap" class="ft11">
+    <img [src]="qrCodeDataUrl" alt="QR Code">
+  </p>
+  <p style="position:absolute;top:190px;left:660px;white-space:nowrap" class="ft11"><b>{{ k1Detail.customNo }}</b></p>
+
+  <p style="position:absolute;top:265px;left:135px;white-space:nowrap" class="ft12"><b>PERALATAN MAKMAL</b></p>
+  <p style="position:absolute;top:285px;left:135px;white-space:nowrap" class="ft12">Id Penimbang</p>
+  <p style="position:absolute;top:310px;left:135px;white-space:nowrap" class="ft12">Id Ketuhar</p>
+  <p style="position:absolute;top:333px;left:135px;white-space:nowrap" class="ft12">Suhu Ketuhar, C</p>
+  <p style="position:absolute;top:355px;left:135px;white-space:nowrap" class="ft12">Masa Sampel Masuk Ketuhar</p>
+  <p style="position:absolute;top:375px;left:135px;white-space:nowrap" class="ft12">Masa Sampel Keluar Ketuhar</p>
+  
+
+    <!-- Penimbang -->
+    <div style="position:absolute;top:285px;left:450px;white-space:nowrap" class="ft12"> 
+      <div>
+        <select class="form-select small-select" name="Penimbang" id="Penimbang" [(ngModel)]="k1Detail.penimbang">
+          <option class="pilih" value="default">--Pilih--</option>
+          <option *ngFor="let penimbang of penimbangs" [value]="penimbang.id">
+            {{penimbang.balance}} -  {{penimbang.iD1}}
+          </option>
+        </select>
+      </div>
+    </div>
+  
+  <!-- Oven -->
+   <div style="position:absolute;top:307px;left:450px;white-space:nowrap" class="ft12"> 
+      <select class="form-select small-select" name="Oven" id="Oven"  [(ngModel)]="k1Detail.oven">
+        <option class="pilih" value="default">--Pilih--</option>
+        <option *ngFor="let oven of ovens" [value]="oven.id">
+          {{oven.oven}} -  {{oven.iD1}}
+        </option>
+      </select>
+    </div>
+
+
+  <p style="position:absolute;top:410px;left:135px;white-space:nowrap" class="ft12">Berat Getah 1<br/>Berat Getah 2</p>
+  <p style="position:absolute;top:473px;left:135px;white-space:nowrap" class="ft12"><b>TIMBANGAN PERTAMA</b></p>
+  <p style="position:absolute;top:495px;left:135px;white-space:nowrap" class="ft12">Berat Getah Kering 1</p>
+  <p style="position:absolute;top:515px;left:135px;white-space:nowrap" class="ft12">Berat Getah Kering 2</p>
+
+
+  <p style="position:absolute;top:560px;left:135px;white-space:nowrap" class="ft12"><b>TIMBANGAN KEDUA</b></p>
+  <p style="position:absolute;top:580px;left:135px;white-space:nowrap" class="ft12">Berat Getah Kering 1</p>
+  <p style="position:absolute;top:600px;left:135px;white-space:nowrap" class="ft12">Berat Getah Kering 2</p>
+
+  <p style="position:absolute;top:645px;left:135px;white-space:nowrap" class="ft12"><b>% KANDUNGAN GETAH KERING</b></p>
+  <p style="position:absolute;top:665px;left:135px;white-space:nowrap" class="ft12">Anggaran pertama</p>
+  <p style="position:absolute;top:685px;left:135px;white-space:nowrap" class="ft12">Anggaran kedua</p>
+  <p style="position:absolute;top:708px;left:135px;white-space:nowrap" class="ft12">Purata</p>
+  <p style="position:absolute;top:730px;left:135px;white-space:nowrap" class="ft12">Catatan</p>
+  <!-- <p style="position:absolute;top:723px;left:135px;white-space:nowrap" class="ft12">Nama<br/>Tandatangan<br/>Tarikh Ujian</p> -->
+
+  <p style="position:absolute;top:770px;left:54px;white-space:nowrap" class="ft12">Suhu pengeringan: 70°C ± 2°C<br/></p>
+
+  <p style="position:absolute;top:840px;left:54px;white-space:nowrap" class="ft12">Nama Penguji : {{ staff.username}} <br/></p>
+  <p style="position:absolute;top:810px;left:54px;white-space:nowrap" class="ft12">Tarikh untuk Menguji: {{ k1Detail.worksheetTestOn | date: 'dd-MM-yyyy' }} <br/></p>
+  <p style="position:absolute;top:870px;left:54px;white-space:nowrap" class="ft12">Tandatangan: <br/></p>
+
+  
+  </div>
+  </body>
+</html>
+
+

@@ -23,6 +23,19 @@ export class DataKastamService {
   getK1Detail(customNo: string): Observable<K1Detail[]> {
     return this.http.get<K1Detail[]>(this.baseApiUrl + '/api/K1Detail/getK1Detail/' + customNo);
   }
+  
+  getK1DetailAgentCode(customNo: string, agentCode): Observable<K1Detail[]> {
+    return this.http.get<K1Detail[]>(this.baseApiUrl + '/api/K1Detail/getK1Detail/' + customNo + '/' + agentCode );
+  }
+
+  getK1DetailByImporterCode(customNo: string, importerCode): Observable<K1Detail[]> {
+    return this.http.get<K1Detail[]>(this.baseApiUrl + '/api/K1Detail/getK1DetailByImporterCode/' + customNo + '/' + importerCode);
+  }
+
+  getK1Detail2(customNo: string, agentCode: string): Observable<any> {
+    const url = `${this.baseApiUrl}/api/K1Detail/getK1Detail/${customNo}/${agentCode}`;
+    return this.http.get<any>(url);
+  }
 
   getK1Detail1(id: number): Observable<K1Detail> {
     return this.http.get<K1Detail>(this.baseApiUrl + '/api/K1Detail/getK1Detail1/' + id);

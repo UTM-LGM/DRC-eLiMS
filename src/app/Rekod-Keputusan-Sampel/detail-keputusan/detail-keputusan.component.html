@@ -1,0 +1,194 @@
+<div class="col-10 ">
+    <div class="mat-card-container">
+        <form>
+
+            <div class="row form-group mb-2">
+                <div class="col-lg">
+                    <label>No. Rujukan Sampel : </label>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control" id="labRefNo" name="labRefNo"
+                        [(ngModel)]="k1Detail.labRefNo" disabled>
+                </div>
+            </div>
+
+            <div class="row form-group mb-2">
+                <div class="col-lg">
+                    <label>Jenis Ujian : </label>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control" id="testMethodId" name="testMethodId"
+                        [(ngModel)]="k1Detail.testMethod" disabled>
+                </div>
+            </div>
+
+            <div class="row form-group mb-2">
+                <div class="col-lg">
+                    <label>Berat susu/Getah1 : </label>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control" id="wet1" name="wet1" [(ngModel)]="result.wet1"
+                        [disabled]="inputDisable" (input)="formatDecimal('wet1', $event)">
+                </div>
+            </div>
+
+            <div class="row form-group mb-4">
+                <div class="col-lg">
+                    <label>Berat susu/Getah2 : </label>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control" id="wet2" name="wet2" [(ngModel)]="result.wet2"
+                        [disabled]="inputDisable" (input)="formatDecimal('wet2', $event)">
+                </div>
+            </div>
+
+            <p><b>TIMBANGAN PERTAMA</b></p>
+            <div class="row form-group mb-2">
+                <div class="col-lg">
+                    <label>Berat Getah Kering 1 : </label>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control" id="dry1" name="dry1" [(ngModel)]="result.dry1"
+                        [disabled]="inputDisable" [disabled]="isDryFieldsDisabled()"
+                        (input)="formatDecimal('dry1', $event)">
+                </div>
+            </div>
+
+            <div class="row form-group mb-4">
+                <div class="col-lg">
+                    <label>Berat Getah Kering 2 : </label>
+                </div>
+            </div>
+
+            <p><b>TIMBANGAN KEDUA</b></p>
+            <div class="row form-group mb-2">
+                <div class="col-lg">
+                    <label>Berat Getah Kering 1 : </label>
+                </div>
+            </div>
+
+            <div class="row form-group mb-2">
+                <div class="col-lg">
+                    <label>Berat Getah Kering 2 : </label>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control" id="dry2" name="dry2" [(ngModel)]="result.dry2"
+                        [disabled]="inputDisable" [disabled]="isDryFieldsDisabled()"
+                        (input)="formatDecimal('dry2', $event)">
+                </div>
+            </div>
+
+            <div class="row form-group mb-3 h-4">
+                <div class="col">
+                    <button type="button" class="btn btn-primary float-end" style="margin-left: 5px;"
+                        (click)="calculateAverage(); enableHantarButton()" *ngIf="!inputDisable">Kira</button>
+                </div>
+                <div *ngIf="limitValue" style="color: red;">{{ limitValue }}</div>
+            </div>
+
+            <p><b>% KANDUNGAN GETAH KERING</b></p>
+
+            <div class="row form-group mb-2">
+                <div class="col-lg">
+                    <label>Anggaran Pertama : </label>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control" [value]="estimate1.toFixed(2)" disabled>
+                </div>
+            </div>
+
+            <div class="row form-group mb-2">
+                <div class="col-lg">
+                    <label>Anggaran Kedua : </label>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control" [value]="estimate2.toFixed(2)" disabled>
+                </div>
+            </div>
+
+            <div class="row form-group mb-2">
+                <div class="col-lg">
+                    <label>Purata : </label>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control" id="result1" name="result1"
+                        [value]="result.result1 | number:'1.2-2'" disabled>
+
+                </div>
+            </div>
+
+            <div class="row form-group mb-2">
+                <div class="col-lg">
+                    <label>Catatan : </label>
+                </div>
+                <div class="col-lg">
+                    <textarea type="text" class="form-control" id="catatan" name="catatan" [disabled]="inputDisable"
+                        [(ngModel)]="result.catatan"></textarea>
+                </div>
+            </div>
+
+            <div class="row form-group mb-2">
+                <div class="col-lg">
+                    <label>Bukti : </label>
+                </div>
+                <div class="col-lg">
+                    <input type="file" class="form-control" id="prove" name="prove" [(ngModel)]="result.prove"
+                        (change)="handleFileInput($event)" [disabled]="inputDisable">
+                    <div>
+                        <a style="color: rgb(10, 96, 189); cursor: pointer;text-decoration: underline;"
+                            (click)="viewFile(result.prove)">{{result.prove}}</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group mb-2">
+                <div class="col-lg">
+                    <label>Penguji : </label>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control" id="inLabBy" name="inLabBy" [(ngModel)]="k1Detail.inLabBy"
+                        disabled>
+                </div>
+            </div>
+
+            <div class="row form-group mb-2">
+                <div class="col-lg">
+                    <label>Tarikh Ujian : </label>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control" id="inLabOn" name="inLabOn" [ngModel]="formattedInLabDate"
+                        disabled>
+                </div>
+            </div>
+
+            <div class="row form-group mb-2" *ngIf="inputKelulusan">
+                <div class="col-lg">
+                    <label>Nama Pengesah : </label>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control" id="verifiedBy" name="verifiedBy"
+                        [(ngModel)]="k1Detail.verifiedBy" disabled>
+                </div>
+            </div>
+
+            <div class="row form-group mb-2" *ngIf="inputKelulusan">
+                <div class="col-lg">
+                    <label>Tarikh Disahkan : </label>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control" id="verifiedOn" name="verifiedOn"
+                        [ngModel]="formattedVerifiedDate" disabled>
+                </div>
+            </div>
+
+            <div class="row form-group mb-2">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary float-end" style="margin-left: 5px;"
+                        *ngIf="!inputDisable" [disabled]="!buttonClicked ||daftarClicked"
+                        (click)="addRekodKeputusan()">Hantar</button>
+                </div><br>
+
+            </div>
+        </form>
+    </div>
+</div>

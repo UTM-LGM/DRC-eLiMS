@@ -1,0 +1,33 @@
+<div class="container mb-3">
+    <mat-card>
+        <mat-card-content>
+
+            <h1 class="attractive-title">Laporan Bilangan Hari </h1>
+            <div class="mat-card-container">
+
+                <span><br>
+                    <div class="row form-group">
+                        <div class="col-sm-2">
+                            <label>Tarikh</label><br>
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="startDate" class="label_bm">Dari:</label>
+                            <input type="date" id="startDate" class="form-control" [(ngModel)]="fromDate">
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="endDate" class="label_bm">Hingga:</label>
+                            <input type="date" id="endDate" class="form-control" [(ngModel)]="toDate">
+                        </div>
+                    </div>
+                    <br>
+                </span>
+
+                <div class="col-lg-2">
+                    <button type="submit" class="btn btn-primary" style="margin-left: 5px;"
+                        (click)="searchSample()">Cari</button>
+                </div><br>
+
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -6,7 +6,6 @@ import { AppComponent } from '../app.component';
 import { ToastrService } from 'ngx-toastr';
 import { Staff } from '../models/staff';
 
-// type NewType = loginDTO;
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -16,12 +15,12 @@ export class LoginComponent implements OnInit {
   user: loginDTO = {} as loginDTO;
   isProcess: boolean = false;
   userDetail: any
-  staffRoles: any
+  // staffRoles: any
   afterLogin: boolean = false
   selectedRole: number
-  roles: any
+  userRoles: any
   loginAs: any;
-  roleId: any;
+  userRoleId: any;
   roleForwarder: boolean
   roleUip: boolean
   staff: Staff = {} as Staff
@@ -38,12 +37,11 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.GetRolesForLogin().subscribe(data => {
-      this.roles = data
+      this.userRoles = data
       console.log(data)
     })
 
   }
-
 
   // login() {
 
@@ -58,7 +56,7 @@ export class LoginComponent implements OnInit {
 
   //         this.authService.GetRoleById(this.selectedRole).subscribe(
   //           roleData => {
-  //             sessionStorage.setItem('roleId', roleData.roleId.toString());
+  //             sessionStorage.setItem('userRoleId', roleData.userRoleId.toString());
   //             sessionStorage.setItem('roleName', roleData.role);
   //             this.isProcess = false;
 
@@ -103,7 +101,7 @@ export class LoginComponent implements OnInit {
 
   //           this.authService.GetRoleById(this.selectedRole).subscribe(
   //             roleData => {
-  //               sessionStorage.setItem('roleId', roleData.roleId.toString());
+  //               sessionStorage.setItem('userRoleId', roleData.userRoleId.toString());
   //               sessionStorage.setItem('roleName', roleData.role);
   //               this.isProcess = false;
 
@@ -135,7 +133,7 @@ export class LoginComponent implements OnInit {
   //               this.authService.getUserDto(this.userDetail.username, this.selectedRole);
   //               this.authService.GetRoleById(this.selectedRole).subscribe(
   //                 roleData => {
-  //                   sessionStorage.setItem('roleId', roleData.roleId.toString());
+  //                   sessionStorage.setItem('userRoleId', roleData.userRoleId.toString());
   //                   sessionStorage.setItem('roleName', roleData.role);
   //                   this.isProcess = false;
   //                   sessionStorage.setItem('username', this.userDetail.username);
@@ -160,7 +158,7 @@ export class LoginComponent implements OnInit {
 
   //               this.authService.GetRoleById(this.selectedRole).subscribe(
   //                 roleData => {
-  //                   sessionStorage.setItem('roleId', roleData.roleId.toString());
+  //                   sessionStorage.setItem('userRoleId', roleData.userRoleId.toString());
   //                   sessionStorage.setItem('roleName', roleData.role);
   //                   this.isProcess = false;
   //                   sessionStorage.setItem('username', this.userDetail.username);
@@ -201,35 +199,41 @@ export class LoginComponent implements OnInit {
           this.userDetail = res;
           this.setSessionStorage();
 
-          if (this.selectedRole == 1) {
+          if (this.selectedRole == 1 ) {
             this.authService.getUserDto(this.userDetail.username, this.selectedRole);
             // this.setSessionStorage();
             
           } 
-          
-          
-          else {
+    
+          else if ( this.selectedRole == 2){
             this.authService.GetStaffRolebyStaffId(this.userDetail.staffId).subscribe(
               staffRoleData => {
+                console.log(staffRoleData)
                 this.userObjects = staffRoleData;
-                const userRole2 = this.userObjects.filter((user) => user.staffRole == 2);
-                const userRole3 = this.userObjects.filter((user) => user.staffRole == 3);
+                const staffRole2 = this.userObjects.filter((user) => user.staffRole == 7);
+                const staffRole4 = this.userObjects.filter((user) => user.staffRole == 4);
 
-                if (userRole2.length != 0 && this.selectedRole == 2) {
-                  console.log("user 2 not null");
+                if (staffRole2.length != 0 && this.selectedRole == 2) {
                   this.authService.getUserDto(this.userDetail.username, this.selectedRole);
                   // this.setSessionStorage();
-                } else if (userRole3.length != 0 && this.selectedRole == 3) {
-                  console.log("user 3 not null");
+                } else if (staffRole4.length != 0 && this.selectedRole == 4) {
                   this.authService.getUserDto(this.userDetail.username, this.selectedRole);
                   // this.setSessionStorage();
-                } else {
-                  console.log("user 3 null");
+                } 
+                
+                else {
                   this.toastr.error('Nama pengguna dan kata laluan salah');
                 }
+                console.log(staffRole2)
               },
             );
           }
+
+
+          else if ( this.selectedRole == 3){
+            this.authService.getUserDto(this.userDetail.username, this.selectedRole);
+          }       
+
         },
         error => {
           console.error(error);
@@ -244,28 +248,22 @@ export class LoginComponent implements OnInit {
   setSessionStorage() {
     this.authService.GetRoleById(this.selectedRole).subscribe(
       roleData => {
-        sessionStorage.setItem('roleId', roleData.roleId.toString());
+        sessionStorage.setItem('userRoleId', roleData.roleId.toString());
         sessionStorage.setItem('roleName', roleData.role);
         this.isProcess = false;
         sessionStorage.setItem('username', this.userDetail.username);
-        sessionStorage.setItem('role', this.selectedRole.toString());
-
-
-
+        // sessionStorage.setItem('role', this.selectedRole.toString());
 
       // window.location.reload();
       // setTimeout(() => {
         //   this.router.navigateByUrl('/home');
         // }, 100); 
-        
-        
-        
+              
         this.router.navigateByUrl('home').then(() => {
           // Reload the page once navigation is complete
           window.location.reload();
         })
-        
-       
+      
         this.toastr.success('Log masuk berjaya!');
    
       },
@@ -277,10 +275,10 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  displayLogin(roleId: number) {
+  displayLogin(userRoleId: number) {
     this.afterLogin = true
-    this.selectedRole = roleId
+    this.selectedRole = userRoleId
+    console.log(this.selectedRole)
   }
-  checkRole() {
-  }
+
 }

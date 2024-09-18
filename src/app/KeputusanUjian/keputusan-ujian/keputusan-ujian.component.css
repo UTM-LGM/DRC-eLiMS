@@ -1,0 +1,23 @@
+ .attractive-title {
+    font-family:'Helvetica,';
+    font-size: 36px;
+    color: #08864b;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+
+  .buttonExcel {
+    background-color: #1d7a2e; 
+    color: #fff; 
+    padding: 10px 20px; /* Adjust padding for the button size */
+    border: none; /* Remove default button border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth background color transition on hover */
+  }
+  
+  .center-table th,
+  .center-table td {
+    text-align: center;
+  }
+  

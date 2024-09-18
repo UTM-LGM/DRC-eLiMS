@@ -1,4 +1,4 @@
-.tableheader {
+/* .tableheader {
     background-color: #3e4141;
     color: rgb(234, 223, 223);
   }
@@ -10,8 +10,19 @@
   th {
     color: white;
     font-weight: 300;
+    background-color: #3e4141;
   }
-  
+   */
+   .centered-table th,
+   .centered-table td {
+       text-align: center;
+   }
+   
+   table, th, td {
+    border:1px solid black;
+    border-collapse: collapse;
+  }
+
   .mat-icon {
   
     height: 15px;
@@ -37,3 +48,12 @@
     background-color: #73726f;
     color: #ffffff;
   }
+
+  .company-group {
+    page-break-before: always;
+  }
+  
+  .company-group.first-group {
+    page-break-before: auto;
+  }
+  

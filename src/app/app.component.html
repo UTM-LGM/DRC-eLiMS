@@ -82,10 +82,16 @@
       <app-login *ngIf="loginPage"></app-login>
     </div>
 
-    <div *ngIf="isPrintMemoRoute">
+    <!-- <div *ngIf="isPrintMemoRoute">
+      <router-outlet></router-outlet> 
+    </div> -->
+
+    <div *ngIf="(isLampiran && isLoggin) || (isPrintMemoRoute && !isLoggin)">
       <!-- <app-print-memo></app-print-memo> -->
       <router-outlet></router-outlet> 
     </div>
+
+
     
 <!-- <app-toolbar></app-toolbar>
   <app-sidenav></app-sidenav> -->

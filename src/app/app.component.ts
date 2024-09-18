@@ -4,7 +4,6 @@ import { staffRole } from './models/staffRole';
 import { ActivatedRoute, NavigationEnd, Route, Router } from '@angular/router';
 import { Batch } from './models/batch';
 import { filter } from 'rxjs/operators';
-import { HantarSampelService } from './Hantar-Sampel/hantar-sampel.service';
 
 @Component({
   selector: 'app-root',
@@ -19,12 +18,17 @@ export class AppComponent {
   registerPage: boolean = false
   staffrole:any
   isPrintMemoRoute: boolean = false;
+  isLampiran: boolean = false;
 
   batches: Batch[] = [];
   batchId: number;
   batch: Batch = {} as Batch;
 
-  constructor(private authService: AuthService, private router: Router,private route:ActivatedRoute,  private hantarSampelService: HantarSampelService,){
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+  )
+    {
      this.authService.currentLoggedIn.subscribe(res => this.isLoggin = res)
   }
 
@@ -33,7 +37,14 @@ export class AppComponent {
      this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      this.isPrintMemoRoute = event.url.includes('print-memo');
+
+      
+      // this.isPrintMemoRoute = event.url.includes('print-memo');
+
+      // console.log(event)
+      if (event.url.includes('print-memo')){
+        this.isPrintMemoRoute = true
+      }
      
     });
     
@@ -49,7 +60,7 @@ export class AppComponent {
     if (this.authService.isloggedin()) {
       this.isLoggin = true
       this.staffrole  = this.authService.getSessionRole()
-      console.log(this.staffrole)
+      // console.log(this.staffrole)
       //panggil api stafrole listkan stafrole utk stafid
 
 

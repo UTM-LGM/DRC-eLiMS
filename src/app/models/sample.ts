@@ -1,4 +1,7 @@
 export interface Sample {
+    estimate2: number;
+    estimate1: number;
+    samples: any;
     rub: any;
     isRegistered: any;
     status: string;
@@ -8,24 +11,26 @@ export interface Sample {
     k1DetailId: number;
     sampleId: number;
     batchId: number;
+    staffId: number;
     rubberTypeId: number;
     rubberType: string;
     sampleTypeId: number;
     sampleType: string;
+    typeCodeId: number;
+    typeCode: string;
     labRefNo: string;
     customNo: string;
     importedDate: Date;
     quantity: number;
-    typeCodeId: number;
     companyId: number;
     companyName: string;
     importNo: number;
-    statusCodeId: number | null;
+    statusCodeId: number;
     createdOn: Date;
     createdBy: string;
     sentOn: Date;
     sentBy: string;
-    receivedOn: string;
+    receivedOn: Date;
     receivedBy: string;
     inLabOn: string;
     inLabBy: string;
@@ -91,4 +96,26 @@ export interface Sample {
     memo: string;
     creatorRoleId : number;
     companyAddress: string;
+    forwarderName: string;
+    forwarderAddress : string;
+
+    unitName: string;
+    agentName : string;
+    dateSampleReceived: Date;
+    smkimportersCode : string;
+    oldSystemId : number;
+
+    wet1 : number;
+    wet2 : number;
+    dry1 : number;
+    dry2 : number;
+    result : number;
+    result1 : number;
+    catatan : string;
+    testMethodId : number;
+    testMethod : string;
+    prove : string;
+    totalDaysFromImportToReceived : number;
+    dateReceivedInLab : Date;
+    noLaporanTuan : string;
 }

@@ -1,0 +1,228 @@
+body, p, th, td {
+  font-family: Arial, sans-serif;
+  font-size: 14pt;
+}
+
+td, th, p {
+  font-size: 17px !important;
+  white-space: normal;
+}
+
+.listTable td, .listTable th {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 7px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 90%;
+}
+
+.report-number {
+  position: fixed;
+  top: 20px; /* Adjust as needed */
+  left: 10px; /* Adjust as needed */
+  font-family: Arial, sans-serif;
+  font-size: 17px;
+}
+
+.page-wrapper {
+  position: relative;
+  padding-top: 100px; /* Adjust this value to set space at the top of each page */
+  min-height: 100vh;
+}
+
+.company-group {
+  page-break-before: always;
+  margin-top: 20px; /* Adjust to create space at the top of each page */
+}
+
+.company-group.first-group {
+  page-break-before: auto;
+  margin-top: 0;
+}
+
+.sample {
+  page-break-inside: avoid;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  padding-left: 20px;
+}
+
+.title-spacing {
+  margin-bottom: 20px;
+}
+
+.signature {
+  margin-top: 100px; /* Adjust as needed */
+}
+
+@media print {
+  .report-number {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    padding: 10px 0;
+    border-bottom: 1px solid black;
+  }
+
+  .page-wrapper {
+    padding-top: 120px; /* Adjust this value to set space at the top of each printed page */
+  }
+
+  .company-group {
+    page-break-before: always;
+    margin-top: 20px; /* Adjust to create space at the top of each printed page */
+  }
+
+  .company-group.first-group {
+    page-break-before: auto;
+    margin-top: 0;
+  }
+
+  .signature {
+    margin-top: 50px; /* Adjust as needed for signature position */
+  }
+
+
+
+
+
+
+
+
+  body, p, th, td {
+    font-family: Arial, sans-serif;
+    font-size: 12pt;
+  }
+  td, th, p {
+    font-size: 14px !important;
+    white-space: normal;
+  }
+  .listTable td, .listTable th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 7px;
+    text-align: center;
+  }
+    .space {
+        padding-bottom: 40px;
+  }
+    
+.small-column {
+width: 40px; /* Adjust the width as needed */
+}
+.small-column1 {
+width: 30px; /* Adjust the width as needed */
+}
+.small-getah {
+width: 15px; /* Adjust the width as needed */
+}
+.small-no {
+width: 10px; /* Adjust the width as needed */
+}
+.big-column {
+width: 110px; /* Adjust the width as needed */
+}
+.center-text {
+              text-align: center;
+              font-weight: bold; /* Optional: Makes the text bold */
+              font-size: 18px; /* Optional: Adjust the font size as needed */
+          }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .company-group {
+    page-break-before: always;
+    margin-top: 0px; /* Adjust to create space at the top of each page */
+  }
+  .company-group.first-group {
+    page-break-before: auto;
+    margin-top: 0;
+  }
+ .sample {
+    page-break-inside: avoid;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+    padding-left: 20d;
+  }
+  .title-spacing {
+    margin-bottom: 90px;
+  }
+@media all
+{
+#page-one, .footer, .page-break { display:none; }
+}
+@media print
+{
+.page-number {
+position: fixed;
+bottom: 0;
+left: 0;
+right: 0;
+text-align: center;
+font-size: 12px;
+}
+.header { 
+display: none; /* Hide the header */
+}
+@page :first {
+.header { 
+display: block; /* This will not work in all browsers, see notes below */
+}
+#page-one, .footer, .page-break   
+{ 
+display: block;
+color:red; 
+font-family:Arial; 
+font-size: 16px; 
+text-transform: uppercase; 
+}
+.page-break
+{
+page-break-before:always;
+} 
+}
+.col1 {
+  width: 20%;
+}
+.col2 {
+  width: 20%;
+}
+  .table-sm {
+font-size: 10px; /* Adjust font size as needed */
+padding: 20px; /* Adjust padding as needed */
+}
+.report-footer-cell {
+padding-bottom: 60px; /* Adjust the value as needed */
+}
+.footer-info {
+margin-bottom: 30px; /* Adjust the value as needed */
+}
+.report-header-cell {
+padding-top:130px; /* Adjust the value as needed */
+text-align: left;
+position: relative;
+border-bottom: 2px solid black;
+}
+.header-info {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+}
+
+.date-info {
+margin-left: auto;
+}
+.title {
+margin-top: 90px; 
+text-align: center;
+}
+}}
+
