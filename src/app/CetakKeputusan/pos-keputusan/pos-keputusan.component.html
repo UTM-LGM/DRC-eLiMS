@@ -90,8 +90,8 @@
 
 
 
+      <!-- filter by batch id  -->
       <p *ngIf="!lepassubmit">Sila pilih sampel untuk dicetak </p>
-
       <div class="row form-group" *ngIf="!lepassubmit">
         <div class="col-sm-2">
           <label class="label_bm">Batch Id</label><br>
@@ -101,17 +101,12 @@
         </div>
       </div><br>
 
-
-
-      <!-- <p *ngIf="!lepassubmit"> Sila masukkan data</p> -->
-
-
-      
+      <!-- button export to excel -->
       <div *ngIf="!lepassubmit" style="text-align: right;">
-        <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to
-            Excel</button>
+        <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to Excel</button>
     </div><br>
 
+    <!-- list of batch -->
       <div class="mat-elevation-z8" *ngIf="!lepassubmit">
         <div class="list-container">
 

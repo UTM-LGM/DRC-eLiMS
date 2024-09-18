@@ -57,15 +57,15 @@ export class LaporanBilSampelComponent implements OnInit {
   changeSearchBy(event: any) {
     const selectedSearchBy = event.target.value;
     this.resetFilters();
-  
+
     this.showDateFilter = selectedSearchBy === 'Tempoh Masa';
     this.showRubberTypeFilter = selectedSearchBy === 'Jenis Getah';
   }
-  
+
 
   changeJenisGetah(event: any) {
     const selectedRubberTypeId = event.target.value;
-  
+
     if (selectedRubberTypeId) {
       this.elimsService.GetRefSampleTypeByRubberType(selectedRubberTypeId).subscribe(data => {
         this.typeCodes = data;
@@ -78,7 +78,7 @@ export class LaporanBilSampelComponent implements OnInit {
       this.typeCodeId = undefined;
     }
   }
-  
+
 
   searchSample(): void {
     if (!this.fromDate || !this.toDate) {

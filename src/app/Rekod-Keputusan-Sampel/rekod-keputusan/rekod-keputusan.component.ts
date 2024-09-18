@@ -298,6 +298,4 @@ export class RekodKeputusanComponent {
     XLSX.writeFile(wb, 'senarai_sampel.xlsx');
   }
 
-
-
 }

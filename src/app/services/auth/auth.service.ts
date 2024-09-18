@@ -66,9 +66,6 @@ export class AuthService {
       const requestBody = { username: username, password: password };
       return this.httpclient.post(url, requestBody);
     } 
-    
-    
-
       
     else {
       // Handle other cases or throw an error

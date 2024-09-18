@@ -114,6 +114,8 @@ export class SampelSimpananLgmComponent {
     const holidays = [
       '2024-06-17',//raya haji
       '2024-06-18',//raya haji
+      '2024-09-01',//raya haji
+      '2024-09-16',//maulidur rasul
     ];
     
     this.codeId.forEach(element => {

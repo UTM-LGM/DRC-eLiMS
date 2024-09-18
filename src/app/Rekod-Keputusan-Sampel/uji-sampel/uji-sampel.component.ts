@@ -179,7 +179,7 @@ export class UjiSampelComponent {
         }
       }
     }
-    console.log(this.selectedSamples);
+    // console.log(this.selectedSamples);
   }
 
 

@@ -61,7 +61,6 @@ export class DaftarTerimaSampelComponent {
   rubberTypes: RubberType[];
   batches: any;
   batchId: number;
-  selectedBatchId: number;
   loginAs: any;
   userRoleId: any;
   roleGtacr: boolean
@@ -310,8 +309,6 @@ export class DaftarTerimaSampelComponent {
   }
 
 
- 
-
   exportToExcel(): void {
     const columnMappings = {
       batchId: 'Batch Id',
@@ -360,8 +357,4 @@ export class DaftarTerimaSampelComponent {
     XLSX.writeFile(wb, 'senarai_sampel.xlsx');
   }
   
-  
-  
-  
-
 }

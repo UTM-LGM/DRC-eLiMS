@@ -29,7 +29,6 @@ export class UserService {
   }
 
 
-
   UploadSignature(staffId: any, file: any) {
     const formData = new FormData();
     formData.append("file", file);

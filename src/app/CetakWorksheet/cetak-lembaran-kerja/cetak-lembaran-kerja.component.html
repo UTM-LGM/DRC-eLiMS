@@ -16,9 +16,10 @@
       <!-- List sample by batch -->
       <div *ngIf="!lepassubmit">
         <div style="text-align: right;">
-          <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to
-              Excel</button>
+          <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to Excel</button>
       </div><br>
+      
+
         <div class="mat-elevation-z8">
           <div class="list-container">
 
@@ -137,7 +138,7 @@
       </div>
 
 
-      <!-- search  by customno -->
+      <!-- search  by customNo -->
       <div class="col-sm-8" *ngIf="!lepassubmit">
         <div class="row form-group">
           <div class="col-sm-3">
@@ -161,7 +162,7 @@
       </div>
 
 
-      <!-- list sample at second page after click button pilih-->
+      <!-- list sample at second page after click button pilih -->
       <div class="table-responsive">
         <table *ngIf="!isPrint && lepassubmit" class="table table-striped text-wrap center-table">
           <thead>
@@ -193,7 +194,7 @@
       </div>
 
 
-      <!-- list sample at first page below -->
+      <!-- list sample at first page below when click checkbox-->
       <form *ngIf="selectedSamples.length > 0 && !lepassubmit">
         <div>
           <h2>Senarai Sampel</h2>
@@ -279,7 +280,7 @@
       </div><br>
 
 
-      <!-- pdf worksheet page -->
+      <!-- call pdf worksheet page -->
       <div *ngIf="isPrint">
         <app-cetak-worksheet [k1DetailId]="listk1DetailId"></app-cetak-worksheet>
       </div>

@@ -92,12 +92,6 @@ export class KeputusanUjianComponent implements OnInit {
   typeCodes: any
   selectedK1DetailId: number;
 
-  // importedDates: Date[] = []; 
-  // uniqueMonths: number[] = [];
-  // displayedData: any[] = [];
-  // rubberType: any;
-  // importedDate: string;
-
   constructor(
     private elimsService: ElimsService,
     private authService: AuthService,

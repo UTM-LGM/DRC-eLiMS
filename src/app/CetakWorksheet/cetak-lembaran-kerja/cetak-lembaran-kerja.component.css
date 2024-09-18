@@ -17,22 +17,6 @@ th :hover {
   cursor: pointer;
 }
 
-.list-container {
-  max-height: 100%;
-  overflow: auto;
-}
-
-.mat-paginator-sticky {
-  bottom: 0px;
-  position: sticky;
-  z-index: 10;
-}
-
-.app-row:hover {
-  background-color: rgb(216, 216, 216);
-  cursor: pointer;
-}
-
 
 tr.example-detail-row {
   height: 0;
@@ -42,12 +26,10 @@ tr.example-detail-row {
   padding: 16px;
 }
 
-
 .center-table th,
 .center-table td {
   text-align: center;
 }
-
 
 .text-box {
   font-size: 13px;

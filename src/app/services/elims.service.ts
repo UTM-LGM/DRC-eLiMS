@@ -226,30 +226,27 @@ GetRefTestMethodByRubberType(rubberTypeId: number): Observable<TestMethod> {
     return this.http.get<any>(this.baseApiUrl + '/api/Batches/GetSamplesByBatchId/' + batchId)
 
   }
-
-
-  // PutDaftarTerimaSampel(sampleId: number, k1Detail: K1Detail) {
-  //   return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutDaftarTerimaSampel/' + sampleId, k1Detail);
-  // }
-
- 
+  
   PutSampleLabRefNo(k1Detail: K1Detail) {
     return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutSampleLabRefNo', k1Detail);
   }
-
+  
   
   PutDaftarTerimaSampelLabRef(customNo: string, k1Detail: K1Detail) {
     return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutDaftarTerimaSampelLabRef/' + customNo, k1Detail);
   }
-
+  
   PutDaftarTerimaSampel(customNo: string, k1Detail: K1Detail) {
     return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutDaftarTerimaSampel/' + customNo, k1Detail);
   }
-
+  
 
   PutVerifiedResult(customNo: string, k1Detail: K1Detail) {
     return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutVerifiedResult/' + customNo, k1Detail);
   }
+  // PutDaftarTerimaSampel(sampleId: number, k1Detail: K1Detail) {
+  //   return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutDaftarTerimaSampel/' + sampleId, k1Detail);
+  // }
 
  
   // GetElimsBatchesWithSamplesStatusCode6(username: String, statusCodeId: number): Observable<Batch[]> {

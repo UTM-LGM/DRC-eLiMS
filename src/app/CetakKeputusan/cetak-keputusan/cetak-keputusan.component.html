@@ -204,7 +204,7 @@
         </div>
 
 
-        <!-- search by customno -->
+        <!-- search by customNo -->
         <div class="col-sm-8" *ngIf="!lepassubmit">
           <div class="row form-group">
             <div class="col-sm-3">
@@ -306,12 +306,12 @@
         <hr>
 
 
-        <!-- pdf cetak keputusan  -->
+        <!-- call pdf cetak keputusan  -->
         <div *ngIf="isPrint && (selectedSamples[0].creatorRoleId == 1 || selectedSamples[0].creatorRoleId == 3)">
           <app-pdf-cetak-keputusan [k1DetailId]="listk1DetailId"></app-pdf-cetak-keputusan>
         </div>
         
-        <!-- pdf cetak keputusan uip -->
+        <!-- call pdf cetak keputusan uip -->
         <div *ngIf=" isPrint && selectedSamples[0].creatorRoleId == 2">
           <app-pdf-cetak-keputusan-uip [k1DetailId]="listk1DetailId"></app-pdf-cetak-keputusan-uip>
         </div>

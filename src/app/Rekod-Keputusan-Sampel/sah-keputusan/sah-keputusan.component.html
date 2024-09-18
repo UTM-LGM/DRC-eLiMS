@@ -9,8 +9,7 @@
             </mat-form-field>
 
             <div style="text-align: right;">
-                <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to
-                    Excel</button>
+                <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to Excel</button>
             </div><br>
             
             <!-- List sample by batch -->
@@ -124,7 +123,7 @@
 
             <hr>
 
-            <!-- rekod keputusan -->
+            <!-- call rekod keputusan -->
             <div class="row align-content-center justify-content-center" *ngIf="showForm">
                 <div class="col-8 border-gray">
                     <app-detail-keputusan [k1Detail]="k1Detail" [result]="result" [estimate1]="estimate1"

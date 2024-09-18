@@ -57,23 +57,17 @@ export class TarikhTerimaSampelComponent {
   rubberTypes: RubberType[];
   batches: any;
   batchId: number;
-  selectedBatchId: number;
   loginAs: any;
   userRoleId: any;
   roleGtacr: boolean
   statusCodeId: number = 0;
-  customNo: string;
   selectedFastTrackValue: string = ""; // Initialize with an empty string
   searchBy: string[] = []
   showRubberType: boolean = false
   showFastTrack: boolean = false
   showBatchId: boolean = false
-  customFields: { value: string }[] = [];
-  isDateSelected: boolean = false;
   rubberTypeId: any;
   daftarClicked = false;
-
-  formattedDate: string;
 
   constructor(
     private elimsService: ElimsService,
@@ -87,6 +81,7 @@ export class TarikhTerimaSampelComponent {
     if (!this.k1Detail.dateReceivedInLab) {
       this.k1Detail.dateReceivedInLab = new Date();  // Store as Date object
     }
+
     if (this.authService.isloggedin()) {
       this.loginAs = this.authService.getSessionUsername()
       this.userRoleId = this.authService.getSessionRole()
@@ -95,10 +90,9 @@ export class TarikhTerimaSampelComponent {
       this.loginAs = '';
     }
 
-    // userRoleId == 4  is role GTACR
+    // userRoleId == 4  : role GTACR
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res
         this.roleGtacr = true
@@ -178,8 +172,7 @@ export class TarikhTerimaSampelComponent {
 
   searchSampleByBatch(batchId: number) {
     this.elimsService.GetElimsSamplesByBatchId(batchId).subscribe(res => {
-      console.log(res);
-
+      // console.log(res);
       this.samples = res.filter(sample => sample.statusCodeId === 3);
     });
   }

@@ -4,8 +4,7 @@
             <h1 class="attractive-title">Rekod Kelulusan</h1>
             <div class="mat-card-container">
 
-                <!-- searchby batchId -->
-
+                <!-- search by batchId -->
                 <div class="row form-group">
                     <div class="col-sm-2">
                         <label class="label_title">Batch ID:</label><br>
@@ -21,8 +20,7 @@
                 </mat-form-field>
 
                 <div style="text-align: right;">
-                    <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to
-                        Excel</button>
+                    <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to Excel</button>
                 </div><br>
                 
                 <!-- List sample by batch -->
@@ -151,7 +149,7 @@
             </div>
 
 
-            <!-- detail keputusan -->
+            <!--call detail keputusan -->
             <app-detail-keputusan [k1Detail]="k1Detail" [result]="result"  [estimate1]="estimate1" [estimate2]="estimate2"  *ngIf="showForm"
                 [inputDisable]="!inputDisable" [inputKelulusan]="inputKelulusan"></app-detail-keputusan>
 

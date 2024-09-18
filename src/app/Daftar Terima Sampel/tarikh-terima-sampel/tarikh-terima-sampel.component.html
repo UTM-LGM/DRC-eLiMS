@@ -1,17 +1,9 @@
 <div class="container mb-3">
   <mat-card>
     <mat-card-content>
-      <!-- <div class="row form-group">
-        <div class="col-lg-2">
-          <label>Tarikh Terima di Makmal<span class="required" style="color:red;">*</span></label><br>
-        </div>
-        <div class="col-lg-4">
-          <input type="date" class="form-control" id="dateReceivedInLab" name="dateReceivedInLab"
-            [(ngModel)]="formattedDate" (change)="onDateChange($event)">
-        </div>
-      </div><br> -->
-      
+
       <h1 class="attractive-title">Tarikh Terima Sampel</h1>
+
       <div class="mat-card-container">
 
         <div class="row form-group">
@@ -27,6 +19,7 @@
           </div>
         </div><br>
 
+        <!-- search based batch id -->
         <span *ngIf="showBatchId">
           <div class="row form-group">
             <div class="col-sm-2">
@@ -38,6 +31,7 @@
           </div><br>
         </span>
 
+        <!-- search based rubber type -->
         <span *ngIf="showRubberType">
           <div class="row form-group">
             <div class="col-sm-2">
@@ -55,6 +49,7 @@
           </div><br>
         </span>
 
+        <!-- search based fast track -->
         <span *ngIf="showFastTrack">
           <div class="row form-group">
             <div class="col-sm-2">
@@ -184,7 +179,7 @@
         </div><br><br>
 
 
-        <!-- Batch ID Form -->
+        <!-- Search batch id -->
         <div class="container">
           <div class="row">
             <div class="col-sm-7">
@@ -208,7 +203,7 @@
         </div><br><br>
 
 
-        <!-- List sample   -->
+        <!-- List sample search by batch id   -->
         <form *ngIf="samples.length > 0" (ngSubmit)="registerReceived()" class="center-table">
           <div>
             <h2>Senarai Sampel</h2>
@@ -240,19 +235,7 @@
           <br>
 
 
-          <!-- Tarikh terima di makmal -->
-          <!-- <div class="row form-group">
-            <div class="col-lg-2">
-              <label>Tarikh Terima di Makmal<span class="required" style="color:red;">*</span></label><br>
-            </div>
-            <div class="col-lg-4">
-              <input type="date" class="form-control" id="dateReceivedInLab" name="dateReceivedInLab"
-                [(ngModel)]="k1Detail.dateReceivedInLab" (change)="onDateChange($event)"
-                [value]="today | date:'yyyy-MM-dd'"><br>
-            </div>
-          </div><br> -->
-
-
+          <!-- Tarikh terima di makmal  -->
           <div class="row form-group">
             <div class="col-lg-2">
               <label>Tarikh Terima di Makmal<span class="required" style="color:red;">*</span></label><br>
@@ -264,21 +247,12 @@
             </div>
           </div><br>
           
-          
-          
-          <!-- <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange($event)"
-            [value]="today | date:'yyyy-MM-dd'" /> -->
-
-
 
           <div align="end">
-            <button type="submit" class="btn btn-primary mr-5"
-              >Terima</button>
+            <button type="submit" class="btn btn-primary mr-5">Terima</button>
           </div><br>
 
         </form><br>
-
-      
         
       </div>
     </mat-card-content>

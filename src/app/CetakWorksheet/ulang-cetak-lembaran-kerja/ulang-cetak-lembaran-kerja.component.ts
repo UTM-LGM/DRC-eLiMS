@@ -137,7 +137,7 @@ export class UlangCetakLembaranKerjaComponent {
         }
       }
     }
-    console.log(this.selectedSamples);
+    // console.log(this.selectedSamples);
   }
 
 

@@ -13,13 +13,13 @@ export class LaporanKgkComponent {
   toDate: Date | undefined;
   reportKgk: any;
   isSearched: boolean = false;
- 
-constructor(
-  private laporanService: LaporanService,
-  private decimalPipe: DecimalPipe
+
+  constructor(
+    private laporanService: LaporanService,
+    private decimalPipe: DecimalPipe
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   searchSample(): void {
     // Determine which parameters to include based on the selected criteria
@@ -30,26 +30,26 @@ constructor(
       (data) => {
         this.reportKgk = data;
         // console.log(this.reportKgk);
-        this.isSearched = true; 
+        this.isSearched = true;
       },
       (error) => {
         console.error('Error fetching sample counts:', error);
       }
     );
-}
-
-
-calculateFormattedDifference(result: number, drc: number): string {
-  const difference = result - drc; // Calculate the difference without taking the absolute value
-  const formattedDifference = this.decimalPipe.transform(Math.abs(difference), '1.2-2') || ''; // Format to two decimal places
-
-  // Check if drc is greater than result, then prepend a negative sign
-  if (drc > result) {
-    return '-' + formattedDifference;
-  } else {
-    return formattedDifference;
   }
-}
+
+
+  calculateFormattedDifference(result: number, drc: number): string {
+    const difference = result - drc; // Calculate the difference without taking the absolute value
+    const formattedDifference = this.decimalPipe.transform(Math.abs(difference), '1.2-2') || ''; // Format to two decimal places
+
+    // Check if drc is greater than result, then prepend a negative sign
+    if (drc > result) {
+      return '-' + formattedDifference;
+    } else {
+      return formattedDifference;
+    }
+  }
 
 
 }

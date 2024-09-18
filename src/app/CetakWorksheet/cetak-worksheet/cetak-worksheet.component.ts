@@ -35,8 +35,6 @@ export class CetakWorksheetComponent {
         this.k1Details.push(data);
         this.k1Details.sort((a, b) => a.k1DetailId - b.k1DetailId);
         console.log(this.k1Details)
-
-
       });
 
     })
@@ -48,41 +46,6 @@ export class CetakWorksheetComponent {
     })
 
   }
-
-
-
-  // ngOnInit() {
-  //   let fetchPromises = this.k1DetailId.map(id =>
-  //     this.cetakWorksheetService.GetElimsSample(id).toPromise()
-  //   );
-
-  //   Promise.all(fetchPromises).then(details => {
-  //     this.k1Details = details;
-  //     this.k1Details.sort((a, b) => a.k1DetailId - b.k1DetailId);
-  //     console.log(this.k1Details);
-  //   });
-
-
-  // }
-
-
-
-  // callGeneratePdf() {
-  //   console.log(this.k1DetailId)
-  //   this.cetakWorksheetService.PutRefPenimbang(this.k1DetailId, this.k1Detail).subscribe(
-  //     res => {
-  //       console.log('PostRefPenimbang response:', res);
-  //     },
-  //     error => {
-  //       console.error('PostRefPenimbang error:', error);
-  //     }
-  //   );
-
-  //   // this.generatePdf();
-  // }
-
-// In your component
-// k1DetailId: number[] = [];  // Initialize as an empty array or with initial values
 
 
 callGeneratePdf() {
@@ -102,12 +65,6 @@ callGeneratePdf() {
 
   this.generatePdf();
 }
-
-
-
-
-  
-
 
 
   @ViewChild('pdfContent', { static: true }) pdfContent: ElementRef | undefined;

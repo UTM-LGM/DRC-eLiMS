@@ -3,15 +3,13 @@
         <mat-card-content>
             <h1 class="attractive-title">Uji Sampel</h1>
 
-
             <mat-form-field>
                 <mat-label>Filter</mat-label>
                 <input matInput (keyup)="applyFilter($event)" placeholder="keyword" #input>
             </mat-form-field>
 
         <div style="text-align: right;">
-          <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to
-              Excel</button>
+          <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to Excel</button>
       </div><br>
             
             <!-- List sample by batch -->

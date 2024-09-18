@@ -3,6 +3,7 @@
     <mat-card-content>
 
       <h1 class="attractive-title">Daftar Terima Sampel</h1>
+      
       <div class="mat-card-container">
 
         <div class="row form-group">
@@ -18,6 +19,7 @@
           </div>
         </div><br>
 
+        <!-- search based batch id -->
         <span *ngIf="showBatchId">
           <div class="row form-group">
             <div class="col-sm-2">
@@ -29,6 +31,7 @@
           </div><br>
         </span>
 
+        <!-- search based rubber type -->
         <span *ngIf="showRubberType">
           <div class="row form-group">
             <div class="col-sm-2">
@@ -46,6 +49,7 @@
           </div><br>
         </span>
 
+        <!-- search based fast track -->
         <span *ngIf="showFastTrack">
           <div class="row form-group">
             <div class="col-sm-2">
@@ -64,14 +68,13 @@
 
      
         <div style="text-align: right;">
-          <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to
-              Excel</button>
+          <button class="btn-print buttonExcel" (click)="exportToExcel()">Export toExcel</button>
       </div><br>
+
 
         <!-- List sample by batch -->
         <div class="mat-elevation-z8">
           <div class="list-container">
-
 
             <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="table table-striped center-table">
 
@@ -203,7 +206,7 @@
         </div><br><br>
 
 
-        <!-- List sample   -->
+        <!-- List sample by customNo  -->
           <div *ngIf="samples.length > 0">
             <h2>Daftar Terima Sampel</h2>
             <div>

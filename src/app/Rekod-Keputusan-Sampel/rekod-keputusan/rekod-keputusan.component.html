@@ -8,8 +8,7 @@
             </mat-form-field>
 
             <div style="text-align: right;">
-                <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to
-                    Excel</button>
+                <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to Excel</button>
             </div><br>
                   
             <!-- List sample by batch -->
@@ -117,7 +116,7 @@
 
             <hr>
 
-            <!-- lembaran worksheet -->
+            <!-- call lembaran worksheet -->
             <div>
                 <app-detail-keputusan [k1Detail]="k1Detail" *ngIf="showForm"></app-detail-keputusan>
             </div>

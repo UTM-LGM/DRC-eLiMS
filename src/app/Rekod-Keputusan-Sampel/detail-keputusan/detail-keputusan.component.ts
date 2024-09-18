@@ -51,13 +51,7 @@ export class DetailKeputusanComponent {
   formattedInLabDate: string;
   formattedVerifiedDate: string;
   daftarClicked = false;
-  // estimate1: number = 0;
-  // estimate2: number = 0;
-  // k1Detail: K1Detail = {} as K1Detail;
-  // result: Result = {} as Result;
-  // inputEstimate1: number = 0;
-  // inputEstimate2: number = 0;
-
+ 
   ngOnInit() {
     console.log(this.inputDisable)
     if (this.authService.isloggedin()) {

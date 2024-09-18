@@ -26,7 +26,6 @@ export class RekodKelulusanService {
 }
 
 
-
 uipNotificationResultLetter(staffId: number, k1DetailId: number, emailRecipients: string[]) {
   const body = emailRecipients; // recipients are sent as the body
   const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };

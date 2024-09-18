@@ -1,68 +1,68 @@
 <div class="container mb-3">
-    <mat-card>
-        <mat-card-content>
+  <mat-card>
+    <mat-card-content>
 
-            <h1 class="attractive-title">Laporan KGK</h1>
-            <div class="mat-card-container">
+      <h1 class="attractive-title">Laporan KGK</h1>
+      <div class="mat-card-container">
 
-                <span><br>
-                    <div class="row form-group">
-                        <div class="col-sm-2">
-                            <label>Tarikh</label><br>
-                        </div>
-                        <div class="col-sm-2">
-                            <label for="startDate" class="label_bm">Dari:</label>
-                            <input type="date" id="startDate" class="form-control" [(ngModel)]="fromDate">
-                        </div>
-                        <div class="col-sm-2">
-                            <label for="endDate" class="label_bm">Hingga:</label>
-                            <input type="date" id="endDate" class="form-control" [(ngModel)]="toDate">
-                        </div>
-                    </div>
-                    <br>
-                </span>
-
-                <div class="col-lg-2">
-                    <button type="submit" class="btn btn-primary" style="margin-left: 5px;"(click)="searchSample()">Cari</button>
-                </div><br>
-
-
-                <!-- Senarai sampel -->
-                <div *ngIf="isSearched && reportKgk">
-                  <h3>Senarai sampel</h3>
-                  <p>Jumlah Sampel: {{ reportKgk.totalSamples }}</p>
-                
-                  <table class="table table-striped center-table">
-                    <thead>
-                      <tr class="tableheader">
-                        <th class="black" scope="col">Bil</th> <!-- Added "Bil" column -->
-                        <th class="black" scope="col">Sampel Id</th>
-                        <th class="black" scope="col">Tarikh Terima</th>
-                        <th class="black" scope="col">Cetak Keputusan</th> 
-                        <th class="black" scope="col">Batch Id</th>
-                        <th class="black" scope="col">No Kastam</th> 
-                        <th class="black" scope="col">KGK K1</th>              
-                        <th class="black" scope="col">KGK Sebenar</th> 
-                        <th class="black" scope="col">Perbezaan</th>
-                      </tr>            
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let sample of reportKgk.k1Details; let i = index">     
-                        <td>{{ i + 1 }}</td> <!-- Serial number column -->
-                        <td>{{ sample.k1DetailId }}</td>
-                        <td>{{ sample.receivedOn | date: 'dd/MM/yyyy' }}</td>
-                        <td>{{ sample.printedOn | date: 'dd/MM/yyyy' }}</td>
-                        <td>{{ sample.batchId }}</td>
-                        <td>{{ sample.customNo }}</td>
-                        <td>{{ sample.drc }}</td>
-                        <td>{{ sample.result }}</td>
-                        <td>{{ calculateFormattedDifference(sample.result, sample.drc) }}</td> 
-                      </tr>      
-                    </tbody>
-                  </table>
-                </div>
-                
+        <span><br>
+          <div class="row form-group">
+            <div class="col-sm-2">
+              <label>Tarikh</label><br>
             </div>
-        </mat-card-content>
-    </mat-card>
+            <div class="col-sm-2">
+              <label for="startDate" class="label_bm">Dari:</label>
+              <input type="date" id="startDate" class="form-control" [(ngModel)]="fromDate">
+            </div>
+            <div class="col-sm-2">
+              <label for="endDate" class="label_bm">Hingga:</label>
+              <input type="date" id="endDate" class="form-control" [(ngModel)]="toDate">
+            </div>
+          </div>
+          <br>
+        </span>
+
+        <div class="col-lg-2">
+          <button type="submit" class="btn btn-primary" style="margin-left: 5px;" (click)="searchSample()">Cari</button>
+        </div><br>
+
+
+        <!-- Senarai sampel -->
+        <div *ngIf="isSearched && reportKgk">
+          <h3>Senarai sampel</h3>
+          <p>Jumlah Sampel: {{ reportKgk.totalSamples }}</p>
+
+          <table class="table table-striped center-table">
+            <thead>
+              <tr class="tableheader">
+                <th class="black" scope="col">Bil</th> <!-- Added "Bil" column -->
+                <th class="black" scope="col">Sampel Id</th>
+                <th class="black" scope="col">Tarikh Terima</th>
+                <th class="black" scope="col">Cetak Keputusan</th>
+                <th class="black" scope="col">Batch Id</th>
+                <th class="black" scope="col">No Kastam</th>
+                <th class="black" scope="col">KGK K1</th>
+                <th class="black" scope="col">KGK Sebenar</th>
+                <th class="black" scope="col">Perbezaan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let sample of reportKgk.k1Details; let i = index">
+                <td>{{ i + 1 }}</td> <!-- Serial number column -->
+                <td>{{ sample.k1DetailId }}</td>
+                <td>{{ sample.receivedOn | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ sample.printedOn | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ sample.batchId }}</td>
+                <td>{{ sample.customNo }}</td>
+                <td>{{ sample.drc }}</td>
+                <td>{{ sample.result }}</td>
+                <td>{{ calculateFormattedDifference(sample.result, sample.drc) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

@@ -70,7 +70,6 @@ export class PosKeputusanComponent {
   lepassubmit: boolean = false
   selectedSamples: Sample[] = [];
   mesYaTidak: any
-
   showDelivery: boolean = false
   batch: Batch = {} as Batch;
   delivery: any = ['Fizikal', 'Perkhidmatan Kurier']

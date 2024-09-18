@@ -73,18 +73,18 @@ export class LaporanPengujiComponent {
     }
   }
 
-  
+
   searchSample(): void {
     let startDate: Date | undefined = this.fromDate;
     let endDate: Date | undefined = this.toDate;
     let tester: string | undefined = this.k1Detail.inLabBy;
-  
+
     this.laporanService.CountSamplesByInLabOn(startDate, endDate, tester).subscribe(
       (data) => {
         this.sampleCounts = data;
         console.log(data)
         console.log(this.sampleCounts);
-        this.isSearched = true; 
+        this.isSearched = true;
       },
       (error) => {
         console.error('Error fetching sample counts:', error);
