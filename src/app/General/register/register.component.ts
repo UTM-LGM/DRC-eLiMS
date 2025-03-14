@@ -20,15 +20,14 @@ export class RegisterComponent {
   isProcess: boolean = false;
   forwarder: Forwarder = {} as Forwarder
   roles: any
-  
+
   constructor(
-    public authService: AuthService, 
-    private toastr: ToastrService, 
-    private router: Router, 
+    public authService: AuthService,
+    private toastr: ToastrService,
+    private router: Router,
     public appComponent: AppComponent,
     public userService: UserService
-
-    ) { }
+  ) { }
 
   ngOnInit(): void {
 
@@ -65,22 +64,22 @@ export class RegisterComponent {
 
   valid() {
     if (
-      this.regUser.forwarderId == null || // Check if forwarderId is null
-      this.regUser.code == null ||       // Check if code is null
-      this.regUser.code === "" ||        // Check if code is an empty string
-      this.regUser.username == null ||   // Check if username is null
-      this.regUser.username === "" ||    // Check if username is an empty string
-      this.regUser.password == null ||   // Check if password is null
-      this.regUser.password === "" ||    // Check if password is an empty string
-      this.repeatPassword == null ||     // Check if repeatPassword is null
-      this.repeatPassword === ""         // Check if repeatPassword is an empty string
+      this.regUser.forwarderId == null ||
+      this.regUser.code == null ||
+      this.regUser.code === "" ||
+      this.regUser.username == null ||
+      this.regUser.username === "" ||
+      this.regUser.password == null ||
+      this.regUser.password === "" ||
+      this.repeatPassword == null ||
+      this.repeatPassword === ""
     ) {
       return false;
     } else {
       return true;
     }
   }
-  
+
 
   passwordMatch(): boolean {
     if (this.regUser.password !== this.repeatPassword) {

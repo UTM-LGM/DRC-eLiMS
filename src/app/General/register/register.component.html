@@ -1,19 +1,17 @@
-
-
 <body>
   <div class="background-image"></div>
   <div class="container">
     <img class="logo" src="assets/image/logoLGM.png" alt="Logo">
     <h1 class="title">DRC-eLiMS</h1>
     <form class="form1">
-      
+
       <div class="input-container">
-        <select class="un" name="forwarderId"  id="forwarderId"  [(ngModel)]="regUser.forwarderId">
+        <select class="un" name="forwarderId" id="forwarderId" [(ngModel)]="regUser.forwarderId">
           <!-- <option class="pilih"  value="default">--Pilih--</option> -->
           <option value="" disabled selected>-- Pilih Syarikat Pengimport--</option>
           <option *ngFor="let forwarder of forwarders" [value]="forwarder.forwarderId">
             {{forwarder.name}}
-        </option>
+          </option>
         </select>
       </div>
 
@@ -27,7 +25,7 @@
         [(ngModel)]="regUser.password">
       <input class="pass" type="password" align="center" name="repassword" placeholder="Tulis semula kata laluan"
         ngModel [(ngModel)]="repeatPassword">
-        <!-- <input class="pass" type="role" align="center" name="repassword" placeholder="Role"
+      <!-- <input class="pass" type="role" align="center" name="repassword" placeholder="Role"
         ngModel [(ngModel)]="repeatPassword"> -->
 
       <a class="signin" (click)="register()">Daftar</a>

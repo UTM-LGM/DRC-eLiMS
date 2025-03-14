@@ -42,10 +42,10 @@ namespace elims.Controllers
                     batch.BankCode,
                     batch.SentOn,
                     ReceivedOn = batch.K1Details.FirstOrDefault().ReceivedOn,
-                    ForwarderId = batch.K1Details.FirstOrDefault().ForwarderId,
+                    //ForwarderId = batch.K1Details.FirstOrDefault().ForwarderId,
                     ForwarderName = _context.Forwarders.FirstOrDefault(forwarder => forwarder.ForwarderId == batch.K1Details.FirstOrDefault().ForwarderId).Name,
                     RubberType = _context.RefRubberTypes.FirstOrDefault(rubberType => rubberType.Id == batch.K1Details.FirstOrDefault().RubberTypeId).RubberType,
-                    TestMethodId = batch.TestMethodId,
+                    //TestMethodId = batch.TestMethodId,
                     TestMethod = _context.RefTestMethods.FirstOrDefault(testMethod => testMethod.Id == batch.TestMethodId).TestMethod,
                     batch.IsFastTrack,
                     batch.Receipt,
@@ -99,6 +99,76 @@ namespace elims.Controllers
         }
 
 
+      /*  [HttpGet("{statusCodeId}")]
+        public async Task<IActionResult> GetElimsAllBatch10([FromRoute] int statusCodeId)
+        {
+            // Prefetch related data to avoid multiple database calls
+            var forwarders = await _context.Forwarders.ToDictionaryAsync(f => f.ForwarderId, f => f.Name);
+            var rubberTypes = await _context.RefRubberTypes.ToDictionaryAsync(r => r.Id, r => r.RubberType);
+            var testMethods = await _context.RefTestMethods.ToDictionaryAsync(t => t.Id, t => t.TestMethod);
+            var typeCodes = await _context.TypeCodes.ToDictionaryAsync(t => t.Id, t => t.SampleType);
+            var staffs = await _context.Staffs.ToDictionaryAsync(s => s.Username, s => s.StaffName);
+
+            var batches = await _context.Batches
+                .Include(batch => batch.K1Details)
+                    .ThenInclude(k1Detail => k1Detail.K1Header)
+                .Where(batch => batch.K1Details.Any(k1Detail => k1Detail.StatusCodeId == statusCodeId))
+                .OrderBy(batch => batch.BatchId)
+                .Select(batch => new
+                {
+                    batch.BatchId,
+                    batch.ChequeNo,
+                    batch.ChequeAmount,
+                    batch.BankCode,
+                    batch.SentOn,
+                    ReceivedOn = batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.ReceivedOn,
+                    ForwarderName = forwarders.GetValueOrDefault(batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.ForwarderId ?? 0),
+                    RubberType = rubberTypes.GetValueOrDefault(batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.RubberTypeId ?? 0),
+                    TestMethod = testMethods.GetValueOrDefault(batch.TestMethodId ?? 0),
+                    batch.IsFastTrack,
+                    batch.Receipt,
+                    batch.PostResultOn,
+                    batch.PostResultDelivery,
+                    batch.PostResultCourierServices,
+                    batch.PostResultTrackingNo,
+                    RubberTypeId = batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.RubberTypeId,
+                    CreatorRoleId = batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.CreatorRoleId,
+                    TypeCodeId = batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.TypeCodeId,
+                    SampleCount = batch.K1Details.Count(k1Detail => k1Detail.StatusCodeId == statusCodeId),
+                    countSampleBasedSameBatchId = batch.K1Details.Count,
+                    StaffName = staffs.GetValueOrDefault(batch.SentBy),
+                    ApprovedOn = batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.ApprovedOn,
+                    ImportedDate = batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.K1Header?.ImportedDate,
+                    Samples = batch.K1Details
+                        .Where(k1Detail => k1Detail.StatusCodeId == statusCodeId)
+                        .Select(k1Detail => new
+                        {
+                            k1Detail.BatchId,
+                            k1Detail.LabRefNo,
+                            k1Detail.ImporterName,
+                            k1Detail.StatusCodeId,
+                            k1Detail.CustomNo,
+                            k1Detail.K1DetailId,
+                            k1Detail.ReceivedOn,
+                            TypeCode = typeCodes.GetValueOrDefault(k1Detail.TypeCodeId ?? 0),
+                            k1Detail.Quantity,
+                            ImportedDate = k1Detail.K1Header?.ImportedDate,
+                            k1Detail.WorksheetTestOn,
+                            k1Detail.CreatorRoleId,
+                            StaffName = staffs.GetValueOrDefault(batch.SentBy),
+                            //Result = results.GetValueOrDefault(k1Detail.K1DetailId)
+
+                        }).ToList()
+                })
+                .ToListAsync();
+
+            return Ok(batches);
+        }*/
+
+
+
+
+
 
         [HttpGet("{statusCodeId}")]
         public async Task<IActionResult> GetElimsAllBatch1([FromRoute] int statusCodeId)
@@ -113,14 +183,14 @@ namespace elims.Controllers
                     batch.BatchId,
                     RubberType = _context.RefRubberTypes.FirstOrDefault(rubberType => rubberType.Id == batch.K1Details.FirstOrDefault().RubberTypeId).RubberType,
                     batch.IsFastTrack,
-                    //ForwarderId = batch.K1Details.FirstOrDefault().ForwarderId,
+                    ForwarderId = batch.K1Details.FirstOrDefault().ForwarderId,
                     ForwarderName = _context.Forwarders.FirstOrDefault(forwarder => forwarder.ForwarderId == batch.K1Details.FirstOrDefault().ForwarderId).Name,
                     batch.BankCode,
                     batch.ChequeNo,
                     batch.ChequeAmount,
                     batch.SentOn,
                     ReceivedOn = batch.K1Details.FirstOrDefault().ReceivedOn,
-                    TestMethodId = batch.TestMethodId,
+                    //TestMethodId = batch.TestMethodId,
                     TestMethod = _context.RefTestMethods.FirstOrDefault(testMethod => testMethod.Id == batch.TestMethodId).TestMethod,
                     batch.Receipt,
                     SampleCount = batch.K1Details.Count(k1Detail => k1Detail.StatusCodeId == statusCodeId),
@@ -164,6 +234,53 @@ namespace elims.Controllers
                                      Result = _context.Results.Where(r => r.K1DetailId == k1Detail.K1DetailId).Select(r => r.Result1).FirstOrDefault()*/
                                 }),
 
+                })
+                .ToListAsync();
+
+            return Ok(Batches);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> GetElimsAllBatch2([FromBody] List<int> statusCodeIds)
+        {
+            if (statusCodeIds == null || !statusCodeIds.Any())
+            {
+                return BadRequest("StatusCodeIds cannot be null or empty.");
+            }
+
+            var Batches = await _context.Batches
+                .Where(batch => batch.K1Details.Any(k1Detail => statusCodeIds.Contains(k1Detail.StatusCodeId.Value)))
+                .OrderBy(batch => batch.BatchId)
+                .Select(batch => new
+                {
+                    batch.BatchId,
+                    RubberType = _context.RefRubberTypes.FirstOrDefault(rubberType => rubberType.Id == batch.K1Details.FirstOrDefault().RubberTypeId).RubberType,
+                    batch.IsFastTrack,
+                    ForwarderName = _context.Forwarders.FirstOrDefault(forwarder => forwarder.ForwarderId == batch.K1Details.FirstOrDefault().ForwarderId).Name,
+                    batch.BankCode,
+                    batch.ChequeNo,
+                    batch.ChequeAmount,
+                    batch.SentOn,
+                    ReceivedOn = batch.K1Details.FirstOrDefault().ReceivedOn,
+                    TestMethod = _context.RefTestMethods.FirstOrDefault(testMethod => testMethod.Id == batch.TestMethodId).TestMethod,
+                    batch.Receipt,
+                    SampleCount = batch.K1Details.Count(k1Detail => statusCodeIds.Contains(k1Detail.StatusCodeId.Value)),
+                    ApprovedOn = batch.K1Details.FirstOrDefault().ApprovedOn,
+                    Samples = batch.K1Details
+                        .Where(k1Detail => statusCodeIds.Contains(k1Detail.StatusCodeId.Value))
+                        .Select(k1Detail => new
+                        {
+                            k1Detail.K1DetailId,
+                            k1Detail.BatchId,
+                            k1Detail.CustomNo,
+                            k1Detail.ImporterName,
+                            TypeCode = _context.TypeCodes.FirstOrDefault(typeCode => typeCode.Id == k1Detail.TypeCodeId).SampleType,
+                            ImportedDate = k1Detail.K1Header.ImportedDate,
+                            k1Detail.Quantity,
+                            k1Detail.LabRefNo,
+                            k1Detail.ReceivedOn
+                        })
                 })
                 .ToListAsync();
 

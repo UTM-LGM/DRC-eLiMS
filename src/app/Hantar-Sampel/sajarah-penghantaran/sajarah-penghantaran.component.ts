@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -50,8 +49,6 @@ export class SajarahPenghantaranComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-
-  // batch: Batch = {} as Batch;
   user: userDTO = {} as userDTO
   batches: any;
   showDelivery: boolean = false
@@ -125,9 +122,9 @@ export class SajarahPenghantaranComponent {
           this.dataSource.sort = this.sort;
 
         }))
-
       })
     }
+
     else if (this.userRoleId == 2) {
 
       this.displayedColumns = [
@@ -153,14 +150,10 @@ export class SajarahPenghantaranComponent {
         this.hantarSampelService.GetElimsBatchBySendByNull1(this.username).subscribe((res => {
           console.log(res)
           this.batches = res;
-
           this.dataSource = new MatTableDataSource<Batch>(this.batches);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-
-
         }))
-
       })
     }
 
@@ -194,12 +187,9 @@ export class SajarahPenghantaranComponent {
           this.dataSource.sort = this.sort;
 
         }))
-
       })
     }
-
   }
-
 
 
   applyFilter(event: Event) {
@@ -213,17 +203,14 @@ export class SajarahPenghantaranComponent {
 
 
 
-  sendSample(){
+  sendSample() {
     this.lepassubmit = true;
     console.log(this.selectedBatches)
-    // const dataToSend = { message: this.selectedBatches };
-    // console.log(dataToSend);
     this.selectedSampleToSend.emit(this.selectedBatches);
   }
 
 
   checkSingleChanged() {
-    // this.selectedBatches: any[] = [];
     this.selectedBatches = [];
     for (const batch of this.batches as any[]) {
       if (batch.checked) {
@@ -233,6 +220,5 @@ export class SajarahPenghantaranComponent {
     }
     console.log(this.selectedBatches);
   }
-
 
 }

@@ -77,6 +77,7 @@ export class PdfWorksheetBRComponent {
     }
   }
 
+  
   generateQRCodeImage(data: string): void {
     // Generate the QR code as a data URL
     QRCode.toDataURL(data)

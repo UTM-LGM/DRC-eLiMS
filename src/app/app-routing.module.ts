@@ -46,6 +46,7 @@ import { LaporanBilHariComponent } from './Laporan/laporan-bil-hari/laporan-bil-
 import { NoticeComponent } from './Notis/notice/notice.component';
 import { ViewNoticeComponent } from './Notis/view-notice/view-notice.component';
 import { ShowNoticeComponent } from './Notis/show-notice/show-notice.component';
+import { LateSampleComponent } from './late-sample/late-sample.component';
 
 
 
@@ -349,7 +350,10 @@ const routes: Routes = [
   },
   { path: 'show-notice/:id', component: ShowNoticeComponent }, // New route
 
-
+  {
+    path: 'late-sample',
+    component: LateSampleComponent, canActivate: [AuthGuardService], data: { roles: ['2', '4'] }
+  },
   
 ];
 

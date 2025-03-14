@@ -199,13 +199,13 @@ export class LoginComponent implements OnInit {
           this.userDetail = res;
           this.setSessionStorage();
 
-          if (this.selectedRole == 1 ) {
+          if (this.selectedRole == 1) {
             this.authService.getUserDto(this.userDetail.username, this.selectedRole);
-            // this.setSessionStorage();
-            
-          } 
-    
-          else if ( this.selectedRole == 2){
+            // this.setSessionStorage();z
+
+          }
+
+          else if (this.selectedRole == 2) {
             this.authService.GetStaffRolebyStaffId(this.userDetail.staffId).subscribe(
               staffRoleData => {
                 console.log(staffRoleData)
@@ -219,8 +219,8 @@ export class LoginComponent implements OnInit {
                 } else if (staffRole4.length != 0 && this.selectedRole == 4) {
                   this.authService.getUserDto(this.userDetail.username, this.selectedRole);
                   // this.setSessionStorage();
-                } 
-                
+                }
+
                 else {
                   this.toastr.error('Nama pengguna dan kata laluan salah');
                 }
@@ -230,9 +230,9 @@ export class LoginComponent implements OnInit {
           }
 
 
-          else if ( this.selectedRole == 3){
+          else if (this.selectedRole == 3) {
             this.authService.getUserDto(this.userDetail.username, this.selectedRole);
-          }       
+          }
 
         },
         error => {
@@ -254,18 +254,18 @@ export class LoginComponent implements OnInit {
         sessionStorage.setItem('username', this.userDetail.username);
         // sessionStorage.setItem('role', this.selectedRole.toString());
 
-      // window.location.reload();
-      // setTimeout(() => {
+        // window.location.reload();
+        // setTimeout(() => {
         //   this.router.navigateByUrl('/home');
         // }, 100); 
-              
+
         this.router.navigateByUrl('home').then(() => {
           // Reload the page once navigation is complete
           window.location.reload();
         })
-      
+
         this.toastr.success('Log masuk berjaya!');
-   
+
       },
       roleError => {
         this.isProcess = false;

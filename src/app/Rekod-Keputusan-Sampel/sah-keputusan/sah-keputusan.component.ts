@@ -296,13 +296,13 @@ export class SahKeputusanComponent {
           console.log('File uploaded successfully');
           setTimeout(() => {
             window.location.reload();
-          }, 1000); // Delay in milliseconds (2000ms = 2s)
+          }, 1000);
         },
           error => {
             console.error('Error uploading file:', error);
             setTimeout(() => {
               window.location.reload();
-            }, 1000); // Delay in milliseconds (2000ms = 2s)
+            }, 1000); 
           })
 
       })

@@ -12,10 +12,6 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-
-
-import * as QRCode from 'qrcode-generator';
-import jsPDF from 'jspdf';
 import { loginImporter } from '../../models/loginImporters';
 
 @Component({
@@ -52,8 +48,6 @@ export class MaklumatPenghantaranComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-
-  // batch: Batch = {} as Batch;
   user: userDTO = {} as userDTO
   batches: any;
   showDelivery: boolean = false
@@ -70,9 +64,7 @@ export class MaklumatPenghantaranComponent {
   uipbkhRefRunNo: UipbkhRefRunNo = {} as UipbkhRefRunNo
   batchId: number
   username: string
-
   samples: Sample[] = [];
-
   checkAll: boolean = false
   lepassubmit: boolean = false
   mesYaTidak: any
@@ -85,8 +77,6 @@ export class MaklumatPenghantaranComponent {
     ) { }
 
   ngOnInit() {
-
-    // console.log(this.batch)
 
     if (this.authservice.isloggedin()) {
       this.loginAs = this.authservice.getSessionUsername()
@@ -114,21 +104,17 @@ export class MaklumatPenghantaranComponent {
         this.user = res
         this.roleForwarder = true
         this.roleUip = false
-        // console.log(this.user)
         this.username = this.user.username
 
         this.hantarSampelService.GetElimsBatchBySendByNotNull(this.username).subscribe((res => {
-          // console.log(res)
           this.batches = res;
-
           this.dataSource = new MatTableDataSource<Batch>(this.batches);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-
         }))
-
       })
     }
+
     else if (this.userRoleId == 2) {
 
       this.displayedColumns = [
@@ -154,14 +140,10 @@ export class MaklumatPenghantaranComponent {
         this.hantarSampelService.GetElimsBatchBySendByNotNull(this.username).subscribe((res => {
           console.log(res)
           this.batches = res;
-
           this.dataSource = new MatTableDataSource<Batch>(this.batches);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-
-
         }))
-
       })
     }
 
@@ -189,99 +171,16 @@ export class MaklumatPenghantaranComponent {
         this.hantarSampelService.GetElimsBatchBySendByNotNull(this.username).subscribe((res => {
           console.log(res)
           this.batches = res;
-
           this.dataSource = new MatTableDataSource<Batch>(this.batches);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-
         }))
-
       })
     }
-
-  }
-
-  sendSample() {
-    this.lepassubmit = true;
-    console.log(this.selectedBatches)
-    // const dataToSend = { message: this.selectedBatches };
-    // console.log(dataToSend);
-    this.selectedSampleToSend.emit(this.selectedBatches);
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  /////////////////////////GENERATE QR CODE//////////////////////// TAK PAKAI
-  generateQRCode(batchId: string) {
-    // Create a new QR Code instance
-    const qr = QRCode(0, 'L');
-    console.log(batchId);
-
-    // Set the data to be encoded in the QR code (in this case, the batchId)
-    const batchIdString = batchId.toString();
-    qr.addData(batchIdString);
-    qr.make();
-
-    // Create a new PDF document
-    const pdf = new jsPDF();
-
-    // Convert the QR code data to a data URL
-    const qrCodeDataUrl = qr.createDataURL(10, 10);
-
-    // Add the QR code as an image to the PDF
-    const imageWidth = 50; // Adjust the width as needed
-    const imageHeight = 50; // Adjust the height as needed
-    pdf.addImage(qrCodeDataUrl, 'PNG', 10, 10, imageWidth, imageHeight);
-
-    // Add text under the QR code
-    const textUnderQR = 'Batch Id : ' + batchId;
-    pdf.text(textUnderQR, 10, 70); // Adjust the coordinates (x, y) as needed
-
-    // Save the PDF as a Blob
-    const pdfBlob = pdf.output('blob');
-
-    // Create a Blob URL for the PDF Blob
-    const pdfBlobUrl = URL.createObjectURL(pdfBlob);
-
-    // Create an anchor element to trigger the download
-    const downloadLink = document.createElement('a');
-    downloadLink.href = pdfBlobUrl;
-    // downloadLink.download = 'yourFileName.pdf'; // Provide a desired filename
-
-    // Trigger a click on the anchor element to start the download
-    downloadLink.click();
-
-    // Optionally, revoke the Blob URL to free up resources
-    URL.revokeObjectURL(pdfBlobUrl);
   }
 
 
-  ///////////////////////CHECK ALL///////////////////////// TAK PAKAI
-  checkAllChanged() {
-    if (this.checkAll) {
-      for (let batch of this.batches) {
-        batch.checked = true;
-      }
-      console.log(this.batches);
-    } else {
-      for (let batch of this.batches) {
-        batch.checked = false;
-      }
-      console.log("All unchecked.");
-    }
-  }
-
-
-  ///////////////////////CHECK SATU2///////////////////////// PAKAI
   checkSingleChanged() {
-    // this.selectedBatches: any[] = [];
     this.selectedBatches = [];
     for (const batch of this.batches as any[]) {
       if (batch.checked) {
@@ -293,14 +192,9 @@ export class MaklumatPenghantaranComponent {
   }
 
 
-
-
-
   isAtLeastOneCheckboxChecked(): boolean {
     return this.batches.some((batch: { checked: any; }) => batch.checked);
   }
-
-
 
 
   onNoClick() {

@@ -14,12 +14,14 @@
 
         
         <div *ngIf="!lepassubmit">
-          
+
+          <!-- export to excel -->
           <div style="text-align: right;">
             <button class="btn-print buttonExcel" (click)="exportToExcel()">Export to
                 Excel</button>
         </div><br>
 
+        <!-- List batch cetak keputusan -->
           <div class="mat-elevation-z8">
             <div class="list-container">
 
@@ -152,6 +154,7 @@
         </div>
 
 
+        <!-- list after select pilih -->
         <table *ngIf="!isPrint && lepassubmit" class="table table-striped center-table">
           <thead>
             <tr class="tableheader">
@@ -228,7 +231,7 @@
         </div>
 
         
-        <!-- List sample -->
+        <!-- List sample below when select checkbox -->
         <form *ngIf="selectedSamples.length > 0 && !lepassubmit">
           <div>
             <h2>Senarai Sampel</h2>

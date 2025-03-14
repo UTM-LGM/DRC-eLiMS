@@ -6,6 +6,7 @@
                 <div class="mat-card-container row">
 
                     <div class="col-md-6 shadow rounded p-5 mb-5">
+
                         <div class="row form-group">
                             <div class="col-sm-4">
                                 <label class="label_bm">No Borang Kastam</label><br>
@@ -21,6 +22,7 @@
                                     Perakuan Untuk Mengangkut Barang Dalam Malaysia (Kastam No.3)</small>
                             </div>
                         </div><br>
+
 
                         <div>
                             <div class="row form-group">
@@ -48,6 +50,7 @@
                                 </div>
                             </div><br>
 
+
                             <div class="row form-group" *ngIf="roleImporter">
                                 <div class="col-sm-4">
                                     <label class="label_bm">Tarikh Sampel Diterima</label><br>
@@ -65,6 +68,7 @@
                                 </div>
                             </div><br>
 
+
                             <div class="col-lg-12 row" *ngIf="showRemarks || sample.remarks || sample.evidence">
                                 <div class="col-lg-4" *ngIf="sample.remarks">
                                     <label class="label_title">Catatan</label><br>
@@ -76,6 +80,7 @@
                                     <small class="instruction">*Alasan jika melebihi tempoh masa yang telah
                                         ditetapkan</small>
                                 </div>
+
 
                                 <div class="col-sm-4" *ngIf="sample.evidence">
                                     <label class="label_bm">Bukti</label><br>
@@ -93,6 +98,7 @@
                                 </div>
                             </div>
                         </div><br>
+
 
                         <div class="row form-group">
                             <div class="col-sm-4">
@@ -135,6 +141,7 @@
                             </div>
                         </div><br>
 
+
                         <div class="row form-group">
                             <div class="col-sm-4">
                                 <label class="label_bm">Jenis Getah</label><br>
@@ -145,6 +152,7 @@
                                     [(ngModel)]="sample.rubberType" disabled readonly>
                             </div>
                         </div><br>
+
 
                         <div class="row form-group">
                             <div class="col-sm-4">
@@ -176,6 +184,7 @@
                                     disabled readonly>
                             </div>
                         </div><br>
+
 
                         <div class="row form-group" *ngIf="showSmk && roleImporter">
                             <div class="col-sm-4">
@@ -224,6 +233,7 @@
                             </div>
                         </div><br>
 
+
                         <div class="row form-group">
                             <div class="col-sm-4">
                                 <label class="label_bm">Kod HS</label><br>
@@ -236,6 +246,7 @@
                                     readonly *ngIf="showSmk">
                             </div>
                         </div><br>
+
 
                         <div class="row form-group">
                             <div class="col-sm-4">
@@ -251,6 +262,7 @@
                                     getah</small>
                             </div>
                         </div><br>
+
 
                         <div class="row form-group">
                             <div class="col-sm-4">
@@ -270,6 +282,7 @@
                             </div>
                         </div><br>
 
+
                         <div class="row form-group">
                             <div class="col-sm-4">
                                 <label class="label_bm">Nama Pemandu</label><br>
@@ -280,6 +293,7 @@
                                     [(ngModel)]="sample.driverName">
                             </div>
                         </div><br>
+
 
                         <div class="row form-group">
                             <div class="col-sm-4">
@@ -306,6 +320,7 @@
                             </div>
                         </div>
 
+                        
                         <div class="row form-group">
                             <div class="col-sm-4">
                                 <label class="label_bm">No. Trelar/ Kontena/ Tank</label><br>

@@ -32,8 +32,8 @@ export class HantarSampelComponent {
 
   samples: Sample[] = [];
   selectedSamples: Sample[] = [];
-  filteredSamples: Sample[] = []; 
-  filteredSamplesTemp: Sample[] = []; 
+  filteredSamples: Sample[] = [];
+  filteredSamplesTemp: Sample[] = [];
 
   checkAll: boolean = false
   hantarSampel: boolean = false
@@ -46,7 +46,7 @@ export class HantarSampelComponent {
   lampiranVisible = false;
   isSuratIringan: boolean = false;
   daftarClicked = false;
-  
+
   roleForwarder: boolean
   roleUip: boolean
   roleImporter: boolean
@@ -60,13 +60,13 @@ export class HantarSampelComponent {
   loginAs: any;
   thisyear: string
   userRoleId: any;
-  selectedRubberType: string = ""; 
+  selectedRubberType: string = "";
   selectedCompanyName: string = "";
   username: string
   statusCode: number
   companies: any
   testMethods: any;
-  
+
   baseApiUrl: string = environment.baseApiUrlElims;
 
   constructor(
@@ -77,7 +77,7 @@ export class HantarSampelComponent {
     private hantarSampelService: HantarSampelService,
     private userService: UserService,
     private route: ActivatedRoute,
-  ) {}
+  ) { }
 
   ngOnInit() {
 
@@ -154,13 +154,12 @@ export class HantarSampelComponent {
   }
 
   selectedOptionChangedRubberType() {
-
     const isCheckboxSelected = this.samples.some(sample => sample.checked);
     const isPaymentOptionSelected = this.selectedOption === 'EFT' || this.selectedOption === 'CEK';
 
     this.disableSimpanButton = !isCheckboxSelected || !isPaymentOptionSelected;
-
   }
+
 
   selectedOptionChanged() {
     const isCheckboxSelected = this.samples.some(sample => sample.checked);
@@ -168,8 +167,8 @@ export class HantarSampelComponent {
 
     this.disableSimpanButton = !isCheckboxSelected || !isPaymentOptionSelected;
     this.disableNextBtn = !isCheckboxSelected;
-
   }
+
 
   checkAllChanged() {
     if (this.checkAll) {
@@ -190,8 +189,9 @@ export class HantarSampelComponent {
     this.selectedOptionChanged();
   }
 
+
   checkSingleChanged() {
-    
+
     for (const sample of this.samples) {
       if (sample.checked) {
         this.selectedSamples.push(sample);
@@ -202,6 +202,7 @@ export class HantarSampelComponent {
 
     this.selectedOptionChanged();
   }
+
 
   displaySelected() {
     if (this.selectedOption === 'CEK') {
@@ -250,13 +251,10 @@ export class HantarSampelComponent {
       this.batch.date = new Date(dateString);
       this.file = null
     } else if (this.selectedOption == "EFT") {
-      // this.batch.chequeAmount = 0
       this.batch.chequeNo = ""
     }
 
     this.batch.letterPrinted = 'Y';
-
-    // this.batchData.isFastTrack = true;
     this.hantarSampelService.PostElimsBatches(this.batch, this.username)
       .subscribe(
         res => {
@@ -316,6 +314,7 @@ export class HantarSampelComponent {
     this.mesYaTidak = "tidak"
   }
 
+
   back() {
     this.hantarSampel = false
     this.router.navigate(['hantar-sampel'])
@@ -344,7 +343,6 @@ export class HantarSampelComponent {
   }
 
 
-
   lampiran(batchData: Batch) {
     for (const sample of this.samples) {
       let id = sample.k1DetailId;
@@ -356,7 +354,6 @@ export class HantarSampelComponent {
       );
 
       this.generatePdf(batchData.batchId);
-
 
       this.isLampiran = true;
       this.isSuratIringan = false;
@@ -377,7 +374,6 @@ export class HantarSampelComponent {
     const element = document.getElementById('pdfLampiran');
     console.log(element);
 
-    // Introduce a slight delay (e.g., 500 milliseconds) to allow the content to render
     setTimeout(() => {
       const opt = {
         margin: 0.4,
@@ -394,16 +390,14 @@ export class HantarSampelComponent {
         downloadLink.click();
       });
       html2pdf(element, opt);
-    }, 500); // Adjust the delay as needed
+    }, 500);
   }
-
 
 
   generatePdfSuratIringan(): void {
     const element = document.getElementById('suratIringan');
     console.log(element);
 
-    // Introduce a slight delay (e.g., 500 milliseconds) to allow the content to render
     setTimeout(() => {
       const opt = {
         margin: 0.4,
@@ -420,22 +414,22 @@ export class HantarSampelComponent {
         downloadLink.click();
       });
       html2pdf(element, opt);
-    }, 500); // Adjust the delay as needed
+    }, 500);
   }
 
 
 
   memo(batchData: Batch) {
-    
+
     this.daftarClicked = true;
 
     if (this.staff.unit === "UIP") {
-      // Sorting samples by k1DetailId
+
       this.samples.sort((a, b) => a.k1DetailId - b.k1DetailId);
-    
+
       // Initialize promise chain with a resolved promise
       let promiseChain = Promise.resolve();
-    
+
       // Iterate through sorted samples and chain HTTP requests
       this.samples.forEach(sample => {
         promiseChain = promiseChain.then(() => {
@@ -444,7 +438,7 @@ export class HantarSampelComponent {
               console.log(resUipRunNo);
               this.k1Detail.sampleRunNo = "UIP/" + resUipRunNo.runNo + "/" + resUipRunNo.year;
               this.k1Detail.statusCodeId = 3;
-    
+
               let id = sample.k1DetailId;
               this.hantarSampelService.PutElimsSampleBatchId(id, this.k1Detail).subscribe(
                 resBatch => {
@@ -461,7 +455,7 @@ export class HantarSampelComponent {
           });
         });
       });
-    
+
       // After all HTTP requests are completed
       promiseChain.then(() => {
         this.hantarSampelService.PutUipMemoRunNo(this.thisyear).subscribe(res => {
@@ -478,57 +472,57 @@ export class HantarSampelComponent {
         });
       });
     }
-  
+
 
     else if (this.staff.unit == "UIPBKH") {
 
-        // Sorting samples by k1DetailId
-        this.samples.sort((a, b) => a.k1DetailId - b.k1DetailId);
-    
-        // Initialize promise chain with a resolved promise
-        let promiseChain = Promise.resolve();
-      
-        // Iterate through sorted samples and chain HTTP requests
-        this.samples.forEach(sample => {
-          promiseChain = promiseChain.then(() => {
-            return new Promise((resolve, reject) => {
-              this.hantarSampelService.PutUipbkhSampleRunNo(this.thisyear).subscribe(resUipbkhRunNo => {
-                console.log(resUipbkhRunNo);
-                this.k1Detail.sampleRunNo = "UIPBKH/" + resUipbkhRunNo.runNo + "/" + resUipbkhRunNo.year;
-                this.k1Detail.statusCodeId = 3;
-      
-                let id = sample.k1DetailId;
-                this.hantarSampelService.PutElimsSampleBatchId(id, this.k1Detail).subscribe(
-                  resBatch => {
-                    console.log(this.k1Detail);
-                    this.mesYaTidak = "yes";
-                    console.log(resBatch);
-                    resolve(); // Resolve the promise to continue the chain
-                  },
-                  error => {
-                    reject(error); // Reject the promise if an error occurs
-                  }
-                );
-              });
+      // Sorting samples by k1DetailId
+      this.samples.sort((a, b) => a.k1DetailId - b.k1DetailId);
+
+      // Initialize promise chain with a resolved promise
+      let promiseChain = Promise.resolve();
+
+      // Iterate through sorted samples and chain HTTP requests
+      this.samples.forEach(sample => {
+        promiseChain = promiseChain.then(() => {
+          return new Promise((resolve, reject) => {
+            this.hantarSampelService.PutUipbkhSampleRunNo(this.thisyear).subscribe(resUipbkhRunNo => {
+              console.log(resUipbkhRunNo);
+              this.k1Detail.sampleRunNo = "UIPBKH/" + resUipbkhRunNo.runNo + "/" + resUipbkhRunNo.year;
+              this.k1Detail.statusCodeId = 3;
+
+              let id = sample.k1DetailId;
+              this.hantarSampelService.PutElimsSampleBatchId(id, this.k1Detail).subscribe(
+                resBatch => {
+                  console.log(this.k1Detail);
+                  this.mesYaTidak = "yes";
+                  console.log(resBatch);
+                  resolve(); // Resolve the promise to continue the chain
+                },
+                error => {
+                  reject(error); // Reject the promise if an error occurs
+                }
+              );
             });
           });
         });
-      
-        // After all HTTP requests are completed
-        promiseChain.then(() => {
-          this.hantarSampelService.PutUipbkhMemoRunNo(this.thisyear).subscribe(res => {
-            this.batch.uipRegNo = "LGM/BEPP/UIPBKH/500-5/" + res.year + "(" + res.runNo + ")";
-            this.hantarSampelService.PutBatchUipRefRunNo(batchData.batchId, this.batch).subscribe(res => { });
-            console.log(res);
-            this.router.navigateByUrl("memo/" + batchData.batchId)
-              .then(() => {
-                // Handle success
-              })
-              .catch(error => {
-                // Handle error
-              });
-          });
+      });
+
+      // After all HTTP requests are completed
+      promiseChain.then(() => {
+        this.hantarSampelService.PutUipbkhMemoRunNo(this.thisyear).subscribe(res => {
+          this.batch.uipRegNo = "LGM/BEPP/UIPBKH/500-5/" + res.year + "(" + res.runNo + ")";
+          this.hantarSampelService.PutBatchUipRefRunNo(batchData.batchId, this.batch).subscribe(res => { });
+          console.log(res);
+          this.router.navigateByUrl("memo/" + batchData.batchId)
+            .then(() => {
+              // Handle success
+            })
+            .catch(error => {
+              // Handle error
+            });
         });
+      });
 
     }
   }
@@ -539,24 +533,24 @@ export class HantarSampelComponent {
     console.log('onTestMethodChange called');
     console.log('Selected testMethodId:', this.batch.testMethodId);
 
-   this.batch.chequeAmount = 0;
+    this.batch.chequeAmount = 0;
     this.selectedSamples = this.samples.filter((sample) => sample.checked);
 
     for (let sample of this.selectedSamples) {
       let baseAmount = 0;
 
-      if (this.userRoleId == 1 || this.userRoleId==3) {
+      if (this.userRoleId == 1 || this.userRoleId == 3) {
 
         if (this.batch.testMethodId == 8) {
-          this.batch.chequeAmount += 108;
+          this.batch.chequeAmount += 100;
 
           // If Fast Track is selected, double the amount and include SST
-          this.batch.chequeAmount += this.batch.isFastTrack ? 108 : 0;
+          this.batch.chequeAmount += this.batch.isFastTrack ? 100 : 0;
         } else if (this.batch.testMethodId == 7) {
-          this.batch.chequeAmount += 162;
+          this.batch.chequeAmount += 150;
 
           // If Fast Track is selected, double the amount and include SST
-          this.batch.chequeAmount += this.batch.isFastTrack ? 162 : 0;
+          this.batch.chequeAmount += this.batch.isFastTrack ? 150 : 0;
         }
 
         else {
@@ -567,14 +561,13 @@ export class HantarSampelComponent {
           }
 
           // Apply 6% SST
-          const sstRate = 0.08;
+          const sstRate = 0;
           const sstAmount = baseAmount * sstRate;
 
           // If Fast Track is selected, double the amount and include SST
           this.batch.chequeAmount += this.batch.isFastTrack ? 2 * (baseAmount + sstAmount) : baseAmount + sstAmount;
         }
       }
-
 
       else {
         if (sample.rubberType == 'Lateks') {
@@ -584,7 +577,7 @@ export class HantarSampelComponent {
         }
 
         // Apply 6% SST
-        const sstRate = 0.08;
+        const sstRate = 0;
         const sstAmount = baseAmount * sstRate;
 
         // If Fast Track is selected, double the amount and include SST
@@ -610,17 +603,17 @@ export class HantarSampelComponent {
     window.open(environment.baseApiUrlElimsReceipt + this.batchId2 + "_" + path, "_blank");
   }
 
+
   updateSelectedCheckboxCount() {
     this.selectedCheckboxCount = this.samples.filter(sample => sample.checked).length;
     this.checkboxSelected = this.samples.some((sample) => sample.checked);
-
   }
+
 
   calculateSelectedCheckboxCount() {
     this.selectedCheckboxCount = this.samples.length;
   }
 
- 
 
   filterSamplesByRubberType(e: any) {
 
@@ -643,9 +636,8 @@ export class HantarSampelComponent {
       }
     });
 
-    console.log(Array.from(this.companies)); // Convert Set to Array for logging
+    console.log(Array.from(this.companies)); 
 
-    // Update the condition to match the values of your radio buttons
     if (this.selectedRubberType === "Lateks") {
       this.elimsService.GetRefTestMethodByRubberType(1).subscribe(data => {
         this.testMethods = data;
@@ -662,6 +654,7 @@ export class HantarSampelComponent {
 
     this.setDefaultTestMethod();
   }
+
 
   filterSamplesByCompany(event: any) {
 
@@ -681,9 +674,8 @@ export class HantarSampelComponent {
 
     // Uncheck all checkboxes when filtering by company
     this.filteredSamples.forEach(sample => sample.checked = false);
-  
     console.log('Filtered samples:', this.filteredSamples);
-}
+  }
 
 
   toggleLampiranVisibility(): void {
@@ -700,5 +692,6 @@ export class HantarSampelComponent {
     this.isLampiran = true;
     this.isSuratIringan = false;
   }
+  
 }
 

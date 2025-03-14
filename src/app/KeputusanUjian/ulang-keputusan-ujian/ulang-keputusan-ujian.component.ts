@@ -216,7 +216,6 @@ export class UlangKeputusanUjianComponent {
 
 
   viewMemo(batchId: number): void {
-
     window.open("memo/" + batchId);
   }
   

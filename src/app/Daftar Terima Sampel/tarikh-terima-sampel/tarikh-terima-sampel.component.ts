@@ -79,7 +79,7 @@ export class TarikhTerimaSampelComponent {
 
   ngOnInit() {
     if (!this.k1Detail.dateReceivedInLab) {
-      this.k1Detail.dateReceivedInLab = new Date();  // Store as Date object
+      this.k1Detail.dateReceivedInLab = new Date();  
     }
 
     if (this.authService.isloggedin()) {
@@ -172,7 +172,6 @@ export class TarikhTerimaSampelComponent {
 
   searchSampleByBatch(batchId: number) {
     this.elimsService.GetElimsSamplesByBatchId(batchId).subscribe(res => {
-      // console.log(res);
       this.samples = res.filter(sample => sample.statusCodeId === 3);
     });
   }
@@ -202,7 +201,6 @@ export class TarikhTerimaSampelComponent {
   }
 
 
-  // Method to trigger the fast track filtering process
   searchFastTrack() {
     // Get the selected value from the dropdown
     const selectedValue = this.selectedFastTrackValue;

@@ -97,7 +97,7 @@ export class CetakKeputusanComponent {
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        console.log(res)
+        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res;
         this.roleGtacr = true;
@@ -127,7 +127,7 @@ export class CetakKeputusanComponent {
     this.statusCodeId = 9;
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       this.batches = data;
-      console.log(this.batches[0].samples)
+      //console.log(this.batches[0].samples)
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -190,7 +190,7 @@ export class CetakKeputusanComponent {
     for (const sample of this.selectedSamples) {
       const id = sample.k1DetailId;
       this.creatorRoleId = this.sample.creatorRoleId
-      
+
       console.log(sample)
       this.cetakKeputusanService.PutResultLetterApprovedBy(id, this.k1Detail).subscribe(
         res => {
@@ -219,7 +219,7 @@ export class CetakKeputusanComponent {
 
     setTimeout(() => {
       window.location.reload();
-    }, 2000); 
+    }, 2000);
 
   }
 
@@ -317,15 +317,15 @@ export class CetakKeputusanComponent {
       sampleCount: 'Bil. Sampel Diluluskan',
 
     };
-  
+
     const columnsToExport = Object.keys(columnMappings);
     const allData = this.dataSource.data;
-  
+
     const filteredData = allData.map(row => {
       const filteredRow = {};
       columnsToExport.forEach(column => {
         let value;
-  
+
         if (column === 'receipt') {
           value = row.creatorRoleId === 2 ? 'memo' : row.receipt || row.chequeNo;
         } else if (column === 'isFastTrack') {
@@ -336,7 +336,7 @@ export class CetakKeputusanComponent {
         } else {
           value = row[column];
         }
-  
+
         if (value !== undefined) {
           const customColumnName = columnMappings[column];
           filteredRow[customColumnName] = value;
@@ -344,11 +344,11 @@ export class CetakKeputusanComponent {
       });
       return filteredRow;
     });
-  
+
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Cetak Keputusan');
-  
+
     XLSX.writeFile(wb, 'senarai_sampel.xlsx');
   }
 

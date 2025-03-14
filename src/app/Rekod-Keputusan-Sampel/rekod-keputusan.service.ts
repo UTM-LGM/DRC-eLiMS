@@ -22,8 +22,6 @@ export class RekodKeputusanService {
     return this.http.get<staffRole[]>(this.baseApiUrl + '/api/StaffRoles/GetStaffIdbyStaffRole/' + staffRole);
   }
 
-
-  
   GetStaffIdbyStaffRoleIkmNo(staffRole: number): Observable<staffRole[]> {
     return this.http.get<staffRole[]>(this.baseApiUrl + '/api/StaffRoles/GetStaffIdbyStaffRoleIkmNo/' + staffRole);
   }
@@ -56,12 +54,6 @@ export class RekodKeputusanService {
   }
 
 
-  // PostResult(result: Result): Observable<Result> {
-  //   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  //   return this.http.post<Result>(`${this.baseApiUrl}/api/Results/PostResult`, result, { headers });
-  // }
-
-  
   PutResultbyK1DetailId(result: Result): Observable<Result> {
     return this.http.put<Result>(this.baseApiUrl + '/api/Results/PutResultbyK1DetailId/' + result.k1DetailId,  result);
   }
@@ -69,14 +61,6 @@ export class RekodKeputusanService {
  ResetResult(result: Result): Observable<Result> {
     return this.http.put<Result>(this.baseApiUrl + '/api/Results/ResetResult/' + result.k1DetailId,  result);
   }
-
-
-  // PutK1HeaderSample(updateSampleRequest: K1Header): Observable<K1Header> {
-  //   var body = JSON.stringify(updateSampleRequest)
-  //   const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
-  //   return this.http.put<K1Header>(this.baseApiUrl + '/api/K1Header/PutK1HeaderSample/', body, httpOptions);
-  // }
-
 
 
   PostRetest(retest: Retest): Observable<Retest> {

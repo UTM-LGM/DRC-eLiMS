@@ -38,10 +38,12 @@ export class ViewNoticeComponent implements OnInit {
     });
   }
 
+
   toggleNotice(notice: Notice): void {
     notice.isShow = !notice.isShow;
     this.updateNotices();
   }
+
 
   updateNotices(): void {
     const updatedNotices = this.notisList.map(notice => ({
@@ -60,6 +62,7 @@ export class ViewNoticeComponent implements OnInit {
     });
   }
 
+
   onDelete(notice: Notice): void {
     this.notisList = this.notisList.filter(n => n !== notice);
 
@@ -73,9 +76,11 @@ export class ViewNoticeComponent implements OnInit {
     });
   }
 
+
   navigateToShowNotice(): void {
     this.router.navigate(['/notice']);
   }
+
 
   viewFile(notice: Notice, path: string): void {
     if (notice.id) {

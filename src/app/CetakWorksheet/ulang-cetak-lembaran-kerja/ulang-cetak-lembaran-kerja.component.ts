@@ -56,7 +56,8 @@ export class UlangCetakLembaranKerjaComponent {
   sample: Sample = {} as Sample;
   lepassubmit: boolean = false
   isPrint: boolean = false
-  statusCodeId: number = 0;
+  // statusCodeId: number = 0;
+  statusCodeId: number[] = []; 
   selectedSamples: Sample[] = [];
   mesYaTidak: any
   batch: any;
@@ -73,39 +74,31 @@ export class UlangCetakLembaranKerjaComponent {
   ) { }
 
   ngOnInit() {
-
     if (this.authService.isloggedin()) {
-      this.loginAs = this.authService.getSessionUsername()
-      this.userRoleId = this.authService.getSessionRole()
-    }
-    else {
+      this.loginAs = this.authService.getSessionUsername();
+      this.userRoleId = this.authService.getSessionRole();
+    } else {
       this.loginAs = '';
     }
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        // console.log(res)
         this.authService.changeUser(res);
-        this.staff = res
-        this.roleGtacr = true
-
-      })
+        this.staff = res;
+        this.roleGtacr = true;
+      });
       this.loadBatches();
     }
 
-    this.statusCodeId = 4;
-    this.elimsService.GetElimsAllBatch1(this.statusCodeId).subscribe(data => {
+    // Handle multiple status codes
+    this.statusCodeId = [4,5,6,7];
+    this.elimsService.GetElimsAllBatch2(this.statusCodeId).subscribe(data => {
+      console.log('Received batches:', data); // Debug log
       this.batches = data;
-      // console.log(data)
-
-
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-
-
     });
-    console.log(this.listk1DetailId)
   }
 
 

@@ -28,17 +28,17 @@
           </div><br>
 
 
-          <div class="row form-group" *ngIf="creatorRoleId == 3" >
+          <div class="row form-group" *ngIf="creatorRoleId == 3">
             <div class="col-sm-4">
               <label class="label_bm">Tarikh Sampel Diterima</label><br>
               <label class="label_bi">Date Sample Received</label>
             </div>
             <div class="col-sm-8">
-              <input type="text" class="form-control readonly-input" [value]="sample.dateSampleReceived  | date: 'dd-MM-yyyy'"
-                readonly>
+              <input type="text" class="form-control readonly-input"
+                [value]="sample.dateSampleReceived  | date: 'dd-MM-yyyy'" readonly>
             </div>
           </div><br>
-          
+
 
           <div *ngIf="sample.remarks || sample.evidence">
             <div class="row form-group">
@@ -115,7 +115,7 @@
             </div>
           </div><br>
 
-          <div class="row form-group" *ngIf="creatorRoleId == 1 || creatorRoleId == 2" >
+          <div class="row form-group" *ngIf="creatorRoleId == 1 || creatorRoleId == 2">
             <div class="col-sm-4">
               <label class="label_bm">Syarikat Pengimport</label><br>
               <label class="label_bi">Importer Company</label>
@@ -126,7 +126,7 @@
             </div>
           </div><br>
 
-          <div class="row form-group" *ngIf="creatorRoleId == 3" >
+          <div class="row form-group" *ngIf="creatorRoleId == 3">
             <div class="col-sm-4">
               <label class="label_bm">Syarikat Penghantar</label><br>
               <label class="label_bi">Agent Forwarder</label>

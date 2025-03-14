@@ -71,32 +71,32 @@
 
               <div class="table-responsive">
                 <table class="centered-table" style="width:100%; table-layout: fixed;">
-                    <thead>
-                        <tr class="tableheader">
-                            <th scope="col" style="width: 5%;">Bil</th>
-                            <th scope="col" style="width: 15%;">Tarikh Import</th>
-                            <th scope="col" style="width: 21%;">No. Borang Kastam</th>
-                            <th scope="col" style="width: 21%;">Jenis Getah</th>
-                            <th scope="col" style="width: 10%;">Kuantiti</th>
-                            <th scope="col" style="width: 14%;">No. Lori</th>
-                            <th scope="col" style="width: 14%;">No. Kontena</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let sample of companyGroup.items; let i = index" style="word-wrap: break-word;">
-                            <td>{{i + 1}}</td>
-                            <td>{{sample.importedDate | date:"dd/MM/yyyy"}}</td>
-                            <td>{{sample.customNo}}</td>
-                            <td>{{sample.typeCode}}</td>
-                            <td>{{sample.quantity}}</td>
-                            <td>{{sample.lorryNo}}</td>
-                            <td>{{sample.trailerNo}}</td>
-                        </tr>
-                    </tbody>
+                  <thead>
+                    <tr class="tableheader">
+                      <th scope="col" style="width: 5%;">Bil</th>
+                      <th scope="col" style="width: 15%;">Tarikh Import</th>
+                      <th scope="col" style="width: 21%;">No. Borang Kastam</th>
+                      <th scope="col" style="width: 21%;">Jenis Getah</th>
+                      <th scope="col" style="width: 10%;">Kuantiti</th>
+                      <th scope="col" style="width: 14%;">No. Lori</th>
+                      <th scope="col" style="width: 14%;">No. Kontena</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let sample of companyGroup.items; let i = index" style="word-wrap: break-word;">
+                      <td>{{i + 1}}</td>
+                      <td>{{sample.importedDate | date:"dd/MM/yyyy"}}</td>
+                      <td>{{sample.customNo}}</td>
+                      <td>{{sample.typeCode}}</td>
+                      <td>{{sample.quantity}}</td>
+                      <td>{{sample.lorryNo}}</td>
+                      <td>{{sample.trailerNo}}</td>
+                    </tr>
+                  </tbody>
                 </table><br>
                 <p><b>JUMLAH BILANGAN SAMPEL</b>: {{ companyGroup.items.length }}<br></p>
-            </div>
-            <br><br>
+              </div>
+              <br><br>
 
 
             </div>

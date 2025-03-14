@@ -46,29 +46,29 @@ export class AuthService {
     return this.httpclient.get(this.baseApiUrl + '/api/CustomOffices/GetCustomOffice/' + id)
   }
 
+
   login(username: string, password: string, selectedRole: number) {
     if (selectedRole == 1) {
       const url = `${this.baseApiUrl}/api/LoginForwarders/Post/Login`;
       const requestBody = { username: username, password: password };
       return this.httpclient.post(url, requestBody);
     }
-    
-    else if (selectedRole == 3){
+
+    else if (selectedRole == 3) {
 
       const url = `${this.baseApiUrl}/api/LoginImporters/Post/Login`;
       const requestBody = { username: username, password: password };
       return this.httpclient.post(url, requestBody);
-      
+
     }
 
     else if (selectedRole == 2 || 4) {
       const url = `${this.baseApiUrl}/api/Staffs/Post/Login`;
       const requestBody = { username: username, password: password };
       return this.httpclient.post(url, requestBody);
-    } 
-      
+    }
+
     else {
-      // Handle other cases or throw an error
       throw new Error('Invalid selectedRole');
     }
 
@@ -91,7 +91,7 @@ export class AuthService {
     }
 
 
-        else if (selectedRole == 3){
+    else if (selectedRole == 3) {
 
       this.httpclient.get<userDTO>(this.baseApiUrl + '/api/LoginImporters/GetLoginImporterByUsername/' + username).subscribe(x => {
         console.log(x);
@@ -108,7 +108,7 @@ export class AuthService {
         this.changeIsLoggedIn(true);
       });
     }
-    
+
 
 
   }

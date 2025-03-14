@@ -96,6 +96,7 @@ import { ViewNoticeComponent } from './Notis/view-notice/view-notice.component';
 import { ShowNoticeComponent } from './Notis/show-notice/show-notice.component';
 import { EditNoticeComponent } from './Notis/edit-notice/edit-notice.component';
 import { register } from 'swiper/element/bundle';
+import { LateSampleComponent } from './late-sample/late-sample.component';
 
 register()
 
@@ -166,6 +167,7 @@ register()
     ViewNoticeComponent,
     ShowNoticeComponent,
     EditNoticeComponent,
+    LateSampleComponent,
 
   ],
   imports: [

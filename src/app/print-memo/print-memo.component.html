@@ -16,14 +16,14 @@
 
                 <mat-card-content>
 
-                    <div class="sample"  #pdfContent>
+                    <div class="sample" #pdfContent>
 
                         <body class="table px-4 py-2 pt-4">
 
                             <div class="headerSurat d-flex justify-content-center align-items-center mb-3">
                                 <img src="assets/image/headerLetter.jpg" alt="" width="700" class="mr-300">
                             </div>
-                            
+
 
                             <div class="font">
 
@@ -55,8 +55,10 @@
                                     Kering
                                     ke atas sampel mengikut kaedah ujian
                                     <!-- <span><b>UPB/{{samples[0].sampleCategory}}/001</b></span> -->
-                                    <span *ngIf="samples[0].rubberTypeId == 1"><b>UPB/{{samples[0].sampleCategory}}/001</b></span>
-                                    <span *ngIf="samples[0].rubberTypeId == 2"><b>UPB/{{samples[0].sampleCategory}}/007</b></span>
+                                    <span
+                                        *ngIf="samples[0].rubberTypeId == 1"><b>UPB/{{samples[0].sampleCategory}}/001</b></span>
+                                    <span
+                                        *ngIf="samples[0].rubberTypeId == 2"><b>UPB/{{samples[0].sampleCategory}}/007</b></span>
 
                                     seperti berikut :-
                                 </p>
@@ -65,15 +67,15 @@
                                     <table>
                                         <tr>
                                             <th>Bil</th>
-                                            
+
 
                                             <th *ngIf="samples[0].rubberTypeId == 1">Label Sampel Lateks</th>
 
 
                                             <th *ngIf="samples[0].rubberTypeId == 2">Label Sampel Getah Bongkah</th>
-                                        
-                                        <th  style="width: 50%;">No Borang Kastam</th>
-                                        
+
+                                            <th style="width: 50%;">No Borang Kastam</th>
+
                                         </tr>
                                         <tr *ngFor="let k1Detail of samples;  let i = index">
 
@@ -102,9 +104,10 @@
 
 
                                 <p><b>"MALAYSIA MADANI"</b><br>
-                                <b>“BERKHIDMAT UNTUK NEGARA”</b><br>
-                                <b>“BERKHIDMAT UNTUK NEGARA”</b><br>
-                                <b>“KREATIF, INOVATIF, PROGRESIF”</b></p><br>
+                                    <b>“BERKHIDMAT UNTUK NEGARA”</b><br>
+                                    <b>“BERKHIDMAT UNTUK NEGARA”</b><br>
+                                    <b>“KREATIF, INOVATIF, PROGRESIF”</b>
+                                </p><br>
 
                                 <p>Saya yang menjalankan amanah,</p><br><br><br>
 
@@ -250,10 +253,9 @@
                 <!-- </mat-card> -->
             </table>
         </div>
-    </div> </div>
+    </div>
+</div>
 
 <!-- Using custom CSS classes -->
 <div class="my-margin"></div>
 <div class="my-padding"></div>
-
-

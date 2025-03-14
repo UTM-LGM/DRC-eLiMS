@@ -1,0 +1,317 @@
+﻿@model DataKastam.DataKastam2023.K2Detail
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>K2Detail</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="K2DetailId" class="control-label"></label>
+                <input asp-for="K2DetailId" class="form-control" />
+                <span asp-validation-for="K2DetailId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FileFormat" class="control-label"></label>
+                <input asp-for="FileFormat" class="form-control" />
+                <span asp-validation-for="FileFormat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rfu" class="control-label"></label>
+                <input asp-for="Rfu" class="form-control" />
+                <span asp-validation-for="Rfu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VersionNo" class="control-label"></label>
+                <input asp-for="VersionNo" class="form-control" />
+                <span asp-validation-for="VersionNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomRegistrationNo" class="control-label"></label>
+                <select asp-for="CustomRegistrationNo" class ="form-control" asp-items="ViewBag.CustomRegistrationNo"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RegistrationSeqNo" class="control-label"></label>
+                <input asp-for="RegistrationSeqNo" class="form-control" />
+                <span asp-validation-for="RegistrationSeqNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemDescription" class="control-label"></label>
+                <input asp-for="ItemDescription" class="form-control" />
+                <span asp-validation-for="ItemDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TariffCode" class="control-label"></label>
+                <input asp-for="TariffCode" class="form-control" />
+                <span asp-validation-for="TariffCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryOfOrigin" class="control-label"></label>
+                <input asp-for="CountryOfOrigin" class="form-control" />
+                <span asp-validation-for="CountryOfOrigin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuantityStatistics" class="control-label"></label>
+                <input asp-for="QuantityStatistics" class="form-control" />
+                <span asp-validation-for="QuantityStatistics" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitStatistics" class="control-label"></label>
+                <input asp-for="UnitStatistics" class="form-control" />
+                <span asp-validation-for="UnitStatistics" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuantityDuty" class="control-label"></label>
+                <input asp-for="QuantityDuty" class="form-control" />
+                <span asp-validation-for="QuantityDuty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitDuty" class="control-label"></label>
+                <input asp-for="UnitDuty" class="form-control" />
+                <span asp-validation-for="UnitDuty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitValue" class="control-label"></label>
+                <input asp-for="UnitValue" class="form-control" />
+                <span asp-validation-for="UnitValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GazettedValue" class="control-label"></label>
+                <input asp-for="GazettedValue" class="form-control" />
+                <span asp-validation-for="GazettedValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalValueDecl" class="control-label"></label>
+                <input asp-for="TotalValueDecl" class="form-control" />
+                <span asp-validation-for="TotalValueDecl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalValueCal" class="control-label"></label>
+                <input asp-for="TotalValueCal" class="form-control" />
+                <span asp-validation-for="TotalValueCal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExportDutyType" class="control-label"></label>
+                <input asp-for="ExportDutyType" class="form-control" />
+                <span asp-validation-for="ExportDutyType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdValoremExportDuty" class="control-label"></label>
+                <input asp-for="AdValoremExportDuty" class="form-control" />
+                <span asp-validation-for="AdValoremExportDuty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificExportDuty" class="control-label"></label>
+                <input asp-for="SpecificExportDuty" class="form-control" />
+                <span asp-validation-for="SpecificExportDuty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificUnitImportDuty" class="control-label"></label>
+                <input asp-for="SpecificUnitImportDuty" class="form-control" />
+                <span asp-validation-for="SpecificUnitImportDuty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExportDutyAmount" class="control-label"></label>
+                <input asp-for="ExportDutyAmount" class="form-control" />
+                <span asp-validation-for="ExportDutyAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RevClassExportDuty" class="control-label"></label>
+                <input asp-for="RevClassExportDuty" class="form-control" />
+                <span asp-validation-for="RevClassExportDuty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cess1DutyType" class="control-label"></label>
+                <input asp-for="Cess1DutyType" class="form-control" />
+                <span asp-validation-for="Cess1DutyType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificCess1" class="control-label"></label>
+                <input asp-for="SpecificCess1" class="form-control" />
+                <span asp-validation-for="SpecificCess1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificUnitCess1" class="control-label"></label>
+                <input asp-for="SpecificUnitCess1" class="form-control" />
+                <span asp-validation-for="SpecificUnitCess1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cess1Amount" class="control-label"></label>
+                <input asp-for="Cess1Amount" class="form-control" />
+                <span asp-validation-for="Cess1Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RevClassCess1" class="control-label"></label>
+                <input asp-for="RevClassCess1" class="form-control" />
+                <span asp-validation-for="RevClassCess1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cess2DutyType" class="control-label"></label>
+                <input asp-for="Cess2DutyType" class="form-control" />
+                <span asp-validation-for="Cess2DutyType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificCess2" class="control-label"></label>
+                <input asp-for="SpecificCess2" class="form-control" />
+                <span asp-validation-for="SpecificCess2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificUnitCess2" class="control-label"></label>
+                <input asp-for="SpecificUnitCess2" class="form-control" />
+                <span asp-validation-for="SpecificUnitCess2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cess2Amount" class="control-label"></label>
+                <input asp-for="Cess2Amount" class="form-control" />
+                <span asp-validation-for="Cess2Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RevClassCess2" class="control-label"></label>
+                <input asp-for="RevClassCess2" class="form-control" />
+                <span asp-validation-for="RevClassCess2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cess3DutyType" class="control-label"></label>
+                <input asp-for="Cess3DutyType" class="form-control" />
+                <span asp-validation-for="Cess3DutyType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificCess3" class="control-label"></label>
+                <input asp-for="SpecificCess3" class="form-control" />
+                <span asp-validation-for="SpecificCess3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificUnitCess3" class="control-label"></label>
+                <input asp-for="SpecificUnitCess3" class="form-control" />
+                <span asp-validation-for="SpecificUnitCess3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cess3Amount" class="control-label"></label>
+                <input asp-for="Cess3Amount" class="form-control" />
+                <span asp-validation-for="Cess3Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RevClassCess3" class="control-label"></label>
+                <input asp-for="RevClassCess3" class="form-control" />
+                <span asp-validation-for="RevClassCess3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExportDutyExemptionType" class="control-label"></label>
+                <input asp-for="ExportDutyExemptionType" class="form-control" />
+                <span asp-validation-for="ExportDutyExemptionType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdValoremExportDutyExemption" class="control-label"></label>
+                <input asp-for="AdValoremExportDutyExemption" class="form-control" />
+                <span asp-validation-for="AdValoremExportDutyExemption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificExportDutyExemption" class="control-label"></label>
+                <input asp-for="SpecificExportDutyExemption" class="form-control" />
+                <span asp-validation-for="SpecificExportDutyExemption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitExportDutyExemption" class="control-label"></label>
+                <input asp-for="UnitExportDutyExemption" class="form-control" />
+                <span asp-validation-for="UnitExportDutyExemption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExportDutyExemptionAmount" class="control-label"></label>
+                <input asp-for="ExportDutyExemptionAmount" class="form-control" />
+                <span asp-validation-for="ExportDutyExemptionAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cess1ExemptionType" class="control-label"></label>
+                <input asp-for="Cess1ExemptionType" class="form-control" />
+                <span asp-validation-for="Cess1ExemptionType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificCess1Exemption" class="control-label"></label>
+                <input asp-for="SpecificCess1Exemption" class="form-control" />
+                <span asp-validation-for="SpecificCess1Exemption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitCess1Exemption" class="control-label"></label>
+                <input asp-for="UnitCess1Exemption" class="form-control" />
+                <span asp-validation-for="UnitCess1Exemption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cess1ExemptionAmount" class="control-label"></label>
+                <input asp-for="Cess1ExemptionAmount" class="form-control" />
+                <span asp-validation-for="Cess1ExemptionAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cess2ExemptionType" class="control-label"></label>
+                <input asp-for="Cess2ExemptionType" class="form-control" />
+                <span asp-validation-for="Cess2ExemptionType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificCess2Exemption" class="control-label"></label>
+                <input asp-for="SpecificCess2Exemption" class="form-control" />
+                <span asp-validation-for="SpecificCess2Exemption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitCess2Exemption" class="control-label"></label>
+                <input asp-for="UnitCess2Exemption" class="form-control" />
+                <span asp-validation-for="UnitCess2Exemption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cess2ExemptionAmount" class="control-label"></label>
+                <input asp-for="Cess2ExemptionAmount" class="form-control" />
+                <span asp-validation-for="Cess2ExemptionAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cess3ExemptionType" class="control-label"></label>
+                <input asp-for="Cess3ExemptionType" class="form-control" />
+                <span asp-validation-for="Cess3ExemptionType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificCess3Exemption" class="control-label"></label>
+                <input asp-for="SpecificCess3Exemption" class="form-control" />
+                <span asp-validation-for="SpecificCess3Exemption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitCess3Exemption" class="control-label"></label>
+                <input asp-for="UnitCess3Exemption" class="form-control" />
+                <span asp-validation-for="UnitCess3Exemption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cess3ExemptionAmount" class="control-label"></label>
+                <input asp-for="Cess3ExemptionAmount" class="form-control" />
+                <span asp-validation-for="Cess3ExemptionAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalDutyAmount" class="control-label"></label>
+                <input asp-for="TotalDutyAmount" class="form-control" />
+                <span asp-validation-for="TotalDutyAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalExemptionImportDuty" class="control-label"></label>
+                <input asp-for="TotalExemptionImportDuty" class="form-control" />
+                <span asp-validation-for="TotalExemptionImportDuty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TariffCodeNew" class="control-label"></label>
+                <input asp-for="TariffCodeNew" class="form-control" />
+                <span asp-validation-for="TariffCodeNew" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -100,6 +100,24 @@ export class CetakLembaranKerjaComponent {
       '2024-06-18',//raya haji
       '2024-09-01',//raya haji
       '2024-09-16',//maulidur rasul
+      '2024-10-31',//depavali
+      '2025-01-27',//israk mikraj
+      '2025-01-29',//raya cina 1
+      '2025-01-30',//raya cina 2
+      '2025-03-02',//awal ramadhan
+      '2025-03-31',//hari raya aidilfitri 1
+      '2025-03-01', //hari raya aidilfitri 2
+      '2025-05-01', //hari pekerja
+      '2025-05-12', //hari wesak
+      '2025-06-02', //hari keputeraan dipertuan agung
+      '2025-06-07', //hari raya qurban 1
+      '2025-06-22', //hari keputeraan sultan kedah
+      '2025-06-27', //awal muharram
+      '2025-07-31', //hari hol almarhum sultan iskandar
+      '2025-08-31', //hari kebangsaan
+      '2025-09-16', //hari malaysia
+      '2025-10-20', //hari deepavali
+      '2025-12-25', //hari krismas
     ];
 
 
@@ -346,183 +364,7 @@ export class CetakLembaranKerjaComponent {
   
     XLSX.writeFile(wb, 'senarai_sampel.xlsx');
   }
-
-
-    // generatePDF1() {
-
-  //   const selectedSamples = this.samples.filter(sample => sample.checked);
-  //   if (selectedSamples.length === 0) {
-  //     alert('Please select at least one sample.');
-  //     return;
-  //   }
-  //   const doc = new jsPDF();
-  //   const pageHeight = doc.internal.pageSize.height;
-  //   const boxHeight = 37;
-  //   const boxWidth = 78;
-  //   const qrCodeSize = 20;
-  //   const fontSize = 7.5;
-  //   let y = 15;
-  //   let x = 20;
-
-  //   // Set font to Courier Monospace
-  //   doc.setFont('courier', 'normal');
-
-  //   for (let i = 0; i < selectedSamples.length; i += 2) {
-  //     const sample1 = selectedSamples[i];
-  //     const sample2 = selectedSamples[i + 1];
-
-  //     // Check if boxes fit on the current page
-  //     if (y + boxHeight > pageHeight - 20) {
-  //       doc.addPage();
-  //       y = 20;
-  //     }
-
-  //     // Draw boxes
-  //     doc.setDrawColor(0);
-  //     doc.setFillColor(255, 255, 255);
-  //     doc.rect(x, y, boxWidth, boxHeight, 'FD');
-  //     if (sample2) {
-  //       doc.rect(x + boxWidth, y, boxWidth, boxHeight, 'FD');
-  //     }
-
-  //     // Create QR codes
-  //     const qrCode1 = QRCode(0, 'L');
-
-  //     if (this.userRoleId == 1 || this.userRoleId == 3) {
-  //       qrCode1.addData(sample1.customNo);
-  //     }
-  //     else if (this.userRoleId == 2) {
-  //       qrCode1.addData(sample1.customNo);
-  //     }
-
-  //     qrCode1.make();
-  //     const qrCodeImgData1 = qrCode1.createDataURL(qrCodeSize);
-
-  //     let qrCodeImgData2;
-  //     if (sample2) {
-  //       const qrCode2 = QRCode(0, 'L');
-
-  //       if (this.userRoleId == 1 || this.userRoleId == 3) {
-  //         qrCode2.addData(sample2.customNo);
-  //       } else if (this.userRoleId == '2') {
-  //         qrCode2.addData(sample2.customNo);
-  //       }
-
-  //       qrCode2.make();
-  //       qrCodeImgData2 = qrCode2.createDataURL(qrCodeSize);
-  //     }
-
-  //     // Add QR code images to PDF
-  //     doc.addImage(qrCodeImgData1, 'PNG', x + 1, y + 7, qrCodeSize, qrCodeSize);
-  //     if (qrCodeImgData2) {
-  //       doc.addImage(qrCodeImgData2, 'PNG', x + boxWidth + 1, y + 7, qrCodeSize, qrCodeSize);
-  //     }
-
-  //     // Add text to PDF
-  //     doc.setFontSize(fontSize);
-
-
-  //     if (this.userRoleId == 1 || this.userRoleId == 3) {
-  //       if (sample1.customNo) {
-  //         doc.text("*" + `${sample1.customNo} ` + "*", x + 21, y + 5);
-  //       }
-  //     } else if (this.userRoleId == 2) {
-  //       if (sample1.customNo) {
-  //         doc.text(`${sample1.customNo} - UIP`, x + 21, y + 5);
-  //       }
-  //     }
-
-  //     if (sample1.samplePropose) {
-  //       doc.text(`${sample1.samplePropose}`, x + 21, y + 10);
-  //     }
-
-  //     if (sample1.typeCode) {
-  //       doc.text(`${sample1.typeCode}`, x + 21, y + 14);
-  //     }
-
-  //     if (sample1.importedDate) {
-  //       const importedDate1 = new Date(sample1.importedDate);
-  //       const formattedDate1 = importedDate1.toLocaleDateString('en-GB', {
-  //         day: '2-digit',
-  //         month: '2-digit',
-  //         year: 'numeric',
-  //       });
-  //       doc.text(`${formattedDate1}`, x + 21, y + 18);
-  //     }
-
-
-  //     if (sample1.importerName) {
-  //       const lines = doc.splitTextToSize(sample1.importerName, 52);
-  //       doc.text(lines, x + 21, y + 22);
-  //     }
-
-
-  //     if (this.userRoleId == 1 || this.userRoleId == 3) {
-  //       if (sample1.forwarderName) {
-  //         const lines = doc.splitTextToSize('FA : ' + sample1.forwarderName, 53);
-  //         doc.text(lines, x + 21, y + 29);
-  //       }
-  //     } else if (this.userRoleId == 2) {
-  //       const lines = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
-  //       doc.text(lines, x + 21, y + 29);
-  //     }
-
-  //     if (sample2) {
-
-  //       if (this.userRoleId == 1 || this.userRoleId == 3) {
-  //         if (sample2.customNo) {
-  //           doc.text("*" + `${sample2.customNo}` + "*", x + boxWidth + 21, y + 5);
-  //         }
-  //       } else if (this.userRoleId == 2) {
-  //         if (sample2.customNo) {
-  //           doc.text(`${sample2.customNo} - UIP`, x + boxWidth + 21, y + 5);
-  //         }
-  //       }
-  //       if (sample2.samplePropose) {
-  //         doc.text(`${sample2.samplePropose}`, x + boxWidth + 21, y + 10);
-  //       }
-
-  //       if (sample2.typeCode) {
-  //         doc.text(`${sample2.typeCode}`, x + boxWidth + 21, y + 14);
-  //       }
-
-  //       if (sample2.importedDate) {
-  //         const importedDate2 = new Date(sample2.importedDate);
-  //         const formattedDate2 = importedDate2.toLocaleDateString('en-GB', {
-  //           day: '2-digit',
-  //           month: '2-digit',
-  //           year: 'numeric',
-  //         });
-  //         doc.text(`${formattedDate2}`, x + boxWidth + 21, y + 18);
-  //       }
-
-
-  //       if (sample2.importerName) {
-  //         const lines1 = doc.splitTextToSize(sample2.importerName, 52);
-  //         doc.text(lines1, x + boxWidth + 21, y + 22);
-  //       }
-
-
-  //       if (this.userRoleId == 1 || this.userRoleId == 3) {
-  //         if (sample2.forwarderName) {
-  //           const lines1 = doc.splitTextToSize('FA : ' + sample2.forwarderName, 53);
-  //           doc.text(lines1, x + boxWidth + 21, y + 29);
-  //         }
-  //       }
-  //       if (this.userRoleId == 2) {
-  //         const lines1 = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
-  //         doc.text(lines1, x + boxWidth + 21, y + 29);
-  //       }
-
-  //     }
-  //     y += boxHeight + 0; // Change the box spacing here
-  //   }
-
-  //   const pdfBlob = doc.output('blob');
-  //   const pdfUrl = URL.createObjectURL(pdfBlob);
-  //   window.open(pdfUrl, '_blank');
-  // }
-
+  
 }
 
 

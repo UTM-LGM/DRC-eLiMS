@@ -6,11 +6,13 @@ import { AuthService } from '../../services/auth/auth.service';
 import { UserService } from '../../User/user.service';
 import { Staff } from '../../models/staff';
 import * as html2pdf from 'html2pdf.js';
+
 @Component({
   selector: 'app-pdf-cetak-keputusan-uip',
   templateUrl: './pdf-cetak-keputusan-uip.component.html',
   styleUrls: ['./pdf-cetak-keputusan-uip.component.css']
 })
+
 export class PdfCetakKeputusanUipComponent {
   @Input() k1DetailId: number[];
   k1Details: K1Detail[] = [];
@@ -21,7 +23,7 @@ export class PdfCetakKeputusanUipComponent {
   staff: Staff = {} as Staff;
   today = new Date();
   @ViewChild('pdfContent') pdfContent!: ElementRef;
-  groupedSamples: any[]; // Add this variable
+  groupedSamples: any[];
   printing: boolean = false;
   creatorRoleId: any;
   k1Detail: K1Detail = {} as K1Detail;
@@ -74,8 +76,8 @@ export class PdfCetakKeputusanUipComponent {
     const printContents = this.pdfContent?.nativeElement.innerHTML;
     const printWindow = window.open();
     if (printWindow) {
-        printWindow.document.open();
-        printWindow.document.write(`
+      printWindow.document.open();
+      printWindow.document.write(`
             <html>
             <head>
                 <title>DRC-eLiMS</title>
@@ -204,26 +206,25 @@ export class PdfCetakKeputusanUipComponent {
                     }
 
                     @media print {
-  .header-to-hide {
-    display: none;
-  }
+                      .header-to-hide {
+                        display: none;
+                      }
 
-  .report-header {
-    display: table-header-group;
-  }
+                      .report-header {
+                        display: table-header-group;
+                      }
 
-  @page {
-    size: A4;
-    margin: 20mm;
-  }
+                      @page {
+                        size: A4;
+                        margin: 20mm;
+                      }
 
-  @page :first {
-    .header-to-hide {
-      display: none;
-    }
-  }
-}
-
+                      @page :first {
+                        .header-to-hide {
+                          display: none;
+                        }
+                      }
+                    }
 
                 </style>
             </head>
@@ -232,16 +233,15 @@ export class PdfCetakKeputusanUipComponent {
             </body>
             </html>
         `);
-        printWindow.document.close();
-        printWindow.print();
+
+      printWindow.document.close();
+      printWindow.print();
     } else {
-        alert('Unable to open print preview. Please check your browser settings or popup blockers.');
+      alert('Unable to open print preview. Please check your browser settings or popup blockers.');
     }
-}
+  }
 
 
-
-  
   // groupSamplesByCompany() {
   //   const groupedCollection = this.k1Details.reduce((accumulator, currentValue) => {
   //     const key = currentValue.importerName;
@@ -256,31 +256,31 @@ export class PdfCetakKeputusanUipComponent {
   //     group.lastTestedOnDate = sortedByTestedOn[sortedByTestedOn.length - 1].testedOn;
   //   });
   // }
-  
+
 
   groupSamplesByCompany() {
     // First, sort the k1Details array by k1DetailId
     this.k1Details.sort((a, b) => a.k1DetailId - b.k1DetailId);
-  
+
     // Group by company name
     const groupedCollection = this.k1Details.reduce((accumulator, currentValue) => {
       const key = currentValue.importerAddress;
       (accumulator[key] = accumulator[key] || []).push(currentValue);
       return accumulator;
     }, {});
-  
+
     // Prepare the grouped samples
     this.groupedSamples = Object.keys(groupedCollection).map(key => ({
       key,
       items: groupedCollection[key],
       count: groupedCollection[key].length
     }));
-  
+
     // Ensure that each group is sorted by k1DetailId as well
     this.groupedSamples.forEach(group => {
       group.items.sort((a, b) => a.k1DetailId - b.k1DetailId);
     });
-  
+
     // Log the groupedSamples for debugging
     console.log('Grouped Samples:', this.groupedSamples);
   }
@@ -322,6 +322,8 @@ export class PdfCetakKeputusanUipComponent {
       element.innerHTML = content;
     });
   }
+
+
   generateReportNo(k1Details: K1Detail[]): string {
     const labRefNumbers = k1Details.map(detail => {
       const lastPart = detail.labRefNo.substring(detail.labRefNo.lastIndexOf('/') + 1);
@@ -336,8 +338,11 @@ export class PdfCetakKeputusanUipComponent {
       return `${firstLabRef}-${lastLabRef}`;
     }
   }
+
+
   formatLabRefNo(labRefNo: string): string {
     const paddedNumber = '0000' + labRefNo;
     return paddedNumber.slice(-Math.max(4, labRefNo.length));
   }
+
 }

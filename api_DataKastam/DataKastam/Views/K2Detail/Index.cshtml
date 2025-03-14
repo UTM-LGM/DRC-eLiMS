@@ -1,0 +1,377 @@
+﻿@model IEnumerable<DataKastam.DataKastam2023.K2Detail>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FileFormat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rfu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VersionNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegistrationSeqNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TariffCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryOfOrigin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuantityStatistics)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitStatistics)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuantityDuty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitDuty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GazettedValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalValueDecl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalValueCal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExportDutyType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdValoremExportDuty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecificExportDuty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecificUnitImportDuty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExportDutyAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RevClassExportDuty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cess1DutyType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecificCess1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecificUnitCess1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cess1Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RevClassCess1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cess2DutyType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecificCess2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecificUnitCess2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cess2Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RevClassCess2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cess3DutyType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecificCess3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecificUnitCess3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cess3Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RevClassCess3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExportDutyExemptionType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdValoremExportDutyExemption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecificExportDutyExemption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitExportDutyExemption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExportDutyExemptionAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cess1ExemptionType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecificCess1Exemption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitCess1Exemption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cess1ExemptionAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cess2ExemptionType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecificCess2Exemption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitCess2Exemption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cess2ExemptionAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cess3ExemptionType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecificCess3Exemption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitCess3Exemption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cess3ExemptionAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalDutyAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalExemptionImportDuty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TariffCodeNew)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateUpload)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomRegistrationNoNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileFormat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rfu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VersionNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegistrationSeqNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TariffCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CountryOfOrigin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuantityStatistics)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitStatistics)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuantityDuty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitDuty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GazettedValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalValueDecl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalValueCal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExportDutyType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdValoremExportDuty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecificExportDuty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecificUnitImportDuty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExportDutyAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RevClassExportDuty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cess1DutyType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecificCess1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecificUnitCess1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cess1Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RevClassCess1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cess2DutyType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecificCess2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecificUnitCess2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cess2Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RevClassCess2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cess3DutyType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecificCess3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecificUnitCess3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cess3Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RevClassCess3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExportDutyExemptionType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdValoremExportDutyExemption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecificExportDutyExemption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitExportDutyExemption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExportDutyExemptionAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cess1ExemptionType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecificCess1Exemption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitCess1Exemption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cess1ExemptionAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cess2ExemptionType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecificCess2Exemption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitCess2Exemption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cess2ExemptionAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cess3ExemptionType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecificCess3Exemption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitCess3Exemption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cess3ExemptionAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalDutyAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalExemptionImportDuty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TariffCodeNew)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateUpload)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomRegistrationNoNavigation.CustomRegistrationNo)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.K2DetailId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.K2DetailId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.K2DetailId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

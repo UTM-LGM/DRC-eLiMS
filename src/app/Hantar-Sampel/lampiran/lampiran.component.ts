@@ -27,12 +27,12 @@ export class LampiranComponent {
   rubberTypes: RubberType[];
   samples: any;
   users: any;
-  groupedSamples: any[]; // Add this variable
-  kodStesen:string
+  groupedSamples: any[];
+  kodStesen: string
   user: userDTO = {} as userDTO;
   companies: any;
-  stesen:any
-  namaStesen:any
+  stesen: any
+  namaStesen: any
   roleForwarder: boolean = false
   roleUip: boolean = false
   roleImporter: boolean = false
@@ -86,7 +86,6 @@ export class LampiranComponent {
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res
         this.roleGtacr = true
@@ -94,32 +93,32 @@ export class LampiranComponent {
     }
 
 
-      this.route.params.subscribe(param => {
-        if (param['batchId'] != null) { this.batchId = param['batchId']; }
-        else { this.batchId = this.sendBatchId; }
+    this.route.params.subscribe(param => {
+      if (param['batchId'] != null) { this.batchId = param['batchId']; }
+      else { this.batchId = this.sendBatchId; }
 
 
-        this.elimsService.GetElimsSamplesByBatchId(this.batchId).subscribe(data => {
-          this.samples = data;
-          console.log(this.samples);
-          this.selectedCheckboxCount = this.samples.length;
-          this.kodStesen = this.samples[0].customNo.slice(0,3)
-          console.log(this.kodStesen)
-          this.elimsService.GetKeteranganByKodStesen(this.kodStesen).subscribe( resKeterangan => {
-           console.log(resKeterangan)
-           this.stesen = resKeterangan
-           this.namaStesen = this.stesen.keterangan
-           console.log(this.namaStesen)
-          })
-          // Call the grouping function after samples are loaded
-          this.groupSamplesByCompany();
-        });
+      this.elimsService.GetElimsSamplesByBatchId(this.batchId).subscribe(data => {
+        this.samples = data;
+        console.log(this.samples);
+        this.selectedCheckboxCount = this.samples.length;
+        this.kodStesen = this.samples[0].customNo.slice(0, 3)
+        console.log(this.kodStesen)
+        this.elimsService.GetKeteranganByKodStesen(this.kodStesen).subscribe(resKeterangan => {
+          console.log(resKeterangan)
+          this.stesen = resKeterangan
+          this.namaStesen = this.stesen.keterangan
+          console.log(this.namaStesen)
+        })
+        // Call the grouping function after samples are loaded
+        this.groupSamplesByCompany();
       });
+    });
 
-      this.elimsService.GetRefRubberTypes().subscribe(data => {
-        this.rubberTypes = data;
-        console.log(this.rubberTypes);
-      });
+    this.elimsService.GetRefRubberTypes().subscribe(data => {
+      this.rubberTypes = data;
+      console.log(this.rubberTypes);
+    });
     // });
 
   }
@@ -134,72 +133,48 @@ export class LampiranComponent {
     document.body.innerHTML = originalContents;
   }
 
-  // generatePdf(): void {
-  //   const element = document.getElementById('pdfContent2');
-  //   console.log(element);
 
-  //   // Introduce a slight delay (e.g., 500 milliseconds) to allow the content to render
-  //   setTimeout(() => {
-  //     const opt = {
-  //       margin: [1, 0.5, 0.5, 0.5],
-  //       filename: 'lampiran.pdf',
-  //       image: { type: 'jpeg', quality: 1.0 },
-  //       html2canvas: { scale: 2, scrollY: 0, scrollX: 0, windowWidth: document.body.scrollWidth, windowHeight: document.body.scrollHeight },
-  //       jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
-  //     };
 
-  //     html2pdf().from(element).set(opt).outputPdf().then((pdfBlob) => {
-  //       const downloadLink = document.createElement('a');
-  //       downloadLink.href = URL.createObjectURL(pdfBlob);
-  //       downloadLink.download = 'lampiran.pdf';
-  //       downloadLink.click();
-  //     });
-  //     html2pdf(element, opt);
-  //   }, 500); // Adjust the delay as needed
-  // }
-
-  generatePdf(): void { 
+  generatePdf(): void {
     // this.isPreview = false;
     const element = document.getElementById('pdfContent2');
-  
+
     // Check if the element is null before proceeding
     if (!element) {
       console.error("Element with ID 'pdfContent' not found.");
       return;
     }
-  
+
     // Set font size inline in the HTML content
     const content = element.innerHTML;
     const styledContent = `<div style="font-size: 12px;">${content}</div>`;
-  
+
     var opt = {
       margin: [1.5, 0.5, 0.5, 0.5],
       filename: 'Lampiran.pdf',
       html2canvas: { scale: 2 },
-      jsPDF: { 
-        unit: 'in', 
-        format: 'A4', 
-        orientation: 'portrait', 
-        font: 'times', 
+      jsPDF: {
+        unit: 'in',
+        format: 'A4',
+        orientation: 'portrait',
+        font: 'times',
       },
     };
-  
+
     // Replace the original content with the modified content
     element.innerHTML = styledContent;
-  
+
     // Generate PDF
     html2pdf().from(element).set(opt).outputPdf().then((pdfBlob) => {
       // Restore the original content
       element.innerHTML = content;
-  
+
       // Save the blob or trigger a download as needed
       const downloadLink = document.createElement('a');
       downloadLink.href = URL.createObjectURL(pdfBlob);
       downloadLink.download = 'suratIringan.pdf';
       downloadLink.click();
-    });html2pdf(element, opt);
-  
-   
+    }); html2pdf(element, opt);
   }
 
 
@@ -210,11 +185,9 @@ export class LampiranComponent {
       (accumulator[address] = accumulator[address] || []).push(currentValue);
       return accumulator;
     }, {});
-  
+
     this.groupedSamples = Object.keys(groupedCollection).map(key => ({ key, items: groupedCollection[key] }));
     console.log(this.groupedSamples);
   }
-  
-
 
 }

@@ -1,9 +1,6 @@
-import { Component,  ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Batch } from '../../models/batch';
 import { ToastrService } from 'ngx-toastr';
-import { DrclimstrainingService } from '../../services/drclimstraining.service';
-import { GetahBongkahService } from '../../services/getah-bongkah.service';
-import { forkJoin } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -39,22 +36,9 @@ export class TarikhSampelDihantarComponent {
   mesYaTidak: any
   receivedDataFromChild: any;
 
-  // sample: Sample = {} as Sample;
-  // batches: Batch[] = [];
-  // sampleForm: any;
-  // uipRefRunNo: UipRefRunNo = {} as UipRefRunNo
-  // uipbkhRefRunNo: UipbkhRefRunNo = {} as UipbkhRefRunNo
-  // sample: Sample = {} as Sample;
-  // samples: Sample[] = [];
-  // k1Detail: K1Detail = {} as K1Detail;
-  // selectedBatches: any[] = [];
-
   constructor(
 
-
     private toastr: ToastrService,
-    // private drclimstrainingService: DrclimstrainingService,
-    // private getahBongkahService: GetahBongkahService,
     private authservice: AuthService,
     private hantarSampelService: HantarSampelService,
     private userService: UserService,
@@ -113,89 +97,24 @@ export class TarikhSampelDihantarComponent {
     }
   }
 
-  //////////////////////BUTTON UPDATE///////////////////////////
-  // updateBatch() {
-  //   if (this.checkRequired()) {
-
-  //     if (this.userRoleId == 1 || this.userRoleId == 3) {
-  //       const addTarikhSampelDihantar = this.hantarSampelService.PostTarikhSampelDihantar(this.batch);
-  //       const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
-  //       const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
-
-  //       forkJoin([
-  //         addTarikhSampelDihantar,
-  //         updateLtxTarikhSampelDihantar,
-  //         updateBRTarikhSampelDihantar
-  //       ]).subscribe(
-  //         {
-  //           next: ((res: any[]) => {
-  //             this.toastr.success('Data berjaya disimpan', 'Berjaya', {
-  //               timeOut: 7000,
-  //             }),
-
-  //               setTimeout(() => {
-  //                 window.location.reload();
-  //               });
-
-  //           }),
-  //           error: (e) => {
-  //             this.toastr.error('Maklumat gagal dikemaskini');
-  //           }
-  //         }
-  //       );
-  //     }
-
-  //     else if (this.userRoleId == 2) {
-
-  //       const addTarikhSampelDihantar = this.hantarSampelService.PostUipTarikhSampelDihantar(this.batch);
-  //       const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
-  //       const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
-
-  //       forkJoin([
-  //         addTarikhSampelDihantar,
-  //         updateLtxTarikhSampelDihantar,
-  //         updateBRTarikhSampelDihantar
-  //       ]).subscribe(
-  //         {
-  //           next: ((res: any[]) => {
-  //             this.toastr.success('Data berjaya disimpan', 'Berjaya', {
-  //               timeOut: 7000,
-  //             }),
-
-  //               setTimeout(() => {
-  //                 window.location.reload();
-  //               });
-
-  //           }),
-
-  //           error: (e) => {
-  //             this.toastr.error('Maklumat gagal dikemaskini');
-  //           }
-  //         }
-  //       );
-  //     }
-  //   }
-
-  // }
-
 
   updateBatch() {
     if (this.checkRequired()) {
-  
+
       if (this.userRoleId == 1 || this.userRoleId == 3) {
         const addTarikhSampelDihantar = this.hantarSampelService.PostTarikhSampelDihantar(this.batch);
-  
+
         addTarikhSampelDihantar.subscribe(
           {
             next: (res => {
               this.toastr.success('Data berjaya disimpan', 'Berjaya', {
                 timeOut: 7000,
               });
-  
+
               setTimeout(() => {
                 window.location.reload();
               });
-  
+
             }),
             error: (e) => {
               this.toastr.error('Maklumat gagal dikemaskini');
@@ -203,24 +122,24 @@ export class TarikhSampelDihantarComponent {
           }
         );
       }
-  
+
       else if (this.userRoleId == 2) {
-  
+
         const addTarikhSampelDihantar = this.hantarSampelService.PostUipTarikhSampelDihantar(this.batch);
-  
+
         addTarikhSampelDihantar.subscribe(
           {
             next: (res => {
               this.toastr.success('Data berjaya disimpan', 'Berjaya', {
                 timeOut: 7000,
               });
-  
+
               setTimeout(() => {
                 window.location.reload();
               });
-  
+
             }),
-  
+
             error: (e) => {
               this.toastr.error('Maklumat gagal dikemaskini');
             }
@@ -230,7 +149,7 @@ export class TarikhSampelDihantarComponent {
     }
   }
 
-  
+
 
   //////////////////////CHECKING REQUIRED SEBELUM UPDATE///////////////////////////
   checkRequired() {
@@ -294,7 +213,7 @@ export class TarikhSampelDihantarComponent {
     this.receivedDataFromChild = data;
   }
 
-  sendSample(){
+  sendSample() {
     console.log('Data received in parent:', this.receivedDataFromChild);
     if (this.receivedDataFromChild.length > 0) {
       this.lepassubmit = true;
@@ -303,7 +222,7 @@ export class TarikhSampelDihantarComponent {
   }
 
 
- //////////////////////////////GENERATE PDF WITH QR CODE////////////////////
+  //////////////////////////////GENERATE PDF WITH QR CODE////////////////////
   generatePDFWithQRCode() {
 
     // const selectedBatches = this.batches.filter((batch: { checked: any; }) => batch.checked);
@@ -454,7 +373,7 @@ export class TarikhSampelDihantarComponent {
         }
       }
 
-      y += boxHeight + 0; // Change the box spacing here
+      y += boxHeight + 0; 
     }
 
     const pdfBlob = doc.output('blob');
@@ -464,52 +383,10 @@ export class TarikhSampelDihantarComponent {
 
 
   goBack() {
-    window.location.reload(); 
+    window.location.reload();
     // window.history.back(); 
   }
 
 }
 
-
- //////////////////////////////CODE SIMPAN////////////////////
-// updateBatch() {
-//   if (this.sampleForm.invalid) {
-//     this.toastr.warning('Sila isi semua ruangan yang diperlukan');
-//     return;
-//   }
-
-
-//   if (this.userRoleId == '1') {
-//     const addTarikhSampelDihantar = this.hantarSampelService.PostTarikhSampelDihantar(this.batch);
-//     const updateLtxTarikhSampelDihantar = this.drclimstrainingService.PutLtxTarikhSampelDihantar(this.batch);
-//     const updateBRTarikhSampelDihantar = this.getahBongkahService.PutBRTarikhSampelDihantar(this.batch);
-
-//     forkJoin([
-//       addTarikhSampelDihantar,
-//       updateLtxTarikhSampelDihantar,
-//       updateBRTarikhSampelDihantar
-//     ]).subscribe(
-//       {
-//         next: ((res: any[]) => {
-//           this.toastr.success('Maklumat telah dikemaskini!');
-//         }),
-//         error: (e) => {
-//           this.toastr.error('Maklumat gagal dikemaskini');
-//         }
-//       }
-//     );
-//   }
-
-//   else if (this.userRoleId == '2') {
-//     this.hantarSampelService.PostUipTarikhSampelDihantar(this.batch).subscribe(
-//       (res) => {
-//         this.toastr.success('Maklumat telah dikemaskini!');
-//       },
-//       (error) => {
-//         this.toastr.error('Maklumat gagal dikemaskini');
-//       }
-//     );
-
-//   }
-// }
 

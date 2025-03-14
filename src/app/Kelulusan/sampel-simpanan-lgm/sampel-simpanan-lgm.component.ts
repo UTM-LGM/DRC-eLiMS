@@ -189,16 +189,6 @@ export class SampelSimpananLgmComponent {
   }
 
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-
   changeJenisGetah(event: any) {
 
     const rubberType = event.target.value;
@@ -237,6 +227,7 @@ export class SampelSimpananLgmComponent {
       this.loadBatches();
     }
   }
+
 
   filterByStatus(event: any) {
     const statusCodeId = event.target.value;

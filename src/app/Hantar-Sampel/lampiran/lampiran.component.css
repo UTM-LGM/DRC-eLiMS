@@ -1,59 +1,45 @@
-/* .tableheader {
-    background-color: #3e4141;
-    color: rgb(234, 223, 223);
-  }
-  
-  thead .tableheader tr th {
-    color: white;
-  }
-  
-  th {
-    color: white;
-    font-weight: 300;
-    background-color: #3e4141;
-  }
-   */
-   .centered-table th,
-   .centered-table td {
-       text-align: center;
-   }
-   
-   table, th, td {
-    border:1px solid black;
-    border-collapse: collapse;
-  }
+.centered-table th,
+.centered-table td {
+  text-align: center;
+}
 
-  .mat-icon {
-  
-    height: 15px;
-    width: 15px;
-  
-  }
-  
-  .material-icons {
-    font-size: 15px;
-  }
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
 
-  .button {
-    background-color: #0f062a;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .button:hover {
-    background-color: #73726f;
-    color: #ffffff;
-  }
+.mat-icon {
 
-  .company-group {
-    page-break-before: always;
-  }
-  
-  .company-group.first-group {
-    page-break-before: auto;
-  }
-  
+  height: 15px;
+  width: 15px;
+
+}
+
+.material-icons {
+  font-size: 15px;
+}
+
+.button {
+  background-color: #0f062a;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #73726f;
+  color: #ffffff;
+}
+
+.company-group {
+  page-break-before: always;
+}
+
+.company-group.first-group {
+  page-break-before: auto;
+}

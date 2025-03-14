@@ -1,0 +1,407 @@
+﻿@model IEnumerable<DataKastam.DataKastam2023.K2Header>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FileFormat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rfu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VersionNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalNoOfItem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommodityStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImporterName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImporterAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExporterCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExporterName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExporterAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AgentCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AgentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModeOfTransport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfExport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VesselRegistration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VoyageNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VesselName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlightNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlightDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VehicleLorryNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrailerNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlaceOfExport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlaceOfDischarge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PortOfTranshipment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SptflagAc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sptref)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExportPermit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExportPermitExpiryDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ogatype)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OgaapprovalNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OgaofficerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kpwxno)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryOfOrigin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FinalDestination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ForeignExchangeCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmountReceived)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ForeignExchangeRate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Equivalent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivedFrom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Insurance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OtherCharges)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fob)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Freight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GrossWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Measurement)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegistrationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegistrationTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApprovalDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApprovalTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiptDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiptTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalDutyAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalExemptedAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeclarantIcno)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeclarantName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeclarantStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GeneralDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateUpload)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileFormat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rfu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VersionNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalNoOfItem)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommodityStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImporterName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImporterAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExporterCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExporterName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExporterAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AgentCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AgentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModeOfTransport)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfExport)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VesselRegistration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoyageNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VesselName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlightNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlightDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicleLorryNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrailerNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlaceOfExport)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlaceOfDischarge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PortOfTranshipment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SptflagAc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sptref)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExportPermit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExportPermitExpiryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ogatype)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OgaapprovalNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OgaofficerId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Kpwxno)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CountryOfOrigin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinalDestination)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ForeignExchangeCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmountReceived)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ForeignExchangeRate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Equivalent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceivedFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Insurance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OtherCharges)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fob)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Freight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GrossWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Measurement)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegistrationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegistrationTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApprovalDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApprovalTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceiptDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceiptTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalDutyAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalExemptedAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeclarantIcno)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeclarantName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeclarantStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remark)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GeneralDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateUpload)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CustomRegistrationNo">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CustomRegistrationNo">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CustomRegistrationNo">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
