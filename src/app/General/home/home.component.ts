@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
   roleImporter : boolean
   role: any
   importer: loginImporter = {} as loginImporter
-  isEmailVisible: boolean = false; // New variable to control visibility
+  isEmailVisible: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -121,6 +121,6 @@ export class HomeComponent implements OnInit {
     setTimeout(() => {
       window.location.reload();
       this.router.navigateByUrl('home');
-    }, 2000); // Adjust the delay time as needed (2000 milliseconds = 2 seconds)
+    }, 2000); 
   }
 }

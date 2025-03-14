@@ -114,5 +114,6 @@ export interface K1Detail {
 
      penimbang: number;
      oven: number;
+     isK3: boolean;
 
 }

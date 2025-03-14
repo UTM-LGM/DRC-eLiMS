@@ -8,22 +8,19 @@ import { ElimsService } from 'src/app/services/elims.service';
   templateUrl: './laporan-bil-sampel.component.html',
   styleUrls: ['./laporan-bil-sampel.component.css']
 })
+
 export class LaporanBilSampelComponent implements OnInit {
   fromDate: Date | undefined;
   toDate: Date | undefined;
   rubberTypeId: number | undefined;
   typeCodeId: number | undefined;
-
   rubberTypes: RubberType[] = [];
   typeCodes: any[] = [];
-
   searchByOptions: string[] = ['Tempoh Masa', 'Jenis Getah'];
   showDateFilter: boolean = false;
   showRubberTypeFilter: boolean = false;
-
   sampleCounts: any;
   isSearched: boolean = false;
-
   sampleCount4: number;
   sampleCount5And6: number;
   searchBy: string[] = []

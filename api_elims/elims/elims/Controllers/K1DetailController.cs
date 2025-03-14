@@ -89,6 +89,103 @@ namespace elims.Controllers
             return Ok(ElimsContext);
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllLateSamples(DateTime startDate, DateTime endDate)
+        {
+            // Fetch the relevant data from the database
+            var lateSamples = await _context.K1Details
+                .Join(_context.K1Headers,
+                      detail => detail.K1HeaderId,
+                      header => header.K1HeaderId,
+                      (detail, header) => new { detail, header })
+                .Where(x => x.header.ImportedDate >= startDate && x.header.ImportedDate <= endDate)
+                .Select(x => new
+                {
+                    k1DetailID = x.detail.K1DetailId,
+                    k1HeaderID = x.detail.K1HeaderId,
+                    batchId = x.detail.BatchId,
+                    labRefNo = x.detail.LabRefNo,
+                    customNo = x.detail.CustomNo,
+                    quantity = x.detail.Quantity,
+                    companyId = x.detail.CompanyId,
+                    companyName = _context.Companies
+                        .Where(y => y.CompanyId == x.detail.CompanyId)
+                        .Select(y => y.Name)
+                        .FirstOrDefault(),
+                    companyAddress = _context.Companies
+                        .Where(y => y.CompanyId == x.detail.CompanyId)
+                        .Select(y => y.Address)
+                        .FirstOrDefault(),
+                    statusCodeId = x.detail.StatusCodeId,
+                    createdOn = x.detail.CreatedOn,
+                    sentOn = x.detail.SentOn,
+                    receivedOn = x.detail.ReceivedOn,
+                    createdBy = x.detail.CreatedBy,
+                    forwarderId = x.detail.ForwarderId,
+                    samplePropose = x.detail.SamplePropose,
+                    drc = x.detail.Drc,
+                    dryWeight = x.detail.DryWeight,
+                    country = x.detail.Country,
+                    remarks = x.detail.Remarks,
+                    evidence = x.detail.Evidence,
+                    hsCode = x.detail.HsCode,
+                    rubberTypeId = x.detail.RubberTypeId,
+                    rubberType = _context.RefRubberTypes
+                        .Where(y => y.Id == x.detail.RubberTypeId)
+                        .Select(y => y.RubberType)
+                        .FirstOrDefault(),
+                    typeCodeId = x.detail.TypeCodeId,
+                    typeCode = _context.TypeCodes
+                        .Where(y => y.Id == x.detail.TypeCodeId)
+                        .Select(y => y.SampleType)
+                        .FirstOrDefault(),
+                    sampleCode = _context.TypeCodes
+                        .Where(y => y.Id == x.detail.TypeCodeId)
+                        .Select(y => y.SampleCode)
+                        .FirstOrDefault(),
+                    sampleCategory = _context.TypeCodes
+                        .Where(y => y.Id == x.detail.TypeCodeId)
+                        .Select(y => y.SampleCategory)
+                        .FirstOrDefault(),
+                    itemDescription = x.detail.ItemDescription,
+                    isSMK = x.detail.IsSmk,
+                    importerName = x.detail.ImporterName,
+                    agentName = x.detail.AgentName,
+                    importerAddress = x.detail.ImporterAddress,
+                    smkimporterCode = x.detail.SmkimportersCode,
+                    registrationSeqNo = x.detail.RegistrationSeqNo,
+                    sampleRunNo = x.detail.SampleRunNo,
+                    creatorRoleId = x.detail.CreatorRoleId,
+                    dateSampleReceived = x.detail.DateSampleReceived,
+                    importedDate = x.header.ImportedDate,
+                    status = _context.StatusCodes
+                        .Where(y => y.StatusCodeId == x.detail.StatusCodeId)
+                        .Select(y => y.Status)
+                        .FirstOrDefault(),
+                    // Calculate duration in days as null-safe
+                    totalDaysFromImportToReceived = EF.Functions.DateDiffDay(x.header.ImportedDate, x.detail.ReceivedOn) + 1
+                })
+                .ToListAsync();
+
+            // Filter late samples based on a 12-day threshold
+            var filteredSamples = lateSamples
+                .Where(sample => sample.receivedOn.HasValue &&
+                                 sample.receivedOn > sample.importedDate &&
+                                 sample.totalDaysFromImportToReceived > 12) // Filter samples exceeding 12 days
+                .ToList();
+
+            return Ok(filteredSamples);
+        }
+
+
+
+
+
+
+
+
+
         [HttpPost]
         public async Task<IActionResult> PostK1DetailSample([FromBody] K1Detail k1Detail)
         {
@@ -293,6 +390,7 @@ namespace elims.Controllers
                 importedDate = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.ImportedDate.Value.Date).FirstOrDefault(),
                 transport = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.Transport).FirstOrDefault(),
                 lorryNo = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.LorryNo).FirstOrDefault(),
+                exporterAddress = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.ExporterAddress).FirstOrDefault(),
                 trailerNo = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.TrailerNo).FirstOrDefault(),
                 supplierName = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.SupplierName).FirstOrDefault(),
                 driverName = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.DriverName).FirstOrDefault(),

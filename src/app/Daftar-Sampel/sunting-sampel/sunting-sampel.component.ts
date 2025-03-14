@@ -4,7 +4,6 @@ import { Sample } from '../../models/sample';
 import { userDTO } from '../../models/userDTO';
 import { AuthService } from '../../services/auth/auth.service';
 import { ElimsService } from '../../services/elims.service';
-import { switchMap } from 'rxjs/operators';
 import { K1Detail } from '../../models/k1Detail';
 import { K1Header } from '../../models/k1Header';
 import { ToastrService } from 'ngx-toastr';
@@ -135,57 +134,55 @@ export class SuntingSampelComponent implements OnInit {
     this.sample.country = this.k1Detail.country
 
     this.authservice.currentUser
-    // .pipe(
+      // .pipe(
       // switchMap(user => {
       //   return this.route.paramMap;
       // })
-    // )
-    .subscribe(params => {
-      // const k1DetailId = params.get('k1DetailId');
+      // )
+      .subscribe(params => {
+        // const k1DetailId = params.get('k1DetailId');
 
 
-      if (this.selectedK1DetailId !== null) {
-        if (this.elimsService) {
-          this.elimsService.getElimsSample(this.selectedK1DetailId).subscribe(response => {
-            this.sample = response;
-            this.creatorRoleId = this.sample.creatorRoleId
-            this.onDateChange(this.sample.importedDate)
-            if (this.sample.isSMK) {
-              this.showSmk = true
-            } else {
-              this.showSmk = false
-            }
+        if (this.selectedK1DetailId !== null) {
+          if (this.elimsService) {
+            this.elimsService.getElimsSample(this.selectedK1DetailId).subscribe(response => {
+              this.sample = response;
+              this.creatorRoleId = this.sample.creatorRoleId
+              this.onDateChange(this.sample.importedDate)
+              if (this.sample.isSMK) {
+                this.showSmk = true
+              } else {
+                this.showSmk = false
+              }
 
-            if (this.sample.rubberTypeId == 1) {
-              this.elimsService.GetRefSampleTypeByRubberType(1).subscribe(data => {
-                this.typeCodes = data
+              if (this.sample.rubberTypeId == 1) {
+                this.elimsService.GetRefSampleTypeByRubberType(1).subscribe(data => {
+                  this.typeCodes = data
+                })
+              }
+
+              else if (this.sample.rubberTypeId == 2) {
+                this.elimsService.GetRefSampleTypeByRubberType(2).subscribe(data => {
+                  this.typeCodes = data
+                })
+              }
+
+
+              this.elimsService.GetRefRubberTypes().subscribe(data => {
+                this.rubberTypes = data
+
               })
-            }
 
-            else if (this.sample.rubberTypeId == 2) {
-              this.elimsService.GetRefSampleTypeByRubberType(2).subscribe(data => {
-                this.typeCodes = data
+              this.elimsService.GetAllCountries().subscribe(data => {
+                this.countries = data;
               })
-            }
 
+            });
+          }
 
-            this.elimsService.GetRefRubberTypes().subscribe(data => {
-              this.rubberTypes = data
-
-            })
-
-            this.elimsService.GetAllCountries().subscribe(data => {
-              this.countries = data;
-            })
-
-          });
         }
 
-      }
-
-
-      
-    });
+      });
   }
 
   changeJenisGetah(e: any) {
@@ -203,8 +200,8 @@ export class SuntingSampelComponent implements OnInit {
 
     }
     this.showTypeCodes = true
-
   }
+
 
   changeTransport(e: any) {
 
@@ -223,11 +220,13 @@ export class SuntingSampelComponent implements OnInit {
     }
   }
 
+
   handleFileInput(event: any) {
     this.file = event.target.files[0];
     this.sample.evidence = event.target.files[0].name;
     // console.log(this.k1Detail.evidence);
   }
+
 
   updateSample() {
     if (!this.validForm()) {
@@ -259,6 +258,7 @@ export class SuntingSampelComponent implements OnInit {
       this.k1Header.trailerNo = this.sample.trailerNo
       this.k1Header.driverName = this.sample.driverName
       this.k1Header.icDriver = this.sample.icDriver
+      this.k1Header.exporterAddress = this.sample.exporterAddress
       this.k1Header.k1HeaderId = this.sample.k1HeaderId
       this.k1Header.customNo = this.sample.customNo
       this.k1Header.isSMK = this.sample.isSMK;
@@ -296,12 +296,12 @@ export class SuntingSampelComponent implements OnInit {
         }
       );
 
-
     }
   }
 
+
   onDateChange(importedDate: Date) {
-    // const dateValue = new Date(this.k1Header.importedDate);
+
     const dateValue = new Date(importedDate);
 
     let sum;

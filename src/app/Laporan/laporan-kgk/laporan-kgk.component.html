@@ -35,7 +35,7 @@
           <table class="table table-striped center-table">
             <thead>
               <tr class="tableheader">
-                <th class="black" scope="col">Bil</th> <!-- Added "Bil" column -->
+                <th class="black" scope="col">Bil</th>
                 <th class="black" scope="col">Sampel Id</th>
                 <th class="black" scope="col">Tarikh Terima</th>
                 <th class="black" scope="col">Cetak Keputusan</th>
@@ -48,7 +48,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let sample of reportKgk.k1Details; let i = index">
-                <td>{{ i + 1 }}</td> <!-- Serial number column -->
+                <td>{{ i + 1 }}</td>
                 <td>{{ sample.k1DetailId }}</td>
                 <td>{{ sample.receivedOn | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ sample.printedOn | date: 'dd/MM/yyyy' }}</td>

@@ -13,8 +13,8 @@ import { Staff } from 'src/app/models/staff';
 })
 export class LaporanStatistikComponent {
 
-  fromDate: Date | undefined = new Date(); // Initialize with current date
-  toDate: Date | undefined = new Date(); // Initialize with current date
+  fromDate: Date | undefined = new Date(); 
+  toDate: Date | undefined = new Date();
   staffCounts: any[] = [];
   customOffices: any[] = [];
   sampleApproval: any[] = [];
@@ -28,6 +28,7 @@ export class LaporanStatistikComponent {
   staffRole: number[];
   staff: Staff = {} as Staff
   isSearchDisabled: boolean = true;
+
   constructor(
     private laporanService: LaporanService,
     private authService: AuthService,
@@ -49,13 +50,10 @@ export class LaporanStatistikComponent {
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res;
         this.roleGtacr = true;
         this.staffRole = res.staffRole;
-        // console.log(this.staffRole);
-
         this.rekodKeputusanService.GetStaffIdbyStaffRole(4).subscribe(data => {
 
           this.roles = data.filter(data => data.staffName != null);
@@ -75,7 +73,6 @@ export class LaporanStatistikComponent {
         })
       })
     }
-
   }
 
 

@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Batch } from '../../models/batch';
 
 
@@ -25,26 +25,9 @@ export class ViewMaklumatPenghantaranComponent {
   
   displaySelected() {
     this.lepassubmit = true;
-
-    // Filter batches to include only those with selected samples
-    // this.batches = this.batches.filter(batch => batch.samples.some(sample => sample.checked));
-    // Filter samples to include only the selected ones
     for (const batch of this.batches) {
-      // for (const sample of batch.samples) {
-      //   if (sample.checked) {
-      //     const id = sample.k1DetailId;
-      //     this.cetakWorksheet.PutWorksheetTestOn(id, this.k1Detail).subscribe(
-      //       res => { }
-      //     );
-
-      //     this.k1Detail.worksheetTestOn
-      //     console.log(this.k1Detail)
-
-      //   }
-      // }
       batch.samples = batch.samples.filter(sample => sample.checked);
     }
   }
-
 
 }

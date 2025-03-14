@@ -22,11 +22,9 @@ export class ViewSampleComponent implements OnInit {
   user: userDTO = {} as userDTO
   staff: Staff = {} as Staff
   importer: loginImporter = {} as loginImporter
-
   showLatexTypes: boolean = false
   showBlockRubberTypes: boolean = false
   showSmk: boolean = false
-  
   showRemarks: boolean;
   roleForwarder: boolean
   roleUip: boolean
@@ -61,12 +59,12 @@ export class ViewSampleComponent implements OnInit {
   }
 
   constructor(
-      private route: ActivatedRoute,
-      private location: Location,
-      private authservice: AuthService,
-      private daftarSampelService: DaftarSampelService,
-      private userService: UserService,
-    ) { }
+    private route: ActivatedRoute,
+    private location: Location,
+    private authservice: AuthService,
+    private daftarSampelService: DaftarSampelService,
+    private userService: UserService,
+  ) { }
 
 
   ngOnInit() {
@@ -116,27 +114,26 @@ export class ViewSampleComponent implements OnInit {
     //   next: (params) => {
     //     const k1DetailId = params.get('k1DetailId');
 
-        if (this.selectedK1DetailId) {
-          this.daftarSampelService.GetElimsSample(this.selectedK1DetailId)
-            .subscribe(response => {
-              this.sample = response;
-              console.log(response);
-              this.creatorRoleId = this.sample.creatorRoleId;
-              this.onDate(this.sample.importedDate);
-              if (this.sample.isSMK) {
-                this.showSmk = true
-              } else {
-                this.showSmk = false
-              }
+    if (this.selectedK1DetailId) {
+      this.daftarSampelService.GetElimsSample(this.selectedK1DetailId)
+        .subscribe(response => {
+          this.sample = response;
+          console.log(response);
+          this.creatorRoleId = this.sample.creatorRoleId;
+          this.onDate(this.sample.importedDate);
+          if (this.sample.isSMK) {
+            this.showSmk = true
+          } else {
+            this.showSmk = false
+          }
 
-              if (response == null) {
-                // Handle null response if needed
-              }
-            });
-        }
-      // }
+          if (response == null) {
+            // Handle null response if needed
+          }
+        });
+    }
+    // }
     // })
-
   }
 
 

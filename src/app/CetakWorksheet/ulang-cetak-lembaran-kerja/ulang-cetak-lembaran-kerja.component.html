@@ -19,7 +19,6 @@
 
             <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="table table-striped center-table">
 
-
               <ng-container matColumnDef="select">
                 <th mat-header-cell *matHeaderCellDef>
                 </th>
@@ -122,7 +121,6 @@
 
       <!-- search  by customno -->
 
-
       <div class="col-sm-8" *ngIf="!lepassubmit">
         <div class="row form-group">
           <div class="col-sm-3">
@@ -145,28 +143,6 @@
         </div>
       </div>
 
-      <!-- <div class="row form-group" *ngIf="!lepassubmit">
-        <div class="col-sm-2">
-          <label>No. Borang Kastam:</label><br>
-        </div>
-        <div class="col-sm-2">
-          <input type="text" class="form-control readonly-input" id="k1DetailId" name="k1DetailId"
-            [(ngModel)]="customNo">
-          <ng-container *ngFor="let field of customFields; let i = index">
-            <br>
-            <input type="text" class="form-control readonly-input" name="customField{{i}}" [(ngModel)]="field.value">
-          </ng-container>
-        </div>
-        <div class="col-sm-8">
-          <button type="button" class="btn-circle-shadow" (click)="addField()">
-            <i class="fa-solid fa-add"></i>
-          </button>
-          <span style="margin-left: 10px;"></span>
-          <button type="button" class="btn btn-primary search-button" (click)="searchByCustomNos()">
-            Cari
-          </button>
-        </div>
-      </div><br> -->
 
 
       <!-- list sample at second page -->
@@ -275,7 +251,9 @@
         </div>
       </div>
 
+
       <!-- second page  -->
+       
       <div class="row form-group" *ngIf="!isPrint && lepassubmit">
         <div class="col-lg-2">
           <label>Tarikh Untuk Menguji<span class="required" style="color:red;">*</span></label><br>
@@ -291,9 +269,6 @@
         <button id="download-pdf" (click)="generatePDF()" type="submit" class="btn btn-primary mr-5"
           [disabled]="!k1Detail.worksheetTestOn">Cetak</button>
       </div><br>
-
-
-
 
 
       <!-- pdf worksheet page -->

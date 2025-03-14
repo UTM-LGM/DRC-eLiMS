@@ -74,7 +74,7 @@ export class PosKeputusanComponent {
   batch: Batch = {} as Batch;
   delivery: any = ['Fizikal', 'Perkhidmatan Kurier']
   batchId: number;
-  
+
   constructor(
     private elimsService: ElimsService,
     private authService: AuthService,
@@ -93,10 +93,9 @@ export class PosKeputusanComponent {
     else {
       this.loginAs = '';
     }
-
+  // this.userRoleId = 4 : GTACR
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res
         this.roleGtacr = true
@@ -107,13 +106,12 @@ export class PosKeputusanComponent {
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       this.batches = data;
       // console.log(this.batches[0].samples)
-
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
 
-    
+
     this.elimsService.GetRefRubberTypes().subscribe(data => {
       this.rubberTypes = data
     })
@@ -126,13 +124,11 @@ export class PosKeputusanComponent {
     this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
       this.batches = data;
       console.log(this.batches[0].samples)
-
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
 
     });
-
   }
 
 
@@ -142,6 +138,7 @@ export class PosKeputusanComponent {
     }
     this.updateSelectedSamples();
   }
+
 
   updateSelectedSamples() {
     this.selectedSamples = [];
@@ -208,7 +205,6 @@ export class PosKeputusanComponent {
   onYesClick() {
     this.k1Detail.resultSentBy = this.staff.username;
     //this.k1Detail.resultSentOn = this.loginAs;
-
     for (const sample of this.selectedSamples) {
       const id = sample.k1DetailId;
       this.cetakWorksheet.PutPrintResult(id, this.k1Detail).subscribe(
@@ -218,8 +214,8 @@ export class PosKeputusanComponent {
 
     setTimeout(() => {
       window.location.reload();
-    },1000); // Delay in milliseconds (2000ms = 2s)
-    
+    }, 1000); 
+
   }
 
 
@@ -247,6 +243,7 @@ export class PosKeputusanComponent {
     }
   }
 
+
   changeDelivery(e: any) {
 
     if (e.target.value == "Perkhidmatan Kurier") {
@@ -254,7 +251,7 @@ export class PosKeputusanComponent {
     }
     else if (e.target.value == "Fizikal") {
       this.showDelivery = false
-      this.batch.postResultCourierServices= ""
+      this.batch.postResultCourierServices = ""
       this.batch.postResultTrackingNo = ""
     }
   }
@@ -262,24 +259,24 @@ export class PosKeputusanComponent {
 
   updateBatch() {
     // if (this.checkRequired()) {
-      this.cetakKeputusan.PutResultDate(this.batch).subscribe({
-        next: () => {
-          this.toastr.success('Data berjaya disimpan', 'Berjaya', { timeOut: 7000 });
-          setTimeout(() => window.location.reload());
-        },
-        error: () => {
-          this.toastr.error('Maklumat gagal dikemaskini');
-        }
-      });
+    this.cetakKeputusan.PutResultDate(this.batch).subscribe({
+      next: () => {
+        this.toastr.success('Data berjaya disimpan', 'Berjaya', { timeOut: 7000 });
+        setTimeout(() => window.location.reload());
+      },
+      error: () => {
+        this.toastr.error('Maklumat gagal dikemaskini');
+      }
+    });
     // }
   }
-  
-  
+
+
 
   checkRequired() {
     if (
       // (this.batch.uipRegNo == null || this.batch.uipRegNo == '') ||
-     // (this.batch.postResultOn == null || this.batch.postResultOn == '') ||
+      // (this.batch.postResultOn == null || this.batch.postResultOn == '') ||
       (this.batch.postResultDelivery == null || this.batch.postResultDelivery == '')
       // (this.batch.courierServices == null || this.batch.courierServices == '') ||
       // (this.batch.trackingNo == null || this.batch.trackingNo == '')
@@ -291,7 +288,7 @@ export class PosKeputusanComponent {
   }
 
 
-  
+
   viewMemo(batchId: number): void {
     console.log(this.batchId)
     window.open("memo/" + batchId);
@@ -301,7 +298,7 @@ export class PosKeputusanComponent {
   exportToExcel(): void {
     const columnMappings = {
       batchId: 'Batch Id',
-      postResultOn :'Tarikh',
+      postResultOn: 'Tarikh',
       postResultDelivery: 'Penghantaran',
       postResultCourierServices: 'Syarikat Penghantar',
       postResultTrackingNo: 'No.Pengesanan',
@@ -309,31 +306,31 @@ export class PosKeputusanComponent {
       isFastTrack: 'Laluan Pantas',
       bankCode: 'Bank',
       forwarderName: 'Syarikat ',
-      receipt: 'No. Cek/Resit/Memo', // Consolidated column name
+      receipt: 'No. Cek/Resit/Memo', 
       chequeAmount: 'Amaun',
       sentOn: 'Tarikh Hantar',
       sampleCount: 'Bil. Sampel',
     };
-  
+
     const columnsToExport = Object.keys(columnMappings);
     const allData = this.dataSource.data;
-  
+
     const filteredData = allData.map(row => {
       const filteredRow = {};
       columnsToExport.forEach(column => {
         let value;
-  
+
         if (column === 'receipt') {
           value = row.creatorRoleId === 2 ? 'memo' : row.receipt || row.chequeNo;
         } else if (column === 'isFastTrack') {
           value = row.isFastTrack ? 'YA' : 'TIDAK';
         } else if (column === 'sentOn' || column === 'postResultOn') {
           // Format date values
-          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); // Customize the date format here
+          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US');
         } else {
           value = row[column];
         }
-  
+
         if (value !== undefined) {
           const customColumnName = columnMappings[column];
           filteredRow[customColumnName] = value;
@@ -341,11 +338,11 @@ export class PosKeputusanComponent {
       });
       return filteredRow;
     });
-  
+
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Pos Keputusan');
-  
+
     XLSX.writeFile(wb, 'senarai_sampel.xlsx');
   }
 

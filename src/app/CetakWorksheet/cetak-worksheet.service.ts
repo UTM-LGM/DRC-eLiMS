@@ -55,11 +55,6 @@ export class CetakWorksheetService {
   }
 
 
-  // PutRefPenimbang(k1DetailId: number, k1Detail: K1Detail) {
-  //   return this.http.put<Penimbang>(this.baseApiUrl + '/api/RefPenimbangs/PutRefPenimbang/' + k1DetailId, k1Detail);
-  // }
-
-
   PutRefEquipment(k1DetailId: number, k1Detail: K1Detail) {
   return this.http.put<K1Detail>(this.baseApiUrl + '/api/K1Detail/PutEquipment/' + k1DetailId, k1Detail);
 }
@@ -69,11 +64,9 @@ export class CetakWorksheetService {
   }
 
 
-
   PostRefOven(sampleId: number, k1Detail: K1Detail) {
     return this.http.put<string>(this.baseApiUrl + '/api/RefOvens/PostRefOven/' + sampleId, k1Detail);
   }
-
 
 
   GetRefPenimbangs(): Observable<any> {
@@ -83,7 +76,5 @@ export class CetakWorksheetService {
   GetRefOvens(): Observable<any> {
     return this.http.get<any>(this.baseApiUrl + '/api/RefOvens/GetRefOvens');
   }
-
-
 
 }

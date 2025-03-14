@@ -19,7 +19,7 @@ export class LaporanTahapKecekapanComponent {
   categoriesLtx: any;
   categoriesBlockRubber: any;
   selectedType: string = '';
-  
+
   constructor(
     private laporanService: LaporanService,
     private elimsService: ElimsService,

@@ -20,34 +20,6 @@ export class PrintMemoComponent {
   selectedCheckboxCount: number = 0;
   selectedRubberType: string = "";
 
-  // batchData: Batch = {} as Batch;
-  // sample: Sample = {} as Sample;
-  // batches: any;
-  // staffId: number;
-  // unit: any;
-  // loginAs: any;
-  // role: any
-  // roleId: any;
-  // roleForwarder: boolean
-  // roleUip: boolean
-  // sampleType: SampleType = {} as SampleType
-  // uipRefRunNo: UipRefRunNo = {} as UipRefRunNo
-  // uipRefRunNoes: any
-  // uipbkhRefRunNoes: any
-  // sampleCategory: string
-  // batch: Batch = {} as Batch;
-  // rubberType: any
-  // uipMemoRunNo: UipMemoRunNo = {} as UipMemoRunNo
-  // uipSampleRunNo: UipSampleRunNo = {} as UipSampleRunNo
-  // uipMemoRunNoes: any
-  // uipSampleRunNoes: any
-  // emailRecipient: any[]=[];
-  // file: any | null
-  // k1Detail: K1Detail = {} as K1Detail
-  // emailRecord : any[] = []
-  // isPrintMemoRoute: boolean = false;
-  // isPreview: boolean = true;
-  // @ViewChild('pdfContent2') pdfContent2!: ElementRef;
 
   @ViewChild('pdfContent') pdfContent!: ElementRef;
 
@@ -107,6 +79,5 @@ export class PrintMemoComponent {
     }, 1000);
 
   }
-
 
 }

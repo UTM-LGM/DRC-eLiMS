@@ -1,75 +1,75 @@
 .tableheader {
-    background-color: #3e4141;
-    color: rgb(234, 223, 223);
-  }
-  
-  thead .tableheader tr th {
-    color: white;
-  }
-  
-  th {
-    color: white;
-    font-weight: 300;
-  }
-  
-  .mat-icon {
-  
-    height: 15px;
-    width: 15px;
-  
-  }
-  
-  .material-icons {
-    font-size: 15px;
-  }
+  background-color: #3e4141;
+  color: rgb(234, 223, 223);
+}
 
-  .button {
-    background-color: #0f062a;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .button:hover {
-    background-color: #73726f;
-    color: #ffffff;
-  }
+thead .tableheader tr th {
+  color: white;
+}
 
+th {
+  color: white;
+  font-weight: 300;
+}
 
-  .sample {
-    font-family: Arial, sans-serif;
-    font-size: 22px;
-    line-height: 1.5;
-    padding-left: 20px; 
+.mat-icon {
+
+  height: 15px;
+  width: 15px;
+
+}
+
+.material-icons {
+  font-size: 15px;
+}
+
+.button {
+  background-color: #0f062a;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #73726f;
+  color: #ffffff;
 }
 
 
-  
-  #pdf-content {
-    padding: 20px;
-  }
+.sample {
+  font-family: Arial, sans-serif;
+  font-size: 22px;
+  line-height: 1.5;
+  padding-left: 20px;
+}
 
 
-  .page-container {
-    white-space: normal;
-  }
+
+#pdf-content {
+  padding: 20px;
+}
 
 
-  .company-group {
-    page-break-before: always;
-  }
-  
-  .company-group.first-group {
-    page-break-before: auto;
-  }
+.page-container {
+  white-space: normal;
+}
+
+
+.company-group {
+  page-break-before: always;
+}
+
+.company-group.first-group {
+  page-break-before: auto;
+}
 
 
 @media print {
   .preview-hr {
-      display: none;
+    display: none;
 
   }
 

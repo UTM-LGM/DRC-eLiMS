@@ -34,10 +34,6 @@ export class CetakKeputusanService {
     return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutResultLetterApprovedBy/' + sampleId, k1Detail);
   }
 
-  // PutResultDate(batch: Batch): Observable<Batch> {
-  //   return this.http.put<Batch>(this.baseApiUrl + '/api/Batches/PutResultDate', batch);
-  // }
-
   PutResultDate(batch: Batch): Observable<Batch> {
     return this.http.put<Batch>(this.baseApiUrl + '/api/Batches/PutResultDate', batch);
   }

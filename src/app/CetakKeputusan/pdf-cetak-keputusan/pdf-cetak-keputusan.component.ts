@@ -7,11 +7,13 @@ import { UserService } from '../../User/user.service';
 import { Staff } from '../../models/staff';
 import { Sample } from '../../models/sample';
 import * as html2pdf from 'html2pdf.js';
+
 @Component({
   selector: 'app-pdf-cetak-keputusan',
   templateUrl: './pdf-cetak-keputusan.component.html',
   styleUrls: ['./pdf-cetak-keputusan.component.css']
 })
+
 export class PdfCetakKeputusanComponent {
   @Input() k1DetailId: number[];
   k1Details: K1Detail[] = [];
@@ -21,11 +23,10 @@ export class PdfCetakKeputusanComponent {
   roleGtacr: boolean
   staff: Staff = {} as Staff
   today = new Date();
-  // @Input() k1Detail: any;
   creatorRoleId: any;
   sample: Sample = {} as Sample;
   k1Detail: K1Detail = {} as K1Detail;
-  groupedSamples: any[]; // Add this variable
+  groupedSamples: any[];
   samples: any;
   printing: boolean = false;
 
@@ -37,6 +38,7 @@ export class PdfCetakKeputusanComponent {
     private authService: AuthService,
     private userService: UserService,
   ) { }
+
   ngOnInit() {
     if (this.authService.isloggedin()) {
       this.loginAs = this.authService.getSessionUsername()
@@ -77,31 +79,6 @@ export class PdfCetakKeputusanComponent {
     })
 
   }
-  // groupSamplesByCompany() {
-  //   const groupedCollection = this.k1Details.reduce((accumulator, currentValue) => {
-  //     const key = currentValue.importerName;
-  //     (accumulator[key] = accumulator[key] || []).push(currentValue);
-  //     return accumulator;
-  //   }, {});
-  //   this.groupedSamples = Object.keys(groupedCollection).map(key => ({ key, items: groupedCollection[key], count: groupedCollection[key].length }));
-  //   console.log(this.groupedSamples);
-  // }
-
-  //   groupSamplesByCompany() {
-  //     this.k1Details.sort((a, b) => a.k1DetailId - b.k1DetailId);
-  //   const groupedCollection = this.k1Details.reduce((accumulator, currentValue) => {
-  //     const key = currentValue.importerName;
-  //     (accumulator[key] = accumulator[key] || []).push(currentValue);
-  //     return accumulator;
-  //   }, {});
-  //   this.groupedSamples = Object.keys(groupedCollection).map(key => ({ key, items: groupedCollection[key], count: groupedCollection[key].length }));
-  //   // Calculate first and last testedOn dates for each batch
-  //   this.groupedSamples.forEach(group => {
-  //     const sortedByTestedOn = group.items.sort((a, b) => new Date(a.testedOn).getTime() - new Date(b.testedOn).getTime());
-  //     group.firstTestedOnDate = sortedByTestedOn[0].testedOn;
-  //     group.lastTestedOnDate = sortedByTestedOn[sortedByTestedOn.length - 1].testedOn;
-  //   });
-  // }
 
 
   groupSamplesByCompany() {
@@ -189,7 +166,6 @@ export class PdfCetakKeputusanComponent {
   }
 
 
-
   // print() {
   //   const printContents = this.pdfContent?.nativeElement.innerHTML;
   //   const originalContents = document.body.innerHTML;
@@ -230,22 +206,24 @@ export class PdfCetakKeputusanComponent {
                   padding-bottom: 40px;
             }
               
-.small-column {
-  width: 40px; /* Adjust the width as needed */
-}
-.small-column1 {
-  width: 30px; /* Adjust the width as needed */
-}
-.small-getah {
-  width: 15px; /* Adjust the width as needed */
-}
-.small-no {
-  width: 10px; /* Adjust the width as needed */
-}
-.big-column {
-  width: 110px; /* Adjust the width as needed */
-}
-      .center-text {
+          .small-column {
+            width: 40px; /* Adjust the width as needed */
+          }
+          .small-column1 {
+            width: 30px; /* Adjust the width as needed */
+          }
+          .small-getah {
+            width: 15px; /* Adjust the width as needed */
+          }
+          .small-no {
+            width: 10px; /* Adjust the width as needed */
+          }
+          .big-column {
+            width: 110px; /* Adjust the width as needed */
+          }
+
+
+          .center-text {
                         text-align: center;
                         font-weight: bold; /* Optional: Makes the text bold */
                         font-size: 18px; /* Optional: Adjust the font size as needed */
@@ -272,6 +250,7 @@ export class PdfCetakKeputusanComponent {
             .title-spacing {
               margin-bottom: 90px;
             }
+
 @media all
   {
   #page-one, .footer, .page-break { display:none; }
@@ -367,11 +346,8 @@ export class PdfCetakKeputusanComponent {
       //     thead.report-header {
       //     display:table-header-group;
       //     }
-
-
-
-                
-}
+          
+  }
 
             }
             </style>
@@ -381,13 +357,14 @@ export class PdfCetakKeputusanComponent {
         </body>
         </html>
       `);
+
       printWindow.document.close();
       printWindow.onload = () => {
-        const totalPages = printWindow.document.body.getElementsByTagName('div').length; // Adjust as needed
+        const totalPages = printWindow.document.body.getElementsByTagName('div').length;
         const pageNumberDivs = printWindow.document.getElementsByClassName('page-number');
 
         for (let i = 0; i < pageNumberDivs.length; i++) {
-          const pageNumberDiv = pageNumberDivs[i] as HTMLElement; // Cast to HTMLElement
+          const pageNumberDiv = pageNumberDivs[i] as HTMLElement;
           pageNumberDiv.innerText = `Page ${i + 1} of ${totalPages}`;
         }
         printWindow.print();
@@ -396,7 +373,6 @@ export class PdfCetakKeputusanComponent {
       alert('Unable to open print preview. Please check your browser settings or popup blockers.');
     }
   }
-
 
 }
 

@@ -32,21 +32,10 @@ uipNotificationResultLetter(staffId: number, k1DetailId: number, emailRecipients
   return this.http.post(`${this.baseApiUrl}/api/Email/uipNotificationResultLetter/${staffId}/${k1DetailId}`, body);
 }
 
-  
-// uipNotificationResultLetter(staffId: number, batchId: number, emailRecipients: string[]) {
-//   const body = emailRecipients; // recipients are sent as the body
-//   const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-//   return this.http.post(`${this.baseApiUrl}/api/Email/uipNotificationResultLetter/${staffId}/${batchId}`, body);
-// }
-
 
   GetEmailForwarder(forwarderId: number) {
     return this.http.get<any>(this.baseApiUrl + '/api/Forwarders/GetEmailForwarder/' + forwarderId);
   }
-
-  // GetEmailResultLetter(forwarderId: number) {
-  //   return this.http.get<any>(this.baseApiUrl + '/api/Forwarders/GetEmailResultLetter/' + forwarderId);
-  // }
 
 
   PutRetestApproval(sampleId: number, k1Detail: K1Detail) {

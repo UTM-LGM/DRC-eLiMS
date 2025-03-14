@@ -99,7 +99,7 @@ export class ViewKeputusanUjianComponent implements OnInit {
         console.log(this.roleForwarder)
       })
     }
-    else if (this.userRoleId == 2 ) {
+    else if (this.userRoleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.staff = res
@@ -118,39 +118,30 @@ export class ViewKeputusanUjianComponent implements OnInit {
       })
     }
 
-    else if (this.userRoleId == 4 ) {
+    else if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
         this.staff = res
         this.roleForwarder = false
         this.roleUip = false
         this.roleGtacr = true
-        
+
       })
     }
 
-
-
-    // this.route.paramMap.subscribe({
-    //   next: (params) => {
-    //     const k1DetailId = params.get('k1DetailId');
-
-        if (this.selectedK1DetailId) {
-          this.daftarSampelService.GetElimsSample(this.selectedK1DetailId)
-            .subscribe(response => {
-              this.sample = response;
-              console.log(response);
-              this.creatorRoleId = this.sample.creatorRoleId
-              if (this.sample.isSMK) {
-                this.showSmk = true
-              } else {
-                this.showSmk = false
-              }
-            });
-        }
-    //   }
-    // })
-
+    if (this.selectedK1DetailId) {
+      this.daftarSampelService.GetElimsSample(this.selectedK1DetailId)
+        .subscribe(response => {
+          this.sample = response;
+          console.log(response);
+          this.creatorRoleId = this.sample.creatorRoleId
+          if (this.sample.isSMK) {
+            this.showSmk = true
+          } else {
+            this.showSmk = false
+          }
+        });
+    }
   }
 
   isValidDate(dateStr: string): boolean {
@@ -177,10 +168,6 @@ export class ViewKeputusanUjianComponent implements OnInit {
   viewSuratKeputusan(): void {
     window.open("cetak-keputusan/" + this.sample.batchId);
   }
-
-  // viewSuratIringan(): void {
-  //   window.open("surat-iringan/" + this.sample.batchId );
-  // }
 
   viewLampiran(): void {
     window.open("lampiran/" + this.sample.batchId);

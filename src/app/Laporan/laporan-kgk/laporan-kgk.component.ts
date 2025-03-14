@@ -22,14 +22,13 @@ export class LaporanKgkComponent {
   ngOnInit() { }
 
   searchSample(): void {
-    // Determine which parameters to include based on the selected criteria
+
     let startDate: Date | undefined = this.fromDate;
     let endDate: Date | undefined = this.toDate;
-    // Call the API with the selected parameters
+
     this.laporanService.CountReportKgkSamples(startDate, endDate).subscribe(
       (data) => {
         this.reportKgk = data;
-        // console.log(this.reportKgk);
         this.isSearched = true;
       },
       (error) => {

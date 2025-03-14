@@ -15,7 +15,6 @@ import { UserService } from '../../User/user.service';
 import { loginImporter } from '../../models/loginImporters';
 import * as XLSX from 'xlsx';
 import { DaftarSampelService } from 'src/app/Daftar-Sampel/daftar-sampel.service';
-import { StatusCode } from 'src/app/models/statusCode';
 
 @Component({
   selector: 'app-keputusan-ujian',
@@ -25,7 +24,6 @@ import { StatusCode } from 'src/app/models/statusCode';
 export class KeputusanUjianComponent implements OnInit {
 
   statusCodes: any
-  
   importer: loginImporter = {} as loginImporter
   user: userDTO = {} as userDTO
   sample: Sample = {} as Sample
@@ -58,10 +56,10 @@ export class KeputusanUjianComponent implements OnInit {
   forwarderId: any;
   sampleTypes: any
   rubberTypes: any
-  typeCodeId : any
+  typeCodeId: any
   fromDate: Date | undefined;
   toDate: Date | undefined;
-  
+
   showCustomNo: boolean = false
   showLabRegNo: boolean = false
   showSampleId: boolean = false
@@ -79,9 +77,9 @@ export class KeputusanUjianComponent implements OnInit {
   showImportedDate: boolean = false
   showCompanyName: boolean = false
   showForwarderName: boolean = false
-  
+
   userRoleId: any;
-  
+
   roleForwarder: boolean
   roleUip: boolean
   roleImporter: boolean
@@ -219,7 +217,7 @@ export class KeputusanUjianComponent implements OnInit {
             // Compare the kodStesen values
             if (nameA < nameB) {
               return -1;
-            } else if (nameA >nameB) {
+            } else if (nameA > nameB) {
               return 1;
             } else {
               return 0; // Kodstesen values are equal
@@ -263,7 +261,7 @@ export class KeputusanUjianComponent implements OnInit {
             // Compare the kodStesen values
             if (nameA < nameB) {
               return -1;
-            } else if (nameA >nameB) {
+            } else if (nameA > nameB) {
               return 1;
             } else {
               return 0; // Kodstesen values are equal
@@ -294,7 +292,7 @@ export class KeputusanUjianComponent implements OnInit {
       this.searchBy.push('Syarikat Pengimport');
     }
 
-   else if (this.userRoleId == 2 || 4) {
+    else if (this.userRoleId == 2 || 4) {
       this.searchBy.push('Syarikat Pengimport');
       this.searchBy.push('Syarikat Penghantar');
       this.searchBy.push('Jenis Sampel');
@@ -369,7 +367,7 @@ export class KeputusanUjianComponent implements OnInit {
           );
       }
 
-      
+
       if (this.userRoleId == 3) {
         this.keputusanUjianService.GetElimsSearchSample(this.importer.username, this.queryParams)
           .subscribe(
@@ -468,7 +466,7 @@ export class KeputusanUjianComponent implements OnInit {
     sessionStorage.setItem('searchParams', JSON.stringify(this.queryParams));
     // this.router.navigate(['/sample/view-keputusan-ujian/' + k1DetailId]);
     this.daftarSampelService.setSelectedK1DetailId(k1DetailId);
-    this.router.navigate(['keputusan-ujian/view-keputusan-ujian']); 
+    this.router.navigate(['keputusan-ujian/view-keputusan-ujian']);
   }
 
   changeSearchBy(e: any) {
@@ -489,9 +487,9 @@ export class KeputusanUjianComponent implements OnInit {
     this.drc = ""
     this.fromDate = undefined
     this.toDate = undefined
-  
 
- 
+
+
     e.target.value == "No Kastam" ? this.showCustomNo = true : this.showCustomNo = false;
     e.target.value == "No Ruj Makmal" ? this.showLabRegNo = true : this.showLabRegNo = false;
     e.target.value == "Tarikh Import" ? this.showImportedDate = true : this.showImportedDate = false;
@@ -555,17 +553,17 @@ export class KeputusanUjianComponent implements OnInit {
 
 
 
-  @ViewChild('table') table: any; 
+  @ViewChild('table') table: any;
 
   exportToExcel(): void {
     // Define custom column names
     const columnMappings = {
-        'customNo': 'No Borang Kastam',
-        'importedDate': 'Tarikh Import',
-        'samplePropose': 'Tujuan Sample Dihantar',
-        'quantity': 'Kuantiti',
-        'importerName': 'Syarikat Pengimport',
-        'status': 'Status'
+      'customNo': 'No Borang Kastam',
+      'importedDate': 'Tarikh Import',
+      'samplePropose': 'Tujuan Sample Dihantar',
+      'quantity': 'Kuantiti',
+      'importerName': 'Syarikat Pengimport',
+      'status': 'Status'
     };
 
     // Define which columns to export
@@ -576,12 +574,12 @@ export class KeputusanUjianComponent implements OnInit {
 
     // Filter data to keep only the desired columns and apply custom column names
     const filteredData = allData.map(row => {
-        const filteredRow = {};
-        columnsToExport.forEach(column => {
-            const customColumnName = columnMappings[column];
-            filteredRow[customColumnName] = row[column];
-        });
-        return filteredRow;
+      const filteredRow = {};
+      columnsToExport.forEach(column => {
+        const customColumnName = columnMappings[column];
+        filteredRow[customColumnName] = row[column];
+      });
+      return filteredRow;
     });
 
     // Create a worksheet from filtered data
@@ -592,8 +590,7 @@ export class KeputusanUjianComponent implements OnInit {
 
     // Generate Excel file and trigger download
     XLSX.writeFile(wb, 'senarai_sampel.xlsx');
-}
-
+  }
 
 }
 

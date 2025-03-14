@@ -118,4 +118,5 @@ export interface Sample {
     totalDaysFromImportToReceived : number;
     dateReceivedInLab : Date;
     noLaporanTuan : string;
+    exporterAddress : string;
 }

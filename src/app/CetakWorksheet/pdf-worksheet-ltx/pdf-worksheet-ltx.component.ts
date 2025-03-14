@@ -79,6 +79,7 @@ export class PdfWorksheetLtxComponent {
     }
   }
 
+
   generateQRCodeImage(data: string): void {
     // Generate the QR code as a data URL
     QRCode.toDataURL(data).then((qrCodeDataUrl: string) => {

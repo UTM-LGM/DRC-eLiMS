@@ -98,7 +98,6 @@ export class ElimsSenaraiSampelComponent implements OnInit {
         this.getElimsSamplesByUsername()
       })
     }
-
     
   }
 
@@ -114,6 +113,7 @@ export class ElimsSenaraiSampelComponent implements OnInit {
     )
   }
 
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -123,6 +123,7 @@ export class ElimsSenaraiSampelComponent implements OnInit {
     }
   }
 
+
   deleteSample(k1DetailId: number, rubberType: string): void {
     console.log(k1DetailId, "   ", rubberType);
     const dialogRef = this.dialog.open(DataDeleteComponent);
@@ -130,7 +131,13 @@ export class ElimsSenaraiSampelComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
         this.daftarSampelService.DeleteElimsSample(k1DetailId).subscribe({
-          next: () => { },
+          next: () => {
+
+            this.dataSource.data = this.dataSource.data.filter((item: any) => item.k1DetailId !== k1DetailId);
+  
+            console.log(`k1Detail with ID ${k1DetailId} deleted successfully.`);
+
+           },
           error: (error) => {
             console.error('Error deleting sample from Elims table:', error);
           }
@@ -155,8 +162,5 @@ export class ElimsSenaraiSampelComponent implements OnInit {
     this.daftarSampelService.setSelectedK1DetailId(k1DetailId);
     this.router.navigate(['sample/edit']); 
   }
-
-
-
 
 }

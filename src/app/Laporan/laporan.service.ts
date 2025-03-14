@@ -12,10 +12,6 @@ export class LaporanService {
   constructor(private http: HttpClient) { }
 
 
-  // GetSampleCountByStatusCode(selectedDate: string) {
-  //   return this.http.get<any>(this.baseApiUrl + '/api/K1Detail/GetSampleCountByStatusCode');
-  // }
-
   GetSampleCount(startDate: Date | undefined, endDate: Date | undefined, rubberTypeId: number | undefined, typeCodeId: number | undefined): Observable<any> {
     let queryString = '';
 
@@ -41,8 +37,6 @@ export class LaporanService {
 
     return this.http.get<any>(`${this.baseApiUrl + '/api/K1Detail/CountSamples'}?${queryString}`);
   }
-
-
 
 
   // Modify the CountSamplesByInLabOn service
@@ -146,7 +140,6 @@ export class LaporanService {
     // Call the API with the constructed query string
     return this.http.get<any>(`${this.baseApiUrl + '/api/K1Detail/CountLevelEfficiencyBlockRubber'}?${queryString}`);
   }
-
 
 
 

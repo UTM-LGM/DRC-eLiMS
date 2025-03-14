@@ -7,6 +7,7 @@
 
         <form [formGroup]="sampleForm">
           <div class="row form-group py-1">
+
             <!-- No Borang Kastam -->
             <div class="col-sm-2">
               <label class="label_title">No Borang Kastam <span class="required" style="color:red;"> *
@@ -18,25 +19,27 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <div class="form-group row mb-0">
-                      <div class="col-sm-2">
 
-                        <!-- drop down here -->
+                      <div class="col-sm-2">
                         <select class="form-select" placeholder="Kod Stesen" formControlName="kodStesen" id="kodStesen"
                           name="kodStesen">
                           <option class="pilih" value="default">--Pilih Kod Stesen--</option>
                           <option *ngFor="let stesen of stationCodes" [value]="stesen.kodStesen">{{ stesen.kodStesen }}
                           </option>
                         </select>
-
                       </div>
+
                       <div class="col-sm-3">
                         <input type="text" class="form-control" formControlName="tahun" id="tahun" name="tahun"
                           placeholder="Tahun" maxlength="4">
                       </div>
+
                       <div class="col-sm-5">
                         <input type="text" class="form-control" formControlName="nomborKastam" id="nomborKastam"
                           name="nomborKastam" placeholder="No.Kastam" maxlength="9">
                       </div>
+
+
                       <div class="col-sm-2">
                         <button type="button" class="btn btn-primary search-button"
                           (click)="searchCustomRegistrationNo()"><i class="fas fa-search"></i>
@@ -52,7 +55,7 @@
         </form><br>
 
         <form (ngSubmit)="addSample()">
-          <div *ngIf="k1DetailKastam">
+          <!-- <div *ngIf="k1DetailKastam">
 
             <div class="row form-group">
               <div class="col-sm-2">
@@ -69,13 +72,40 @@
               </div>
             </div>
             <br>
+          </div> -->
+
+          <div *ngIf="k1DetailKastam || k3DetailKastam">
+            <div class="row form-group">
+              <div class="col-sm-2">
+                <label class="label_title">Penerangan Item<span class="required" style="color:red;">*</span></label><br>
+                <label class="label_bi">Item Description</label>
+              </div>
+
+              <div class="col-sm-10">
+                <div *ngIf="k1DetailKastam">
+                  <!-- <strong>K1 Items:</strong> -->
+                  <p *ngFor="let row of k1DetailKastam" class="clickable">
+                    <a href="javascript:void(0)" (click)="showDetails(row.id, 'K1')">{{ row.itemDescription }}</a>
+                  </p>
+                </div>
+
+                <div *ngIf="k3DetailKastam">
+                  <!-- <strong>K3 Items:</strong> -->
+                  <p *ngFor="let row of k3DetailKastam" class="clickable">
+                    <a href="javascript:void(0)" (click)="showDetails(row.id, 'K3')">{{ row.itemDescription }}</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <br>
           </div>
 
           <hr><br><br>
 
-          <div *ngIf="k1Header && k1Detail">
+          <div *ngIf="k1Detail && k1Header">
 
             <div class="row flex d-flex content-fluid mb-3">
+
               <div class="col-lg-1">
                 <label class="label_title">No Borang Kastam<span class="required"
                     style="color:red;">*</span></label><br>
@@ -88,16 +118,17 @@
                   Perakuan Untuk Mengangkut Barang Dalam Malaysia (Kastam No.3)</small>
               </div>
 
+
               <div class="col-lg-1">
                 <label class="label_title">Kod HS<span class="required" style="color:red;">*</span></label><br>
                 <label class="label_bi">HS Code</label>
               </div>
-
               <div class="col-lg-5">
                 <input type="text" class="form-control readonly-input" [value]=" k1Detail.hsCode" disabled readonly>
               </div>
 
             </div>
+
 
 
             <div class="row flex d-flex mb-3">
@@ -107,14 +138,12 @@
               </div>
               <div class="col-lg-5">
                 <input type="text" class="form-control readonly-input"
-                  [value]=" k1Header.importedDate | date: 'dd-MM-yyyy'" disabled readonly><br>
+                  [value]="k1Header.importedDate | date: 'dd-MM-yyyy'" disabled readonly><br>
                 <div>
-                  <small class="instruction">* Tarikh import yang diikrar dalam perakuan kepada
-                    Kastam</small>
+                  <small class="instruction">* Tarikh import yang diikrar dalam perakuan kepada Kastam</small>
                 </div>
-
                 <div *ngIf="notes">
-                  <p class="notes">Sampel perlu sampai di makmal GTACR pada :{{ notes }}</p>
+                  <p class="notes">Sampel perlu sampai di makmal GTACR pada: {{ notes }}</p>
                 </div>
               </div>
 
@@ -124,7 +153,6 @@
                     style="color:red;">*</span></label><br>
                 <label class="label_bi">Date Sample Received</label>
               </div>
-
               <div class="col-lg-5" *ngIf="roleImporter">
                 <input type="date" class="form-control" id="DateSampleReceived" name="DateSampleReceived"
                   [(ngModel)]="k1Detail.dateSampleReceived" (change)="onDateChange()" required><br>
@@ -144,9 +172,10 @@
                 <div class="col-lg-10 mb-3">
                   <textarea class="form-control" id="Remarks" name="Remarks" [(ngModel)]="k1Detail.remarks" rows="4"
                     [required]="lateSample" cols="50"></textarea>
-                  <small class="instruction">* Alasan jika melebihi tempoh masa yang telah
-                    ditetapkan</small>
+                  <small class="instruction">* Alasan jika melebihi tempoh masa yang telah ditetapkan</small>
                 </div>
+
+
                 <div class="col-sm-2">
                   <label class="label_bm">Bukti</label><br>
                   <label class="label_bi">Evidence</label>
@@ -158,7 +187,9 @@
                     ditetapkan</small>
                 </div>
               </div>
+
             </div>
+
 
 
             <div class="row flex d-flex content-fluid mb-3">
@@ -181,6 +212,7 @@
               <div class="col-lg-5" *ngIf="roleImporter">
                 <input type="text" class="form-control readonly-input" [value]=" k1Header.agentName" disabled readonly>
               </div>
+
 
               <div class="col-lg-1" *ngIf="roleImporter">
                 <label class="label_title">Syarikat Penghantar<span class="required"
@@ -209,7 +241,6 @@
                   </option>
                 </select>
                 <small class="instruction">* Sila pilih Syarikat Pengimport untuk kegunaan sistem Elims </small>
-
               </div>
 
 
@@ -241,6 +272,7 @@
 
 
             <div class="row flex d-flex content-fluid mb-3">
+
               <div class="col-lg-1">
                 <label class="label_title">No Pendaftaran Lori<span class="required"
                     style="color:red;">*</span></label><br>
@@ -249,6 +281,8 @@
               <div class="col-lg-3">
                 <input type="text" class="form-control readonly-input" [value]=" k1Header.lorryNo " disabled readonly>
               </div>
+
+
               <div class="col-lg-1">
                 <label class="label_title">No .Trelar/ Kontena / Tank </label><br>
                 <label class="label_bi">Trailer / Contena / Tanker No</label>
@@ -256,6 +290,8 @@
               <div class="col-lg-3">
                 <input type="text" class="form-control readonly-input" [value]=" k1Header.trailerNo" disabled readonly>
               </div>
+
+
               <div class="col-lg-1">
                 <label class="label_title">Negara Pembekal<span class="required" style="color:red;">*</span></label><br>
                 <label class="label_bi">Supplier Country </label>
@@ -264,6 +300,7 @@
                 <input type="text" class="form-control readonly-input" [value]=" k1Detail.country " disabled readonly>
                 <small class="instruction">* Nama negara asal pembekal getah </small>
               </div>
+
             </div>
 
 
@@ -284,8 +321,6 @@
                 <label class="label_title">Kuantiti(kg)<span class="required" style="color:red;">*</span></label><br>
                 <label class="label_bi">Quantity(kg)</label>
               </div>
-
-
               <div class="col-lg-3">
                 <input type="text" class="form-control" id="Quantity" name="Quantity" [(ngModel)]="formattedQuantity"
                   (ngModelChange)="enforceDRCLimit()" appCommaNumber required>
@@ -298,8 +333,6 @@
                 <label class="label_title">KGK %<span class="required" style="color:red;">*</span></label><br>
                 <label class="label_bi">DRC %</label>
               </div>
-
-
               <div class="col-lg-3">
                 <input type="number" class="form-control readonly-input" id="DRC" name="formattedDRC"
                   [(ngModel)]="formattedDRC" (ngModelChange)="enforceDRCLimit()" required>
@@ -312,8 +345,6 @@
                 <label class="label_title">Berat Kering</label><br>
                 <label class="label_bi">Dry Weight</label>
               </div>
-
-              
               <div class="col-lg-3">
                 <label>{{ dryWeight | number:'1.2-2' }}</label>
               </div>
@@ -335,11 +366,12 @@
                   </option>
                 </select>
               </div>
+
+
               <div class="col-lg-1">
                 <label class="label_title">Jenis Sampel<span class="required" style="color:red;">*</span></label><br>
                 <label class="label_bi">Sample Type</label>
               </div>
-
               <div class="col-lg-3">
                 <select class="form-select readonly-input" name="TypeCodeId" id="TypeCodeId"
                   [(ngModel)]="k1Detail.typeCodeId" required>
@@ -364,6 +396,7 @@
                 </select>
               </div>
             </div>
+
 
             <div class="row flex d-flex content-fluid mb-3">
 

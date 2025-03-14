@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { K1Header } from '../models/k1Header';
@@ -18,6 +18,7 @@ export class DaftarSampelService {
 
   constructor(private http: HttpClient) { }
   private selectedK1DetailId: number;
+
   // K1Header
 
   PostK1HeaderSample(k1Header: K1Header, statusCodeId: number): Observable<K1Header> {
@@ -88,29 +89,14 @@ export class DaftarSampelService {
     return this.http.put<string>(this.baseApiUrl + '/api/K1Detail/PutDateReceivedInLab/' + sampleId, k1Detail);
   }
 
-  // getDataByCustomNoAndAgentCode(customNo: string, agentCode: string): Observable<K1Detail[]> {
-  //   const apiUrl = `${this.baseApiUrl}/api/K1Header/${customNo}/${agentCode}`;
-  //   return this.http.get<any>(apiUrl);
-  // }
 
-  // GetForwarderbyCompanyId(companyId: number): Observable<Forwarder> {
-  //   console.log(companyId)
-  //   return this.http.get<Forwarder>(this.baseApiUrl + '/api/CompanyForwarders/GetForwarderbyCompanyId/' + companyId);
-  // }
+  getLateSamples(startDate: string, endDate: string): Observable<any> {
+    const params = new HttpParams()
+      .set('startDate', startDate)
+      .set('endDate', endDate);
 
-  // GetCompanyId(companyId: number): Observable<Company> {
-  //   console.log(companyId)
-  //   return this.http.get<Company>(this.baseApiUrl + '/api/Companies/GetCompanyId/' + companyId);
-  // }
-
-  // GetOldSystemIdbyId(id: number): Observable<TypeCode> {
-  //   console.log(id)
-  //   return this.http.get<TypeCode>(this.baseApiUrl + '/api/TypeCodes/GetOldSystemIdbyId/' + id);
-  // }
-
-  // GetK1HeaderByCustomNo(customNo: string): Observable<K1Header> {
-  //   console.log(customNo)
-  //   return this.http.get<K1Header>(this.baseApiUrl + '/api/K1Header/GetK1HeaderByCustomNo/' + customNo);
-  // }
+    return this.http.get<any>(`${this.baseApiUrl}/api/K1Detail/GetAllLateSamples`, { params });
+  }
+  
 
 }

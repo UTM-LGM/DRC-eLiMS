@@ -46,7 +46,7 @@ th {
 }
 
 .radio-label {
-  margin-right: 30px; /* Adjust the desired spacing */
+  margin-right: 30px; 
 }
 
 .attractive-title {
@@ -55,8 +55,6 @@ th {
   color: #08864b; /* Or any color that fits your design */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow effect */
 }
-
-
 
 
 
@@ -101,7 +99,7 @@ th {
 }
 
 .amount-input {
-  width: 100%; /* Adjust width as needed */
+  width: 100%; 
 }
 
 

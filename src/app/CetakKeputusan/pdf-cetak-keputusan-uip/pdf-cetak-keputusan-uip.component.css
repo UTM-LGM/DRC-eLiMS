@@ -21,8 +21,8 @@ body, p, th, td {
   
   .report-number {
     position: fixed;
-    top: 20px; /* Adjust as needed */
-    left: 10px; /* Adjust as needed */
+    top: 20px; 
+    left: 10px; 
     font-family: Arial, sans-serif;
     font-size: 17px;
   }
@@ -56,7 +56,7 @@ body, p, th, td {
   }
   
   .signature {
-    margin-top: 100px; /* Adjust as needed */
+    margin-top: 100px;
   }
   
   @media print {
@@ -71,7 +71,7 @@ body, p, th, td {
     }
   
     .page-wrapper {
-      padding-top: 120px; /* Adjust this value to set space at the top of each printed page */
+      padding-top: 120px;
     }
   
     .company-group {
@@ -85,7 +85,7 @@ body, p, th, td {
     }
   
     .signature {
-      margin-top: 50px; /* Adjust as needed for signature position */
+      margin-top: 50px;
     }
   }
   

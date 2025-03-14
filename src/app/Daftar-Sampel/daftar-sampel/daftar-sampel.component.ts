@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { DrclimstrainingService } from '../../services/drclimstraining.service';
-import { GetahBongkahService } from '../../services/getah-bongkah.service';
 import { Sample } from '../../models/sample';
 import { AuthService } from '../../services/auth/auth.service';
 import { userDTO } from '../../models/userDTO';
@@ -39,7 +36,6 @@ export class DaftarSampelComponent implements OnInit {
   showPelabuhan: boolean = false
 
   formattedQuantity: string;
-  //formattedDRC: string;
   numericQuantity: number
   companies: any
   countries: any
@@ -66,9 +62,6 @@ export class DaftarSampelComponent implements OnInit {
   baseApiUrl = environment.baseApiUrlElims;
 
   constructor(
-    private router: Router,
-    private drclimstrainingService: DrclimstrainingService,
-    private getahBongkahService: GetahBongkahService,
     private elimsService: ElimsService,
     private authservice: AuthService,
     private formBuilder: FormBuilder,
@@ -138,7 +131,7 @@ export class DaftarSampelComponent implements OnInit {
           this.companies.sort((a: { importerName: any; }, b: { importerName: any; }) => {
             const companiesA = a.importerName;
             const companiesB = b.importerName;
-    
+
             // Compare the kodStesen values
             if (companiesA < companiesB) {
               return -1;
@@ -188,7 +181,7 @@ export class DaftarSampelComponent implements OnInit {
     });
 
 
-    
+
   }
 
   handleFileInput(event: any) {
@@ -205,7 +198,7 @@ export class DaftarSampelComponent implements OnInit {
     if (this.sampleForm.invalid) {
       this.toastr.warning('Sila isi semua ruangan yang diperlukan');
       return;
-      
+
     }
 
     const formData = new FormData();
@@ -261,7 +254,7 @@ export class DaftarSampelComponent implements OnInit {
     //     this.k1Detail.k1HeaderId = res.k1HeaderId;
     //     this.daftarSampelService.PostK1DetailSample(this.k1Detail, statusCodeId).subscribe(resDetail => {
     //       this.sample.sampleIdNew = resDetail.k1DetailId;
-    
+
     //       // Combining multiple observables to wait for all of them to complete
     //       forkJoin([
     //         this.drclimstrainingService.PostLtxSamples(this.sample, statusCodeId),
@@ -282,7 +275,7 @@ export class DaftarSampelComponent implements OnInit {
     //     this.k1Detail.k1HeaderId = res.k1HeaderId;
     //     this.daftarSampelService.PostK1DetailSample(this.k1Detail, statusCodeId).subscribe(resDetail => {
     //       this.sample.sampleIdNew = resDetail.k1DetailId;
-    
+
     //       // Combining multiple observables to wait for all of them to complete
     //       forkJoin([
     //         this.getahBongkahService.PostBRSamples(this.sample, statusCodeId),
@@ -353,7 +346,7 @@ export class DaftarSampelComponent implements OnInit {
     if (this.formattedDRC > 100) {
       this.formattedDRC = 0;
     }
-}
+  }
 
 
 
@@ -414,57 +407,6 @@ export class DaftarSampelComponent implements OnInit {
     });
   }
 
-
-  // onDateChange() {
-  //   const dateValue = new Date(this.k1Header.importedDate);
-  //   console.log(this.k1Header.importedDate)
-  //   let sum;
-
-  //   this.authservice.GetCustomOffice(this.user.customOfficeId).subscribe(x => {
-  //     console.log(x);
-  //     this.customOffice = x;
-
-  //     if (this.customOffice.isNorthen) {
-  //       sum = dateValue.getDate() + 7;
-  //     } else {
-  //       sum = dateValue.getDate() + 14;
-  //     }
-
-  //     const sumDate = new Date(dateValue.getFullYear(), dateValue.getMonth(), sum);
-  //     this.selectedDateSum = sumDate;
-
-  //     const day = ('0' + sumDate.getDate()).slice(-2); // Add leading zero if needed
-  //     const month = ('0' + (sumDate.getMonth() + 1)).slice(-2); // Add leading zero if needed
-  //     const year = sumDate.getFullYear();
-
-  //     this.notes = `${day}.${month}.${year}`;
-  //     console.log(this.notes)
-
-  //     const today = new Date();
-  //     const daysUntilDeadline = Math.ceil((sumDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-
-  //     if (sumDate < today) {
-  //       if (this.customOffice.isNorthen) {
-  //         this.notes += " (Anda telah lewat, melebihi 7 hari)";
-  //       } else {
-  //         this.notes += " (Anda telah lewat, melebihi 14 hari)";
-  //       }
-  //       this.showRemarks = true; // Display the remarks field
-  //     } else if (daysUntilDeadline <= 3) {
-  //       if (this.customOffice.isNorthen) {
-
-  //         this.notes += ` (Perhatian: Anda mempunyai  ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;
-  //       } else {
-  //         this.notes += ` (Perhatian: Anda mempunyai ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;
-  //       }
-  //       this.showRemarks = false; // Hide the remarks field
-  //     } else {
-  //       this.showRemarks = false; // Hide the remarks field
-  //     }
-
-  //     console.log(this.selectedDateSum.toDateString());
-  //   });
-  // }
 
 
 }

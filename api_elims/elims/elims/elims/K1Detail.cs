@@ -129,6 +129,8 @@ public partial class K1Detail
 
     public string? NoLaporanTuan { get; set; }
 
+    public bool? IsK3 { get; set; }
+
     public virtual Batch? Batch { get; set; }
 
     public virtual K1Header? K1Header { get; set; }

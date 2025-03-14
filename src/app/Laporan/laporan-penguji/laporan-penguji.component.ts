@@ -45,12 +45,10 @@ export class LaporanPengujiComponent {
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        // console.log(res)
         this.authService.changeUser(res);
         this.staff = res;
         this.roleGtacr = true;
         this.staffRole = res.staffRole;
-        // console.log(this.staffRole);
 
         this.rekodKeputusanService.GetStaffIdbyStaffRole(4).subscribe(data => {
 

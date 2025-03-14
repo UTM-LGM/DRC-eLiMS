@@ -70,8 +70,8 @@
                           <td>: {{k1Details[0].sentOn | date: 'dd MMMM yyyy'}}</td>
                         </tr>
                         <tr>
-                          <td> Tarikh sampel diterima</td>
-                          <td>: {{k1Details[0].sentOn | date: 'dd MMMM yyyy'}}</td>
+                          <td> Tarikh sampel didaftar di makmal</td>
+                          <td>: {{k1Details[0].dateReceivedInLab | date: 'dd MMMM yyyy'}}</td>
                         </tr>
                         <tr>
                           <td>Tarikh ujian dimulakan</td>
@@ -148,7 +148,7 @@
                                 </tr>
                                 <tr>
                                   <td> Alamat</td>
-                                  <td>:  {{ companyGroup.key | uppercase }}</td>
+                                  <td>: {{ companyGroup.key | uppercase }}</td>
                                 </tr>
                               </table><br>
                             </div>

@@ -21,7 +21,7 @@ export class NoticeComponent {
     private router: Router
   ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onSubmit(form: any): void {
     if (form.invalid) {
@@ -60,6 +60,7 @@ export class NoticeComponent {
     this.toastr.success('Maklumat telah berjaya diisi', 'Berjaya');
 
   }
+
 
   handleFileInput(event: any) {
     this.file = event.target.files[0];

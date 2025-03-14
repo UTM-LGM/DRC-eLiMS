@@ -320,8 +320,14 @@ namespace elims.Controllers
                 var sampleCategory = await _context.RefSampleTypes.Where(y => y.RubberTypeId == rubberTypeId).Select(y => y.SampleCategory).FirstOrDefaultAsync();
                 var labRefNo = await _context.K1Details.Where(x => x.K1DetailId == k1DetailId).Select(x => x.LabRefNo).FirstOrDefaultAsync();
 
-                var importedDate = await _context.K1Headers.Where(x => x.K1HeaderId == k1DetailId).Select(x => x.ImportedDate).FirstOrDefaultAsync();
-                var customNo = await _context.K1Details.Where(x => x.K1DetailId == k1DetailId).Select(x => x.CustomNo).FirstOrDefaultAsync();
+            // Assuming `k1DetailId` is the ID from the `K1Details` table
+            var importedDate = await (from detail in _context.K1Details
+                                      join header in _context.K1Headers
+                                      on detail.K1HeaderId equals header.K1HeaderId
+                                      where detail.K1DetailId == k1DetailId
+                                      select header.ImportedDate).FirstOrDefaultAsync();
+
+            var customNo = await _context.K1Details.Where(x => x.K1DetailId == k1DetailId).Select(x => x.CustomNo).FirstOrDefaultAsync();
                 // Formatting the dates
                 string receivedOnFormatted = receivedOn?.ToString("dd/MM/yyyy") ?? "N/A";
                 string testedOnFormatted = testedOn?.ToString("dd/MM/yyyy") ?? "N/A";
@@ -332,6 +338,8 @@ namespace elims.Controllers
             var emailDetail = $@"
                             <ul>
                             
+
+                                <li>Batch ID: {batchId}</li>
                                 <li>Tarikh Surat Tuan: {receivedOnFormatted}</li>
                                 <li>Tarikh Sampel Diterima: {receivedOnFormatted}</li>
                                 <li>Tarikh Ujian Dilakukan: {testedOnFormatted}</li>
@@ -449,11 +457,13 @@ namespace elims.Controllers
                             .Select(y => new { y.SampleCode, y.SampleCategory })
                             .FirstOrDefaultAsync();
 
-                        var importedDate = await _context.K1Headers
-                            .Where(x => x.K1HeaderId == k1DetailId)
-                            .Select(x => x.ImportedDate)
-                            .FirstOrDefaultAsync();
-                         var labRefNo = await _context.K1Details.Where(x => x.K1DetailId == k1DetailId).Select(x => x.LabRefNo).FirstOrDefaultAsync();
+            var importedDate = await (from detail in _context.K1Details
+                                      join header in _context.K1Headers
+                                      on detail.K1HeaderId equals header.K1HeaderId
+                                      where detail.K1DetailId == k1DetailId
+                                      select header.ImportedDate).FirstOrDefaultAsync();
+
+            var labRefNo = await _context.K1Details.Where(x => x.K1DetailId == k1DetailId).Select(x => x.LabRefNo).FirstOrDefaultAsync();
                         var customNo = await _context.K1Details.Where(x => x.K1DetailId == k1DetailId).Select(x => x.CustomNo).FirstOrDefaultAsync();
 
                         var batchId = await _context.K1Details.Where(x => x.K1DetailId == k1DetailId).Select(x => x.BatchId).FirstOrDefaultAsync();
@@ -470,6 +480,8 @@ namespace elims.Controllers
 
                         var emailDetail = $@"
                         <ul>
+
+                            <li>Batch ID: {batchId}</li>
                             <li>Tarikh Surat Tuan: {receivedOnFormatted}</li>
                             <li>Tarikh Sampel Diterima: {receivedOnFormatted}</li>
                             <li>Tarikh Ujian Dilakukan:{testedOnFormatted}</li>
