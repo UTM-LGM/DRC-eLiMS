@@ -87,6 +87,12 @@ public partial class ElimsContext : DbContext
 
     public virtual DbSet<UvwForwarder> UvwForwarders { get; set; }
 
+    public virtual DbSet<UvwForwarder1> UvwForwarders1 { get; set; }
+
+    public virtual DbSet<UvwImporter> UvwImporters { get; set; }
+
+    public virtual DbSet<UvwK1Detail> UvwK1Details { get; set; }
+
     public virtual DbSet<UvwK1ErubberSample> UvwK1ErubberSamples { get; set; }
 
     public virtual DbSet<UvwK1LimsBatchesBr> UvwK1LimsBatchesBrs { get; set; }
@@ -94,6 +100,8 @@ public partial class ElimsContext : DbContext
     public virtual DbSet<UvwK1LimsBatchesLatex> UvwK1LimsBatchesLatexes { get; set; }
 
     public virtual DbSet<UvwK1LimsSample> UvwK1LimsSamples { get; set; }
+
+    public virtual DbSet<UvwLateSamplesRemark> UvwLateSamplesRemarks { get; set; }
 
     public virtual DbSet<UvwTester> UvwTesters { get; set; }
 
@@ -373,7 +381,7 @@ public partial class ElimsContext : DbContext
                 .HasDefaultValueSql("((0))")
                 .HasColumnName("isSMK");
             entity.Property(e => e.LorryNo).HasMaxLength(50);
-            entity.Property(e => e.SupplierName).HasMaxLength(50);
+            entity.Property(e => e.SupplierName).HasMaxLength(255);
             entity.Property(e => e.TrailerNo).HasMaxLength(50);
             entity.Property(e => e.Transport)
                 .HasMaxLength(50)
@@ -697,6 +705,22 @@ public partial class ElimsContext : DbContext
         {
             entity
                 .HasNoKey()
+                .ToView("uvw_Forwarder");
+
+            entity.Property(e => e.Address).HasMaxLength(255);
+            entity.Property(e => e.Name).HasMaxLength(255);
+            entity.Property(e => e.Password)
+                .HasMaxLength(50)
+                .HasColumnName("password");
+            entity.Property(e => e.Username)
+                .HasMaxLength(50)
+                .HasColumnName("username");
+        });
+
+        modelBuilder.Entity<UvwForwarder1>(entity =>
+        {
+            entity
+                .HasNoKey()
                 .ToView("uvw_forwarders");
 
             entity.Property(e => e.Address).HasMaxLength(255);
@@ -707,6 +731,57 @@ public partial class ElimsContext : DbContext
             entity.Property(e => e.Username)
                 .HasMaxLength(50)
                 .HasColumnName("username");
+        });
+
+        modelBuilder.Entity<UvwImporter>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("uvw_Importers");
+
+            entity.Property(e => e.Address).HasMaxLength(255);
+            entity.Property(e => e.Name).HasMaxLength(255);
+            entity.Property(e => e.Password)
+                .HasMaxLength(50)
+                .HasColumnName("password");
+            entity.Property(e => e.Username)
+                .HasMaxLength(50)
+                .HasColumnName("username");
+        });
+
+        modelBuilder.Entity<UvwK1Detail>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("uvw_k1Details");
+
+            entity.Property(e => e.Address)
+                .HasMaxLength(255)
+                .HasColumnName("address");
+            entity.Property(e => e.Agen).HasMaxLength(255);
+            entity.Property(e => e.ApprovedOn).HasColumnType("datetime");
+            entity.Property(e => e.CustomNo).HasMaxLength(50);
+            entity.Property(e => e.DateReceivedInLab).HasColumnType("date");
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ImportedDate).HasColumnType("date");
+            entity.Property(e => e.K1DetailId).HasColumnName("K1_Detail_ID");
+            entity.Property(e => e.LabRefNo).HasMaxLength(50);
+            entity.Property(e => e.Last)
+                .HasMaxLength(1)
+                .HasColumnName("LAST");
+            entity.Property(e => e.Pengimport).HasMaxLength(255);
+            entity.Property(e => e.ReceivedOn).HasColumnType("datetime");
+            entity.Property(e => e.ResultSentOn).HasColumnType("datetime");
+            entity.Property(e => e.RubberType)
+                .HasMaxLength(50)
+                .HasColumnName("rubberType");
+            entity.Property(e => e.RubberTypeId).HasColumnName("rubberTypeId");
+            entity.Property(e => e.SampleType)
+                .HasMaxLength(50)
+                .HasColumnName("sampleType");
+            entity.Property(e => e.SentOn).HasColumnType("datetime");
+            entity.Property(e => e.TestedOn).HasColumnType("datetime");
+            entity.Property(e => e.VerifiedOn).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<UvwK1ErubberSample>(entity =>
@@ -906,6 +981,41 @@ public partial class ElimsContext : DbContext
             entity.Property(e => e.VerifiedBy)
                 .HasMaxLength(10)
                 .IsFixedLength();
+            entity.Property(e => e.VerifiedOn).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<UvwLateSamplesRemark>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("uvw_Late_Samples_Remarks");
+
+            entity.Property(e => e.Address)
+                .HasMaxLength(255)
+                .HasColumnName("address");
+            entity.Property(e => e.Agen).HasMaxLength(255);
+            entity.Property(e => e.ApprovedOn).HasColumnType("datetime");
+            entity.Property(e => e.CustomNo).HasMaxLength(50);
+            entity.Property(e => e.DateReceivedInLab).HasColumnType("date");
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ImportedDate).HasColumnType("date");
+            entity.Property(e => e.K1DetailId).HasColumnName("K1_Detail_ID");
+            entity.Property(e => e.LabRefNo).HasMaxLength(50);
+            entity.Property(e => e.Last)
+                .HasMaxLength(1)
+                .HasColumnName("LAST");
+            entity.Property(e => e.Pengimport).HasMaxLength(255);
+            entity.Property(e => e.ReceivedOn).HasColumnType("datetime");
+            entity.Property(e => e.ResultSentOn).HasColumnType("datetime");
+            entity.Property(e => e.RubberType)
+                .HasMaxLength(50)
+                .HasColumnName("rubberType");
+            entity.Property(e => e.RubberTypeId).HasColumnName("rubberTypeId");
+            entity.Property(e => e.SampleType)
+                .HasMaxLength(50)
+                .HasColumnName("sampleType");
+            entity.Property(e => e.SentOn).HasColumnType("datetime");
+            entity.Property(e => e.TestedOn).HasColumnType("datetime");
             entity.Property(e => e.VerifiedOn).HasColumnType("datetime");
         });
 

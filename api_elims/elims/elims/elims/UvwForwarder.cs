@@ -5,8 +5,6 @@ namespace elims.elims;
 
 public partial class UvwForwarder
 {
-    public int? ForwarderId { get; set; }
-
     public string? Name { get; set; }
 
     public string? Address { get; set; }
