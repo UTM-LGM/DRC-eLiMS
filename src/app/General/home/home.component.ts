@@ -83,7 +83,7 @@ export class HomeComponent implements OnInit {
       this.elimsService.PutForwarderProfile(this.forwarder.forwarderId, this.forwarder).subscribe(response => {
         if (response) {
           this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
-          this.isEmailVisible = true; // Show email section on success
+          this.isEmailVisible = true; 
         } else {
           this.toastr.error('Profile gagal dikemaskini', 'Error');
         }
@@ -98,7 +98,7 @@ export class HomeComponent implements OnInit {
       this.elimsService.updateStaffProfile(this.staff.staffId, this.staff).subscribe(response => {
         if (response) {
           this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
-          this.isEmailVisible = true; // Show email section on success
+          this.isEmailVisible = true; 
         } else {
           this.toastr.error('Profile gagal dikemaskini', 'Error');
         }
@@ -108,7 +108,7 @@ export class HomeComponent implements OnInit {
       this.elimsService.PutCompanyProfile(this.importer.companyId, this.importer).subscribe(response => {
         if (response) {
           this.toastr.success('Profil telah berjaya dikemaskini', 'Berjaya');
-          this.isEmailVisible = true; // Show email section on success
+          this.isEmailVisible = true;
         } else {
           this.toastr.error('Profile gagal dikemaskini', 'Error');
         }

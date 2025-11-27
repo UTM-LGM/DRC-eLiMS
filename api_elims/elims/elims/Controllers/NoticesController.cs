@@ -49,38 +49,6 @@ namespace elims.Controllers
             return notice;
         }
 
-        // PUT: api/Notices/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        /*[HttpPut("{id}")]
-        public async Task<IActionResult> PutNotice(int id, Notice notice)
-        {
-            if (id != notice.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(notice).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!NoticeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }*/
-
-
         [HttpPut]
         public async Task<IActionResult> PutNotices([FromBody] List<Notice> notices)
         {

@@ -29,13 +29,13 @@ body, p, th, td {
   
   .page-wrapper {
     position: relative;
-    padding-top: 100px; /* Adjust this value to set space at the top of each page */
+    padding-top: 100px;
     min-height: 100vh;
   }
   
   .company-group {
     page-break-before: always;
-    margin-top: 20px; /* Adjust to create space at the top of each page */
+    margin-top: 20px; 
   }
   
   .company-group.first-group {
@@ -76,7 +76,7 @@ body, p, th, td {
   
     .company-group {
       page-break-before: always;
-      margin-top: 20px; /* Adjust to create space at the top of each printed page */
+      margin-top: 20px; 
     }
   
     .company-group.first-group {

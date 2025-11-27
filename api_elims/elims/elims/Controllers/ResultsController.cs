@@ -123,46 +123,6 @@ namespace elims.Controllers
 
         }
 
-        /* [HttpGet("{customNo}")]
-         public async Task<IActionResult> GetResultSamplebyCustomNo(string customNo)
-         {
-             var results = await _context.Results.Where(x => x.CustomNo == customNo).Select(x => new
-             {
-
-                 labRefNo = _context.K1Details.Where(y => y.K1DetailId == x.K1DetailId).Select(y => y.LabRefNo).FirstOrDefault(),
-                 id = x.Id,
-                 k1DetailId = x.K1DetailId,
-                 testMethod = x.TestMethod,
-                 wet1 = x.Wet1,
-                 wet2 = x.Wet2,
-                 dry1 = x.Dry1,
-                 dry2 = x.Dry2,
-                 result1 = x.Result1,
-                 catatan = x.Catatan,
-                 verifiedOn = x.VerifiedOn,
-                 verifiedBy = x.VerifiedBy,
-                 repeat = x.Repeat,
-                 decisionOn = x.DecisionOn,
-                 decisionBy = x.DecisionBy,
-                 decision = x.Decision,
-
-             }).ToListAsync();
-
-             return Ok(results);
-
-
-         }
- */
-
-
-
-
-
-
-
-
-
-
 
 
         // GET: api/Results/5
@@ -318,22 +278,6 @@ namespace elims.Controllers
 
             return CreatedAtAction("GetResult", new { id = result.Id }, result);
         }
-
-
-
-        /*    [HttpPost]
-            public async Task<ActionResult<Result>> PostResult(Result result)
-            {
-                if (_context.Results == null)
-                {
-                    return Problem("Entity set 'ElimsContext.Results'  is null.");
-                }
-                _context.Results.Add(result);
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction("GetResult", new { id = result.Id }, result);
-            }*/
-
 
 
         // DELETE: api/Results/5

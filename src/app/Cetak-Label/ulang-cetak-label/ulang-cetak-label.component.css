@@ -36,7 +36,7 @@ th {
 .attractive-title {
   font-family: "Your Chosen Font",  'Helvetica,';
   font-size: 36px;
-  color: #08864b; /* Or any color that fits your design */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow effect */
+  color: #08864b;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
 }
 

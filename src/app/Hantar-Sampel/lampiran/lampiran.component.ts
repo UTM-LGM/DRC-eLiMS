@@ -110,7 +110,6 @@ export class LampiranComponent {
           this.namaStesen = this.stesen.keterangan
           console.log(this.namaStesen)
         })
-        // Call the grouping function after samples are loaded
         this.groupSamplesByCompany();
       });
     });

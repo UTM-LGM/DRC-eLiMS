@@ -1,11 +1,8 @@
 export interface Batch {
     checked: boolean;
-
     samples: any;
-
     staffId(staffId: any): unknown;
     runNo: string;
-
     batchId: number;
     batchIdNew: number;
     upbrefNo: string;
@@ -20,7 +17,6 @@ export interface Batch {
     lgmletterRef: string;
     customsLetterPrinted: string;
     customsLetterPrintedDate: string;
-
     paymentOption: string;
     transactionNo: string;
     transactionDate: string;
@@ -31,14 +27,12 @@ export interface Batch {
     delivery: string;
     date: Date;
     uipRegNo: string
-
     importedDate: Date;
     hsCode: string;
     driverName: string;
     icDriver: string;
     drc: number;
     quantity: number;
-
     forwarderName: string;
     unitName: string;
     suratIringan: string;
@@ -50,12 +44,10 @@ export interface Batch {
     position: string;
     rubberTypeId: number;
     k1DetailId: number;
-
     receivedOn: string;
     batchPrinted: boolean;
     daysSinceReceived : number;
     approvedOn : Date;
-
     postResultOn : Date;
     postResultDelivery : string;
     postResultCourierServices : string;

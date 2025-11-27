@@ -5,9 +5,7 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Add services to the container.
-
 builder.Services.AddControllers();
 
 // Add CORS
@@ -15,68 +13,30 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.AllowAnyOrigin()
+        // Allow specific origin (e.g., www5.lgm.gov.my)
+        //policy.WithOrigins("https://www5.lgm.gov.my") // You can also use "*" for any origin
+        policy.WithOrigins("*")
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
 });
 
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Add Swagger/OpenAPI for API documentation
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add response compression (optional)
 builder.Services.AddResponseCompression(options =>
-    {
+{
     options.EnableForHttps = true; // Optional: Enable compression for HTTPS requests
-    options.MimeTypes = new[] { "application/json" }; // Optional: Only disable compression for specific content types
+    options.MimeTypes = new[] { "application/json" }; // Only compress JSON responses
 });
 
+// Set up Entity Framework Core to use SQL Server
 builder.Services.AddDbContext<ElimsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("elims")));
 
-
-//mula
-/*builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("ClientIdPolicy", policy =>
-    {
-        policy.RequireClaim("client_id");
-    });
-});
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
-
-    // Include security requirement (client ID) in Swagger UI
-    c.AddSecurityDefinition("ClientIdSecurity", new OpenApiSecurityScheme
-    {
-        Type = SecuritySchemeType.ApiKey,
-        Name = "Client-ID",
-        In = ParameterLocation.Header,
-        Description = "Please enter your client ID.",
-    });
-
-    // Apply security requirement (client ID) globally to all endpoints
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "ClientIdSecurity"
-                }
-            },
-            new string[] {}
-        }
-    });
-});
-*/
-//akhir
+// Build the app
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -85,37 +45,26 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-//mula
-// Middleware to validate client ID in incoming requests
-/*app.Use(async (context, next) =>
+
+app.UseHttpsRedirection();  // Redirect HTTP requests to HTTPS
+app.UseCors();  // Apply CORS policy
+app.UseResponseCompression();  // Use response compression
+app.UseAuthorization();  // Enable authorization
+app.MapControllers();  // Map API controllers
+
+// Add custom error handling for Internal Server Errors (500)
+app.Use(async (context, next) =>
 {
-    string clientId = context.Request.Headers["Client-ID"];
-
-    var registeredClients = new Dictionary<string, string>
-    {
-        { "elims", "" }, // No client secret required
-        // Add other registered clients...
-    };
-
-    if (registeredClients.ContainsKey(clientId))
+    try
     {
         await next();
     }
-    else
+    catch (Exception ex)
     {
-        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-        await context.Response.WriteAsync("Unauthorized. Invalid client ID.");
+        // Log the exception here (you can use a logging framework like Serilog)
+        context.Response.StatusCode = 500;
+        await context.Response.WriteAsync("Internal Server Error: " + ex.Message);
     }
-});*/
-//akhir
-app.UseHttpsRedirection();
-
-app.UseResponseCompression();
-
-app.UseCors();
-
-app.UseAuthorization();
-
-app.MapControllers();
+});
 
 app.Run();

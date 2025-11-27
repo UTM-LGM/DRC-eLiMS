@@ -33,18 +33,6 @@ namespace elims.Controllers
         }
 
 
-
-       /* // GET: api/Roles
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
-        {
-          if (_context.Roles == null)
-          {
-              return NotFound();
-          }
-            return await _context.Roles.ToListAsync();
-        }*/
-
         // GET: api/Roles/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Role>> GetRoleById(int id)

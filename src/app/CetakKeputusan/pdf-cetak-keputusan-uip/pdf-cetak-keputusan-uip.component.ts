@@ -242,22 +242,6 @@ export class PdfCetakKeputusanUipComponent {
   }
 
 
-  // groupSamplesByCompany() {
-  //   const groupedCollection = this.k1Details.reduce((accumulator, currentValue) => {
-  //     const key = currentValue.importerName;
-  //     (accumulator[key] = accumulator[key] || []).push(currentValue);
-  //     return accumulator;
-  //   }, {});
-  //   this.groupedSamples = Object.keys(groupedCollection).map(key => ({ key, items: groupedCollection[key], count: groupedCollection[key].length }));
-  //   // Calculate first and last testedOn dates for each batch
-  //   this.groupedSamples.forEach(group => {
-  //     const sortedByTestedOn = group.items.sort((a, b) => new Date(a.testedOn).getTime() - new Date(b.testedOn).getTime());
-  //     group.firstTestedOnDate = sortedByTestedOn[0].testedOn;
-  //     group.lastTestedOnDate = sortedByTestedOn[sortedByTestedOn.length - 1].testedOn;
-  //   });
-  // }
-
-
   groupSamplesByCompany() {
     // First, sort the k1Details array by k1DetailId
     this.k1Details.sort((a, b) => a.k1DetailId - b.k1DetailId);
@@ -276,12 +260,10 @@ export class PdfCetakKeputusanUipComponent {
       count: groupedCollection[key].length
     }));
 
-    // Ensure that each group is sorted by k1DetailId as well
     this.groupedSamples.forEach(group => {
       group.items.sort((a, b) => a.k1DetailId - b.k1DetailId);
     });
 
-    // Log the groupedSamples for debugging
     console.log('Grouped Samples:', this.groupedSamples);
   }
 

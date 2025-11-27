@@ -362,13 +362,6 @@ export class HantarSampelComponent {
 
   @ViewChild('pdfLampiran', { static: true }) pdfLampiran: ElementRef | undefined;
 
-  // print() {
-  //   const printContents = this.pdfLampiran?.nativeElement.innerHTML;
-  //   const originalContents = document.body.innerHTML;
-  //   document.body.innerHTML = printContents;
-  //   window.print();
-  //   document.body.innerHTML = originalContents;
-  // }
 
   generatePdf(batchId: number): void {
     const element = document.getElementById('pdfLampiran');
@@ -497,10 +490,10 @@ export class HantarSampelComponent {
                   console.log(this.k1Detail);
                   this.mesYaTidak = "yes";
                   console.log(resBatch);
-                  resolve(); // Resolve the promise to continue the chain
+                  resolve(); 
                 },
                 error => {
-                  reject(error); // Reject the promise if an error occurs
+                  reject(error); 
                 }
               );
             });

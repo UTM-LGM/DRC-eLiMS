@@ -25,23 +25,14 @@ export class SidenavComponent implements OnInit {
   loginAs: any;
 
   config = {
-    // paddingAtStart: true,
-    // interfaceWithRoute: true,
-    // classname:'menu-nav',
-    // listBackgroundColor: 'white',
-    // fontColor: `#000000`,
-    // backgroundColor: '#F8F8F8',
     selectedListFontColor: '#0b3cb8',
-    // highlightOnSelect: true,
-    // collapseOnSelect: false,
-    // useDividers: true,
-    // rtlLayout: false,
+
   };
 
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private elimsService: ElimsService,
+ 
   ) { }
 
   ngOnInit() {

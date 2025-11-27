@@ -1,7 +1,6 @@
 
 export interface Company {
     filter(arg0: (data: any) => boolean): any;
-
     companyId: number;
     name: string;
     address: string;

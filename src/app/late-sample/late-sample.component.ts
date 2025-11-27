@@ -26,21 +26,17 @@ export class LateSampleComponent {
 
   displayedColumns: string[] = [
     'id',
-    // 'batchId',
-    // 'labRefNo',
     'customNo',
     'importedDate',
-    // 'northen',
     'createdOn',
     'sentOn',
-    'receivedOn',
+    'dateReceivedInLab',
     'forwarderName',
     'remarks',
     'evidence',
     'count',
     'status',
 
-    // 'action',
   ];
 
   dataSource!: MatTableDataSource<K1Detail[]>;
@@ -79,7 +75,7 @@ export class LateSampleComponent {
       'customNo': 'No Borang Kastam',
       'importedDate': 'Tarikh Import',
       'sentOn': 'Tarikh Hantar',
-      'receivedOn': 'ReceivedOn',
+      'dateReceivedInLab': 'dateReceivedInLab',
       'agentName': 'Syarikat Penghantar',
       'remarks': 'Catatan',
       'evidence': 'Evidence',
@@ -104,7 +100,7 @@ export class LateSampleComponent {
         const customColumnName = columnMappings[column];
 
         // Check if the column is a date and format it
-        if (column === 'importedDate' || column === 'sentOn' || column === 'receivedOn') {
+        if (column === 'importedDate' || column === 'sentOn' || column === 'dateReceivedInLab') {
           // Format the date to a string (e.g., 'YYYY-MM-DD' or any preferred format)
           const dateValue = row[column];
           filteredRow[customColumnName] = dateValue ? new Date(dateValue).toLocaleDateString('en-GB') : ''; // Use 'en-GB' for DD/MM/YYYY

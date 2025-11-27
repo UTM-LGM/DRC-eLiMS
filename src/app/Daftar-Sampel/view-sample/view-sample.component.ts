@@ -110,10 +110,6 @@ export class ViewSampleComponent implements OnInit {
     }
 
 
-    // this.route.paramMap.subscribe({
-    //   next: (params) => {
-    //     const k1DetailId = params.get('k1DetailId');
-
     if (this.selectedK1DetailId) {
       this.daftarSampelService.GetElimsSample(this.selectedK1DetailId)
         .subscribe(response => {
@@ -132,8 +128,6 @@ export class ViewSampleComponent implements OnInit {
           }
         });
     }
-    // }
-    // })
   }
 
 
@@ -184,7 +178,7 @@ export class ViewSampleComponent implements OnInit {
         this.showRemarks = true; // Display the remarks field
       } else if (daysUntilDeadline <= 3) {
         if (this.customOffice.isNorthen) {
-          // this.notes += ` (Warning: Only ${daysUntilDeadline} days left before the deadline)`;
+    
           this.notes += ` (Perhatian: Anda mempunyai  ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;
         } else {
           this.notes += ` (Perhatian: Anda mempunyai ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;

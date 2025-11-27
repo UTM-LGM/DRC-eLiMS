@@ -6,11 +6,9 @@
       <form class="form1">
         <div class="input-container">
           <input class="un" type="text" placeholder="Username" name="Username" [(ngModel)]="user.username">
-          <!-- <i class="fas fa-user"></i> -->
         </div>
         <div class="input-container">
           <input class="pass" type="password" placeholder="Password" name="Password" [(ngModel)]="user.password">
-          <!-- <i class="fas fa-lock"></i> -->
         </div>
         <a class="signin" (click)="login()">Log in</a>
         <p class="register" align="center" (click)="appComponent.loginPage = false; appComponent.registerPage = true">Register Account</p>

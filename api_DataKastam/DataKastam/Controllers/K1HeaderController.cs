@@ -167,6 +167,40 @@ namespace DataKastam2023.Controllers
             return Ok(k1Headers);
         }
 
+        [HttpGet("{customRegistrationNo}")]
+        public async Task<IActionResult> GetDataByCustomNoAndImporterCodeArray(
+    [FromRoute] string customRegistrationNo,
+    [FromQuery] List<string> importerCodeArray)
+        {
+            var k1Headers = await _context.K1Headers
+                .Where(x => x.CustomRegistrationNo == customRegistrationNo && importerCodeArray.Contains(x.ImporterCode))
+                .Select(x => new
+                {
+                    customNo = x.CustomRegistrationNo,
+                    supplierName = x.ExporterName,
+                    exporterAddress = x.ExporterAddress,
+                    importerName = x.ImporterName,
+                    importerAddress = x.ImporterAddress,
+                    importedDate = x.DateOfImport,
+                    lorryNo = x.VehicleLorryNo,
+                    trailerNo = x.TrailerNo,
+                    grossWeight = x.GrossWeight,
+                    importerCode = x.ImporterCode,
+                    agentCode = x.AgentCode,
+                    agentName = x.AgentName,
+                })
+                .FirstOrDefaultAsync();
+
+            return Ok(k1Headers); // returns null or result as 200 OK
+        }
+
+
+
 
     }
+
+
+
+
+
 }

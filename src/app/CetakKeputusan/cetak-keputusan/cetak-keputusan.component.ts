@@ -114,6 +114,7 @@ export class CetakKeputusanComponent {
               return -1;
             } else if (roleA > roleB) {
               return 1;
+
             } else {
               return 0;
             }
@@ -125,7 +126,7 @@ export class CetakKeputusanComponent {
 
 
     this.statusCodeId = 9;
-    this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
+    this.elimsService.GetElimsAllBatch0(this.statusCodeId).subscribe(data => {
       this.batches = data;
       //console.log(this.batches[0].samples)
       this.dataSource = new MatTableDataSource<Batch>(this.batches);
@@ -202,7 +203,6 @@ export class CetakKeputusanComponent {
         }
       );
     }
-    //this.router.navigate(['cetak-keputusan/cetak']);
   }
 
 
@@ -332,7 +332,7 @@ export class CetakKeputusanComponent {
           value = row.isFastTrack ? 'YA' : 'TIDAK';
         } else if (column === 'sentOn' || column === 'receivedOn') {
           // Format date values
-          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); // Customize the date format here
+          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); 
         } else {
           value = row[column];
         }

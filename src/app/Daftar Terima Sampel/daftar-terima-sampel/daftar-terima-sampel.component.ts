@@ -160,19 +160,19 @@ export class DaftarTerimaSampelComponent {
                 console.log(this.k1Detail);
                 this.elimsService.PutDaftarTerimaSampel(sample.customNo, this.k1Detail).subscribe(
                   res => {
-                    resolve(); // Resolve the promise
+                    resolve(); 
                   },
                   error => {
-                    reject(error); // Reject the promise
+                    reject(error); 
                   }
                 );
               },
               error => {
-                reject(error); // Reject the promise if PutLabRefNo fails
+                reject(error); 
               }
             );
         } else {
-          resolve(); // Resolve the promise if customNo is not available
+          resolve(); 
         }
       });
     };
@@ -315,7 +315,7 @@ export class DaftarTerimaSampelComponent {
       isFastTrack: 'Laluan Pantas',
       forwarderName: 'Syarikat Penghantar',
       bankCode: 'Bank',
-      receipt: 'No. Cek/Resit/Memo', // Consolidated column name
+      receipt: 'No. Cek/Resit/Memo', 
       chequeAmount: 'Amaun',
       sentOn: 'Tarikh Hantar',
       sampleCount: 'Bil. Sampel',
@@ -335,8 +335,7 @@ export class DaftarTerimaSampelComponent {
         } else if (column === 'isFastTrack') {
           value = row.isFastTrack ? 'YA' : 'TIDAK';
         } else if (column === 'sentOn' || column === 'dateReceivedInLab') {
-          // Format date values
-          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); // Customize the date format here
+          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); 
         } else {
           value = row[column];
         }

@@ -44,7 +44,6 @@ export class PosKeputusanComponent {
     'isFastTrack',
     'forwarderName',
     'bankCode',
-    // 'receipt',
     'chequeNo',
     'chequeAmount',
     'sentOn',
@@ -103,7 +102,7 @@ export class PosKeputusanComponent {
     }
 
     this.statusCodeId = 10;
-    this.elimsService.GetElimsAllBatch1(this.statusCodeId).subscribe(data => {
+    this.elimsService.GetElimsAllBatch0(this.statusCodeId).subscribe(data => {
       this.batches = data;
       // console.log(this.batches[0].samples)
       this.dataSource = new MatTableDataSource<Batch>(this.batches);

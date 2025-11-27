@@ -140,7 +140,6 @@ export class UlangCetakLabelComponent implements OnInit {
     let y = 15;
     let x = 20;
 
-    // Set font to Courier Monospace
     doc.setFont('courier', 'normal');
 
     for (let i = 0; i < selectedSamples.length; i += 2) {
