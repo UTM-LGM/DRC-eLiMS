@@ -56,42 +56,6 @@ namespace elims.Controllers
             return NoContent();
         }
 
-        /* [HttpPost("{staffId}")]
-         public async Task<IActionResult> InformRequest009([FromRoute] int staffId, [FromBody] List<String> recipients)
-         {
-             var staffName = await _context.Staffs.Where(x => x.StaffId == staffId).Select(x => x.StaffName).FirstOrDefaultAsync();
-             if (recipients == null || recipients.Count == 0)
-             {
-                 return BadRequest("No recipients specified.");
-             }
-             *//* Process to send email*//*
-             var subject = "Memo";
-             //var recipient = email;
-             var message = "Assalamualaikum/Salam Sejahtera" +
-                             "<br><br>" +
-                             "Tuan/Puan," +
-                             "<br><br>" +
-                             "Permohonan pembelian SSM oleh " + staffName + " tidak berjaya kerana penyelenggaraan yang dijalankan oleh SSM Middleware." +
-                             "<br>" +
-                             "Sila hubungi pihak RAFFCOMM untuk tindakan selanjutnya. <a href='https://api02.lgm.gov.my/ApiElims/wwwroot/evidence/3_SYARAT%20WAJIB%20PENGUASAAN%20TEKNOLOGI%20F41.pdf'>pdf</a>" +
-                             "<br><br><br>" +
-                             "Admin," +
-                             "<br>" +
-                             "Sistem Elims" +
-                             "<br><br>" +
-                             "<i>Perhatian,mesej ini dijana secara automatik oleh sistem. <i>";
-
-
-
-             // var result = await EmailServices.SendEmailAsync(recipient, subject, message);
-             foreach (var recipient in recipients)
-             {
-                 var result = await EmailServices.SendEmailAsync(recipient, subject, message);
-             }
-             return NoContent();
-         }*/
-
-
 
 
         [HttpPost("{staffId}/{batchId}")]
@@ -177,9 +141,6 @@ namespace elims.Controllers
 
 
 
-
-
-
         [HttpPost("{staffId}")]
         public async Task<IActionResult> notificationResultLetterMultiple([FromRoute] int staffId, [FromBody] List<string> recipients, [FromQuery] IEnumerable<int> k1DetailIds)
         {
@@ -243,29 +204,27 @@ namespace elims.Controllers
             var emailDetails = string.Join("<br><br>", emailDetailsList);
             var subject = "Keputusan Ujian Kandungan Getah Kering (%KGK)";
             var message = $@"
-     /*   {staffName}
-        {hpNo}*/
-        <br><br>
-        Assalamualaikum/Salam Sejahtera
-        <br><br>
-        Tuan/Puan,
-        <br><br>
-        Berikut adalah keputusan ujian yang telah dijalankan ke atas sampel tuan:
-        <br><br>
-        {emailDetails}
+     /*     {staffName}
+            {hpNo}*/
+            <br><br>
+            Assalamualaikum/Salam Sejahtera
+            <br><br>
+            Tuan/Puan,
+            <br><br>
+            Berikut adalah keputusan ujian yang telah dijalankan ke atas sampel tuan:
+            <br><br>
+            {emailDetails}
 
-
-
-        <br><br>
-        Sekian, terima kasih.
-        <br><br>
-        <strong>“MALAYSIA MADANI”</strong>
-        <br>
-        <strong>“BERKHIDMAT UNTUK NEGARA”</strong>
-        <br>
-        <strong>“KREATIF, INOVATIF, PROGRESIF”</strong>
-        <br><br>
-        <i>Perhatian, mesej ini dijana secara automatik oleh sistem.</i>";
+            <br><br>
+            Sekian, terima kasih.
+            <br><br>
+            <strong>“MALAYSIA MADANI”</strong>
+            <br>
+            <strong>“BERKHIDMAT UNTUK NEGARA”</strong>
+            <br>
+            <strong>“KREATIF, INOVATIF, PROGRESIF”</strong>
+            <br><br>
+            <i>Perhatian, mesej ini dijana secara automatik oleh sistem.</i>";
 
             foreach (var recipient in recipients)
             {
@@ -277,13 +236,9 @@ namespace elims.Controllers
 
 
 
-
-
         [HttpPost("{staffId}/{k1DetailId}")]
         public async Task<IActionResult> notificationResultLetter([FromRoute] int staffId, [FromBody] List<string> recipients, [FromRoute] int k1DetailId)
         {
-            // Define the array of k1DetailIds to be excluded
-           // var excludedK1DetailIds = new List<int> { /* Add the IDs to exclude here */ };
 
             var staffName = await _context.Staffs.Where(x => x.StaffId == staffId).Select(x => x.StaffName).FirstOrDefaultAsync();
             var hpNo = await _context.Staffs.Where(x => x.StaffId == staffId).Select(x => x.HpNo).FirstOrDefaultAsync();
@@ -351,8 +306,7 @@ namespace elims.Controllers
                                 <li>Keputusan Ujian KGK ( % Berat): {result}</li>   
                             </ul>";
 
-                emailDetailsList.Add(emailDetail);
-           /* }*/
+            emailDetailsList.Add(emailDetail);
 
             var emailDetails = string.Join("<br><br>", emailDetailsList);
             var subject = "Keputusan Ujian Kandungan Getah Kering (%KGK) " + rubberType.ToUpper();
@@ -387,10 +341,6 @@ namespace elims.Controllers
 
             return NoContent();
         }
-
-
-
-
 
 
 
@@ -471,7 +421,6 @@ namespace elims.Controllers
                         var bankCode = await _context.Batches.Where(x => x.BatchId == batchId).Select(x => x.BankCode).FirstOrDefaultAsync();
                         var chequeNo = await _context.Batches.Where(x => x.BatchId == batchId).Select(x => x.ChequeNo).FirstOrDefaultAsync();
 
-            // Formatting the dates
                         string receivedOnFormatted = k1Detail.ReceivedOn?.ToString("dd/MM/yyyy") ?? "N/A";
                         string testedOnFormatted = k1Detail.TestedOn?.ToString("dd/MM/yyyy") ?? "N/A";
                         string importedDateFormatted = importedDate?.ToString("dd/MM/yyyy") ?? "N/A";
@@ -526,109 +475,6 @@ namespace elims.Controllers
 
                     return NoContent();
                 }
-
-
-
-
-
-        /* [HttpPost("{staffId}/{batchId}")]
-         public async Task<IActionResult> uipNotificationResultLetter([FromRoute] int staffId, [FromRoute] int batchId, [FromBody] List<String> recipients)
-         {
-             var staffName = await _context.Staffs.Where(x => x.StaffId == staffId).Select(x => x.StaffName).FirstOrDefaultAsync();
-
-             var hpNo = await _context.Staffs.Where(x => x.StaffId == staffId).Select(x => x.HpNo).FirstOrDefaultAsync();
-
-             if (recipients == null || recipients.Count == 0)
-             {
-                 return BadRequest("No recipients specified.");
-             }
-
-             *//*var uipRegNos = await _context.Batches.Where(x => x.BatchId == batchId).Select(x => x.UipRegNo).ToListAsync();
-             var uipRegNosString = string.Join(", ", uipRegNos);*//*
-
-             var sampleRunNos = await _context.K1Details.Where(x => x.BatchId == batchId).Select(x => x.SampleRunNo).ToListAsync();
-             var sampleRunNosString = string.Join(", ", sampleRunNos);
-
-             //var rubberTypeId = await _context.RefRubberTypes.Where(y => y.Id == (_context.K1Details.Where(x => x.BatchId == batchId).Select(x => x.RubberTypeId).FirstOrDefaultAsync())).Select(y => y.RubberType).FirstOrDefaultAsync();
-             var rubberTypeId = await _context.K1Details.Where(x => x.BatchId == batchId).Select(x => x.RubberTypeId).FirstOrDefaultAsync();
-
-             var rubberType = await _context.RefRubberTypes.Where(y => y.Id == rubberTypeId).Select(y => y.RubberType).FirstOrDefaultAsync();
-
-             var sampleType = await _context.RefSampleTypes.Where(y => y.RubberTypeId == rubberTypeId).Select(y => y.SampleCode).FirstOrDefaultAsync();
-
-             var sampleCategory = await _context.RefSampleTypes.Where(y => y.RubberTypeId == rubberTypeId).Select(y => y.SampleCategory).FirstOrDefaultAsync();
-             var receivedOn = await _context.K1Details.Where(x => x.K1DetailId == k1DetailId).Select(x => x.ReceivedOn).FirstOrDefaultAsync();
-             var testedOn = await _context.K1Details.Where(x => x.K1DetailId == k1DetailId).Select(x => x.TestedOn).FirstOrDefaultAsync();
-             var importedDate = await _context.K1Headers.Where(x => x.K1HeaderId == k1DetailId).Select(x => x.ImportedDate).FirstOrDefaultAsync();
-
-             // Formatting the dates
-             string receivedOnFormatted = receivedOn?.ToString("dd MMMM yyyy") ?? "N/A";
-             string testedOnFormatted = testedOn?.ToString("dd MMMM yyyy") ?? "N/A";
-             string importedDateFormatted = importedDate?.ToString("dd MMMM yyyy") ?? "N/A";
-
-
-
-             *//* Process to send email*//*
-             var subject = "(MASIH DALAM TESTING)Keputusan Ujian Kandungan Getah Kering (%KGK) " + rubberType.ToUpper();
-             //var recipient = email;
-
-             var message = "Assalamualaikum/Salam Sejahtera" +
-                             "<br><br>" +
-                             "Tuan/Puan," +
-                             "<br><br>" +
-                             "Adalah dengan hormatnya perkara di atas adalah dirujuk." +
-                             "<br><br>" +
-                         "Berikut adalah keputusan ujian yang telah dijalankan ke atas sampel tuan:"+
-                              //"2. Pihak kami memohon kerjasama pihak tuan untuk menjalankan ujian kandungan Getah Kering ke atas sampel mengikut kaedah ujian <strong>UPB/" + sampleCategory + "/001 </strong> seperti berikut :-" +
-                             "<br><br>" +
-
-                               "Your letter dated: { receivedOnFormatted}" +
-                               "Date of sample received: { receivedOnFormatted}"+
-                               "Type of sample: { testedOnFormatted}" +
-                               "Sample Reference: { testMethod}" +
-                               "Testing Method: MAKMAL BASAH GTACR KUALA LUMPUR"+
-                               "Location of analysis: { labRefNo}"+
-                               "Test Parameter: { importedDateFormatted}"+
-                               "Result: { result}"+
-                               "Testing Date: { result}" +
-
-
-
-                                    *//*      "<ul>" +
-                                              sampleRunNosString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(runNo => $"<li>{sampleType + "/" + runNo.Trim()}</li>").Aggregate((current, next) => current + next) +
-                                          "</ul>" +*//*
-
-
-                              "<br><br>" +
-
-                              "Sekian, terima kasih." +
-                                "<br><br>" +
-
-
-                             "<strong>“MALAYSIA MADANI”</strong>" +
-                            "<br>" +
-                             "<strong>“BERKHIDMAT UNTUK NEGARA”</strong>" +
-                             "<br>" +
-                             "<strong>“KREATIF, INOVATIF, PROGRESIF”</strong>" +
-                              "<br><br>" +
-                             "<i>Perhatian,mesej ini dijana secara automatik oleh sistem. <i>";
-
-             // var result = await EmailServices.SendEmailAsync(recipient, subject, message);
-             foreach (var recipient in recipients)
-             {
-                 var result = await EmailServices.SendEmailAsync(recipient, subject, message);
-             }
-             return NoContent();
-         }*/
-
-
-
-
-
-
-
-
-
 
 
         public class NotificationMemoRequest

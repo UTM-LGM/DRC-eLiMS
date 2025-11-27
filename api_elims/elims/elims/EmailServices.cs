@@ -20,7 +20,8 @@ namespace elims
             using (var client = new SmtpClient())
             {
                 client.LocalDomain = "lgm.gov.my";
-                await client.ConnectAsync("10.4.137.18", 25, SecureSocketOptions.None).ConfigureAwait(false);
+                //await client.ConnectAsync("10.4.137.18", 25, SecureSocketOptions.None).ConfigureAwait(false);
+                await client.ConnectAsync("postmaster2.mygovuc.gov.my", 25, SecureSocketOptions.None).ConfigureAwait(false);
                 await client.SendAsync(emailMessage).ConfigureAwait(false);
                 await client.DisconnectAsync(true).ConfigureAwait(false);
             }

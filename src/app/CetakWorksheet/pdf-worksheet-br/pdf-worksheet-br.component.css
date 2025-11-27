@@ -7,9 +7,9 @@ p {margin: 0; padding: 0;}
 .ft12{font-size:14px;line-height:24px;font-family:Helvetica;color:#000000;}
 
  .small-select {
-        width: 300px; /* Set the desired width */
-        height: 30px; /* Set the desired height */
-        font-size: 12px; /* Adjust font size */
+        width: 300px; 
+        height: 30px; 
+        font-size: 12px; 
     }
 
 .hidden-select {
@@ -17,7 +17,6 @@ p {margin: 0; padding: 0;}
 }
 
 .form-select {
-  /* Visually hide the select box but keep the value displayed */
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;

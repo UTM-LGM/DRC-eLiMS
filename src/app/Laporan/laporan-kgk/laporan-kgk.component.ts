@@ -42,7 +42,7 @@ export class LaporanKgkComponent {
     const difference = result - drc; // Calculate the difference without taking the absolute value
     const formattedDifference = this.decimalPipe.transform(Math.abs(difference), '1.2-2') || ''; // Format to two decimal places
 
-    // Check if drc is greater than result, then prepend a negative sign
+ 
     if (drc > result) {
       return '-' + formattedDifference;
     } else {

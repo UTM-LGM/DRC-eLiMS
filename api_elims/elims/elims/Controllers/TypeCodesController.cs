@@ -57,7 +57,5 @@ namespace elims.Controllers
             return Ok(typeCodes);
         }
 
-
-
     }
 }

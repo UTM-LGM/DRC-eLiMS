@@ -26,27 +26,6 @@ export class LoginForwarderComponent implements OnInit{
   ngOnInit(): void {}
 
   login() {
-    // if (this.user.username && this.user.password) {
-    //   this.isProcess = true;
-  
-    //   this.authService.login(this.user.username, this.user.password).subscribe(
-    //     res => {
-    //       this.isProcess = false;
-
-    //       sessionStorage.setItem('username',this.user.username);
-
-    //       this.router.navigateByUrl('home');
-    //       this.toastr.success('Login successful!');
-    //     },
-    //     error => {
-    //       this.isProcess = false;
-    //       console.error(error);
-    //       this.toastr.error('Invalid username or password.');
-    //     }
-    //   );
-    // } else {
-    //   this.toastr.warning('Please enter username and password.');
-    // }
   }
 
 }

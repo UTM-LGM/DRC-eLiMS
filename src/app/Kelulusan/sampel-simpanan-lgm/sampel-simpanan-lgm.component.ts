@@ -211,7 +211,6 @@ export class SampelSimpananLgmComponent {
     e.target.value == "Tarikh Import" ? this.showImportedDate = true : this.showImportedDate = false;
     e.target.value == "Tarikh Hantar" ? this.showSentOn = true : this.showSentOn = false;
     e.target.value == "Tarikh Terima" ? this.showReceivedOn = true : this.showReceivedOn = false;
-    //e.target.value == "Tempoh Simpanan" ? this.showCountDays = true : this.showCountDays = false;
     e.target.value == "Status" ? this.showStatus = true : this.showStatus = false;
   }
 

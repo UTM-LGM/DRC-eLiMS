@@ -104,29 +104,6 @@ export class RekodKelulusanComponent {
       this.loginAs = '';
     }
 
-    // if (this.userRoleId == 4) {
-    //   this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-    //     console.log(res);
-    //     this.authService.changeUser(res);
-    //     this.emailRecipient.push(res.emailLgm);
-    //     this.staff = res;
-    //     // this.roleGtacr = true;
-    //     this.roleApprove = true;
-    // })}
-    // Get email staff
-    // this.rekodKelulusanService.GetEmailResultLetter(this.staff.staffId).subscribe(emelRes => {
-    //   if (Array.isArray(emelRes) && emelRes.length > 0) {
-    //     emelRes.forEach(item => {
-    //       if (item.emailLgm) {
-    //         this.emailRecipient.push(item.emailLgm);
-    //         console.log(this.emailRecipient);
-    //       }
-    //     });
-    //   }
-    // });
-
-    // });
-    // }
 
     if (this.userRoleId == 4) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
@@ -137,7 +114,7 @@ export class RekodKelulusanComponent {
         this.staff = res;
         this.roleGtacr = true;
         this.staffRole = res.staffRole;
-        // console.log(this.staffRole);
+        console.log(this.staffRole);
 
         this.rekodKeputusanService.GetStaffIdbyStaffRole(4).subscribe(data => {
 
@@ -160,7 +137,7 @@ export class RekodKelulusanComponent {
     }
 
     this.statusCodeId = 8;
-    this.elimsService.GetElimsAllBatch(this.statusCodeId).subscribe(data => {
+    this.elimsService.GetElimsAllBatch0(this.statusCodeId).subscribe(data => {
       this.batches = data;
       // console.log(this.batches[0].samples);
 
@@ -367,13 +344,13 @@ export class RekodKelulusanComponent {
         this.toastr.success('Berjaya merekod keputusan', 'Berjaya');
         setTimeout(() => {
           window.location.reload();
-        }, 1000); // Delay in milliseconds (2000ms = 2s)
+        }, 1000); 
       },
       error => {
         console.error('Failed to record decision', error);
         setTimeout(() => {
           window.location.reload();
-        }, 1000); // Delay in milliseconds (2000ms = 2s)
+        }, 1000); 
       }
     );
 
@@ -448,7 +425,7 @@ export class RekodKelulusanComponent {
           value = row.isFastTrack ? 'YA' : 'TIDAK';
         } else if (column === 'sentOn') {
           // Format date values
-          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); // Customize the date format here
+          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); 
         } else {
           value = row[column];
         }

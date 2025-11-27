@@ -61,18 +61,10 @@ namespace elims.Controllers
                 hsCode = x.HsCode,
                 rubberTypeId = x.RubberTypeId,
                 rubberType = _context.RefRubberTypes.Where(y => y.Id == x.RubberTypeId).Select(y => y.RubberType).FirstOrDefault(),
-          /*      sampleTypeId = x.SampleTypeId,
-                sampleType = _context.RefSampleTypes.Where(y => y.Id == x.SampleTypeId).Select(y => y.SampleType).FirstOrDefault(),*/
-
                 typeCodeId = x.TypeCodeId,
                 typeCode = _context.TypeCodes.Where(y => y.Id == x.TypeCodeId).Select(y => y.SampleType).FirstOrDefault(),
-
-                /* sampleCode = _context.RefSampleTypes.Where(y => y.Id == x.SampleTypeId).Select(y => y.SampleCode).FirstOrDefault(),
-                 sampleCategory = _context.RefSampleTypes.Where(y => y.Id == x.SampleTypeId).Select(y => y.SampleCategory).FirstOrDefault(),*/
-
                 sampleCode = _context.TypeCodes.Where(y => y.Id == x.TypeCodeId).Select(y => y.SampleCode).FirstOrDefault(),
                 sampleCategory = _context.TypeCodes.Where(y => y.Id == x.TypeCodeId).Select(y => y.SampleCategory).FirstOrDefault(),
-
                 itemDescription = x.ItemDescription,
                 isSMK = x.IsSmk,
                 importerName = x.ImporterName,
@@ -93,7 +85,6 @@ namespace elims.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllLateSamples(DateTime startDate, DateTime endDate)
         {
-            // Fetch the relevant data from the database
             var lateSamples = await _context.K1Details
                 .Join(_context.K1Headers,
                       detail => detail.K1HeaderId,
@@ -120,7 +111,7 @@ namespace elims.Controllers
                     statusCodeId = x.detail.StatusCodeId,
                     createdOn = x.detail.CreatedOn,
                     sentOn = x.detail.SentOn,
-                    receivedOn = x.detail.ReceivedOn,
+                    dateReceivedInLab = x.detail.DateReceivedInLab,
                     createdBy = x.detail.CreatedBy,
                     forwarderId = x.detail.ForwarderId,
                     samplePropose = x.detail.SamplePropose,
@@ -164,25 +155,19 @@ namespace elims.Controllers
                         .Select(y => y.Status)
                         .FirstOrDefault(),
                     // Calculate duration in days as null-safe
-                    totalDaysFromImportToReceived = EF.Functions.DateDiffDay(x.header.ImportedDate, x.detail.ReceivedOn) + 1
+                    totalDaysFromImportToReceived = EF.Functions.DateDiffDay(x.header.ImportedDate, x.detail.DateReceivedInLab) + 1
                 })
                 .ToListAsync();
 
             // Filter late samples based on a 12-day threshold
             var filteredSamples = lateSamples
-                .Where(sample => sample.receivedOn.HasValue &&
-                                 sample.receivedOn > sample.importedDate &&
+                .Where(sample => sample.dateReceivedInLab.HasValue &&
+                                 sample.dateReceivedInLab > sample.importedDate &&
                                  sample.totalDaysFromImportToReceived > 12) // Filter samples exceeding 12 days
                 .ToList();
 
             return Ok(filteredSamples);
         }
-
-
-
-
-
-
 
 
 
@@ -214,7 +199,6 @@ namespace elims.Controllers
                 {
                     var fileName = $"{k1DetailId}_{details.Evidence}";
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\evidence", fileName);
-                    // var filePath = Path.Combine(_environment.WebRootPath, @"wwwroot\evidence", fileName);
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await file.CopyToAsync(fileStream);
@@ -249,12 +233,8 @@ namespace elims.Controllers
                 registrationSeqNo = x.RegistrationSeqNo,
                 rubberTypeId = x.RubberTypeId,
                 rubberType = _context.RefRubberTypes.Where(y => y.Id == x.RubberTypeId).Select(y => y.RubberType).FirstOrDefault(),
-/*                sampleTypeId = x.SampleTypeId,
-                sampleType = _context.RefSampleTypes.Where(y => y.Id == x.SampleTypeId).Select(y => y.SampleType).FirstOrDefault(),
-*/
                 typeCodeId = x.TypeCodeId,
                 typeCode = _context.TypeCodes.Where(y => y.Id == x.TypeCodeId).Select(y => y.SampleType).FirstOrDefault(),
-
                 isSMK = x.IsSmk,
                 remarks = x.Remarks,
                 evidence = x.Evidence,
@@ -273,13 +253,9 @@ namespace elims.Controllers
                 forwarderAddress = _context.Forwarders.Where(y => y.ForwarderId == x.ForwarderId).Select(y => y.Address).FirstOrDefault(),
                 dateSampleReceived = x.DateSampleReceived,
                 dateReceivedInLab = x.DateReceivedInLab,
-
-
             }).ToListAsync();
             return Ok(elimsContext);
         }
-
-
 
 
 
@@ -309,16 +285,11 @@ namespace elims.Controllers
             sample.TypeCodeId = updateSampleRequest.TypeCodeId;
             sample.ImporterName = updateSampleRequest.ImporterName;
            
-
-
             await _context.SaveChangesAsync();
 
             return Ok(sample);
 
         }
-
-
-
 
 
 
@@ -418,7 +389,6 @@ namespace elims.Controllers
                 dateReceivedInLab = x.DateReceivedInLab,
                 noLaporanTuan = x.NoLaporanTuan,
 
-
             }).FirstOrDefaultAsync();
 
             return Ok(ElimsContext);
@@ -428,17 +398,14 @@ namespace elims.Controllers
         [HttpGet]
         public async Task<IActionResult> GetSampleCountByStatusCode()
         {
-            // Calculate sample count for StatusCodeId = 6
             var sampleCount4 = await _context.K1Details
                 .Where(x => x.StatusCodeId == 4)
                 .CountAsync();
 
-            // Calculate sample count for StatusCodeId = 7 or 8
             var sampleCount5And6 = await _context.K1Details
                 .Where(x => x.StatusCodeId == 5 || x.StatusCodeId == 6)
                 .CountAsync();
 
-            // Prepare the result
             var result = new
             {
                 StatusCode4 = sampleCount4,
@@ -464,7 +431,6 @@ namespace elims.Controllers
                 .Where(x => x.SentOn != null && x.SentOn >= fromDate && x.SentOn <= toDate)
                 .CountAsync();
 
-            // Combine results
             var result = new
             {
                 TotalCreatedOnCount = createdOnSampleCounts,
@@ -663,76 +629,6 @@ namespace elims.Controllers
         }
 
 
-
-
-
-        /*      [HttpGet]
-              public async Task<IActionResult> CountSamplesByInLabOn(DateTime? startDate, DateTime? endDate, string tester = null)
-              {
-                  try
-                  {
-                      if (startDate.HasValue && endDate.HasValue)
-                      {
-                          // Adjust the end date to be inclusive by adding one day
-                          endDate = endDate.Value.AddDays(1);
-
-                          // Validate the date range
-                          if (endDate < startDate)
-                          {
-                              return BadRequest("End date must be greater than or equal to start date.");
-                          }
-                      }
-
-                      IQueryable<K1Detail> baseQuery = _context.K1Details;
-
-                      // Apply date filter if start and end dates are provided
-                      if (startDate.HasValue && endDate.HasValue)
-                      {
-                          baseQuery = baseQuery.Where(s =>
-                              (s.ReceivedOn >= startDate && s.ReceivedOn < endDate) ||
-                              (s.InLabOn >= startDate && s.InLabOn < endDate) ||
-                              (s.TestedOn >= startDate && s.TestedOn < endDate) ||
-                              (s.VerifiedOn >= startDate && s.VerifiedOn < endDate) ||
-                              (s.ResultSentOn >= startDate && s.ResultSentOn < endDate) ||
-                              (s.ApprovedOn >= startDate && s.ApprovedOn < endDate)
-                          );
-                      }
-
-                     *//* // Apply name filter if provided
-                      if (!string.IsNullOrEmpty(name))
-                      {
-                          baseQuery = baseQuery.Where(s =>
-                              (string.IsNullOrEmpty(s.ReceivedBy) || (s.ReceivedBy.Contains(name) && s.ReceivedOn >= startDate && s.ReceivedOn < endDate)) &&
-                              (string.IsNullOrEmpty(s.InLabBy) || (s.InLabBy.Contains(name) && s.InLabOn >= startDate && s.InLabOn < endDate)) &&
-                              (string.IsNullOrEmpty(s.TestedBy) || (s.TestedBy.Contains(name) && s.TestedOn >= startDate && s.TestedOn < endDate)) &&
-                              (string.IsNullOrEmpty(s.VerifiedBy) || (s.VerifiedBy.Contains(name) && s.VerifiedOn >= startDate && s.VerifiedOn < endDate)) &&
-                              (string.IsNullOrEmpty(s.ResultSentBy) || (s.ResultSentBy.Contains(name) && s.ApprovedOn >= startDate && s.ApprovedOn < endDate))
-                          );
-                      }*//*
-
-                      // Calculate counts based on the filtered query
-                      var counts = new
-                      {
-                          CountReceivedOn = await baseQuery.CountAsync(s => s.ReceivedOn != null && s.ReceivedBy.Contains(tester)),
-                          CountInLabOn = await baseQuery.CountAsync(s => s.InLabOn != null && s.InLabBy.Contains(tester)),
-                          CountTestedOn = await baseQuery.CountAsync(s => s.TestedOn != null && s.TestedBy.Contains(tester)),
-                          CountVerifiedOn = await baseQuery.CountAsync(s => s.VerifiedOn != null && s.VerifiedBy.Contains(tester)),
-                          CountResultSentOn = await baseQuery.CountAsync(s => s.ResultSentOn != null && s.ResultSentBy.Contains(tester)),
-                          CountApprovedOn = await baseQuery.CountAsync(s => s.ApprovedOn != null && s.ResultSentBy.Contains(tester))
-                      };
-
-                      return Ok(counts);
-                  }
-                  catch (Exception ex)
-                  {
-                      // Handle exceptions appropriately
-                      return StatusCode(500, $"Internal server error: {ex.Message}");
-                  }
-              }*/
-
-
-
-
         [HttpGet]
         public async Task<IActionResult> CountSamplesByInLabOn(DateTime? startDate, DateTime? endDate, string tester = null)
         {
@@ -819,16 +715,10 @@ namespace elims.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception (if you have logging configured)
-                // _logger.LogError(ex, "An error occurred while counting samples.");
 
                 return StatusCode(500, "Internal server error");
             }
         }
-
-
-
-
 
 
 
@@ -1259,8 +1149,6 @@ namespace elims.Controllers
 
 
 
-
-
         // Function to calculate working days between two dates
         private int CalculateWorkingDays(DateTime startDate, DateTime endDate)
         {
@@ -1298,7 +1186,7 @@ namespace elims.Controllers
 
                 var staffWithRoleId4Usernames = _context.Staffs
                     .Where(s => _context.StaffRoles.Any(sr => sr.StaffId == s.StaffId && sr.StaffRole1 == 4))
-                    .ToList(); // Materialize the query result into a list
+                    .ToList(); 
 
                 var staffCounts = new List<object>();
 
@@ -1324,10 +1212,6 @@ namespace elims.Controllers
                     .Where(s => s.ResultSentBy == staff.Username && (!startDate.HasValue || (s.ResultSentOn >= startDate && s.ResultSentOn < endDate)))
                     .Count();
 
-                    /*var countPrintedBy = query
-                      .Where(s => s.PrintedBy == staff.Username && (!startDate.HasValue || (s.PrintedOn >= startDate && s.PrintedOn < endDate)))
-                      .Count();*/
-
                     var countInLabBy = query
                         .Where(s => s.InLabBy == staff.Username && (!startDate.HasValue || (s.InLabOn >= startDate && s.InLabOn < endDate)))
                         .Count();
@@ -1335,10 +1219,6 @@ namespace elims.Controllers
                     var countTestedBy = query
                         .Where(s => s.TestedBy == staff.Username && (!startDate.HasValue || (s.TestedOn >= startDate && s.TestedOn < endDate)))
                         .Count();
-
-               /*     var countRetest = query
-                        .Where(s => s.NoOfRetest.HasValue && s.NoOfRetest.Value == staff.StaffId && (!startDate.HasValue || (s.Retest >= startDate && s.Retest < endDate)))
-                        .Count();*/
 
                     var totalSamples = countReceivedBy + countApprovedBy + countVerifiedBy + countInLabBy + countTestedBy + countPrintedBy + countResultSentBy;
 
@@ -1352,10 +1232,7 @@ namespace elims.Controllers
                         CountTestedBy = countTestedBy,
                         CountPrintedBy = countPrintedBy,
                         CountResultSentBy = countResultSentBy
-,
-
-                        //CountRetest = countRetest,
-                        TotalSamples = totalSamples // Total count of samples
+                        TotalSamples = totalSamples
                     };
 
                     staffCounts.Add(staffCount);
@@ -1368,9 +1245,6 @@ namespace elims.Controllers
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }
-
-
-
 
 
 
@@ -1399,7 +1273,7 @@ namespace elims.Controllers
                         s => s.StaffId,
                         sr => sr.StaffId,
                         (s, sr) => s)
-                    .ToList(); // Materialize the query result into a list
+                    .ToList();
 
                 var staffCounts = new List<object>();
 
@@ -1440,8 +1314,6 @@ namespace elims.Controllers
 
 
 
-
-
         [HttpGet]
         public async Task<IActionResult> CountSamplesByForwarder(DateTime? startDate, DateTime? endDate)
         {
@@ -1474,7 +1346,6 @@ namespace elims.Controllers
                             VerifiedOn = k1Details.Count(k => k.VerifiedOn >= startDate && k.VerifiedOn <= endDate),
                             ApprovedOn = k1Details.Count(k => k.ApprovedOn >= startDate && k.ApprovedOn <= endDate),
 
-
                         })
                     .Select(x => new
                     {
@@ -1489,7 +1360,6 @@ namespace elims.Controllers
                         VerifiedOn = x.VerifiedOn,
                          ApprovedOn = x.ApprovedOn,
                         TotalSamples = x.CreatedOn + x.SentOn + x.ReceivedOn + x.InLabOn + x.TestedOn + x.VerifiedOn + x.ApprovedOn
-
 
                     })
                     .ToList();
@@ -1508,9 +1378,7 @@ namespace elims.Controllers
                 };
 
                 return Ok(new { forwarderCounts = forwarderCounts, totalCounts = totalCounts });
-            
-
-                //return Ok(forwarderCounts);
+       
             }
             catch (Exception ex)
             {
@@ -1586,9 +1454,6 @@ namespace elims.Controllers
 
 
 
-
-
-
         [HttpGet()]
         public async Task<IActionResult> CountSamples1(DateTime? startDate, DateTime? endDate)
         {
@@ -1630,9 +1495,6 @@ namespace elims.Controllers
             return Ok(new { DaysFromImportedToReceived = daysFromImportedToReceived, TotalDays = daysCount });
         }
     
-
-
-
 
 
     [HttpGet("{username}")]
@@ -1694,19 +1556,6 @@ namespace elims.Controllers
                 query = query.Where(x => x.StatusCodeId == statusCodeId.Value);
             }
 
-     /*       if (!string.IsNullOrEmpty(driverName))
-            {
-                // Filter K1Details based on the specified driverName by joining with K1Headers
-                query = query.Join(
-                    _context.K1Headers,
-                    detail => detail.K1HeaderId,
-                    header => header.K1HeaderId,
-                    (detail, header) => new { Detail = detail, Header = header }
-                )
-                .Where(joinedData => joinedData.Header.DriverName == driverName)
-                .Select(joinedData => joinedData.Detail); // Select only the K1Details part
-            }*/
-
 
             if (!string.IsNullOrEmpty(driverName))
             {
@@ -1714,51 +1563,10 @@ namespace elims.Controllers
             }
 
 
-
-
-            /* if (!string.IsNullOrEmpty(icDriver))
-             {
-                 // Filter K1Details based on the specified icDriver by joining with K1Headers
-                 query = query.Join(
-                     _context.K1Headers,
-                     detail => detail.K1HeaderId,
-                     header => header.K1HeaderId,
-                     (detail, header) => new { Detail = detail, Header = header }
-                 )
-                 .Where(joinedData => joinedData.Header.IcDriver == icDriver)
-                 .Select(joinedData => joinedData.Detail); // Select only the K1Details part
-             }*/
-
             if (!string.IsNullOrEmpty(icDriver))
             {
                 query = query.Where(x => _context.K1Headers.Any(header => header.K1HeaderId == x.K1HeaderId && header.IcDriver == icDriver));
             }
-
-
-            /*  if (fromDate != null && toDate != null)
-              {
-                  query = query.Join(
-                      _context.K1Headers,
-                      detail => detail.K1HeaderId,
-                      header => header.K1HeaderId,
-                      (detail, header) => new { Detail = detail, Header = header }
-                  )
-                  .Where(joinedData => joinedData.Header.ImportedDate >= fromDate && joinedData.Header.ImportedDate <= toDate)
-                  .Select(joinedData => joinedData.Detail); // Select only the K1Details part
-              }
-
-
-              if (!string.IsNullOrEmpty(bankCode))
-              {
-                  query = query.Join(
-                      _context.Batches,
-                      detail => detail.BatchId,
-                      header => header.BatchId,
-                      (detail, header) => new { Detail = detail, Header = header }
-                  )
-                  .Where(joinedData => joinedData.Header.BankCode == bankCode)
-                  .Select(joinedData => joinedData.Detail); // Select only the K1Details part
-              }*/
 
 
             if (fromDate != null && toDate != null)
@@ -1815,7 +1623,6 @@ namespace elims.Controllers
 
             if (elimsContext.Count == 0)
             {
-                // No records found
                 return NotFound();
             }
 
@@ -1958,8 +1765,6 @@ namespace elims.Controllers
                 query = query.Where(x => x.ForwarderId == forwarderId.Value);
             }
 
-            // Continue with further operations on 'query'
-
 
             var elimsContext = await query.Select(x => new
             {
@@ -2028,26 +1833,6 @@ namespace elims.Controllers
         }
 
 
-        /*        [HttpPut("{id}")]
-                public async Task<IActionResult> PutElimsSampleBatchId([FromRoute] int id, [FromBody] K1Detail k1Detail)
-                {
-                    var existingsample = await _context.K1Details.Where(x => x.K1DetailId == id).FirstOrDefaultAsync();
-                    if (existingsample != null)
-                    {
-
-                        existingsample.BatchId = k1Detail.BatchId;
-                        existingsample.SentOn = k1Detail.SentOn;
-                        existingsample.SentBy = k1Detail.SentBy;
-                        existingsample.StatusCodeId = k1Detail.StatusCodeId;
-
-                        existingsample.SampleRunNo = k1Detail.SampleRunNo;
-
-                        await _context.SaveChangesAsync();
-                    }
-
-                    return Ok(existingsample);
-                }*/
-
         [HttpPut("{id}")]
         public async Task<IActionResult> PutElimsSampleBatchId([FromRoute] int id, [FromBody] K1Detail k1Detail)
         {
@@ -2072,7 +1857,6 @@ namespace elims.Controllers
         public async Task<IActionResult> PutSampleUipRefRunNo([FromBody] K1Detail k1Detail)
         {
             var existingBatch = await _context.K1Details.Where(x => x.K1DetailId == k1Detail.K1DetailId).FirstOrDefaultAsync();
-            //var existingBatch = await _context.Batches.FirstOrDefaultAsync();
 
             if (existingBatch != null)
             {
@@ -2263,10 +2047,9 @@ namespace elims.Controllers
 
             if (k1Details == null || staffData == null)
             {
-                return NotFound(); // or return a specific error response
+                return NotFound(); 
             }
 
-            // Assuming you want to return both data
             var result = new
             {
                 K1Detail = k1Details,
@@ -2279,60 +2062,6 @@ namespace elims.Controllers
             return Ok(result);
         }
 
-
-        /* [HttpGet("{batchId}/{staffId}")]
-         public async Task<IActionResult> getElimsSampleForStaff([FromRoute] int batchId, [FromRoute] int staffId)
-         {
-             var k1Details = await _context.K1Details.Where(x => x.BatchId == batchId).Select(x => new
-             {
-                 k1DetailId = x.K1DetailId,
-                 k1HeaderId = x.K1HeaderId,
-                 batchId = x.BatchId,
-                 customNo = x.CustomNo,
-                 quantity = x.Quantity,
-                 companyId = x.CompanyId,
-                 companyName = _context.Companies.Where(y => y.CompanyId == x.CompanyId).Select(y => y.Name).FirstOrDefault(),
-                 companyAddress = _context.Companies.Where(y => y.CompanyId == x.CompanyId).Select(y => y.Name).FirstOrDefault(),
-                 bankCode = _context.Batches.Where(y => y.BatchId == x.BatchId).Select(y => y.BankCode).ToList(),
-                 chequeNo = _context.Batches.Where(y => y.BatchId == x.BatchId).Select(y => y.ChequeNo).ToList(),
-                 chequeAmount = _context.Batches.Where(y => y.BatchId == x.BatchId).Select(y => y.ChequeAmount).ToList(),
-                 samplePropose = x.SamplePropose,
-                 sampleRunNo = x.SampleRunNo,
-                 creatorRoleId = x.CreatorRoleId,
-                 importedDate = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.ImportedDate).ToList(),
-                 importerName = x.ImporterName,
-                 importerAddress = x.ImporterAddress,
-                 rubberTypeId = x.RubberTypeId,
-                 rubberType = _context.RefRubberTypes.Where(y => y.Id == x.RubberTypeId).Select(y => y.RubberType).FirstOrDefault(),
-                 sampleTypeId = x.SampleTypeId,
-                 sampleType = _context.RefSampleTypes.Where(y => y.RubberTypeId == x.SampleTypeId).Select(y => y.SampleType).FirstOrDefault(),
-                 sampleCode = _context.RefSampleTypes.Where(y => y.Id == x.SampleTypeId).Select(y => y.SampleCode).FirstOrDefault(),
-                 sampleCategory = _context.RefSampleTypes.Where(y => y.Id == x.SampleTypeId).Select(y => y.SampleCategory).FirstOrDefault(),
-
-             }).OrderBy(x => x.sampleRunNo).ToListAsync();
-
-
-
-             var staffData = await _context.Staffs
-                 .Where(x => x.StaffId == staffId)
-             .FirstOrDefaultAsync();
-
-             if (k1Details == null || staffData == null)
-             {
-                 return NotFound(); // or return a specific error response
-             }
-
-             // Assuming you want to return both data
-             var result = new
-             {
-                 K1Detail = k1Details,
-                 Staff = staffData,
-             };
-
-             return Ok(result);
-         }*/
-
-      
 
         private async Task<bool> existCustomNo(string customNo)
         {
@@ -2374,7 +2103,6 @@ namespace elims.Controllers
         public async Task<IActionResult> PutSampleUipbkhRefRunNo([FromBody] K1Detail k1Detail)
         {
             var existingBatch = await _context.K1Details.Where(x => x.K1DetailId == k1Detail.K1DetailId).FirstOrDefaultAsync();
-            //var existingBatch = await _context.Batches.FirstOrDefaultAsync();
 
             if (existingBatch != null)
             {
@@ -2385,86 +2113,7 @@ namespace elims.Controllers
 
             return Ok(k1Detail);
 
-
-
-                    /* [HttpGet]
-         public async Task<IActionResult> getElimsSampleByStatus(int statusCodeId)
-         {
-             var ElimsContext = await _context.K1Details.Where(x => x.StatusCodeId == statusCodeId).Select(x => new
-             {
-                 k1DetailId = x.K1DetailId,
-                 k1HeaderId = x.K1HeaderId,
-                 batchId = x.BatchId,
-                 customNo = x.CustomNo,
-                 quantity = x.Quantity,
-                 companyId = x.CompanyId,
-                 companyName = _context.Companies.Where(y => y.CompanyId == x.CompanyId).Select(y => y.Name).FirstOrDefault(),
-                 samplePropose = x.SamplePropose,
-                 importerName = x.ImporterName,
-                 importerAddress = x.ImporterAddress,
-                 rubberTypeId = x.RubberTypeId,
-                 rubberType = _context.RefRubberTypes.Where(y => y.Id == x.RubberTypeId).Select(y => y.RubberType).FirstOrDefault(),
-                 sampleTypeId = x.SampleTypeId,
-                 sampleType = _context.RefSampleTypes.Where(y => y.Id == x.SampleTypeId).Select(y => y.SampleType).FirstOrDefault(),
-                 isSMK = x.IsSmk,
-                 registrationSeqNo = x.RegistrationSeqNo,
-                 importedDate = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.ImportedDate).FirstOrDefault(),
-                 Transport = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.Transport).FirstOrDefault(),
-                 lorryNo = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.LorryNo).FirstOrDefault(),
-                 trailerNo = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.TrailerNo).FirstOrDefault(),
-                 supplierName = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.SupplierName).FirstOrDefault(),
-                 driverName = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.DriverName).FirstOrDefault(),
-                 icDriver = _context.K1Headers.Where(y => y.K1HeaderId == x.K1HeaderId).Select(y => y.IcDriver).FirstOrDefault(),
-
-
-             }).ToListAsync();
-             return Ok(ElimsContext);
-         }*/
-
-
         }
-
-
-        //[HttpPut("{customNo}")]
-        //public async Task<IActionResult> PutDaftarTerimaSampel1([FromRoute] string customNo, [FromBody] Staff staff)
-        //{
-        //    var existingsample = await _context.K1Details.Where( x => x.CustomNo == customNo).FirstOrDefaultAsync();
-        //    if (existingsample == null) { return BadRequest(); }
-
-        //    existingsample.StatusCodeId = 6;
-        //    existingsample.ReceivedOn = DateTime.Now;
-        //    existingsample.ReceivedBy = staff.Username;
-
-
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
-
-        //test
-
-/*        [HttpPut("{customNo}")]
-        public async Task<IActionResult> PutDaftarTerimaSampel([FromRoute] string customNo, [FromBody] K1Detail k1Detail)
-        {
-            var existingSamples = await _context.K1Details.Where(x => x.CustomNo == customNo).ToListAsync();
-
-            if (existingSamples == null || !existingSamples.Any())
-            {
-                return BadRequest("No samples found with the provided CustomNo.");
-            }
-
-            foreach (var sample in existingSamples)
-            {
-                sample.StatusCodeId = 4;
-                sample.ReceivedOn = DateTime.Now;
-                sample.LabRefNo = k1Detail.LabRefNo;\\
-                sample.ReceivedBy = k1Detail.ReceivedBy;
-            }
-
-            await _context.SaveChangesAsync();
-
-            return Ok();
-        }*/
 
 
 
@@ -2585,35 +2234,6 @@ namespace elims.Controllers
         }
 
 
-        /*
-                [HttpPut("{id}")]
-                public async Task<IActionResult> PutRetest(int id, [FromBody] K1Detail k1Detail)
-                {
-                    var existingSample = await _context.K1Details.FirstOrDefaultAsync(x => x.K1DetailId == id);
-                    if (existingSample == null)
-                    {
-                        return BadRequest();
-                    }
-
-                    existingSample.StatusCodeId = 5;
-
-                    existingSample.TestedOn = null;
-                    existingSample.TestedBy = null;
-                    existingSample.VerifiedOn = null;
-                    existingSample.VerifiedBy = null;
-
-                    // Update TestedBy if provided in the request
-                    //existingSample.TestedBy = k1Detail.TestedBy;
-
-                    // Increment NoOfRetest by 1
-                    existingSample.NoOfRetest += 1;
-
-                    await _context.SaveChangesAsync();
-
-                    return NoContent();
-
-
-                }*/
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRetest(int id, [FromBody] K1Detail k1Detail)
@@ -2636,8 +2256,6 @@ namespace elims.Controllers
             existingSample.NoOfRetest = existingSample.NoOfRetest ?? 0;
             existingSample.NoOfRetest++;
 
-
-
             // Save changes to the database
             await _context.SaveChangesAsync();
 
@@ -2657,8 +2275,6 @@ namespace elims.Controllers
 
             existingSample.NoOfRetest += 1;
             existingSample.StatusCodeId = 5;
-
-            // Reset TestedOn, TestedBy, VerifiedOn, and VerifiedBy to null if they already have values
             existingSample.TestedOn = null;
             existingSample.TestedBy = null;
             existingSample.VerifiedOn = null;
@@ -2686,8 +2302,6 @@ namespace elims.Controllers
 
             existingSample.PrintedOn = null;
             existingSample.PrintedBy = null;
-            //existingSample.ResultLetterApprovedBy = null;
-
             existingSample.RepeatPrintKeputusan = true;
 
             await _context.SaveChangesAsync();
@@ -2813,38 +2427,9 @@ namespace elims.Controllers
 
             return NoContent();
 
-
         }
 
-       
-
-
-        /* [HttpPut("{id}")]
-         public async Task<IActionResult> PutRetest(int id, [FromBody] K1Detail k1Detail)
-         {
-             var existingSample = await _context.K1Details.Where(x => x.K1DetailId == id).FirstOrDefaultAsync();
-             if (existingSample == null)
-             {
-                 return BadRequest();
-             }
-
-             // Check if NoOfRetest has been incremented
-             if (existingSample.NoOfRetest != k1Detail.NoOfRetest)
-             {
-                 existingSample.StatusCodeId = 6;
-                 existingSample.TestedOn = DateTime.Now; // Reset TestedOn
-             }
-
-             existingSample.TestedBy = k1Detail.TestedBy;
-             existingSample.NoOfRetest = k1Detail.NoOfRetest;
-
-             await _context.SaveChangesAsync();
-
-             return NoContent();
-         }*/
-
-
-
+      
         [HttpGet("{customNo}")]
         public async Task<IActionResult> GetSamplesByCustomNo(string customNo)
         {
@@ -2920,7 +2505,6 @@ namespace elims.Controllers
                 sampleCategory = _context.TypeCodes.Where(y => y.Id == x.TypeCodeId).Select(y => y.SampleCategory).FirstOrDefault(),
                 testMethodId = _context.Batches.Where(y => y.BatchId == x.BatchId).Select(y => y.TestMethodId).FirstOrDefault(),
                 testMethod = _context.RefTestMethods.Where(z => z.Id == (_context.Batches.Where(y => y.BatchId == x.BatchId).Select(y => y.TestMethodId).FirstOrDefault())).Select(y => y.TestMethod).FirstOrDefault(),
-
                 //results
                 wet1 = _context.Results.Where(y => y.K1DetailId == x.K1DetailId).Select(y => y.Wet1).FirstOrDefault(),
                 wet2 = _context.Results.Where(y => y.K1DetailId == x.K1DetailId).Select(y => y.Wet2).FirstOrDefault(),
@@ -2939,9 +2523,6 @@ namespace elims.Controllers
             }).ToListAsync();
             return Ok(k1Detail);
         }
-
-
-
 
 
     }

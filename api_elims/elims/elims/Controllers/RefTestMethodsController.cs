@@ -59,37 +59,6 @@ namespace elims.Controllers
         }
 
 
-
-
-        /*// GET: api/RefTestMethods
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<RefTestMethod>>> GetRefTestMethods()
-        {
-          if (_context.RefTestMethods == null)
-          {
-              return NotFound();
-          }
-            return await _context.RefTestMethods.ToListAsync();
-        }
-
-        // GET: api/RefTestMethods/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<RefTestMethod>> GetRefTestMethod(int id)
-        {
-          if (_context.RefTestMethods == null)
-          {
-              return NotFound();
-          }
-            var refTestMethod = await _context.RefTestMethods.FindAsync(id);
-
-            if (refTestMethod == null)
-            {
-                return NotFound();
-            }
-
-            return refTestMethod;
-        }*/
-
         // PUT: api/RefTestMethods/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

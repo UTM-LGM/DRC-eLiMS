@@ -60,29 +60,6 @@ namespace elims.Controllers
         }
 
 
-        //[HttpGet("{userId}")]
-        //public async Task<IActionResult> GetUserRolebUserId(int userId)
-        //{
-        //    var UserRole = await _context.UserRoles.Where(x => x.RoleId == userId).Select(x => new
-        //    {
-        //        id = x.Id,
-        //        staffId = x.StaffId,
-        //        StaffRole = x.StaffRole1,
-        //        role = _context.UserRoles.Where(y => y.RoleId == x.UserRole1).Select(y => y.UserRole1).FirstOrDefault(),
-        //    })
-        //        .ToListAsync();
-
-        //    if (UserRole == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(UserRole);
-        //}
-
-
-
-
 
 
 

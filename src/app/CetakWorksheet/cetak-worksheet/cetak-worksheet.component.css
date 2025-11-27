@@ -30,10 +30,6 @@ th {
     color: black;
   }
   
-
-  /* .custom-table th{
-    background-color: rgb(48, 88, 250);
-  } */
   
 th .tittle{
     font-weight: bold;
@@ -60,10 +56,6 @@ th .tittle{
     text-align: center;
 }
 
-/* .centered-text {
-    display: inline-block;
-    text-align: left;
-} */
 
 qrcode {
     width: 200px;

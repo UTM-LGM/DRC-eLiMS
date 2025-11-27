@@ -143,6 +143,14 @@ GetRefTestMethodByRubberType(rubberTypeId: number): Observable<TestMethod> {
     return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetElimsAllBatch1/'+ statusCodeId);
   }
 
+  GetElimsAllBatch0(statusCodeId:number) {
+    return this.http.get<Batch[]>(this.baseApiUrl + '/api/Batches/GetElimsAllBatch0/'+ statusCodeId);
+  }
+
+
+  GetBatchesWithSampleCount(statusCodeId: number): Observable<Batch[]> {
+    return this.http.get<Batch[]>(`/api/elims/GetBatchesWithSampleCount/${statusCodeId}`);
+  }
 
   GetElimsAllBatch2(statusCodeIds: number[]) {
     return this.http.post<Batch[]>(`${this.baseApiUrl}/api/Batches/GetElimsAllBatch2`, statusCodeIds);

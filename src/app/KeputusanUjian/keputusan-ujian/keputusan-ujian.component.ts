@@ -185,13 +185,12 @@ export class KeputusanUjianComponent implements OnInit {
             const companiesA = a.importerName;
             const companiesB = b.importerName;
 
-            // Compare the kodStesen values
             if (companiesA < companiesB) {
               return -1;
             } else if (companiesA > companiesB) {
               return 1;
             } else {
-              return 0; // Kodstesen values are equal
+              return 0; 
             }
           });
         })
@@ -214,13 +213,12 @@ export class KeputusanUjianComponent implements OnInit {
             const nameA = a.name;
             const nameB = b.name;
 
-            // Compare the kodStesen values
             if (nameA < nameB) {
               return -1;
             } else if (nameA > nameB) {
               return 1;
             } else {
-              return 0; // Kodstesen values are equal
+              return 0; 
             }
           });
 
@@ -258,13 +256,12 @@ export class KeputusanUjianComponent implements OnInit {
             const nameA = a.name;
             const nameB = b.name;
 
-            // Compare the kodStesen values
             if (nameA < nameB) {
               return -1;
             } else if (nameA > nameB) {
               return 1;
             } else {
-              return 0; // Kodstesen values are equal
+              return 0; 
             }
           });
 

@@ -423,15 +423,10 @@ export class UlangCetakLembaranKerjaComponent {
         if (this.userRoleId == 2) {
           const lines1 = doc.splitTextToSize(`Unit Inspektorat dan Penguatkuasaan`, 53);
           doc.text(lines1, x + boxWidth + 21, y + 29);
-        }
-
-        // if (sample2.forwarderAddress) {
-        //   const lines1 = doc.splitTextToSize(sample2.forwarderAddress, 52);
-        //   doc.text(lines1, x + boxWidth + 21, y + 33);
-        // }     
+        }  
 
       }
-      y += boxHeight + 0; // Change the box spacing here
+      y += boxHeight + 0; 
     }
 
     const pdfBlob = doc.output('blob');

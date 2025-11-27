@@ -33,30 +33,6 @@ namespace elims.Controllers
         }
 
 
-       /* [HttpGet("{username}")]
-        public async Task<IActionResult> GetLoginImporters(string username)
-        {
-            var LoginImporter = await _context.LoginImporters.Where(x => x.Username == username).Select(x => new
-            {
-                username = x.Username,
-                password = x.Password,
-                companyId = x.CompanyId,
-                address = _context.Companies.Where(y => y.CompanyId == x.CompanyId).Select(y => y.Address).FirstOrDefault(),
-                smkImportersCode = _context.Companies.Where(y => y.CompanyId == x.CompanyId).Select(y => y.SmkimportersCode).FirstOrDefault(),
-                forwarderId = _context.Forwarders.Where(y => y.ForwarderId == x.CompanyId).Select(y => y.ForwarderId).FirstOrDefault(),
-                locked = x.Locked
-
-            }).FirstOrDefaultAsync();
-
-            if (LoginImporter == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(LoginImporter);
-        }*/
-
-
         [HttpGet("{username}")]
         public async Task<IActionResult> GetLoginImporterByUsername(string username)
         {
@@ -100,100 +76,7 @@ namespace elims.Controllers
                 return BadRequest("Invalid username or password");
             }
 
-            // User is authenticated, you can generate a token or set a session/cookie here
-
             return Ok(existingUser);
         }
-
-
-
-        /* // GET: api/LoginImporters/5
-         [HttpGet("{id}")]
-         public async Task<ActionResult<LoginImporter>> GetLoginImporter(int id)
-         {
-           if (_context.LoginImporters == null)
-           {
-               return NotFound();
-           }
-             var loginImporter = await _context.LoginImporters.FindAsync(id);
-
-             if (loginImporter == null)
-             {
-                 return NotFound();
-             }
-
-             return loginImporter;
-         }
-
-         // PUT: api/LoginImporters/5
-         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-         [HttpPut("{id}")]
-         public async Task<IActionResult> PutLoginImporter(int id, LoginImporter loginImporter)
-         {
-             if (id != loginImporter.Id)
-             {
-                 return BadRequest();
-             }
-
-             _context.Entry(loginImporter).State = EntityState.Modified;
-
-             try
-             {
-                 await _context.SaveChangesAsync();
-             }
-             catch (DbUpdateConcurrencyException)
-             {
-                 if (!LoginImporterExists(id))
-                 {
-                     return NotFound();
-                 }
-                 else
-                 {
-                     throw;
-                 }
-             }
-
-             return NoContent();
-         }
-
-         // POST: api/LoginImporters
-         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-         [HttpPost]
-         public async Task<ActionResult<LoginImporter>> PostLoginImporter(LoginImporter loginImporter)
-         {
-           if (_context.LoginImporters == null)
-           {
-               return Problem("Entity set 'ElimsContext.LoginImporters'  is null.");
-           }
-             _context.LoginImporters.Add(loginImporter);
-             await _context.SaveChangesAsync();
-
-             return CreatedAtAction("GetLoginImporter", new { id = loginImporter.Id }, loginImporter);
-         }
-
-         // DELETE: api/LoginImporters/5
-         [HttpDelete("{id}")]
-         public async Task<IActionResult> DeleteLoginImporter(int id)
-         {
-             if (_context.LoginImporters == null)
-             {
-                 return NotFound();
-             }
-             var loginImporter = await _context.LoginImporters.FindAsync(id);
-             if (loginImporter == null)
-             {
-                 return NotFound();
-             }
-
-             _context.LoginImporters.Remove(loginImporter);
-             await _context.SaveChangesAsync();
-
-             return NoContent();
-         }
-
-         private bool LoginImporterExists(int id)
-         {
-             return (_context.LoginImporters?.Any(e => e.Id == id)).GetValueOrDefault();
-         }*/
     }
 }

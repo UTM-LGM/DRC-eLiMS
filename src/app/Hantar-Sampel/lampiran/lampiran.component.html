@@ -15,59 +15,10 @@
             <b>Lampiran A</b><br>
           </p>
 
-
           <ng-container *ngFor="let companyGroup of groupedSamples;  let isFirst = first">
             <div class="company-group" [class.first-group]="isFirst">
 
-              <!-- <p *ngIf="!roleImporter">
-                <b>NAMA SYARIKAT PENGIMPORT</b> : {{ companyGroup.key }}<br>
-                <b>ALAMAT SYARIKAT PENGIMPORT</b> : {{ companyGroup.items[0].importerAddress }}<br>
-            </p> -->
-
-              <p *ngIf="roleForwarder || roleUip || roleGtacr">
-                <b>NAMA SYARIKAT PENGIMPORT :</b> {{ companyGroup.items[0].importerName }}<br>
-                <b>ALAMAT SYARIKAT PENGIMPORT :</b> {{ companyGroup.key }}<br>
-              </p>
-
-
-              <p *ngIf="roleImporter">
-                <b>NAMA SYARIKAT PENGHANTAR</b> : {{ samples[0].agentName}}<br>
-                <b>ALAMAT SYARIKAT PENGHANTAR</b> : {{ samples[0].companyAddress}}<br>
-                <!-- {{ companyGroup.items[0].companyAddress }} -->
-                <!-- <b>JUMLAH BILANGAN SAMPEL</b>: {{ companyGroup.count }}<br> -->
-              </p>
-
               <p><b>PINTU SEMPADAN</b>: {{kodStesen}} - {{namaStesen}}<br></p>
-
-
-              <!-- <div class="table-responsive">
-                <table class="table table-striped" style="width: 100%; table-layout: fixed;">
-                  <thead>
-                    <tr class="tableheader">
-                      <th scope="col">Bil</th>
-                      <th scope="col">Tarikh Import</th>
-                      <th scope="col">No. Borang Kastam</th>
-                      <th scope="col">Jenis Getah</th>
-                      <th scope="col">Kuantiti</th>
-                      <th scope="col">No. Lori</th>
-                      <th scope="col">No. Kontena</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let sample of companyGroup.items let i = index" style="word-wrap: break-word;">
-                      <td>{{i + 1}}</td>
-                      <td>{{sample.importedDate | date:"dd/MM/yyyy"}} </td>
-                      <td>{{sample.customNo}} </td>
-                      <td>{{sample.typeCode}}</td>
-                      <td>{{sample.quantity}} </td>
-                      <td>{{sample.lorryNo}}</td>
-                      <td>{{sample.trailerNo}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <p> <b>JUMLAH BILANGAN SAMPEL</b>: {{ companyGroup.items.length }}<br></p>
-              </div><br><br> -->
-
 
               <div class="table-responsive">
                 <table class="centered-table" style="width:100%; table-layout: fixed;">

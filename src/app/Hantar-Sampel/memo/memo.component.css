@@ -15,7 +15,7 @@
   }
   
   th {
-    /* background-color: #f2f2f2; */
+
     font-weight: bold;
     text-align: left;
     max-height: 20px;
@@ -47,12 +47,12 @@
     /* font-size: 27px; */
     font-size: 14px;
     word-spacing: 5px;
-    line-height: 1.5; /* Adjust the line height as needed */
+    line-height: 1.5; 
     
   }
 
   .spacing {
-    margin-bottom: 20px; /* Adjust the margin as needed */
+    margin-bottom: 20px; 
   }
 
   /* .font-size{
@@ -67,9 +67,9 @@
 
 
   h3 {
-    word-wrap: break-word; /* Allow words to wrap to the next line if they don't fit */
-    word-spacing: 2px; /* Adjust the word spacing as needed */
-    line-height: 1.5; /* Adjust the line height as needed */
+    word-wrap: break-word; 
+    word-spacing: 2px; 
+    line-height: 1.5; 
     max-width: 100%; /* Ensure the title doesn't exceed the container width */
 }
 

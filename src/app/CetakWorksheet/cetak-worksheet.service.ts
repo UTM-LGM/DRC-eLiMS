@@ -11,6 +11,8 @@ import { Penimbang } from '../models/penimbang';
 export class CetakWorksheetService {
 
   baseApiUrl: string = environment.baseApiUrlElims;
+  baseApiUrlHoliday: string = environment.baseApiUrlHoliday;
+
   baseApiOffline: string = environment.baseApiUrlElimsLocal;
   
   constructor(private http: HttpClient) { }
@@ -76,5 +78,12 @@ export class CetakWorksheetService {
   GetRefOvens(): Observable<any> {
     return this.http.get<any>(this.baseApiUrl + '/api/RefOvens/GetRefOvens');
   }
+
+
+  GetHolidayKedah(): Observable<any> {
+    return this.http.get<any>(this.baseApiUrlHoliday + '/api/Applications/GetHolidayKedah');
+  }
+
+
 
 }

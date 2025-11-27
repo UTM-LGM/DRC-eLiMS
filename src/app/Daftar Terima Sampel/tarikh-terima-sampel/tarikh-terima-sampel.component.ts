@@ -102,7 +102,7 @@ export class TarikhTerimaSampelComponent {
     }
 
     this.statusCodeId = 3;
-    this.elimsService.GetElimsAllBatch1(this.statusCodeId).subscribe(data => {
+    this.elimsService.GetElimsAllBatch0(this.statusCodeId).subscribe(data => {
       this.batches = data;
       // console.log(this.batches)
       this.dataSource = new MatTableDataSource<Batch>(this.batches);

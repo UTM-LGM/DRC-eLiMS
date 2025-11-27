@@ -56,18 +56,14 @@ export class PdfCetakKeputusanComponent {
       })
     }
 
-    // console.log(this.k1Detail)
-    // this.generateQRCodeImage(this.k1Detail.customNo);
 
     this.k1DetailId.forEach(element => {
       this.cetakWorksheetService.GetElimsSample(element).subscribe(data => {
-        // Push the data to k1Details array
-        this.k1Details.push(data);
-        // Sort k1Details array based on k1DetailId
+       
+        this.k1Details.push(data);  
         this.k1Details.sort((a, b) => a.k1DetailId - b.k1DetailId);
         this.creatorRoleId = this.k1Detail.creatorRoleId;
         console.log(this.k1Details);
-        // Group the samples after sorting
         this.groupSamplesByCompany();
       });
     });
@@ -99,26 +95,11 @@ export class PdfCetakKeputusanComponent {
       count: groupedCollection[key].length
     }));
 
-    // Ensure that each group is sorted by k1DetailId as well
-    // this.groupedSamples.forEach(group => {
-    //   group.items.sort((a, b) => a.k1DetailId - b.k1DetailId);
-
-    // });
-
-    // Log the groupedSamples for debugging
+ 
     console.log('Grouped Samples:', this.groupedSamples);
 
     this.groupedSamples.forEach(group => {
-      // First, sort the items by k1DetailId
-
       group.items.sort((a, b) => a.k1DetailId - b.k1DetailId);
-
-      // Then sort the items by testedOn date
-      // const sortedByTestedOn = group.items.sort((a, b) => new Date(a.testedOn).getTime() - new Date(b.testedOn).getTime());
-
-      // // Set the first and last testedOn dates
-      // group.firstTestedOnDate = sortedByTestedOn[0].testedOn;
-      // group.lastTestedOnDate = sortedByTestedOn[sortedByTestedOn.length - 1].testedOn;
     });
 
   }
@@ -323,29 +304,6 @@ export class PdfCetakKeputusanComponent {
      margin-top: 90px; 
     text-align: center;
   }
-
-      //       @media print {
-      //         .report-header {
-      //          display: flex;
-      //           position: fixed;
-      //           top: 0;
-      //           size: A4; /* Set paper size */
-      // }
-      //         header { 
-              
-      //           position: fixed;
-      //         } 
-              // @page {
-              //   size: A4; /* Set paper size */
-              //   margin: 70mm 15mm 40mm 15mm; /* Top, Right, Bottom, Left margins */        
-              // }
-      //         .content-wrapper {
-      //           position: fixed;
-      //         padding-top: 0px; /* Adjust to provide space below the header */
-      //       }
-      //     thead.report-header {
-      //     display:table-header-group;
-      //     }
           
   }
 

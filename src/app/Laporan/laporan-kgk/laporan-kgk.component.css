@@ -20,18 +20,13 @@
   font-family: "Your Chosen Font", 'Helvetica,';
   font-size: 36px;
   color: #08864b;
-  /* Or any color that fits your design */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  /* Add a subtle shadow effect */
 }
 
 
 .formContent {
-  /* border: 0px; */
   box-shadow: 5px 10px 18px #888888;
-  /* padding: 2px; */
   margin: 0px !important;
-  /* padding: 0px; */
 }
 
 .add {
@@ -140,8 +135,6 @@ tr.example-element-row:not(.example-expanded-row):active {
   width: 40px;
   height: 40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* Adjust shadow as needed */
-  /* display: flex; */
   justify-content: center;
   align-items: center;
   border: none;
@@ -150,12 +143,10 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .btn-circle-shadow:hover {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  /* Adjust shadow on hover */
 }
 
 .btn-circle-shadow i {
   font-size: 24px;
-  /* Adjust icon size as needed */
 }
 
 

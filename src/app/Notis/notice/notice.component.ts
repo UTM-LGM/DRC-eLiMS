@@ -29,22 +29,19 @@ export class NoticeComponent {
       return;
     }
 
-    this.isSubmitting = true;  // Disable the button
+    this.isSubmitting = true;  
     console.log(this.notice);
 
     this.noticeService.PostNotice(this.notice).subscribe({
       next: (res) => {
         console.log(res);
-        // Post the file after the notice is posted
         this.noticeService.PostFile(res.id, this.file).subscribe({
           next: () => {
             console.log('File uploaded successfully');
-            // this.toastr.success('Notice and file added successfully!', 'Success');
             this.router.navigate(['/view-notice']);
           },
           error: (fileError) => {
             console.error('Error uploading file:', fileError);
-            // this.toastr.error('Error uploading file', 'Error');
             this.isSubmitting = false; // Enable the button if file upload fails
             this.router.navigate(['/view-notice']);
           }
@@ -52,7 +49,6 @@ export class NoticeComponent {
       },
       error: (noticeError) => {
         console.error('Error adding notice', noticeError);
-        // this.toastr.error('Error adding notice', 'Error');
         this.isSubmitting = false; // Enable the button if notice addition fails
       }
     });

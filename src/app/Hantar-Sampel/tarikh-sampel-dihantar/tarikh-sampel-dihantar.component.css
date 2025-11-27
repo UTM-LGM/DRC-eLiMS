@@ -1,7 +1,7 @@
 .attractive-title {
     font-family: "Your Chosen Font",  'Helvetica,';
     font-size: 36px;
-    color: #08864b; /* Or any color that fits your design */
+    color: #08864b; 
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow effect */
   }
   
@@ -43,18 +43,13 @@
     font-family: "Your Chosen Font", 'Helvetica,';
     font-size: 36px;
     color: #08864b;
-    /* Or any color that fits your design */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    /* Add a subtle shadow effect */
   }
   
   
   .formContent {
-    /* border: 0px; */
     box-shadow: 5px 10px 18px #888888;
-    /* padding: 2px; */
     margin: 0px !important;
-    /* padding: 0px; */
   }
   
   .add {

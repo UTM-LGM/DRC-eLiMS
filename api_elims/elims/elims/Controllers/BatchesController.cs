@@ -100,158 +100,194 @@ namespace elims.Controllers
 
 
 
-       
-
-
-
-
-
-
-
-
-
-
-
-        /*  [HttpGet("{statusCodeId}")]
-          public async Task<IActionResult> GetElimsAllBatch10([FromRoute] int statusCodeId)
-          {
-              // Prefetch related data to avoid multiple database calls
-              var forwarders = await _context.Forwarders.ToDictionaryAsync(f => f.ForwarderId, f => f.Name);
-              var rubberTypes = await _context.RefRubberTypes.ToDictionaryAsync(r => r.Id, r => r.RubberType);
-              var testMethods = await _context.RefTestMethods.ToDictionaryAsync(t => t.Id, t => t.TestMethod);
-              var typeCodes = await _context.TypeCodes.ToDictionaryAsync(t => t.Id, t => t.SampleType);
-              var staffs = await _context.Staffs.ToDictionaryAsync(s => s.Username, s => s.StaffName);
-
-              var batches = await _context.Batches
-                  .Include(batch => batch.K1Details)
-                      .ThenInclude(k1Detail => k1Detail.K1Header)
-                  .Where(batch => batch.K1Details.Any(k1Detail => k1Detail.StatusCodeId == statusCodeId))
-                  .OrderBy(batch => batch.BatchId)
-                  .Select(batch => new
-                  {
-                      batch.BatchId,
-                      batch.ChequeNo,
-                      batch.ChequeAmount,
-                      batch.BankCode,
-                      batch.SentOn,
-                      ReceivedOn = batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.ReceivedOn,
-                      ForwarderName = forwarders.GetValueOrDefault(batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.ForwarderId ?? 0),
-                      RubberType = rubberTypes.GetValueOrDefault(batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.RubberTypeId ?? 0),
-                      TestMethod = testMethods.GetValueOrDefault(batch.TestMethodId ?? 0),
-                      batch.IsFastTrack,
-                      batch.Receipt,
-                      batch.PostResultOn,
-                      batch.PostResultDelivery,
-                      batch.PostResultCourierServices,
-                      batch.PostResultTrackingNo,
-                      RubberTypeId = batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.RubberTypeId,
-                      CreatorRoleId = batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.CreatorRoleId,
-                      TypeCodeId = batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.TypeCodeId,
-                      SampleCount = batch.K1Details.Count(k1Detail => k1Detail.StatusCodeId == statusCodeId),
-                      countSampleBasedSameBatchId = batch.K1Details.Count,
-                      StaffName = staffs.GetValueOrDefault(batch.SentBy),
-                      ApprovedOn = batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.ApprovedOn,
-                      ImportedDate = batch.K1Details.FirstOrDefault(k1Detail => k1Detail.StatusCodeId == statusCodeId)?.K1Header?.ImportedDate,
-                      Samples = batch.K1Details
-                          .Where(k1Detail => k1Detail.StatusCodeId == statusCodeId)
-                          .Select(k1Detail => new
-                          {
-                              k1Detail.BatchId,
-                              k1Detail.LabRefNo,
-                              k1Detail.ImporterName,
-                              k1Detail.StatusCodeId,
-                              k1Detail.CustomNo,
-                              k1Detail.K1DetailId,
-                              k1Detail.ReceivedOn,
-                              TypeCode = typeCodes.GetValueOrDefault(k1Detail.TypeCodeId ?? 0),
-                              k1Detail.Quantity,
-                              ImportedDate = k1Detail.K1Header?.ImportedDate,
-                              k1Detail.WorksheetTestOn,
-                              k1Detail.CreatorRoleId,
-                              StaffName = staffs.GetValueOrDefault(batch.SentBy),
-                              //Result = results.GetValueOrDefault(k1Detail.K1DetailId)
-
-                          }).ToList()
-                  })
-                  .ToListAsync();
-
-              return Ok(batches);
-          }*/
-
-
-
-
-
-
         [HttpGet("{statusCodeId}")]
         public async Task<IActionResult> GetElimsAllBatch1([FromRoute] int statusCodeId)
         {
+            // Group samples by BatchId and count from database
+            var sampleCounts = await _context.K1Details
+                .GroupBy(k1 => k1.BatchId)
+                .Select(g => new { BatchId = g.Key, Count = g.Count() })
+                .ToListAsync();
 
-
-            var Batches = await _context.Batches
-                .Where(batch => batch.K1Details.Any(k1Detail => k1Detail.StatusCodeId == statusCodeId))
+            var batches = await _context.Batches
+                .Where(batch => batch.K1Details.Any(k1 => k1.StatusCodeId == statusCodeId))
                 .OrderBy(batch => batch.BatchId)
                 .Select(batch => new
                 {
                     batch.BatchId,
-                    RubberType = _context.RefRubberTypes.FirstOrDefault(rubberType => rubberType.Id == batch.K1Details.FirstOrDefault().RubberTypeId).RubberType,
+                    RubberType = _context.RefRubberTypes
+                        .Where(r => r.Id == batch.K1Details.FirstOrDefault().RubberTypeId)
+                        .Select(r => r.RubberType)
+                        .FirstOrDefault(),
+
                     batch.IsFastTrack,
-                    //ForwarderId = batch.K1Details.FirstOrDefault().ForwarderId,
-                    ForwarderName = _context.Forwarders.FirstOrDefault(forwarder => forwarder.ForwarderId == batch.K1Details.FirstOrDefault().ForwarderId).Name,
+                    ForwarderName = _context.Forwarders
+                        .Where(f => f.ForwarderId == batch.K1Details.FirstOrDefault().ForwarderId)
+                        .Select(f => f.Name)
+                        .FirstOrDefault(),
+
                     batch.BankCode,
                     batch.ChequeNo,
                     batch.ChequeAmount,
                     batch.SentOn,
                     ReceivedOn = batch.K1Details.FirstOrDefault().ReceivedOn,
-                    //TestMethodId = batch.TestMethodId,
-                    TestMethod = _context.RefTestMethods.FirstOrDefault(testMethod => testMethod.Id == batch.TestMethodId).TestMethod,
+                    TestMethod = _context.RefTestMethods
+                        .Where(tm => tm.Id == batch.TestMethodId)
+                        .Select(tm => tm.TestMethod)
+                        .FirstOrDefault(),
+
                     batch.Receipt,
-                    SampleCount = batch.K1Details.Count(k1Detail => k1Detail.StatusCodeId == statusCodeId),
+                    SampleCount = batch.K1Details.Count(k1 => k1.StatusCodeId == statusCodeId),
                     ApprovedOn = batch.K1Details.FirstOrDefault().ApprovedOn,
-                    //RubberTypeId = batch.K1Details.FirstOrDefault().RubberTypeId,
-                    //CreatorRoleId = batch.K1Details.FirstOrDefault().CreatorRoleId,
                     batch.PostResultOn,
                     batch.PostResultDelivery,
                     batch.PostResultCourierServices,
                     batch.PostResultTrackingNo,
-                    //StatusCodeId = batch.K1Details.FirstOrDefault().StatusCodeId,
-                    /* //LabRefNo = batch.K1Details.FirstOrDefault().LabRefNo,
-                     TypeCodeId = batch.K1Details.FirstOrDefault().TypeCodeId,
-                     //SampleApproved = batch.K1Details.Count(k1Detail => k1Detail.StatusCodeId == statusCodeId && k1Detail.ApprovedBy != null),
-                     countSampleBasedSameBatchId = _context.K1Details.Count(k1Detail => k1Detail.BatchId == batch.BatchId),
-                     StatusCode = _context.StatusCodes.FirstOrDefault(statusCode => statusCode.StatusCodeId == batch.K1Details.FirstOrDefault().StatusCodeId).Status,
-                     //ImportedDate = batch.K1Details.FirstOrDefault().K1Header.ImportedDate,
-                     StaffName = _context.Staffs.FirstOrDefault(staff => staff.Username == batch.SentBy).StaffName,
-                     //TestedOn = batch.K1Details.FirstOrDefault().TestedOn,
-                     InLabBy = batch.K1Details.FirstOrDefault().InLabBy,
-                     ImportedDate = batch.K1Details.FirstOrDefault().K1Header.ImportedDate,*/
-                    Samples = batch.K1Details
-                                .Where(k1Detail => k1Detail.StatusCodeId == statusCodeId)
-                                .Select(k1Detail => new
-                                {
-                                    k1Detail.K1DetailId,
-                                    k1Detail.BatchId,
-                                    k1Detail.CustomNo,
-                                    k1Detail.ImporterName,
-                                    TypeCode = _context.TypeCodes.FirstOrDefault(typeCode => typeCode.Id == k1Detail.TypeCodeId).SampleType,
-                                    ImportedDate = k1Detail.K1Header.ImportedDate,
-                                    k1Detail.Quantity,
-                                    k1Detail.LabRefNo,
-                                    k1Detail.ReceivedOn,
-                               /*     
-                                    k1Detail.WorksheetTestOn,
-                                     k1Detail.StatusCodeId,
-                                     k1Detail.K1DetailId,
-                                     k1Detail.CreatorRoleId,
-                                     StaffName = _context.Staffs.FirstOrDefault(staff => staff.StaffName == batch.SentBy).StaffName,
-                                     Result = _context.Results.Where(r => r.K1DetailId == k1Detail.K1DetailId).Select(r => r.Result1).FirstOrDefault()*/
-                                }),
 
+                    Samples = batch.K1Details
+                        .Where(k1 => k1.StatusCodeId == statusCodeId)
+                        .Select(k1 => new
+                        {
+                            k1.K1DetailId,
+                            k1.BatchId,
+                            k1.CustomNo,
+                            k1.ImporterName,
+                            TypeCode = _context.TypeCodes
+                                .Where(tc => tc.Id == k1.TypeCodeId)
+                                .Select(tc => tc.SampleType)
+                                .FirstOrDefault(),
+                            ImportedDate = k1.K1Header.ImportedDate,
+                            k1.Quantity,
+                            k1.LabRefNo,
+                            k1.ReceivedOn,
+            
+                        }),
                 })
                 .ToListAsync();
 
-            return Ok(Batches);
+            var result = batches.Select(batch => new
+            {
+                batch.BatchId,
+                batch.RubberType,
+                batch.IsFastTrack,
+                batch.ForwarderName,
+                batch.BankCode,
+                batch.ChequeNo,
+                batch.ChequeAmount,
+                batch.SentOn,
+                batch.ReceivedOn,
+                batch.TestMethod,
+                batch.Receipt,
+                batch.SampleCount,
+                batch.ApprovedOn,
+                batch.PostResultOn,
+                batch.PostResultDelivery,
+                batch.PostResultCourierServices,
+                batch.PostResultTrackingNo,
+                batch.Samples,
+                CountSampleBasedSameBatchId = sampleCounts.FirstOrDefault(sc => sc.BatchId == batch.BatchId)?.Count ?? 0
+            });
+
+            return Ok(result);
         }
+
+
+        [HttpGet("{statusCodeId}")]
+        public async Task<IActionResult> GetElimsAllBatch0([FromRoute] int statusCodeId)
+        {
+            // Preload lookups to avoid N+1 query issues
+            var rubberTypesDict = await _context.RefRubberTypes
+                .ToDictionaryAsync(r => r.Id, r => r.RubberType);
+
+            var forwardersDict = await _context.Forwarders
+                .ToDictionaryAsync(f => f.ForwarderId, f => f.Name);
+
+            var testMethodsDict = await _context.RefTestMethods
+                .ToDictionaryAsync(tm => tm.Id, tm => tm.TestMethod);
+
+            var typeCodesDict = await _context.TypeCodes
+                .ToDictionaryAsync(tc => tc.Id, tc => tc.SampleType);
+
+            // Get sample count grouped by BatchId
+            var sampleCounts = await _context.K1Details
+                .GroupBy(k1 => k1.BatchId)
+                .Select(g => new { BatchId = g.Key, Count = g.Count() })
+                .ToListAsync();
+
+            var resultsDict = await _context.Results
+            .GroupBy(r => r.K1DetailId)
+            .Select(g => new { K1DetailId = g.Key, Result = g.Select(r => r.Result1).FirstOrDefault() })
+            .ToDictionaryAsync(x => x.K1DetailId, x => x.Result);
+
+            // Load batches with related data
+            var batches = await _context.Batches
+                .Where(batch => batch.K1Details.Any(k1 => k1.StatusCodeId == statusCodeId))
+                .Include(b => b.K1Details)
+                    .ThenInclude(k1 => k1.K1Header)
+                .OrderBy(batch => batch.BatchId)
+                .ToListAsync();
+
+            // Project response
+            var result = batches.Select(batch =>
+            {
+                var firstK1 = batch.K1Details.FirstOrDefault();
+
+                int? rubberTypeId = firstK1?.RubberTypeId;
+                int? forwarderId = firstK1?.ForwarderId;
+                int? creatorRoleId = firstK1?.CreatorRoleId;
+                DateTime? receivedOn = firstK1?.ReceivedOn;
+                DateTime? approvedOn = firstK1?.ApprovedOn;
+
+                return new
+                {
+                    batch.BatchId,
+                    RubberType = rubberTypeId.HasValue ? rubberTypesDict.GetValueOrDefault(rubberTypeId.Value) : null,
+                    batch.IsFastTrack,
+                    ForwarderName = forwarderId.HasValue ? forwardersDict.GetValueOrDefault(forwarderId.Value) : null,
+                    batch.BankCode,
+                    batch.ChequeNo,
+                    batch.ChequeAmount,
+                    batch.SentOn,
+                    TestMethod = _context.RefTestMethods
+                        .Where(tm => tm.Id == batch.TestMethodId)
+                        .Select(tm => tm.TestMethod)
+                        .FirstOrDefault(),
+                    ReceivedOn = receivedOn,
+                    CreatorRoleId = creatorRoleId,
+                    batch.Receipt,
+                    SampleCount = batch.K1Details.Count(k1 => k1.StatusCodeId == statusCodeId),
+                    ApprovedOn = approvedOn,
+                    batch.PostResultOn,
+                    batch.PostResultDelivery,
+                    batch.PostResultCourierServices,
+                    batch.PostResultTrackingNo,
+
+                    Samples = batch.K1Details
+                        .Where(k1 => k1.StatusCodeId == statusCodeId)
+                        .Select(k1 => new
+                        {
+                            k1.K1DetailId,
+                            k1.BatchId,
+                            k1.CustomNo,
+                            k1.ImporterName,
+                            TypeCode = k1.TypeCodeId.HasValue ? typeCodesDict.GetValueOrDefault(k1.TypeCodeId.Value) : null,
+                            ImportedDate = k1.K1Header?.ImportedDate,
+                            k1.Quantity,
+                            k1.LabRefNo,
+                            k1.ReceivedOn,
+                            k1.CreatorRoleId,
+                            Result = resultsDict.GetValueOrDefault(k1.K1DetailId)
+                        })
+                        .ToList(),
+
+                    CountSampleBasedSameBatchId = sampleCounts
+                        .FirstOrDefault(sc => sc.BatchId == batch.BatchId)?.Count ?? 0
+                };
+            });
+
+            return Ok(result);
+        }
+
 
 
         [HttpPost]
@@ -499,8 +535,6 @@ namespace elims.Controllers
 
 
 
-
-
         [HttpGet("{statusCodeId}")]
         public async Task<IActionResult> SearchGetElimsAllBatch([FromRoute] int statusCodeId, [FromQuery] DateTime? fromDate = null, [FromQuery] DateTime? toDate = null)
         {
@@ -586,8 +620,6 @@ namespace elims.Controllers
 
 
 
-
-
         [HttpGet]
         public async Task<IActionResult> GetElimsSamplesByUsername(int statusCodeId, string username)
         {
@@ -648,8 +680,6 @@ namespace elims.Controllers
                 uipRegNo = x.UipRegNo,
                 forwarderId = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.ForwarderId).FirstOrDefault(),
                 forwarderName = _context.Forwarders.Where(z => z.ForwarderId == (_context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.ForwarderId).FirstOrDefault())).Select(y => y.Name).FirstOrDefault(),
-
-                //unitName = _context.Staffs.Where(y => y.StaffId == x.BatchId).Select(y => y.UnitName).FirstOrDefault(),
                 importerName = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.ImporterName).FirstOrDefault(),
                 customNo = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.CustomNo).FirstOrDefault(),
                 /*  companyId = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.CompanyId).FirstOrDefault(),
@@ -686,13 +716,11 @@ namespace elims.Controllers
 
 
 
-
-
         [HttpGet("{sentby}")]
         public async Task<IActionResult> GetElimsBatchBySendByNull1([FromRoute] string sentby)
         {
             var Batches = await _context.Batches
-                .Where(x => x.SentBy == sentby && x.CourierServices == null && x.BatchPrinted == null) // Check for null CourierServices
+                .Where(x => x.SentBy == sentby && x.CourierServices == null && x.BatchPrinted == null) 
                 .Select(x => new
                 {
                     batchId = x.BatchId,
@@ -703,8 +731,6 @@ namespace elims.Controllers
                     uipRegNo = x.UipRegNo,
                     forwarderId = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.ForwarderId).FirstOrDefault(),
                     forwarderName = _context.Forwarders.Where(z => z.ForwarderId == (_context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.ForwarderId).FirstOrDefault())).Select(y => y.Name).FirstOrDefault(),
-
-                    //unitName = _context.Staffs.Where(y => y.StaffId == x.BatchId).Select(y => y.UnitName).FirstOrDefault(),
                     importerName = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.ImporterName).FirstOrDefault(),
                     customNo = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.CustomNo).FirstOrDefault(),
                     /*  companyId = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.CompanyId).FirstOrDefault(),
@@ -738,8 +764,6 @@ namespace elims.Controllers
 
             return Ok(Batches);
         }
-
-
 
 
 
@@ -839,9 +863,6 @@ namespace elims.Controllers
                 sentOn = x.SentOn,
                 forwarderId = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.ForwarderId).FirstOrDefault(),
                 forwarderName = _context.Forwarders.Where(z => z.ForwarderId == (_context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.ForwarderId).FirstOrDefault())).Select(y => y.Name).FirstOrDefault(),
-
-                //unitName = _context.Staffs.Where(y => y.StaffId == x.BatchId).Select(y => y.UnitName).FirstOrDefault(),
-
                 importerName = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.ImporterName).FirstOrDefault(),
                 /*  companyId = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.CompanyId).FirstOrDefault(),
                   companyName = _context.Companies.Where(z => z.CompanyId == (_context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.CompanyId).FirstOrDefault())).Select(y => y.Name).FirstOrDefault(),*/
@@ -864,7 +885,6 @@ namespace elims.Controllers
 
 
 
-
         [HttpGet("{batchId}")]
         public async Task<IActionResult> GetSamplesByBatchId(int batchId)
         {
@@ -877,14 +897,10 @@ namespace elims.Controllers
                 sentOn = x.SentOn,
                 forwarderId = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.ForwarderId).FirstOrDefault(),
                 forwarderName = _context.Forwarders.Where(z => z.ForwarderId == (_context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.ForwarderId).FirstOrDefault())).Select(y => y.Name).FirstOrDefault(),
-
-                //unitName = _context.Staffs.Where(y => y.StaffId == x.BatchId).Select(y => y.UnitName).FirstOrDefault(),
-
                 importerName = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.ImporterName).FirstOrDefault(),
                 /*  companyId = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.CompanyId).FirstOrDefault(),
                   companyName = _context.Companies.Where(z => z.CompanyId == (_context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.CompanyId).FirstOrDefault())).Select(y => y.Name).FirstOrDefault(),*/
                 statusCode = _context.K1Details.Where(y => y.BatchId == x.BatchId).Select(y => y.StatusCodeId).FirstOrDefault(),
-
                 dateSampleDelivered = x.DateSampleDelivered,
                 delivery = x.Delivery,
                 courierServices = x.CourierServices,
@@ -896,12 +912,9 @@ namespace elims.Controllers
                 isFastTrack = x.IsFastTrack,
                 memoPrinted = x.MemoPrinted,
                 uipRegNo = x.UipRegNo,
-
-
                 transactionNo = _context.Batches.Where(y => y.BatchId == x.BatchId).Select(y => y.TransactionNo).FirstOrDefault(),
                 date = _context.Batches.Where(y => y.BatchId == x.BatchId).Select(y => y.Date).FirstOrDefault(),
                 receipt = _context.Batches.Where(y => y.BatchId == x.BatchId).Select(y => y.Receipt).FirstOrDefault(),
- 
                 staffName = _context.Staffs.Where(s => s.Username == x.SentBy).Select(s => s.StaffName).FirstOrDefault(),
                 position = _context.Staffs.Where(s => s.Username == x.SentBy).Select(s => s.Position).FirstOrDefault(),
                 office = _context.Staffs.Where(s => s.Username == x.SentBy).Select(s => s.Office).FirstOrDefault(),
@@ -914,13 +927,11 @@ namespace elims.Controllers
                 k1DetailId = x.K1DetailId,
                 k1HeaderId = x.K1HeaderId,
                 statusCodeId = x.StatusCodeId,
-
                 customNo = x.CustomNo,
                 quantity = x.Quantity,
                 companyId = x.CompanyId,
                 companyName = _context.Companies.Where(y => y.CompanyId == x.CompanyId).Select(y => y.Name).FirstOrDefault(),
                 companyAddress = _context.Companies.Where(y => y.CompanyId == x.CompanyId).Select(y => y.Address).FirstOrDefault(),
-
                 samplePropose = x.SamplePropose,
                 sampleRunNo = x.SampleRunNo,
                 creatorRoleId = x.CreatorRoleId,
@@ -942,7 +953,6 @@ namespace elims.Controllers
 
 
 
-
         [HttpPut]
         public async Task<IActionResult> PutBatchUipbkhRefRunNo([FromBody] Batch batch)
         {
@@ -956,8 +966,6 @@ namespace elims.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(batch);
-
-
         }
 
 
@@ -974,8 +982,6 @@ namespace elims.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(batch);
-
-
         }
 
 
@@ -993,7 +999,6 @@ namespace elims.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
-
         }
 
 
@@ -1013,9 +1018,7 @@ namespace elims.Controllers
             }
             else
             {
-                // Add new batch to the database
                 return NotFound();
-                // _context.Batches.Add(batch);
             }
 
             await _context.SaveChangesAsync();
@@ -1039,9 +1042,7 @@ namespace elims.Controllers
             }
             else
             {
-                // Add new batch to the database
                 return NotFound();
-                // _context.Batches.Add(batch);
             }
 
             await _context.SaveChangesAsync();
@@ -1057,7 +1058,6 @@ namespace elims.Controllers
             var existingBatch = await _context.Batches.Where(x => x.UipRegNo == batch.UipRegNo).FirstOrDefaultAsync();
             if (existingBatch != null)
             {
-                // Update existing batch with new values
                 existingBatch.DateSampleDelivered = batch.DateSampleDelivered;
                 existingBatch.CourierServices = batch.CourierServices;
                 existingBatch.TrackingNo = batch.TrackingNo;
@@ -1066,7 +1066,6 @@ namespace elims.Controllers
             }
             else
             {
-                // Add new batch to the database
                 return NotFound();
             }
 
@@ -1118,7 +1117,6 @@ namespace elims.Controllers
                 {
                     var fileName = $"{batchId}_{details.Memo}";
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\memo", fileName);
-                    // var filePath = Path.Combine(_environment.WebRootPath, @"wwwroot\evidence", fileName);
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await file.CopyToAsync(fileStream);
@@ -1173,10 +1171,9 @@ namespace elims.Controllers
 
             if (elimsContext == null || staffData == null)
             {
-                return NotFound(); // or return a specific error response
+                return NotFound(); 
             }
 
-            // Assuming you want to return both data
             var result = new
             {
                 Batch = elimsContext,
@@ -1206,17 +1203,15 @@ namespace elims.Controllers
                     address = _context.Forwarders.Where(y => y.ForwarderId == x.ForwarderId).Select(y => y.Address).FirstOrDefault(),
                     code = _context.Forwarders.Where(y => y.ForwarderId == x.ForwarderId).Select(y => y.Code).FirstOrDefault(),
                     smkimportersCode = _context.Forwarders.Where(y => y.ForwarderId == (_context.Companies.Where(z => z.CompanyId == x.ForwarderId).Select(z => z.CompanyId).FirstOrDefault())).Select(y => y.ForwarderId).FirstOrDefault(),
-                    /*     isNorthen = _context.CustomOffices.Where(y => y.ForwarderId == x.ForwarderId).Select(y => y.IsNorthen).ToList(),*/
                     locked = x.Locked
                 })
             .FirstOrDefaultAsync();
 
             if (elimsContext == null || userData == null)
             {
-                return NotFound(); // or return a specific error response
+                return NotFound(); 
             }
 
-            // Assuming you want to return both data
             var result = new
             {
                 Batch = elimsContext,
@@ -1243,7 +1238,6 @@ namespace elims.Controllers
               {
                    var fileName = $"{batchId}_{details.SuratIringan}";
                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\suratIringan", fileName);
-                   // var filePath = Path.Combine(_environment.WebRootPath, @"wwwroot\evidence", fileName);
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                    {
                       await file.CopyToAsync(fileStream);
@@ -1278,7 +1272,6 @@ namespace elims.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception for debugging purposes
                 Console.WriteLine($"Error saving PDF file: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }

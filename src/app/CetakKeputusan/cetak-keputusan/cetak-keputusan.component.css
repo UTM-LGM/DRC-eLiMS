@@ -20,18 +20,14 @@
   font-family: "Your Chosen Font", 'Helvetica,';
   font-size: 36px;
   color: #08864b;
-  /* Or any color that fits your design */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  /* Add a subtle shadow effect */
+
 }
 
 
 .formContent {
-  /* border: 0px; */
   box-shadow: 5px 10px 18px #888888;
-  /* padding: 2px; */
   margin: 0px !important;
-  /* padding: 0px; */
 }
 
 .add {
@@ -71,7 +67,7 @@
   
   td,
   th {
-    /* width: 25%; */
+
     font-size: 14px !important;
     white-space: normal;
     word-wrap: break-word;
@@ -136,7 +132,7 @@
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust shadow as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     /* display: flex; */
     justify-content: center;
     align-items: center;
@@ -145,11 +141,11 @@
   }
   
   .btn-circle-shadow:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Adjust shadow on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
   }
   
   .btn-circle-shadow i {
-    font-size: 24px; /* Adjust icon size as needed */
+    font-size: 24px; 
   }
   
 
@@ -161,9 +157,9 @@
   .buttonExcel {
     background-color: #1d7a2e; 
     color: #fff; 
-    padding: 10px 20px; /* Adjust padding for the button size */
-    border: none; /* Remove default button border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Add a pointer cursor on hover */
-    transition: background-color 0.3s; /* Smooth background color transition on hover */
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
   }

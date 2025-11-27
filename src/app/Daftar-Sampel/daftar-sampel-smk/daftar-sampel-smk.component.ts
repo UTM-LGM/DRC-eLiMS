@@ -18,21 +18,17 @@ import { MatSort } from '@angular/material/sort';
 import { loginImporter } from 'src/app/models/loginImporters';
 import { TypeCode } from 'src/app/models/typeCode';
 import { forkJoin } from 'rxjs';
-
 @Component({
   selector: 'app-daftar-sampel-smk',
   templateUrl: './daftar-sampel-smk.component.html',
   styleUrls: ['./daftar-sampel-smk.component.css']
 })
-
 export class DaftarSampelSMKComponent implements OnInit {
-
   samplePropose: any = ['Pengecualian Ses (CE)', 'Lain-lain'];
   importer: loginImporter = {} as loginImporter;
   staff: Staff = {} as Staff;
   user: userDTO = {} as userDTO;
   k1Detail: K1Detail = {} as K1Detail;
-
   sample: Sample = {} as Sample;
   showTypeCodes: boolean = false;
   tiadaDetailKastam: boolean = false;
@@ -57,7 +53,6 @@ export class DaftarSampelSMKComponent implements OnInit {
   k1DetailKastam: any;
   k3DetailKastam: any;
 
-
   showRemarks: boolean;
   notes: string;
   selectedDateSum: Date;
@@ -70,9 +65,7 @@ export class DaftarSampelSMKComponent implements OnInit {
   roleImporter: boolean;
   dryWeight: number;
   stationCodes: any;
-
   private isK3Data: boolean = false;
-
 
   @ViewChild(MatSort) sort!: MatSort;
   constructor(
@@ -86,7 +79,6 @@ export class DaftarSampelSMKComponent implements OnInit {
     private daftarSampelService: DaftarSampelService,
     private userService: UserService,
   ) { }
-
   ngOnInit() {
     if (this.authservice.isloggedin()) {
       this.loginAs = this.authservice.getSessionUsername()
@@ -136,7 +128,6 @@ export class DaftarSampelSMKComponent implements OnInit {
         })
       })
     }
-
     if (this.userRoleId == 3) {
       this.userService.GetImporterInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
@@ -164,7 +155,6 @@ export class DaftarSampelSMKComponent implements OnInit {
         });
       })
     }
-
     else if (this.userRoleId == 2) {
       this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
         this.authservice.changeUser(res);
@@ -190,7 +180,6 @@ export class DaftarSampelSMKComponent implements OnInit {
         })
       })
     }
-
     this.sampleForm = this.formBuilder.group({
       kodStesen: ['', Validators.required],
       tahun: ['', Validators.required],
@@ -217,12 +206,10 @@ export class DaftarSampelSMKComponent implements OnInit {
     });
   }
 
-
   private removeCommas(value: string): number {
     const numericValue = +value.replace(/,/g, '');
     return isNaN(numericValue) ? 0 : numericValue;
   }
-
 
   changeJenisGetah(e: any) {
     if (e.target.value == 1) {
@@ -238,56 +225,19 @@ export class DaftarSampelSMKComponent implements OnInit {
     this.showTypeCodes = true
   }
 
-
   searchCustomRegistrationNo(): void {
     this.tiadaDetailKastam = false;
     this.click = 1;
-
     if (this.sampleForm.valid) {
       const waitDialog = this.dialog.open(SpinnerComponent, { disableClose: true, width: '400px' });
       const kodStesen = this.sampleForm.get('kodStesen')?.value ?? '';
       const tahun = this.sampleForm.get('tahun')?.value ?? '';
       const nomborKastam = this.sampleForm.get('nomborKastam')?.value ?? '';
       this.customNo = kodStesen + tahun + nomborKastam;
-
       if (!this.customNo) {
         this.toastr.error('Nombor Borang Kastam tidak dijumpai.', 'Error');
-        return; // Exit if no custom number is provided
+        return; 
       }
-
-
-
-      // if (this.userRoleId === "1") {
-      //   this.daftarSampelService.GetK1DetailByCustomNo(this.customNo).subscribe(resDetail => {
-      //     if (resDetail && resDetail.length > 0) {
-      //       this.tiadaDetailKastam = true;
-      //       this.toastr.warning('Nombor Borang Kastam ini telah didaftarkan.', 'Warning');
-      //       waitDialog.close(); // Close spinner when data is received
-      //       return;
-      //     }
-
-
-      //     // Fetch K1 Detail
-      //     this.dataKastamService.getK1DetailAgentCode(this.customNo, this.agentCode).subscribe(k1Data => {
-      //       waitDialog.close(); // Close spinner when data is received
-      //       if (k1Data && k1Data.length > 0) {
-      //         this.k1DetailKastam = k1Data;
-      //         console.log("K1 Detail Fetched:", this.k1DetailKastam);
-      //       } else {
-      //         this.fetchK3Detail(); // If K1 not found, check K3
-      //       }
-      //     }, error => {
-      //       waitDialog.close(); // Close spinner on error
-      //       console.error('Error occurred while fetching K1 detail:', error);
-      //       this.fetchK3Detail(); // Attempt to fetch K3 even if K1 fails
-      //     });
-
-      //   }, err => {
-      //     waitDialog.close(); // Close spinner on error
-      //     console.error('Error occurred while fetching resDetail:', err);
-      //   });
-      // } 
-
 
 
       if (this.userRoleId === "1") {
@@ -298,7 +248,6 @@ export class DaftarSampelSMKComponent implements OnInit {
             waitDialog.close(); // Close spinner when data is received
             return;
           }
-
 
           // Fetch K1 Detail
           this.dataKastamService.getK1DetailAgentCode(this.customNo, this.agentCode).subscribe(k1Data => {
@@ -314,66 +263,21 @@ export class DaftarSampelSMKComponent implements OnInit {
             console.error('Error occurred while fetching K1 detail:', error);
             this.fetchK3Detail(); // Attempt to fetch K3 even if K1 fails
           });
-
         }, err => {
           waitDialog.close(); // Close spinner on error
           console.error('Error occurred while fetching resDetail:', err);
         });
       }
 
-
-      // if (this.userRoleId === "1" || this.userRoleId === "3") {
-      //   this.daftarSampelService.GetK1DetailByCustomNo(this.customNo).subscribe(
-      //     (resDetail) => {
-      //       if (resDetail && resDetail.length > 0) {
-      //         this.tiadaDetailKastam = true;
-      //         this.toastr.warning('Nombor Borang Kastam ini telah didaftarkan.', 'Warning');
-      //         waitDialog.close(); // Close spinner when data is received
-      //         return;
-      //       }
-
-      //       if (this.userRoleId === "1") {
-      //         // Fetch K1 Detail for userRoleId = "1"
-      //         this.dataKastamService.getK1DetailAgentCode(this.customNo, this.agentCode).subscribe(
-      //           (k1Data) => {
-      //             waitDialog.close(); // Close spinner when data is received
-      //             if (k1Data && k1Data.length > 0) {
-      //               this.k1DetailKastam = k1Data;
-      //               console.log("K1 Detail Fetched:", this.k1DetailKastam);
-      //             } else {
-      //               this.fetchK3Detail(); // If K1 not found, check K3
-      //             }
-      //           },
-      //           (error) => {
-      //             waitDialog.close(); // Close spinner on error
-      //             console.error('Error occurred while fetching K1 detail:', error);
-      //             this.fetchK3Detail(); // Attempt to fetch K3 even if K1 fails
-      //           }
-      //         );
-      //       }
-      //     },
-      //     (err) => {
-      //       waitDialog.close(); // Close spinner on error
-      //       console.error('Error occurred while fetching resDetail:', err);
-      //     }
-      //   );
-      // }
-
-
-
       else if (this.userRoleId === "2") {
-
         if (!this.customNo) {
           this.toastr.error('Nombor Borang Kastam tidak dijumpai.', 'Warning');
           return; // Exit if no custom number is provided
         }
-
         const customNoWithUip = this.customNo + 'uip'; // Append 'uip' to customNo
-
         // Initialize flags
         let k1Found = false;
         let k3Found = false;
-
         // Use forkJoin to handle both observables simultaneously
         forkJoin({
           k1: this.dataKastamService.getK1Detail(this.customNo),
@@ -381,12 +285,10 @@ export class DaftarSampelSMKComponent implements OnInit {
         }).subscribe({
           next: (results) => {  // Change here: receive results as an object
             waitDialog.close();
-
             // Check K1 Data
             if (results.k1 && results.k1.length > 0) {
               k1Found = true; // K1 data found
               this.k1DetailKastam = results.k1;
-
               // Proceed with additional checks for K1
               this.daftarSampelService.GetK1DetailByCustomNo(customNoWithUip).subscribe(resDetail => {
                 const filteredDescriptions = resDetail
@@ -401,7 +303,6 @@ export class DaftarSampelSMKComponent implements OnInit {
                 console.error('Error occurred in GetK1DetailByCustomNo:', err);
               });
             }
-
             // Check K3 Data
             if (results.k3 && results.k3.length > 0) {
               k3Found = true; // K3 data found
@@ -409,12 +310,10 @@ export class DaftarSampelSMKComponent implements OnInit {
               this.isK3Data = true;
               console.log("K3 Detail Fetched:", this.k3DetailKastam);
             }
-
             // After both checks, determine if toastr should be displayed
             if (!k1Found && !k3Found) {
               this.toastr.error('Nombor Borang Kastam tidak wujud.', 'Error');
             }
-
           },
           error: (err) => {
             waitDialog.close();
@@ -422,37 +321,12 @@ export class DaftarSampelSMKComponent implements OnInit {
           }
         });
       }
-      // else if (this.userRoleId === '3') {
-      //   this.dataKastamService.getK1DetailByImporterCode(this.customNo, this.importerCode).subscribe(k1Data => {
-      //     this.k1DetailKastam = k1Data;
-      //     this.daftarSampelService.GetK1DetailByCustomNo(this.customNo).subscribe(resDetail => {
-      //       waitDialog.close();
-      //       const filteredDescriptions = resDetail
-      //         .filter((detail: K1Detail) => detail.creatorRoleId === 3)
-      //         .map((detail: K1Detail) => detail.itemDescription);
-      //       this.k1DetailKastam = this.k1DetailKastam.filter(detail => !filteredDescriptions.includes(detail.itemDescription));
-      //       if (!this.k1DetailKastam || this.k1DetailKastam.length === 0) {
-      //         this.k1DetailKastam = null;
-      //         this.tiadaDetailKastam = true;
-      //         this.toastr.warning('Nombor Borang Kastam ini telah didaftarkan.', 'Warning');
-      //       }
-      //     }, err => {
-      //       waitDialog.close();
-      //       console.error('Error occurred:', err);
-      //     });
-      //   }, err => {
-      //     waitDialog.close();
-      //     this.toastr.warning('Anda tidak berdaftar dengan nombor kastam ini');
-      //     console.error('Error occurred:', err);
-      //   });
-      // }
-
+     
       else if (this.userRoleId === '3') {
         // Fetch K1 details by Custom Number
         this.daftarSampelService.GetK1DetailByCustomNo(this.customNo).subscribe(
           (resDetail) => {
             waitDialog.close();
-
             // Combine filtering logic for both roles
             const filteredDescriptions = resDetail
               .filter(
@@ -460,17 +334,14 @@ export class DaftarSampelSMKComponent implements OnInit {
                   detail.creatorRoleId === 3 || detail.creatorRoleId === 1
               )
               .map((detail: K1Detail) => detail.itemDescription);
-
             // Fetch K1 details by Importer Code
             this.dataKastamService.getK1DetailByImporterCode(this.customNo, this.importerCode).subscribe(
               (k1Data) => {
                 this.k1DetailKastam = k1Data;
-
                 // Filter out descriptions already registered by either role
                 this.k1DetailKastam = this.k1DetailKastam.filter(
                   (detail) => !filteredDescriptions.includes(detail.itemDescription)
                 );
-
                 // Handle case where no K1 details remain
                 if (!this.k1DetailKastam || this.k1DetailKastam.length === 0) {
                   this.k1DetailKastam = null;
@@ -483,7 +354,6 @@ export class DaftarSampelSMKComponent implements OnInit {
                 console.error('Error occurred:', err);
               }
             );
-
             // After K1 details are processed, fetch K3 details and check for CustomNo duplicates
             this.fetchK3DetailImporterCode(filteredDescriptions);
           },
@@ -497,15 +367,14 @@ export class DaftarSampelSMKComponent implements OnInit {
     }
   }
 
-
   private fetchK3Detail(): void {
     this.dataKastamService.getK3DetailAgentCode(this.customNo, this.agentCode).subscribe(k3Data => {
       if (k3Data && k3Data.length > 0) {
-        this.k3DetailKastam = k3Data; // Assuming you have a separate variable for K3 detail
+        this.k3DetailKastam = k3Data;
         this.isK3Data = true;
         console.log("K3 Detail Fetched from Agent Code:", this.k3DetailKastam);
       } else {
-        // Show warning only if K3Detail is also not found
+     
         this.toastr.error('Nombor kastam tidak wujud.', 'Error');
       }
     }, error => {
@@ -513,7 +382,6 @@ export class DaftarSampelSMKComponent implements OnInit {
       this.toastr.error('Nombor kastam tidak wujud.', 'error');
     });
   }
-
 
   private fetchK3DetailImporterCode(filteredDescriptions: string[]): void {
     this.dataKastamService.getK3DetailImporterCode(this.customNo, this.importerCode).subscribe(
@@ -523,7 +391,6 @@ export class DaftarSampelSMKComponent implements OnInit {
           this.k3DetailKastam = k3Data.filter(
             (detail) => !filteredDescriptions.includes(detail.itemDescription)
           );
-
           // Handle case where no K3 details remain after filtering
           if (!this.k3DetailKastam || this.k3DetailKastam.length === 0) {
             this.k3DetailKastam = null;
@@ -550,7 +417,6 @@ export class DaftarSampelSMKComponent implements OnInit {
   }
 
 
-
   showDetails(row: number, type: 'K1' | 'K3') {
     if (type === 'K1') {
       this.showDetailsK1(row);
@@ -558,7 +424,6 @@ export class DaftarSampelSMKComponent implements OnInit {
       this.showDetailsK3(row);
     }
   }
-
 
   showDetailsK1(row: number) {
     this.dataKastamService.getK1Detail1(row).subscribe(k1Data => {
@@ -575,7 +440,6 @@ export class DaftarSampelSMKComponent implements OnInit {
       }
     });
   }
-
 
   showDetailsK3(row: number) {
     this.dataKastamService.getK3Detail1(row).subscribe(k3Data => {
@@ -594,7 +458,6 @@ export class DaftarSampelSMKComponent implements OnInit {
     });
   }
 
-
   // Helper function to filter importer companies based on user role
   filterImporterCompanies(headerData: any) {
     const trimmedImporterCode = headerData?.importerCode?.trim() || '';
@@ -612,13 +475,11 @@ export class DaftarSampelSMKComponent implements OnInit {
     }
   }
 
-
   handleFileInput(event: any) {
     this.file = event.target.files[0];
     this.k1Detail.evidence = event.target.files[0].name;
     console.log(this.k1Detail.evidence);
   }
-
 
   addSample() {
     this.daftarClicked = true;
@@ -664,9 +525,7 @@ export class DaftarSampelSMKComponent implements OnInit {
       this.k1Detail.companyId = this.importer.companyId;
       this.k1Detail.forwarderId = this.sample.forwarderId;
     }
-
     this.k1Detail.isK3 = this.isK3Data;
-
     console.log(this.k1Detail)
     console.log(this.k1Header)
     this.daftarSampelService.PostK1HeaderSample(this.k1Header, statusCodeId).subscribe(res => {
@@ -685,7 +544,6 @@ export class DaftarSampelSMKComponent implements OnInit {
         });
     });
   }
-
 
   checkRequired(): boolean | undefined {
     if (this.userRoleId == 1) {
@@ -733,7 +591,6 @@ export class DaftarSampelSMKComponent implements OnInit {
     return false;
   }
 
-
   enforceDRCLimit() {
     if (this.formattedDRC && this.formattedQuantity) {
       if (this.formattedDRC > 100) {
@@ -746,189 +603,21 @@ export class DaftarSampelSMKComponent implements OnInit {
     }
   }
 
-
-  // onDateChange() {
-  //   const dateValue = new Date(this.k1Header.importedDate);
-  //   let sum;
-  //   if (this.userRoleId == 1) {
-  //     this.authservice.GetCustomOffice(this.user.customOfficeId).subscribe(x => {
-  //       console.log(x);
-  //       this.customOffice = x;
-  //       if (this.customOffice.isNorthen) {
-  //         sum = dateValue.getDate() + 7;
-  //       } else {
-  //         sum = dateValue.getDate() + 14;
-  //       }
-  //       // this.calculateAndDisplayDateInfo(dateValue, sum);
-  //       const sumDate = new Date(dateValue.getFullYear(), dateValue.getMonth(), sum);
-  //       this.selectedDateSum = sumDate;
-  //       const day = ('0' + sumDate.getDate()).slice(-2); // Add leading zero if needed
-  //       const month = ('0' + (sumDate.getMonth() + 1)).slice(-2); // Add leading zero if needed
-  //       const year = sumDate.getFullYear();
-  //       this.notes = `${day}.${month}.${year}`;
-  //       console.log(this.notes)
-  //       const today = new Date();
-  //       const daysUntilDeadline = Math.ceil((sumDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-  //       const daysLate = Math.ceil((today.getTime() - sumDate.getTime()) / (1000 * 60 * 60 * 24));
-  //       if (sumDate < today) {
-  //         if (this.customOffice.isNorthen) {
-  //           if (daysLate > 0) {
-  //             this.lateSample = true;
-  //             this.notes += ` (Anda telah lewat ${daysLate} hari untuk sampel getah sampai ke makmal G-TACR Sg Petani)`;
-  //           }
-  //         } else {
-  //           if (daysLate > 7) {
-  //             this.lateSample = true;
-  //             this.notes += ` (Anda telah lewat ${daysLate} hari untuk sampel getah sampai ke makmal G-TACR Sg Petani)`;
-  //           }
-  //         }
-  //         this.showRemarks = true; // Display the remarks field
-  //       } else if (daysUntilDeadline <= 3) {
-  //         if (this.customOffice.isNorthen) {
-  //           this.notes += ` (Perhatian: Anda mempunyai  ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;
-  //         } else {
-  //           this.notes += ` (Perhatian: Anda mempunyai ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;
-  //         }
-  //         this.showRemarks = false; // Hide the remarks field
-  //       } else {
-  //         this.showRemarks = false; // Hide the remarks field
-  //       }
-  //       console.log(this.selectedDateSum.toDateString());
-  //     });
-  //   }
-  //   else if (this.userRoleId == 2) {
-  //     if (this.staff.unit === 'UIP') {
-  //       sum = dateValue.getDate() + 14;
-  //     } else if (this.staff.unit === 'UIPBKH') {
-  //       sum = dateValue.getDate() + 7;
-  //     }
-  //     // this.calculateAndDisplayDateInfo(dateValue, sum);
-  //     const sumDate = new Date(dateValue.getFullYear(), dateValue.getMonth(), sum);
-  //     this.selectedDateSum = sumDate;
-  //     const day = ('0' + sumDate.getDate()).slice(-2); // Add leading zero if needed
-  //     const month = ('0' + (sumDate.getMonth() + 1)).slice(-2); // Add leading zero if needed
-  //     const year = sumDate.getFullYear();
-  //     this.notes = `${day}.${month}.${year}`;
-  //     const today = new Date();
-  //     const daysUntilDeadline = Math.ceil((sumDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-  //     if (sumDate < today) {
-  //       const daysLate = Math.ceil((today.getTime() - sumDate.getTime()) / (1000 * 60 * 60 * 24));
-  //       if (daysLate > 7) {
-  //         this.lateSample = true;
-  //         this.notes += ` (Anda telah lewat ${daysLate} hari untuk sampel getah sampai ke makmal G-TACR Sg Petani)`;
-  //       }
-  //       this.showRemarks = true; // Display the remarks field
-  //     } else if (daysUntilDeadline <= 3) {
-  //       this.notes += ` (Perhatian: Anda mempunyai ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;
-  //       this.showRemarks = false; // Hide the remarks field
-  //     } else {
-  //       this.showRemarks = false; // Hide the remarks field
-  //     }
-  //     console.log(this.selectedDateSum.toDateString());
-  //   }
-  //   else if (this.userRoleId == 3) {
-  //     const dateImported = new Date(this.k1Header.importedDate);
-  //     const dateSampleReceived = new Date(this.k1Detail.dateSampleReceived);
-  //     let sum;
-  //     if (this.importer.isNorthen) {
-  //       sum = dateImported.getDate() + 7;
-  //     } else {
-  //       sum = dateImported.getDate() + 14;
-  //     }
-  //     const sumDate = new Date(dateImported.getFullYear(), dateImported.getMonth(), sum);
-  //     this.selectedDateSum = sumDate;
-  //     const day = ('0' + sumDate.getDate()).slice(-2);
-  //     const month = ('0' + (sumDate.getMonth() + 1)).slice(-2);
-  //     const year = sumDate.getFullYear();
-  //     this.notes = `${day}.${month}.${year}`;
-  //     const daysUntilDeadline = Math.ceil((sumDate.getTime() - dateSampleReceived.getTime()) / (1000 * 60 * 60 * 24));
-  //     if (sumDate < dateSampleReceived) {
-  //       const daysLate = Math.ceil((dateSampleReceived.getTime() - sumDate.getTime()) / (1000 * 60 * 60 * 24));
-  //       if (this.importer.isNorthen || !this.importer.isNorthen) {
-  //         this.lateSample = true;
-  //         this.notes += ` (Anda telah lewat ${daysLate} hari untuk sampel getah sampai ke makmal G-TACR Sg Petani)`;
-  //       }
-  //       this.showRemarks = true;
-  //     } else if (daysUntilDeadline <= 3) {
-  //       this.lateSample = false; // Reset lateSample when sample is not late
-  //       this.notes += ` (Perhatian: Anda mempunyai ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;
-  //       this.showRemarks = false;
-  //     } else {
-  //       this.lateSample = false; // Reset lateSample when sample is not late
-  //       this.showRemarks = false;
-  //     }
-  //   }
-  // }
-
-  // onDateChangeK3() {
-  //   // Step 1: Calculate 21 days from the imported date for the deadline
-  //   const dateValue = new Date(this.k1Header.importedDate);
-  //   dateValue.setHours(0, 0, 0, 0); // Reset time to avoid timezone offsets
-
-  //   const deadlineDate = new Date(dateValue);
-  //   deadlineDate.setDate(deadlineDate.getDate() + 21 + 1 ); // Add 21 days
-
-  //   // Update the displayed `importedDate` in 'yyyy-MM-dd' format (for consistency)
-  //   const importedDateStr = deadlineDate.toISOString().split('T')[0];
-  //   this.k1Header.importedDate = importedDateStr;
-
-  //   // Step 2: Calculate notes with an additional 14 days from the `importedDate`
-  //   const notesDate = new Date(deadlineDate);
-  //   notesDate.setDate(notesDate.getDate() + 13); // Add 14 days to deadlineDate
-  //   notesDate.setHours(0, 0, 0, 0); // Reset time
-
-  //   // Format the `notes` date as 'dd.MM.yyyy' for display
-  //   const day = ('0' + notesDate.getDate()).slice(-2);
-  //   const month = ('0' + (notesDate.getMonth() + 1)).slice(-2);
-  //   const year = notesDate.getFullYear();
-  //   this.notes = `${day}.${month}.${year}`;
-
-  //   // Calculate the number of days until the `notes` date
-  //   const today = new Date();
-  //   today.setHours(0, 0, 0, 0); // Reset time to avoid timezone offsets
-  //   const daysUntilDeadline = Math.ceil((notesDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-  //   const daysLate = Math.ceil((today.getTime() - notesDate.getTime()) / (1000 * 60 * 60 * 24));
-
-  //   // Display appropriate messages based on the `notes` deadline
-  //   if (notesDate < today) {
-  //     this.lateSample = true;
-  //     this.notes += ` (Anda telah lewat ${daysLate} hari untuk sampel getah sampai ke makmal G-TACR Sg Petani)`;
-  //     this.showRemarks = true; // Display the remarks field
-  //   } else if (daysUntilDeadline <= 3) {
-  //     this.notes += ` (Perhatian: Anda mempunyai ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;
-  //     this.showRemarks = false; // Hide the remarks field
-  //   } else {
-  //     this.lateSample = false;
-  //     this.showRemarks = false; // Hide the remarks field
-  //   }
-
-
-
-  //   // Logging for debugging purposes
-  //   // console.log(`New Imported Date (Saved): ${this.k1Header.importedDate}`);
-  //   // console.log(`Notes: ${this.notes}`);
-  // }
-
   onDateChange() {
     const dateValue = new Date(this.k1Header.importedDate);
-
     // Subtract 1 day from the 12-day addition
     const sum = dateValue.getDate() + 12 - 1; // 12 days + subtract 1 day
     const sumDate = new Date(dateValue.getFullYear(), dateValue.getMonth(), sum);
     this.selectedDateSum = sumDate;
-
     const day = ('0' + sumDate.getDate()).slice(-2); // Add leading zero if needed
     const month = ('0' + (sumDate.getMonth() + 1)).slice(-2); // Add leading zero if needed
     const year = sumDate.getFullYear();
     this.notes = `${day}.${month}.${year}`;
     console.log(this.notes);
-
     const today = new Date();
-
     // Subtract 1 day from daysUntilDeadline as well
     const daysUntilDeadline = Math.ceil((sumDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)); // Subtract 1 day
     const daysLate = Math.ceil((today.getTime() - sumDate.getTime()) / (1000 * 60 * 60 * 24)) - 1; // Subtract 1 day
-
     // Check for lateness
     if (sumDate < today) {
       if (daysLate > 0) {
@@ -942,69 +631,8 @@ export class DaftarSampelSMKComponent implements OnInit {
     } else {
       this.showRemarks = false; // Hide the remarks field
     }
-
     console.log(this.selectedDateSum.toDateString());
   }
-
-
-
-  // onDateChangeK3() {
-  //   // Step 1: Calculate deadline date (21 days from the imported date)
-  //   const dateValue = new Date(this.k1Header.importedDate);
-  //   dateValue.setHours(0, 0, 0, 0); // Reset time
-  //   const deadlineDate = new Date(dateValue);
-  //   deadlineDate.setDate(deadlineDate.getDate() + 21 + 1); // Add 21 days + 1
-
-  //   // Update the displayed `importedDate` in 'yyyy-MM-dd' format
-  //   this.k1Header.importedDate = deadlineDate.toISOString().split('T')[0];
-
-  //   // Initialize notesDate variable
-  //   let notesDate = new Date(deadlineDate);
-
-
-  //   if (this.userRoleId == 1) {
-  //     this.authservice.GetCustomOffice(this.user.customOfficeId).subscribe(x => {
-  //       this.customOffice = x;
-  //       const daysToAdd = this.customOffice.isNorthen ? 6 : 13;
-  //       notesDate.setDate(notesDate.getDate() + daysToAdd);
-  //       this.setNotesAndRemarks(notesDate);
-  //     });
-  //   } else if (this.userRoleId == 2) {
-  //     const additionalDays = this.staff.unit === 'UIP' ? 13 : this.staff.unit === 'UIPBKH' ? 6 : 0;
-  //     notesDate.setDate(notesDate.getDate() + additionalDays);
-  //     this.setNotesAndRemarks(notesDate);
-  //   }
-  // }
-
-
-
-
-  // Helper method to set notes and display remarks
-  // setNotesAndRemarks(notesDate) {
-  //   notesDate.setHours(0, 0, 0, 0); // Reset time
-  //   const day = ('0' + notesDate.getDate()).slice(-2);
-  //   const month = ('0' + (notesDate.getMonth() + 1)).slice(-2);
-  //   const year = notesDate.getFullYear();
-  //   this.notes = `${day}.${month}.${year}`;
-
-  //   const today = new Date();
-  //   today.setHours(0, 0, 0, 0); // Reset time
-
-  //   const daysUntilDeadline = Math.ceil((notesDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-  //   const daysLate = Math.ceil((today.getTime() - notesDate.getTime()) / (1000 * 60 * 60 * 24));
-
-  //   if (notesDate < today) {
-  //     this.lateSample = true;
-  //     this.notes += ` (Anda telah lewat ${daysLate} hari untuk sampel getah sampai ke makmal G-TACR Sg Petani)`;
-  //     this.showRemarks = true; // Display the remarks field
-  //   } else if (daysUntilDeadline <= 3) {
-  //     this.notes += ` (Perhatian: Anda mempunyai ${daysUntilDeadline} hari lagi untuk sampel getah sampai ke makmal G-TACR Sg. Petani.)`;
-  //     this.showRemarks = false; // Hide the remarks field
-  //   } else {
-  //     this.lateSample = false;
-  //     this.showRemarks = false; // Hide the remarks field
-  //   }
-  // }
 
 
 
@@ -1014,13 +642,10 @@ export class DaftarSampelSMKComponent implements OnInit {
     dateValue.setHours(0, 0, 0, 0); // Reset time
     const deadlineDate = new Date(dateValue);
     deadlineDate.setDate(deadlineDate.getDate() + 21 + 1); // Add 21 days (No 1 extra day as before)
-
     // Update the displayed `importedDate` in 'yyyy-MM-dd' format
     this.k1Header.importedDate = deadlineDate.toISOString().split('T')[0];
-
     // Initialize notesDate variable
     let notesDate = new Date(deadlineDate);
-
     // Logic for userRoleId == 1 or 2 (add 12 days)
     // if (this.userRoleId == 1 || this.userRoleId == 2) {
     // For both roles, add 12 days, not based on region or unit
@@ -1028,7 +653,6 @@ export class DaftarSampelSMKComponent implements OnInit {
     this.setNotesAndRemarks(notesDate);
     // }
   }
-
   // Helper method to set notes and display remarks
   setNotesAndRemarks(notesDate) {
     notesDate.setHours(0, 0, 0, 0); // Reset time
@@ -1036,13 +660,10 @@ export class DaftarSampelSMKComponent implements OnInit {
     const month = ('0' + (notesDate.getMonth() + 1)).slice(-2);
     const year = notesDate.getFullYear();
     this.notes = `${day}.${month}.${year}`;
-
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Reset time
-
     const daysUntilDeadline = Math.ceil((notesDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
     const daysLate = Math.ceil((today.getTime() - notesDate.getTime()) / (1000 * 60 * 60 * 24));
-
     if (notesDate < today) {
       this.lateSample = true;
       this.notes += ` (Anda telah lewat ${daysLate} hari untuk sampel getah sampai ke makmal G-TACR Sg Petani)`;
@@ -1055,5 +676,4 @@ export class DaftarSampelSMKComponent implements OnInit {
       this.showRemarks = false; // Hide the remarks field
     }
   }
-
 }

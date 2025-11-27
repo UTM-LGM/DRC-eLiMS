@@ -72,102 +72,183 @@ export class CetakLembaranKerjaComponent {
 
   ) { }
 
+  // ngOnInit() {
+
+  //   if (this.authService.isloggedin()) {
+  //     this.loginAs = this.authService.getSessionUsername()
+  //     this.userRoleId = this.authService.getSessionRole()
+  //   }
+  //   else {
+  //     this.loginAs = '';
+  //   }
+
+  //   // role GTACR = 4
+  //   if (this.userRoleId == 4) {
+  //     this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
+  //       this.authService.changeUser(res);
+  //       this.staff = res
+  //       this.roleGtacr = true
+
+  //     })
+  //     this.loadBatches();
+  //   }
+  //   this.statusCodeId = 4;
+
+  //   // list holiday
+  //   const holidays = [
+  //     '2024-06-17',//raya haji
+  //     '2024-06-18',//raya haji
+  //     '2024-09-01',//raya haji
+  //     '2024-09-16',//maulidur rasul
+  //     '2024-10-31',//depavali
+  //     '2025-01-27',//israk mikraj
+  //     '2025-01-29',//raya cina 1
+  //     '2025-01-30',//raya cina 2
+  //     '2025-03-02',//awal ramadhan
+  //     '2025-03-31',//hari raya aidilfitri 1
+  //     '2025-03-01', //hari raya aidilfitri 2
+  //     '2025-05-01', //hari pekerja
+  //     '2025-05-12', //hari wesak
+  //     '2025-06-02', //hari keputeraan dipertuan agung
+  //     '2025-06-07', //hari raya qurban 1
+  //     '2025-06-22', //hari keputeraan sultan kedah
+  //     '2025-06-27', //awal muharram
+  //     '2025-07-31', //hari hol almarhum sultan iskandar
+  //     '2025-08-31', //hari kebangsaan
+  //     '2025-09-16', //hari malaysia
+  //     '2025-10-20', //hari deepavali
+  //     '2025-12-25', //hari krismas
+  //   ];
+
+
+  //   function isHoliday(date, holidays) {
+  //     const formattedDate = date.toISOString().split('T')[0];
+  //     return holidays.includes(formattedDate);
+  //   }
+
+
+  //   function countWorkingDays(startDate, endDate, holidays) {
+  //     let count = 0;
+  //     let currentDate = new Date(startDate);
+
+  //     // Include both start date and end date in the count
+  //     while (currentDate <= endDate) {
+  //       const day = currentDate.getDay();
+  //       if (day !== 5 && day !== 6 && !isHoliday(currentDate, holidays)) {
+  //         count++;
+  //       }
+  //       currentDate.setDate(currentDate.getDate() + 1);
+  //     }
+
+  //     return count;
+  //   }
+
+
+  //   this.elimsService.GetElimsAllBatch0(this.statusCodeId).subscribe(data => {
+  //     data.forEach(resData => {
+  //       const receivedOn = new Date(resData.receivedOn);
+  //       const approvedOn = new Date(resData.approvedOn);
+  //       let daysSinceReceived;
+
+  //       if (approvedOn.getTime() !== 0) {
+  //         daysSinceReceived = countWorkingDays(receivedOn, approvedOn, holidays);
+  //       } else {
+  //         daysSinceReceived = countWorkingDays(receivedOn, this.today, holidays);
+  //       }
+
+  //       // console.log(resData);
+  //       resData.daysSinceReceived = daysSinceReceived;
+  //       this.batches.push(resData);
+  //     });
+
+  //     this.batches.sort((a, b) => a.batchId - b.batchId);
+
+  //     this.dataSource = new MatTableDataSource<Batch>(this.batches);
+  //     this.dataSource.paginator = this.paginator;
+  //     this.dataSource.sort = this.sort;
+  //   });
+  // }
+
+
   ngOnInit() {
 
-    if (this.authService.isloggedin()) {
-      this.loginAs = this.authService.getSessionUsername()
-      this.userRoleId = this.authService.getSessionRole()
-    }
-    else {
-      this.loginAs = '';
-    }
+  if (this.authService.isloggedin()) {
+    this.loginAs = this.authService.getSessionUsername();
+    this.userRoleId = this.authService.getSessionRole();
+  } else {
+    this.loginAs = '';
+  }
 
-    // role GTACR = 4
-    if (this.userRoleId == 4) {
-      this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
-        this.authService.changeUser(res);
-        this.staff = res
-        this.roleGtacr = true
+  // role GTACR = 4
+  if (this.userRoleId == 4) {
+    this.userService.GetStaffInfo(this.loginAs).subscribe(res => {
+      this.authService.changeUser(res);
+      this.staff = res;
+      this.roleGtacr = true;
+    });
+    this.loadBatches();
+  }
 
-      })
-      this.loadBatches();
-    }
-    this.statusCodeId = 4;
+  this.statusCodeId = 4;
+  this.today = new Date();
 
-    // list holiday
-    const holidays = [
-      '2024-06-17',//raya haji
-      '2024-06-18',//raya haji
-      '2024-09-01',//raya haji
-      '2024-09-16',//maulidur rasul
-      '2024-10-31',//depavali
-      '2025-01-27',//israk mikraj
-      '2025-01-29',//raya cina 1
-      '2025-01-30',//raya cina 2
-      '2025-03-02',//awal ramadhan
-      '2025-03-31',//hari raya aidilfitri 1
-      '2025-03-01', //hari raya aidilfitri 2
-      '2025-05-01', //hari pekerja
-      '2025-05-12', //hari wesak
-      '2025-06-02', //hari keputeraan dipertuan agung
-      '2025-06-07', //hari raya qurban 1
-      '2025-06-22', //hari keputeraan sultan kedah
-      '2025-06-27', //awal muharram
-      '2025-07-31', //hari hol almarhum sultan iskandar
-      '2025-08-31', //hari kebangsaan
-      '2025-09-16', //hari malaysia
-      '2025-10-20', //hari deepavali
-      '2025-12-25', //hari krismas
-    ];
+  // 🔹 Dapatkan senarai cuti dari API
+  this.cetakWorksheet.GetHolidayKedah().subscribe({
+    next: (holidayData) => {
+      // andaian: holidayData ialah array seperti ["2025-01-01", "2025-01-29", ...]
+      const holidays = holidayData;
 
-
-    function isHoliday(date, holidays) {
-      const formattedDate = date.toISOString().split('T')[0];
-      return holidays.includes(formattedDate);
-    }
-
-
-    function countWorkingDays(startDate, endDate, holidays) {
-      let count = 0;
-      let currentDate = new Date(startDate);
-
-      // Include both start date and end date in the count
-      while (currentDate <= endDate) {
-        const day = currentDate.getDay();
-        if (day !== 5 && day !== 6 && !isHoliday(currentDate, holidays)) {
-          count++;
-        }
-        currentDate.setDate(currentDate.getDate() + 1);
+      // fungsi bantu kekal sama
+      function isHoliday(date: Date, holidays: string[]) {
+        const formattedDate = date.toISOString().split('T')[0];
+        return holidays.includes(formattedDate);
       }
 
-      return count;
-    }
+      function countWorkingDays(startDate: Date, endDate: Date, holidays: string[]) {
+        let count = 0;
+        let currentDate = new Date(startDate);
 
-
-    this.elimsService.GetElimsAllBatch1(this.statusCodeId).subscribe(data => {
-      data.forEach(resData => {
-        const receivedOn = new Date(resData.receivedOn);
-        const approvedOn = new Date(resData.approvedOn);
-        let daysSinceReceived;
-
-        if (approvedOn.getTime() !== 0) {
-          daysSinceReceived = countWorkingDays(receivedOn, approvedOn, holidays);
-        } else {
-          daysSinceReceived = countWorkingDays(receivedOn, this.today, holidays);
+        while (currentDate <= endDate) {
+          const day = currentDate.getDay();
+          if (day !== 5 && day !== 6 && !isHoliday(currentDate, holidays)) {
+            count++;
+          }
+          currentDate.setDate(currentDate.getDate() + 1);
         }
+        return count;
+      }
 
-        // console.log(resData);
-        resData.daysSinceReceived = daysSinceReceived;
-        this.batches.push(resData);
+      // 🔹 Panggil API batch selepas holiday data berjaya diperoleh
+      this.elimsService.GetElimsAllBatch0(this.statusCodeId).subscribe(data => {
+        data.forEach(resData => {
+          const receivedOn = new Date(resData.receivedOn);
+          const approvedOn = new Date(resData.approvedOn);
+          let daysSinceReceived;
+
+          if (approvedOn.getTime() !== 0) {
+            daysSinceReceived = countWorkingDays(receivedOn, approvedOn, holidays);
+          } else {
+            daysSinceReceived = countWorkingDays(receivedOn, this.today, holidays);
+          }
+
+          resData.daysSinceReceived = daysSinceReceived;
+          this.batches.push(resData);
+        });
+
+        // urut dan papar data
+        this.batches.sort((a, b) => a.batchId - b.batchId);
+        this.dataSource = new MatTableDataSource<Batch>(this.batches);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       });
-
-      this.batches.sort((a, b) => a.batchId - b.batchId);
-
-      this.dataSource = new MatTableDataSource<Batch>(this.batches);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
-  }
+    },
+    error: (err) => {
+      console.error('Gagal dapatkan senarai cuti dari API:', err);
+      // fallback jika API gagal
+      const holidays: string[] = [];
+    }
+  });
+}
 
 
   checkSingleChanged() {
@@ -345,7 +426,7 @@ export class CetakLembaranKerjaComponent {
           value = row.isFastTrack ? 'YA' : 'TIDAK';
         } else if (column === 'sentOn') {
           // Format date values
-          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); // Customize the date format here
+          value = formatDate(row[column], 'dd/MM/yyyy', 'en-US'); 
         } else {
           value = row[column];
         }
