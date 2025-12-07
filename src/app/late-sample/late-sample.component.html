@@ -7,14 +7,14 @@
 
             <div class="row form-group">
                 <div class="col-sm-2">
-                    <label>Tarikh import:</label><br>
+                    <label>Tarikh Import:</label><br>
                 </div>
                 <div class="col-sm-2">
-                    <label for="startDate">Dari:</label>
+                    <label for="startDate">Dari:</label><br>
                     <input type="date" id="startDate" #startDate class="form-control">
                 </div>
                 <div class="col-sm-2">
-                    <label for="endDate">Hingga:</label>
+                    <label for="endDate">Hingga:</label><br>
                     <input type="date" id="endDate" #endDate class="form-control">
                 </div>
                 <div class="col-sm-2"> <!-- Add a new column for the button -->
@@ -67,7 +67,7 @@
                         </ng-container>
 
                         <ng-container matColumnDef="dateReceivedInLab">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarikh Terima</th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarikh Terima di makmal</th>
                             <td mat-cell *matCellDef="let row"> {{row.dateReceivedInLab | date: 'dd/MM/yyyy' }}</td>
                         </ng-container>
 

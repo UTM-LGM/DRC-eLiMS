@@ -559,8 +559,6 @@ namespace elims.Controllers
                         verifiedOnQuery = verifiedOnQuery.Where(s => s.RubberTypeId == rubberTypeId);
                         approvedOnQuery = approvedOnQuery.Where(s => s.RubberTypeId == rubberTypeId);
 
-
-
                     }
 
                     // Apply type code filter
@@ -587,12 +585,6 @@ namespace elims.Controllers
                         CountVerifiedOn = await verifiedOnQuery.Where(s => s.VerifiedOn != null).CountAsync(),
                         CountApprovedOn = await approvedOnQuery.Where(s => s.ApprovedOn != null).CountAsync(),
 
-
-                    /* CountReceivedOn = await baseQuery.Where(s => s.ReceivedOn >= startDate && s.ReceivedOn < endDate && s.ReceivedOn != null).CountAsync(),
-                        CountInLabOn = await baseQuery.Where(s => s.InLabOn >= startDate && s.InLabOn < endDate && s.InLabOn != null).CountAsync(),
-                        CountTestedOn = await baseQuery.Where(s => s.TestedOn >= startDate && s.TestedOn < endDate && s.TestedOn != null).CountAsync(),
-                        CountVerifiedOn = await baseQuery.Where(s => s.VerifiedOn >= startDate && s.VerifiedOn < endDate && s.VerifiedOn != null).CountAsync(),
-                        CountApprovedOn = await baseQuery.Where(s => s.ApprovedOn >= startDate && s.ApprovedOn < endDate && s.ApprovedOn != null).CountAsync()*/
                     };
 
                     return Ok(counts);

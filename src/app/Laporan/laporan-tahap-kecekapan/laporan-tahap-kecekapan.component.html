@@ -9,11 +9,13 @@
               <label>Tarikh</label><br>
             </div>
             <div class="col-sm-2">
-              <label for="startDate" class="label_bm">Dari:</label>
+              <label for="startDate" class="label_bm">Dari:</label><br>
+                 <label class="label_bi">Tarikh Daftar Terima</label>
               <input type="date" id="startDate" class="form-control" [(ngModel)]="fromDate">
             </div>
             <div class="col-sm-2">
-              <label for="endDate" class="label_bm">Hingga:</label>
+              <label for="endDate" class="label_bm">Hingga:</label><br>
+               <label class="label_bi">Tarikh Disahkan</label>
               <input type="date" id="endDate" class="form-control" [(ngModel)]="toDate">
             </div>
           </div>
@@ -109,7 +111,7 @@
                 <th class="black" scope="col">Batch Id</th>
                 <th class="black" scope="col">No Kastam</th>
                 <th class="black" scope="col">Tarikh Sampel Dihantar</th>
-                <th class="black" scope="col">Tarikh Diterima</th>
+                <th class="black" scope="col">Tarikh Daftar Terima</th>
                 <th class="black" scope="col">Penguji</th>
                 <th class="black" scope="col">Tarikh Diuji</th>
                 <th class="black" scope="col">Tarikh Disahkan</th>
