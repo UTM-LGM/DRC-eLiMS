@@ -1,5 +1,6 @@
 using elims.elims;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
@@ -13,7 +14,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        // Allow specific origin (e.g., www5.lgm.gov.my)
+        // Allow specific origin (e.g., www5.lgm.gov.my) test sini eralorr7
         //policy.WithOrigins("https://www5.lgm.gov.my") // You can also use "*" for any origin
         policy.WithOrigins("*")
               .AllowAnyMethod()
@@ -34,7 +35,8 @@ builder.Services.AddResponseCompression(options =>
 
 // Set up Entity Framework Core to use SQL Server
 builder.Services.AddDbContext<ElimsContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("elims")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("elims")));
 
 // Build the app
 var app = builder.Build();
@@ -47,9 +49,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();  // Redirect HTTP requests to HTTPS
+//app.UseStaticFiles();
+
 app.UseCors();  // Apply CORS policy
 app.UseResponseCompression();  // Use response compression
 app.UseAuthorization();  // Enable authorization
+
+app.UseStaticFiles();
 app.MapControllers();  // Map API controllers
 
 // Add custom error handling for Internal Server Errors (500)
